@@ -834,9 +834,9 @@ void GameLayer::onPause(){
 	CCObject* pObject= f->getChildren().at(0);
 	BGLayer* bg=(BGLayer*) pObject;
 	snapshoot->begin();
-	bg->visit();
+	ccVisitForSnapshot(bg);
 
-	this->visit();
+	ccVisitForSnapshot(this);
 	snapshoot->end();
 
 
@@ -858,9 +858,9 @@ void GameLayer::onGear(){
 		CCObject* pObject= f->getChildren().at(0);
 		BGLayer* bg=(BGLayer*) pObject;
 		snapshoot->begin();
-		bg->visit();
+		ccVisitForSnapshot(bg);
 
-		this->visit();
+		ccVisitForSnapshot(this);
 		snapshoot->end();
 
 		CCScene* pscene =CCScene::create();
@@ -885,8 +885,8 @@ void GameLayer::onGameOver(bool isWin){
 		CCObject* pObject= f->getChildren().at(0);
 		BGLayer* bg=(BGLayer*) pObject;
 		snapshoot->begin();
-		bg->visit();
-		this->visit();
+		ccVisitForSnapshot(bg);
+		ccVisitForSnapshot(this);
 		snapshoot->end();
 
 		CCScene* pscene =CCScene::create();

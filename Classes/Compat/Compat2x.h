@@ -266,6 +266,15 @@ public:
 };
 
 /* ---------------------------------------------------------------------------
+ * Snapshot helper: 2.x code rendered nodes into a CCRenderTexture by calling
+ * node->visit() between begin()/end() at arbitrary times (touch handlers,
+ * onEnter). Axmol nodes such as FastTMXLayer need Camera::getVisitingCamera(),
+ * which is only set while a scene renders. This visits `node` with the running
+ * scene's default camera as the visiting camera.
+ * ------------------------------------------------------------------------- */
+void ccVisitForSnapshot(ax::Node* node);
+
+/* ---------------------------------------------------------------------------
  * File helper: replaces CCFileUtils::getFileData(path, mode, &size).
  * Returns a new[]-allocated buffer with a trailing '\0' (not counted in size),
  * or nullptr. Caller frees with delete[].

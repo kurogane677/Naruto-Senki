@@ -26,6 +26,7 @@
 #include "main.h"
 #include "AppDelegate.h"
 #include "platform/Application.h"
+#include "CrashHandler.h"
 
 // Uncomment to enable win32 console
 #define USE_WIN32_CONSOLE
@@ -33,6 +34,8 @@
 using namespace ax;
 
 int axmol_main() {
+    installCrashHandler();
+
     // create the application instance
     AppDelegate app;
     int ret = Application::getInstance()->run();

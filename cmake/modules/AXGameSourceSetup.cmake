@@ -18,9 +18,11 @@ elseif(WINDOWS)
     list(APPEND GAME_HEADER
       proj.win32/main.h
       proj.win32/resource.h
+      proj.win32/CrashHandler.h
     )
     list(APPEND GAME_SOURCE
       proj.win32/main.cpp
+      proj.win32/CrashHandler.cpp
       proj.win32/game.rc
     )
   else()

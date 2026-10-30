@@ -849,6 +849,10 @@ void HudLayer::setBuffDisplay(const char* buffName, float buffStayTime){
 
 	
 	CCSprite* buffSprite=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("%s_%s.png",_delegate->currentPlayer->getCharacter()->getCString(),buffName)->getCString());
+	if(!buffSprite){
+		// Only some heroes have a buff icon in UI.plist (e.g. Sakura_hBuff.png); the buff itself still applies.
+		return;
+	}
 	buffSprite->setAnchorPoint(ccp(0,0));
 	buffSprite->setPosition(ccp(8,item1Button->getPositionY()+76-28*_buffCount));
 	if(buffStayTime !=0){

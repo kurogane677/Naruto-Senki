@@ -52,6 +52,31 @@ double CCTime::timersubCocos2d(cc_timeval* start, cc_timeval* end)
     return ((end->tv_sec * 1000.0 + end->tv_usec / 1000.0) - (start->tv_sec * 1000.0 + start->tv_usec / 1000.0));
 }
 
+namespace
+{
+// Camera::_visitingCamera is a protected static; a derived type may set it.
+struct VisitingCameraScope : ax::Camera
+{
+    explicit VisitingCameraScope(ax::Camera* cam) : _previous(_visitingCamera) { _visitingCamera = cam; }
+    ~VisitingCameraScope() { _visitingCamera = _previous; }
+
+private:
+    ax::Camera* _previous;
+};
+}  // namespace
+
+void ccVisitForSnapshot(ax::Node* node)
+{
+    if (!node)
+        return;
+    auto scene  = ax::Director::getInstance()->getRunningScene();
+    auto camera = scene ? scene->getDefaultCamera() : nullptr;
+    if (!camera)
+        camera = ax::Camera::getDefaultCamera();
+    VisitingCameraScope scope(camera);
+    node->visit();
+}
+
 unsigned char* ccGetFileData(const char* path, const char* /*mode*/, unsigned long* size)
 {
     if (size)
