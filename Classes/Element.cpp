@@ -758,8 +758,8 @@ void HeroElement::dealloc(){
 						
 					};
 					this->getMonsterArray()->removeAllObjects();
+					_monsterArray->release();  // was released after being set to NULL (crash)
 					_monsterArray=NULL;
-					_monsterArray->release();
 					
 				
 				}
