@@ -93,13 +93,13 @@ Setiap milestone punya **exit criteria** dan ditutup dengan **commit + tag git**
 **Exit:** CMake configure sukses. Build boleh gagal di kode game, tetapi tidak boleh gagal karena engine/toolchain.
 
 ### M3: Lapisan kompatibilitas (`Classes/Compat/`)
-- [ ] `Compat2x.h`, di-include dari `Defines.h`:
+- [x] `Compat2x.h`, menggantikan setiap `#include "cocos2d.h"`:
   - alias tipe/namespace
   - `ccp`, `*_selector`, `sharedXxx()`
-- [ ] `CCStringCompat` / `CCArrayCompat` / `CCDictCompat` + `CCARRAY_FOREACH`
+- [x] `CCString` / `CCArray` / `CCDictionary` + `CCARRAY_FOREACH` (implementasi sendiri di `Compat2x.cpp`)
   - **hanya** jika M2 menunjukkan kelas aslinya sudah dihapus
-- [ ] `GameAudio`: API mirip `SimpleAudioEngine` di atas `ax::AudioEngine`
-- [ ] Bungkus semua include `../cocos2dx/platform/android/jni/JniHelper.h` dengan `#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID`
+- [x] `CocosDenshion::SimpleAudioEngine` di atas `ax::AudioEngine` (nama kelas lama dipertahankan)
+- [x] Bungkus semua include `../cocos2dx/platform/android/jni/JniHelper.h` dengan `#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID`
 
 **Exit:** jumlah error compile turun drastis. Catat jumlah error sebelum dan sesudah.
 
@@ -108,15 +108,15 @@ Kerjakan dari dependensi terkecil. **Setiap baris = 1 commit, dan build harus hi
 
 | # | Status | Modul | Pekerjaan utama |
 |---|---|---|---|
-| 4.1 | [ ] | `proj.win32/main.cpp`, `AppDelegate` | `GLViewImpl`, `ResolutionPolicy::FIXED_HEIGHT` 480x320, window 960x640 |
-| 4.2 | [ ] | `MyUtils/` (KTools, MD5, CCShake, CCScrewLayer, CCStrokeLabel) | `getDataFromFile`, tinyxml2, `uint32_t` di MD5, include path baru |
-| 4.3 | [ ] | Input: `ActionButton`, `JoyStick`, `GearButton`, `SelectButton`, `MenuButton`, `ScrewLayer` | `CCTouchDelegate` → `EventListenerTouchOneByOne` (fixed priority -50, swallow) |
-| 4.4 | [ ] | `Effect`, `HPBar`, `BGLayer` | kecil, sebagian besar sudah tertutup shim |
-| 4.5 | [ ] | `ActionManager` | 16 `CCCallFuncND` → lambda (sekaligus hapus leak `callValue->retain()`), `CCNotificationCenter` → custom event, `setFlipX` → `setFlippedX`, cast pointer→`intptr_t` |
-| 4.6 | [ ] | `Element`, `Characters` | sebagian besar shim; `Characters` hampir murni AI |
-| 4.7 | [ ] | `GameLayer`, `HudLayer`, `PauseLayer`, `GameOver`, `LoadLayer` | TMX → `ValueVector`/`ValueMap`, snapshot `RenderTexture`, HTTP → lambda/stub |
-| 4.8 | [ ] | `GameScene`, `StartMenu`, `SelectLayer` | `ui::EditBox`/`ui::Scale9Sprite`, keyboard back, matikan menu non-MVP |
-| 4.9 | [ ] | Cukup dikompilasi: `NetworkLayer`, `SkillLayer`, `RankingLayer`, `GearLayer`, `CreditsLayer` | cukup compile; HTTP di-stub |
+| 4.1 | [x] | `proj.win32/main.cpp`, `AppDelegate` | `GLViewImpl`, `ResolutionPolicy::FIXED_HEIGHT` 480x320, window 960x640 |
+| 4.2 | [x] | `MyUtils/` (KTools, MD5, CCShake, CCScrewLayer, CCStrokeLabel) | `getDataFromFile`, tinyxml2, `uint32_t` di MD5, include path baru |
+| 4.3 | [x] | Input: `ActionButton`, `JoyStick`, `GearButton`, `SelectButton`, `MenuButton`, `ScrewLayer` | `CCTouchDelegate` → `EventListenerTouchOneByOne` (fixed priority -50, swallow) |
+| 4.4 | [x] | `Effect`, `HPBar`, `BGLayer` | kecil, sebagian besar sudah tertutup shim |
+| 4.5 | [x] | `ActionManager` | 16 `CCCallFuncND` → lambda (sekaligus hapus leak `callValue->retain()`), `CCNotificationCenter` → custom event, `setFlipX` → `setFlippedX`, cast pointer→`intptr_t` |
+| 4.6 | [x] | `Element`, `Characters` | sebagian besar shim; `Characters` hampir murni AI |
+| 4.7 | [x] | `GameLayer`, `HudLayer`, `PauseLayer`, `GameOver`, `LoadLayer` | TMX → `ValueVector`/`ValueMap`, snapshot `RenderTexture`, HTTP → lambda/stub |
+| 4.8 | [x] | `GameScene`, `StartMenu`, `SelectLayer` | `ui::EditBox`/`ui::Scale9Sprite`, keyboard back, matikan menu non-MVP |
+| 4.9 | [x] | Cukup dikompilasi: `NetworkLayer`, `SkillLayer`, `RankingLayer`, `GearLayer`, `CreditsLayer` | cukup compile; HTTP di-stub |
 | 4.10 | [ ] | Matikan anti-tamper | `KeyList`, `checkMD5`, `checkPost`, sabotase di `checkTower`, exit `CError` di `GameOver` → `#if 0` atau hapus |
 
 **Exit:** `axmol build -p win32 -a x64` sukses dengan 0 error (warning dicatat).
@@ -174,3 +174,8 @@ Masing-masing menjadi milestone kecil tersendiri, dikerjakan sesuai urutan prior
 | 2026-10-31 | M2: Axmol 2.11.5 **sudah menghapus** `__String`, `__Array`, `__Dictionary`, `__NotificationCenter`, dan `SimpleAudioEngine`. Shim buatan sendiri di M3 wajib. `core/cocos2d.h` hanya berisi alias kecil (`namespace cocos2d = ax`, `Ref` = `Object`, `CC_SAFE_*`, `CCLOG`, `CC_CALLBACK_*`). C++20; `/utf-8` otomatis |
 | 2026-10-31 | M2: configure CMake berhasil dengan generator "Visual Studio 18 2026" x64 ke `build_x64/`. 28 source dari `Classes/` (termasuk `sqlite3.c`), resource dari `Resources/` |
 | 2026-10-31 | M2: binary engine 2.2.2 (`Debug.win32`/`Release.win32`, satu-satunya salinan) dipindah ke `C:\dev\naruto-senki-legacy-bin\` |
+| 2026-10-31 | M3/M4: semua 4.1–4.9 dikerjakan dalam satu putaran, karena pola error lintas file sama. Build: 598 → 230 → 7 → 0 error. Commit `eabe64b` |
+| 2026-10-31 | M3: Axmol tidak lagi membundel tinyxml2, jadi tinyxml2 10.0.0 di-vendor ke `Classes/MyUtils/tinyxml2/`. `NULL` didefinisikan ulang sebagai `nullptr` (vararg x64 aman); `NULL`-sebagai-angka diganti `0`. Game target memakai `/Zc:strictStrings-`; `/permissive` **tidak** bisa dipakai karena merusak header engine (`or`) |
+| 2026-10-31 | M3: prioritas touch 2.x dipetakan ke fixed priority Axmol (p > -128 → p + 200) supaya tetap diproses setelah menu, seperti di 2.x |
+| 2026-10-31 | **Peringatan**: `sed -i` di Git Bash mengubah CRLF → LF. Untuk edit massal pakai Python (per byte) |
+| 2026-10-31 | Run pertama: game jalan, sampai in-game Training (HUD, peta, hero tampil). Uji M5 belum dilakukan |
