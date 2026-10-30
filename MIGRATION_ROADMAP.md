@@ -53,23 +53,25 @@ Akibatnya semua file tetap harus bisa dikompilasi walaupun fiturnya tidak diuji 
 Setiap milestone punya **exit criteria** dan ditutup dengan **commit + tag git** (`m0` … `m5`, `mvp`).
 
 ### M0: Tooling siap
-- [ ] CMake ≥ 4.2 (`cmake --version`); sedang diinstal: 4.4.4 via winget
-- [ ] PowerShell 7 (`pwsh --version`); sedang diinstal via winget
-- [ ] VS 2026: workload **Desktop development with C++** + Windows 11 SDK
+- [x] CMake ≥ 4.2 (`cmake --version`): 4.4.4
+- [x] PowerShell 7 (`pwsh --version`): 7.6.9
+- [x] VS 2026: workload **Desktop development with C++** + Windows SDK (MSVC 14.51, SDK 10.0.26100)
   - cek: `vswhere -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`
 - [x] Git (2.37.3 sudah ada)
-- [ ] Clone Axmol **v2.11.5** ke `C:\dev\axmol`, jalankan `pwsh setup.ps1`, lalu cek env `AX_ROOT` dan perintah `axmol`
+- [x] Clone Axmol **v2.11.5** ke `C:\dev\axmol`, jalankan `pwsh setup.ps1`, lalu cek env `AX_ROOT` dan perintah `axmol` (butuh **Windows Developer Mode**)
+- [ ] Build HelloWorld uji di `C:\dev\HelloAx`
 
 **Exit:** `axmol new -p net.zakume.hello -l cpp Hello` → `axmol build -p win32 -a x64` → jendela HelloWorld muncul.
 
 ### M1: Repo siap migrasi
-- [ ] `git init` + `.gitignore`:
+- [x] `git init` + `.gitignore`:
   - `Debug.win32/`, `Release.win32/`, `ipch/`, `*.sdf`, `*.VC.db`, `*.suo`, `*.user`, `build/`, `.vs/`
-- [ ] Commit "original 2.2.2 snapshot", lalu tag `legacy-2.2.2`
-- [ ] Konversi GBK → UTF-8 untuk `Classes/**/*.{cpp,h}` (kecuali `sqlite3*`) dengan script `iconv`
+  - plus `.gitattributes` berisi `* -text`, agar `core.autocrlf` tidak mengubah byte file
+- [x] Commit "original 2.2.2 snapshot", lalu tag `legacy-2.2.2`
+- [x] Konversi GBK → UTF-8 untuk `Classes/**/*.{cpp,h}` (kecuali `sqlite3*`): 18 file
   - cek `FONT_TYPE` di `Defines.h` dan string Cina lain
   - commit terpisah: "convert sources to UTF-8"
-- [ ] Buat branch `axmol-migration`
+- [x] Buat branch `axmol-migration`
 
 **Exit:** `git diff legacy-2.2.2 --stat` hanya berisi perubahan encoding, dan komentar Cina terbaca.
 
@@ -163,4 +165,6 @@ Masing-masing menjadi milestone kecil tersendiri, dikerjakan sesuai urutan prior
 |---|---|
 | 2026-10-31 | Target engine Axmol 2.11.5 (bukan cocos2d-x 4.0); platform pertama Windows x64 |
 | 2026-10-31 | MVP = Training 3v3; anti-tamper dimatikan; HTTP di-stub |
-| 2026-10-31 | M0: VS 2026 Community 18.10 terpasang **tanpa** workload C++; CMake 4.4.4 & pwsh sedang diinstal via winget |
+| 2026-10-31 | M0: CMake 4.4.4, pwsh 7.6.9, workload C++ VS 2026 (MSVC 14.51, SDK 10.0.26100), Axmol v2.11.5 di `C:\dev\axmol`. `setup.ps1` butuh Windows Developer Mode |
+| 2026-10-31 | M1: `.gitattributes` `* -text`, karena `core.autocrlf=true` di level sistem akan mengubah byte resource yang dicek MD5 |
+| 2026-10-31 | M1: 18 file GBK → UTF-8 tanpa BOM, round-trip terverifikasi, jumlah baris tetap. `RankingLayer.cpp` sudah UTF-8 BOM sejak awal. Byte `0x14` tersembunyi di `StartMenu.cpp` tetap utuh. **Wajib compile dengan `/utf-8`** (M2) |
