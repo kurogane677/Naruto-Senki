@@ -848,11 +848,13 @@ void HudLayer::setReport(const char* name1, const char* name2,CCString* killNum)
 void HudLayer::setBuffDisplay(const char* buffName, float buffStayTime){
 
 	
-	CCSprite* buffSprite=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("%s_%s.png",_delegate->currentPlayer->getCharacter()->getCString(),buffName)->getCString());
-	if(!buffSprite){
-		// Only some heroes have a buff icon in UI.plist (e.g. Sakura_hBuff.png); the buff itself still applies.
+	// Only some heroes have a buff icon in UI.plist (e.g. Sakura_hBuff.png); the buff itself still applies.
+	// Look the frame up first: createWithSpriteFrameName() asserts on a missing frame in Debug builds.
+	CCSpriteFrame* buffFrame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_%s.png",_delegate->currentPlayer->getCharacter()->getCString(),buffName)->getCString());
+	if(!buffFrame){
 		return;
 	}
+	CCSprite* buffSprite=CCSprite::createWithSpriteFrame(buffFrame);
 	buffSprite->setAnchorPoint(ccp(0,0));
 	buffSprite->setPosition(ccp(8,item1Button->getPositionY()+76-28*_buffCount));
 	if(buffStayTime !=0){
