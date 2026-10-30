@@ -1,0 +1,26 @@
+# Visual Studio / MSBuild artifacts (legacy cocos2d-x 2.2.2 project)
+Debug.win32/
+Release.win32/
+ipch/
+*.sdf
+*.VC.db
+*.opendb
+*.suo
+*.user
+*.ipch
+*.pdb
+*.ilk
+*.obj
+*.lastbuildstate
+proj.win32/UpgradeLog*.XML
+proj.win32/_UpgradeReport_Files/
+
+# CMake / Axmol build output
+build/
+build_*/
+.vs/
+out/
+
+# IDE
+.idea/
+.vscode/
