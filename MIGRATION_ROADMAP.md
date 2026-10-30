@@ -117,22 +117,22 @@ Kerjakan dari dependensi terkecil. **Setiap baris = 1 commit, dan build harus hi
 | 4.7 | [x] | `GameLayer`, `HudLayer`, `PauseLayer`, `GameOver`, `LoadLayer` | TMX → `ValueVector`/`ValueMap`, snapshot `RenderTexture`, HTTP → lambda/stub |
 | 4.8 | [x] | `GameScene`, `StartMenu`, `SelectLayer` | `ui::EditBox`/`ui::Scale9Sprite`, keyboard back, matikan menu non-MVP |
 | 4.9 | [x] | Cukup dikompilasi: `NetworkLayer`, `SkillLayer`, `RankingLayer`, `GearLayer`, `CreditsLayer` | cukup compile; HTTP di-stub |
-| 4.10 | [ ] | Matikan anti-tamper | `KeyList`, `checkMD5`, `checkPost`, sabotase di `checkTower`, exit `CError` di `GameOver` → `#if 0` atau hapus |
+| 4.10 | [x] | Matikan anti-tamper | `KeyList`, `checkMD5`, `checkPost`, sabotase di `checkTower`, exit `CError` di `GameOver` → `#if 0` atau hapus |
 
 **Exit:** `axmol build -p win32 -a x64` sukses dengan 0 error (warning dicatat).
 
 ### M5: MVP berjalan (runtime)
 Uji secara berurutan dan perbaiki temuan sebelum lanjut ke langkah berikutnya.
-- [ ] Intro → logo → push start → menu roda bisa diputar
-- [ ] `sql.db` terbentuk di writable path (`%LOCALAPPDATA%\NarutoSenki`)
-- [ ] Training: loading selesai, 6 hero muncul di posisi dari TMX, kamera mengikuti player
+- [x] Intro → logo → push start → menu roda bisa diputar
+- [x] `sql.db` terbentuk di writable path (`%LOCALAPPDATA%\NarutoSenki`); UserDefault sekarang `UserDefault.bin` (format Axmol)
+- [x] Training: loading selesai, 6 hero muncul di posisi dari TMX, kamera mengikuti player
 - [ ] Joystick 8 arah, attack, skill 1–3 + cooldown, item potion
 - [ ] Level-up → ougis terbuka → cut-in (dunia di-pause) → resume
 - [ ] Creep tiap 15 detik → tower hancur → creep naik level → core hancur → GameOver
 - [ ] Coin reward tersimpan; kembali ke menu, lalu main lagi (cek crash/leak saat scene diulang)
 - [ ] Pause: resume, surrender, toggle BGM/voice
 - [ ] Kakuzu memanggil mask; hero yang punya summon mati lalu respawn
-  - bug crash `Element.cpp` L766 kemungkinan muncul di sini → **perbaiki di langkah ini**
+  - bug crash `Element.cpp` L766 kemungkinan muncul di sini → **perbaiki di langkah ini** (sudah diperbaiki di commit `ba24e58`, menunggu uji)
 
 **Exit:** 3 match berturut-turut tanpa crash, lalu tag `mvp`.
 
@@ -179,3 +179,6 @@ Masing-masing menjadi milestone kecil tersendiri, dikerjakan sesuai urutan prior
 | 2026-10-31 | M3: prioritas touch 2.x dipetakan ke fixed priority Axmol (p > -128 → p + 200) supaya tetap diproses setelah menu, seperti di 2.x |
 | 2026-10-31 | **Peringatan**: `sed -i` di Git Bash mengubah CRLF → LF. Untuk edit massal pakai Python (per byte) |
 | 2026-10-31 | Run pertama: game jalan, sampai in-game Training (HUD, peta, hero tampil). Uji M5 belum dilakukan |
+| 2026-10-31 | M4.10: anti-tamper dihapus (commit `d7b51be`). `KTools::checkMD5/prepareFileMD5/checkData` masih ada sebagai kode mati. `CError` tidak pernah di-set, jadi cabangnya tidak aktif |
+| 2026-10-31 | M5: crash `Element.cpp` (release setelah NULL pada `_monsterArray`) diperbaiki (commit `ba24e58`) karena ada di jalur MVP (summon Kakuzu). Baris 621 (bocor tanpa release) dibiarkan sesuai aturan "jangan perbaiki selain crash" |
+| 2026-10-31 | M5: user sudah mencoba main dan menyatakan MVP bisa dicoba. Mode HardCore (pilih Naruto, peta lain) juga terlihat jalan |
