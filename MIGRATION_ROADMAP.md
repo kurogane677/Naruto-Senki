@@ -59,7 +59,7 @@ Setiap milestone punya **exit criteria** dan ditutup dengan **commit + tag git**
   - cek: `vswhere -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`
 - [x] Git (2.37.3 sudah ada)
 - [x] Clone Axmol **v2.11.5** ke `C:\dev\axmol`, jalankan `pwsh setup.ps1`, lalu cek env `AX_ROOT` dan perintah `axmol` (butuh **Windows Developer Mode**)
-- [ ] Build HelloWorld uji di `C:\dev\HelloAx`
+- [x] Build HelloWorld uji di `C:\dev\HelloAx` (RelWithDebInfo x64, jendela muncul)
 
 **Exit:** `axmol new -p net.zakume.hello -l cpp Hello` → `axmol build -p win32 -a x64` → jendela HelloWorld muncul.
 
