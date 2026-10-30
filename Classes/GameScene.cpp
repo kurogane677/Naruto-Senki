@@ -21,7 +21,7 @@ bool GameScene::init()
 {
 	bool bRet = false;
 	do{
-		CC_BREAK_IF(!CCScene::init()); //¶Ô¸¸Àà³õÊ¼»¯
+		CC_BREAK_IF(!CCScene::init()); //å¯¹çˆ¶ç±»åˆå§‹åŒ–
 
 		if(!CCUserDefault::sharedUserDefault()->getBoolForKey("isHavingSave")){
 
@@ -46,7 +46,7 @@ bool GameScene::init()
 		this->addChild(introLayer);
 
 
-		//ÄÚ²¿²âÊÔ¡ı
+		//å†…éƒ¨æµ‹è¯•â†“
 
 
 		/*KTools* tool= KTools::create();

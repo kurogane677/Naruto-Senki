@@ -552,7 +552,7 @@ void SkillLayer::initInterface(){
 
 
 
-		//更新技能表
+		//鏇存柊鎶�鑳借〃
 		this->updateSkillGroup();
 	
 	/*else if(_delegate2){
@@ -598,7 +598,7 @@ void SkillLayer::onSkillRequestCompleted(CCNode *sender ,void *data){
 
 
 	isPosting=false;
-	//刷新按钮
+	//鍒锋柊鎸夐挳
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -745,7 +745,7 @@ void SkillLayer::onChangeBtn(CCObject* sender){
 
 
 
-	//觉醒必备
+	//瑙夐啋蹇呭
 	if(strcmp(selectHero,"Naruto")==0){
 		selectHero="SageNaruto";
 	}else if(strcmp(selectHero,"SageNaruto")==0){
@@ -760,7 +760,7 @@ void SkillLayer::onChangeBtn(CCObject* sender){
 	_heroFull->setDisplayFrame(frame);
 
 
-	//更新技能表
+	//鏇存柊鎶�鑳借〃
 	this->updateSkillGroup();
 
 	if(strcmp(selectHero,"SageNaruto")==0 ){

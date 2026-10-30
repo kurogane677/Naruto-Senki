@@ -201,27 +201,27 @@ void  KTools::prepareFileMD5(){
 	};
 
 	std::string filePath = CCFileUtils::sharedFileUtils()->getWritablePath() + "checkMD5.xml";
-	//xmlÎÄµµ
+	//xmlæ–‡æ¡£
 	tinyxml2::XMLDocument* pDoc = new tinyxml2::XMLDocument();  
 	if (NULL==pDoc) {
 		return ;
 	}
-	//xmlÉùÃ÷
+	//xmlå£°æ˜
 	XMLDeclaration *pDel = pDoc->NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
 	if (NULL==pDel) {
 		return ;
 	}
 
 	pDoc->LinkEndChild(pDel);
-	//½Úµãfile
+	//èŠ‚ç‚¹file
 	XMLElement *fileElement = pDoc->NewElement("file");
-	fileElement->SetAttribute("version", "1.18");//¸ø½ÚµãÉèÖÃÊôĞÔ
+	fileElement->SetAttribute("version", "1.18");//ç»™èŠ‚ç‚¹è®¾ç½®å±æ€§
 	pDoc->LinkEndChild(fileElement);
 
 
 
 
-	//½Úµãpath
+	//èŠ‚ç‚¹path
 	int num= sizeof(fileList)/sizeof(char*);
 	for(int i=0;i<num;i++){
 		XMLElement *pathElement = pDoc->NewElement("path");
@@ -233,7 +233,7 @@ void  KTools::prepareFileMD5(){
 	}
 
 
-	pDoc->SaveFile(filePath.c_str());//±£´æÎÄ¼ş ²ÎÊı£ºÂ·¾¶
+	pDoc->SaveFile(filePath.c_str());//ä¿å­˜æ–‡ä»¶ å‚æ•°ï¼šè·¯å¾„
 	delete pDoc;
 
 
@@ -389,27 +389,27 @@ void  KTools::prepareFileSHA(){
 	};
 
 	std::string filePath = CCFileUtils::sharedFileUtils()->getWritablePath() + "SHA.xml";
-	//xmlÎÄµµ
+	//xmlæ–‡æ¡£
 	tinyxml2::XMLDocument* pDoc = new tinyxml2::XMLDocument();  
 	if (NULL==pDoc) {
 		return ;
 	}
-	//xmlÉùÃ÷
+	//xmlå£°æ˜
 	XMLDeclaration *pDel = pDoc->NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
 	if (NULL==pDel) {
 		return ;
 	}
 
 	pDoc->LinkEndChild(pDel);
-	//½Úµãfile
+	//èŠ‚ç‚¹file
 	XMLElement *fileElement = pDoc->NewElement("file");
-	fileElement->SetAttribute("version", "1.18");//¸ø½ÚµãÉèÖÃÊôĞÔ
+	fileElement->SetAttribute("version", "1.18");//ç»™èŠ‚ç‚¹è®¾ç½®å±æ€§
 	pDoc->LinkEndChild(fileElement);
 
 
 
 
-	//½Úµãpath
+	//èŠ‚ç‚¹path
 	int num= sizeof(fileList)/sizeof(char*);
 	for(int i=0;i<num;i++){
 		XMLElement *pathElement = pDoc->NewElement("path");
@@ -423,7 +423,7 @@ void  KTools::prepareFileSHA(){
 	}
 
 
-	pDoc->SaveFile(filePath.c_str());//±£´æÎÄ¼ş ²ÎÊı£ºÂ·¾¶
+	pDoc->SaveFile(filePath.c_str());//ä¿å­˜æ–‡ä»¶ å‚æ•°ï¼šè·¯å¾„
 	delete pDoc;
 
 
@@ -440,7 +440,7 @@ int KTools::checkMD5(std::string findPath /* ="" */){
 	if(!isExisted){
 		return 0;
 	}
-	//¶Ô±ÈMD5
+	//å¯¹æ¯”MD5
 	std::string officalFileMD5 =CMD5Checksum::GetMD5(md5Path);  
 	
 
@@ -711,20 +711,20 @@ void KTools::updateData(){
 	std::string filePath = CCFileUtils::sharedFileUtils()->getWritablePath() + "CheckMD5_113.xml";
 
 
-	//xmlÎÄµµ
+	//xmlæ–‡æ¡£
 	tinyxml2::XMLDocument* pDoc = new tinyxml2::XMLDocument();  
 	if (NULL==pDoc) {
 		return ;
 	}
 
-	//xmlÉùÃ÷
+	//xmlå£°æ˜
 	XMLDeclaration *pDel = pDoc->NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
 	if (NULL==pDel) {
 		return ;
 	}
 
 	pDoc->LinkEndChild(pDel);
-	//½Úµãfile
+	//èŠ‚ç‚¹file
 	XMLElement *fileElement = pDoc->NewElement("data");
 	pDoc->LinkEndChild(fileElement);
 
@@ -1023,10 +1023,10 @@ void KTools::dfsFolder(std::string folderPath, int depth /* = 0 */,int type/* =0
 		exit(-1);
 	}
 	do{
-		//ÅĞ¶ÏÊÇ·ñÓĞ×ÓÄ¿Â¼
+		//åˆ¤æ–­æ˜¯å¦æœ‰å­ç›®å½•
 		if (FileInfo.attrib & _A_SUBDIR)    
 		{
-			//Õâ¸öÓï¾äºÜÖØÒª
+			//è¿™ä¸ªè¯­å¥å¾ˆé‡è¦
 			if( (strcmp(FileInfo.name,".") != 0 ) &&(strcmp(FileInfo.name,"..") != 0))   
 			{
 				std::string newPath = folderPath + "\\" + FileInfo.name;
@@ -1371,9 +1371,9 @@ std::string KTools::encodeData(std::string data){
 	std::string dataMD5 =CMD5Checksum::GetMD5OfString(data);
 
 	//sha1=new SHA1;  
-	//sha1->addBytes(dataMD5.c_str(),strlen(dataMD5.c_str()));//ÊäÈëÊı¾İ  
-	////sha1->addBytes( "goldlion" ,strlen( "goldlion" ));//ÊäÈëÊı¾İ  
-	//digest=sha1->getDigest();//»ñÈ¡Ğ£ÑéÂë  
+	//sha1->addBytes(dataMD5.c_str(),strlen(dataMD5.c_str()));//è¾“å…¥æ•°æ®  
+	////sha1->addBytes( "goldlion" ,strlen( "goldlion" ));//è¾“å…¥æ•°æ®  
+	//digest=sha1->getDigest();//è·å–æ ¡éªŒç   
 	//std::string result=(char*) digest;
 	//delete sha1;  
 	//free(digest);  

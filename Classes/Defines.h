@@ -9,7 +9,7 @@
 #define random(x) (rand()%x)
 
 
-#define  FONT_TYPE "Î¢ÈíÑÅºÚ"
+#define  FONT_TYPE "å¾®è½¯é›…é»‘"
 
 // layer's tag
 #define BgTag	1

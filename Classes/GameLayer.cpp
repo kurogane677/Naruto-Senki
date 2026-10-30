@@ -252,7 +252,7 @@ void GameLayer::onExit(){
 
 
 void GameLayer::initTileMap(){
-	//Ëæ»úµØÍ¼
+	//éšæœºåœ°å›¾
 	
 
 	if(_isHardCoreGame){
@@ -892,7 +892,7 @@ void GameLayer::checkTower(){
 	
 
 
-	//Í¨ÖªÕ½¶·¾ÖÊÆ
+	//é€šçŸ¥æˆ˜æ–—å±€åŠ¿
 	CCARRAY_FOREACH(_CharacterArray,pObject){
 		ActionManager* tmpHero=(ActionManager*) pObject;
 
@@ -1089,12 +1089,12 @@ void GameLayer::onLeft(){
 	CCObject* pObject;
 
 	CCARRAY_FOREACH(childArray,pObject){		
-		//Çå³ýÕìÌý
+		//æ¸…é™¤ä¾¦å¬
 		ActionManager* ac=(ActionManager*) pObject;
 		CCNotificationCenter::sharedNotificationCenter()->removeObserver(ac,"acceptAttack");
 	}
 
-	//Çå³ýµØÍ¼»º´æ
+	//æ¸…é™¤åœ°å›¾ç¼“å­˜
 
 	if(randomMap==0) {
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Tower/Tower.plist");	
@@ -1120,11 +1120,11 @@ void GameLayer::onLeft(){
 				continue;
 		}
 
-		//É¾³ýÈËÎï»º´æ
+		//åˆ é™¤äººç‰©ç¼“å­˜
 		path=CCString::createWithFormat("Element/%s/%s.plist",player->getCharacter()->getCString(),player->getCharacter()->getCString())->getCString();
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile(path);
 
-		//É¾³ýÔ¤¼ÓÔØÒôÐ§
+		//åˆ é™¤é¢„åŠ è½½éŸ³æ•ˆ
 		if(strcmp(player->getRole()->getCString(),"Com")==0 ||
 			strcmp(player->getRole()->getCString(),"Player")==0
 			){
@@ -1132,7 +1132,7 @@ void GameLayer::onLeft(){
 		}
 		
 
-		//É¾³ý¶îÍâ½ÇÉ«
+		//åˆ é™¤é¢å¤–è§’è‰²
 		if(strcmp(player->getCharacter()->getCString(),"Jiraiya")==0){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/SageJiraiya/SageJiraiya.plist");
 			tool->prepareFileOGG("SageJiraiya",1);
@@ -1160,7 +1160,7 @@ void GameLayer::onLeft(){
 
 	}
 
-	//¼ÓÔØÊØ»¤ÈÌ
+	//åŠ è½½å®ˆæŠ¤å¿
 	if(this->_isHardCoreGame){
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Roshi/Roshi.plist");
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Han/Han.plist");

@@ -413,7 +413,7 @@ bool StartMenu::init()
 		};
 
 
-		//°æ±¾ºÅ
+		//ç‰ˆæœ¬å·
 		CCLabelBMFont* versionLabel=CCLabelBMFont::create("1.23 EX Version","Fonts/1.fnt");
 		versionLabel->setScale(0.3f);
 		versionLabel->setPosition(winSize.width-60,10);
@@ -451,7 +451,7 @@ bool StartMenu::init()
 
 		avator->runAction(CCRepeatForever::create(CCSequence::create(list)));
 
-		//¹«¸æ°´Å¥
+		//å…¬å‘ŠæŒ‰é’®
 		CCMenuItem* news_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("news_btn.png"),NULL,NULL,this,menu_selector(StartMenu::onNewsBtn));
 		CCMenu* menu =CCMenu::create(news_btn,NULL);
 		news_btn->setAnchorPoint(ccp(0,0.5f));
@@ -461,7 +461,7 @@ bool StartMenu::init()
 
 		this->setNotice();
 		
-		//»ý·ÖÇ½¹«¸æ
+		//ç§¯åˆ†å¢™å…¬å‘Š
 		if(MemberID){
 			this->setGroup();
 			this->setOfferWall();
@@ -469,7 +469,7 @@ bool StartMenu::init()
 			this->scrollMenu(_pos03);
 			
 		}else{
-			//µÇÂ½°´Å¥
+			//ç™»é™†æŒ‰é’®
 			login_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("login_btn.png"),NULL,NULL,this,menu_selector(StartMenu::onLoginBtn));
 			CCMenu* menu2 =CCMenu::create(login_btn,NULL);
 			login_btn->setAnchorPoint(ccp(1,0.5f));
@@ -538,7 +538,7 @@ void StartMenu::setOfferWall(){
 	//	} 
 	//	#endif  
 
-	//	//»ý·ÖÇ½°´Å¥
+	//	//ç§¯åˆ†å¢™æŒ‰é’®
 	//	task_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("tasks_btn.png"),NULL,NULL,this,menu_selector(StartMenu::onTasksBtn));
 	//	CCMenu* menu3 =CCMenu::create(task_btn,NULL);
 	//	task_btn->setAnchorPoint(ccp(1,0.5f));
@@ -555,7 +555,7 @@ void StartMenu::setGroup(){
 
 	
 
-	//×éÖ¯°´Å¥
+	//ç»„ç»‡æŒ‰é’®
 	CCMenuItemSprite* group_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("group_btn.png"),NULL,NULL,this,menu_selector(StartMenu::onGroupBtn));
 	CCMenu* menu3 =CCMenu::create(group_btn,NULL);
 	group_btn->setAnchorPoint(ccp(1,0.5f));
@@ -570,7 +570,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 
 	if(!group_layer && !profile_layer){
 
-		//Ë¢ÐÂ°´Å¥
+		//åˆ·æ–°æŒ‰é’®
 		if(!refreshBtn){
 			refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 			refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -585,7 +585,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 
 		group_layer->addChild(group_bg);
 
-		//¹Ø±Õ
+		//å…³é—­
 		CCMenuItemSprite* close_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("profile_closeBtn.png"),NULL,NULL,this,menu_selector(StartMenu::onIterfaceClose));
 		CCMenu* menu =CCMenu::create( close_btn,NULL);
 		menu->setPosition(ccp(group_bg->getPositionX()+group_bg->getContentSize().width/2,group_bg->getPositionY()+group_bg->getContentSize().height/2-30));
@@ -600,7 +600,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 
 			group_layer->addChild(group_content);
 
-			//¼ÓÔØÄÚÈÝ
+			//åŠ è½½å†…å®¹
 
 			CCClippingNode* clipper = CCClippingNode::create();
 			CCNode *stencil = CCSprite::createWithSpriteFrameName("groupMask2.png");
@@ -640,7 +640,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 
 			group_layer->addChild(group_content);
 
-			//¼ÓÔØÄÚÈÝ
+			//åŠ è½½å†…å®¹
 
 			CCClippingNode* clipper = CCClippingNode::create();
 			CCNode *stencil = CCSprite::createWithSpriteFrameName("groupMask1.png");
@@ -673,7 +673,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 
 
 
-			//²éÑ¯°´Å¥
+			//æŸ¥è¯¢æŒ‰é’®
 			CCMenuItemSprite* search_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("search_btn.png"),CCSprite::createWithSpriteFrameName("search_btn2.png"),NULL,this,menu_selector(StartMenu::onSearchBtn));
 			CCMenu* menu3 =CCMenu::create(search_btn,NULL);
 			menu3->setPosition(ccp(group_bg->getPositionX()-group_bg->getContentSize().width/2+150,43));
@@ -711,7 +711,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 void StartMenu::onGroupManageRequestCompleted(CCNode *sender ,void *data){  
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -1050,7 +1050,7 @@ void StartMenu::onQuitComfirm(CCObject* sender){
 
 void StartMenu::onQuitGroupRequestCompleted(CCNode *sender ,void *data) {  
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -1284,7 +1284,7 @@ void StartMenu::onNoticeComfirm(CCObject* sender){
 	}
 
 	isPosting=true;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(!refreshBtn){
 		refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 		refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1314,7 +1314,7 @@ void StartMenu::onLockBtn(CCObject* sender){
 	if(MemberID==leaderID){
 		if(isLock){
 			isPosting=true;
-			//Ë¢ÐÂ°´Å¥
+			//åˆ·æ–°æŒ‰é’®
 			if(!refreshBtn){
 				refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 				refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1389,7 +1389,7 @@ void StartMenu::onGPWComfirm(CCObject* sender){
 	}
 
 	isPosting=true;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(!refreshBtn){
 		refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 		refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1423,7 +1423,7 @@ void StartMenu::onGPWRequestCompleted(CCNode *sender ,void *data) {
 
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -1526,7 +1526,7 @@ void StartMenu::onKickComfirm(CCObject* sender){
 	CCMenuItem* item=(CCMenuItem*) sender;
 
 	isPosting=true;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(!refreshBtn){
 		refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 		refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1553,7 +1553,7 @@ void StartMenu::onKickComfirm(CCObject* sender){
 void StartMenu::onGroupRequestCompleted(CCNode *sender ,void *data){  
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -1607,7 +1607,7 @@ void StartMenu::onGroupRequestCompleted(CCNode *sender ,void *data){
 			std::string idString=idValue.GetString();
 			int groupID=atoi(idString.c_str());
 
-			//½âÎöname
+			//è§£æžname
 			Value & nameValue= node["group_name"];
 			std::string nameString=nameValue.GetString();
 
@@ -1747,7 +1747,7 @@ void StartMenu::onJoinGroup(CCObject* sender){
 				cocos2d::extension::CCHttpClient::getInstance()->send(request);  
 				request->release();  
 
-				//Ë¢ÐÂ°´Å¥
+				//åˆ·æ–°æŒ‰é’®
 				if(!refreshBtn){
 					refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 					refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1789,7 +1789,7 @@ void StartMenu::onJoinComfirm(CCObject* sender){
 	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
 	request->release();  
 
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(!refreshBtn){
 		refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 		refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1804,7 +1804,7 @@ void StartMenu::onJoinComfirm(CCObject* sender){
 
 void StartMenu::onJoinRequestCompleted(CCNode *sender ,void *data) {  
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -1894,7 +1894,7 @@ void StartMenu::onSearchBtn(CCObject* sender){
 void StartMenu::onSeachRequestCompleted(CCNode *sender ,void *data) {  
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -2139,7 +2139,7 @@ void StartMenu::onCreateComfirm(CCObject* sender){
 
 void StartMenu::onCreateRequestCompleted(CCNode *sender ,void *data) {  
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -2238,7 +2238,7 @@ void StartMenu::setProfile(){
 
 	
 	
-	//µµ°¸°´Å¥
+	//æ¡£æ¡ˆæŒ‰é’®
 	CCMenuItemSprite* profile_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("profile_btn.png"),NULL,NULL,this,menu_selector(StartMenu::onProfileBtn));
 	CCMenu* menu3 =CCMenu::create(profile_btn,NULL);
 	profile_btn->setAnchorPoint(ccp(1,0.5f));
@@ -2263,7 +2263,7 @@ void  StartMenu::onProfileBtn(CCObject* sender){
 
 		profile_layer->addChild(profile_bg);
 
-		//¹Ø±Õ
+		//å…³é—­
 		CCMenuItemSprite* close_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("profile_closeBtn.png"),NULL,NULL,this,menu_selector(StartMenu::onIterfaceClose));
 		CCMenu* menu =CCMenu::create( close_btn,NULL);
 		menu->setPosition(ccp(profile_bg->getPositionX()+profile_bg->getContentSize().width/2-15,profile_bg->getPositionY()+profile_bg->getContentSize().height/2-12));
@@ -2284,7 +2284,7 @@ void  StartMenu::onProfileBtn(CCObject* sender){
 		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
 		request->release();
 
-		//Ë¢ÐÂ°´Å¥
+		//åˆ·æ–°æŒ‰é’®
 		if(!refreshBtn){
 			refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 			refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -2303,7 +2303,7 @@ void  StartMenu::onProfileBtn(CCObject* sender){
 void StartMenu::onProfileRequestCompleted(CCNode *sender ,void *data) {  
 	
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -2730,7 +2730,7 @@ void  StartMenu::onNamePlateComfrim(CCObject* sender){
 
 void StartMenu::onNamePlateRequestCompleted(CCNode *sender ,void *data) {  
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -2953,7 +2953,7 @@ void  StartMenu::onLoginOn(CCObject* sender){
 		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
 		request->release();  
 
-		//Ë¢ÐÂ°´Å¥
+		//åˆ·æ–°æŒ‰é’®
 		if(!refreshBtn){
 			refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 			refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -3061,7 +3061,7 @@ void StartMenu::onNoticeRequestCompleted(CCNode *sender ,void *data) {
 
 	
 	Document doc;
-	//°Ñvector×ª»»³Éstd::string 
+	//æŠŠvectorè½¬æ¢æˆstd::string 
 	std::string buf(buffer->begin(),buffer->end()); 
 	//CCLog("%s",buf.c_str()); 
 	const char* json=(char*) buf.c_str();
@@ -3084,7 +3084,7 @@ void StartMenu::onNoticeRequestCompleted(CCNode *sender ,void *data) {
 		
 	}else{
 		isPosting=false;
-		//Ë¢ÐÂ°´Å¥
+		//åˆ·æ–°æŒ‰é’®
 		if(refreshBtn){
 			refreshBtn->stopAllActions();
 			refreshBtn->removeFromParent();
@@ -3112,7 +3112,7 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 	//freopen("CONOUT$", "w", stdout);  
 	//freopen("CONOUT$", "w", stderr);
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -3146,7 +3146,7 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 
 
 	Document doc;
-	//°Ñvector×ª»»³Éstd::string 
+	//æŠŠvectorè½¬æ¢æˆstd::string 
 	std::string buf(buffer->begin(),buffer->end()); 
 	//CCLog("%s",buf.c_str()); 
 	const char* json=(char*) buf.c_str();
@@ -3159,7 +3159,7 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 
 			Value & node=arr[i];
 			
-			//½âÎöid
+			//è§£æžid
 			Value & idValue= node["id"];
 			std::string idString=idValue.GetString();
 			MemberID=atoi(idString.c_str());
@@ -3187,7 +3187,7 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 
 			
 		this->setOfferWall();
-		//ÉèÖÃ¹«¸æ
+		//è®¾ç½®å…¬å‘Š
 		this->setNotice();	
 		this->setProfile();
 		this->setGroup();
@@ -3249,14 +3249,14 @@ void  StartMenu::onNewsBtn(CCObject* sender){
 	JniMethodInfo minfo;
 
 	bool isHave = JniHelper::getStaticMethodInfo(minfo,"net/zakume/game/NarutoSenki","getInstance","()Lnet/zakume/game/NarutoSenki;"); 
-	jobject jobj;//´æ¶ÔÏó  
+	jobject jobj;//å­˜å¯¹è±¡  
 	if (isHave) {  
-		//ÕâÀïµÄµ÷ÓÃgetInstance£¬·µ»ØTestÀàµÄ¶ÔÏó¡£  
+		//è¿™é‡Œçš„è°ƒç”¨getInstanceï¼Œè¿”å›žTestç±»çš„å¯¹è±¡ã€‚  
 		jobj = minfo.env->CallStaticObjectMethod(minfo.classID, minfo.methodID);  
 
 		isHave = JniHelper::getMethodInfo(minfo,"net/zakume/game/NarutoSenki","openWebview","()V");  
 		if (isHave) {  
-			//µ÷ÓÃopenWebview, ²ÎÊý1£ºTest¶ÔÏó   ²ÎÊý2£º·½·¨ID  
+			//è°ƒç”¨openWebview, å‚æ•°1ï¼šTestå¯¹è±¡   å‚æ•°2ï¼šæ–¹æ³•ID  
 			minfo.env->CallVoidMethod(jobj, minfo.methodID);  
 		}  
 	}  
@@ -3335,7 +3335,7 @@ void StartMenu::onHardCoreCallBack(){
 
 		
 
-		//¼ÓÔØÐòÁÐ¼¯
+		//åŠ è½½åºåˆ—é›†
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");	
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
@@ -3359,7 +3359,7 @@ void StartMenu::onHardCoreCallBack(){
 
 void StartMenu::onNormalCallBack(CCObject* sender){
 
-	//¼ÓÔØÐòÁÐ¼¯
+	//åŠ è½½åºåˆ—é›†
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");	
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
@@ -3408,7 +3408,7 @@ void StartMenu::onTrainingCallBack(){
 		this->onNormalCallBack(NULL);	
 	}else if(i==1){
 	
-	//¼ÓÔØÐòÁÐ¼¯
+	//åŠ è½½åºåˆ—é›†
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
@@ -3444,7 +3444,7 @@ void StartMenu::onTrainingCallBack(){
 		realHero->addObject(hero);
 	}
 
-	//ÌØÊâ×é¶Ó
+	//ç‰¹æ®Šç»„é˜Ÿ
 	/*char* heroList2[]={"Naruto","Deidara","Konan"};
 
 	CCArray* enemyHero=CCArray::create();
@@ -3511,7 +3511,7 @@ void StartMenu::onTrainingCallBack(){
 			realHero->removeObjectAtIndex(index);
 
 
-			////ÌØÊâ×é¶Ó
+			////ç‰¹æ®Šç»„é˜Ÿ
 			//int length=enemyHero->count();
 			//srand((int)time(0));
 			//int index=random(length);
@@ -3554,7 +3554,7 @@ void StartMenu::onTrainingCallBack(){
 
 	//4v4
 
-	//¼ÓÔØÐòÁÐ¼¯
+	//åŠ è½½åºåˆ—é›†
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
@@ -3597,7 +3597,7 @@ void StartMenu::onTrainingCallBack(){
 		realHero->addObject(hero);
 	}
 
-	//ÌØÊâ×é¶Ó
+	//ç‰¹æ®Šç»„é˜Ÿ
 	/*char* heroList2[]={"Naruto","Deidara","Konan"};
 
 	CCArray* enemyHero=CCArray::create();
@@ -3706,7 +3706,7 @@ void StartMenu::onCreditsCallBack(){
 
 void StartMenu::scrollMenu(int posY){
 		CCObject* pObject=NULL;
-		if(posY>_pos02 || (isDrag && isClockwise)){ //Ë³Ê±Õë
+		if(posY>_pos02 || (isDrag && isClockwise)){ //é¡ºæ—¶é’ˆ
 			CCARRAY_FOREACH(_menu_array,pObject){
 				MenuButton* menu=(MenuButton *)pObject;
 				if(menu->getPositionY()==_pos01){
@@ -3760,7 +3760,7 @@ void StartMenu::scrollMenu(int posY){
 
 			};
 
-		}else{ //ÄæÊ±Õë
+		}else{ //é€†æ—¶é’ˆ
 			CCARRAY_FOREACH(_menu_array,pObject){
 				MenuButton* menu=(MenuButton *)pObject;
 				if(menu->getPositionY()==_pos01){

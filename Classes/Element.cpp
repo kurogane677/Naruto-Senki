@@ -133,7 +133,7 @@ void HeroElement::setID(CCString* character,CCString* role,CCString* group){
 	this->setWalkSpeed(tmpSpeed);
 	_originSpeed=tmpSpeed;
 
-	//¾õÐÑ±Ø±¸
+	//è§‰é†’å¿…å¤‡
 	if(this->getKillNum()==NULL){
 		this->setKillNum(CCString::createWithFormat("%d",0));
 	}
@@ -601,7 +601,7 @@ void HeroElement::dealloc(){
 	_actionState=ACTION_STATE_DEAD;	
 	
 
-	//²»É¾³ý ±ê¼Ç
+	//ä¸åˆ é™¤ æ ‡è®°
 	if(strcmp(this->getCharacter()->getCString(),"Minato")!=0){
 
 		if(this->getMonsterArray() && getMonsterArray()->count()>0){
@@ -609,7 +609,7 @@ void HeroElement::dealloc(){
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 				ActionManager* mo=(ActionManager*) pObject;
 
-				//Çå³ý½ÇÉ«±íµÄmonter
+				//æ¸…é™¤è§’è‰²è¡¨çš„monter
 				int index=_delegate->_CharacterArray->indexOfObject(mo);
 				if(index>=0){
 					_delegate->_CharacterArray->removeObjectAtIndex(index);
@@ -636,7 +636,7 @@ void HeroElement::dealloc(){
 			this->unschedule(schedule_selector(ActionManager::setAI));
 			CCNotificationCenter::sharedNotificationCenter()->removeObserver(this,"acceptAttack");
 				
-			//ÒÆ³ý³ö½ÇÉ«±í
+			//ç§»é™¤å‡ºè§’è‰²è¡¨
 			int index=_delegate->_CharacterArray->indexOfObject(this);
 			if(index>=0){
 				_delegate->_CharacterArray->removeObjectAtIndex(index);
@@ -742,7 +742,7 @@ void HeroElement::dealloc(){
 			}
 
 
-			//²»É¾³ý ±ê¼Ç
+			//ä¸åˆ é™¤ æ ‡è®°
 			if(strcmp(this->getCharacter()->getCString(),"Minato")!=0 ){
 
 				if(this->getMonsterArray() && getMonsterArray()->count()>0){
@@ -750,7 +750,7 @@ void HeroElement::dealloc(){
 					CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 						ActionManager* mo=(ActionManager*) pObject;
 
-						//Çå³ý½ÇÉ«±íµÄmonter
+						//æ¸…é™¤è§’è‰²è¡¨çš„monter
 						int index=_delegate->_CharacterArray->indexOfObject(mo);
 						if(index>=0){
 							_delegate->_CharacterArray->removeObjectAtIndex(index);
@@ -785,7 +785,7 @@ void HeroElement::dealloc(){
 
 				
 
-					//¸´»îµ¹¼ÆÊ±
+					//å¤æ´»å€’è®¡æ—¶
 					if(!this->rebornSprite){
 
 						rebornSprite=CCSprite::create();
@@ -1657,7 +1657,7 @@ void Monster::dealloc(){
 
 	}
 
-	//·ÉÀ×Éñ±ê¼Ç
+	//é£žé›·ç¥žæ ‡è®°
 	if(strcmp(this->getCharacter()->getCString(),"HiraishinMark")==0){
 
 		_master->_isCanSkill1=false;

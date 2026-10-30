@@ -62,7 +62,7 @@ bool NetworkLayer::init(){
 	do{
 		CC_BREAK_IF(!CCLayer::init());
 
-			//¼ÓÔØÐòÁÐ¼¯	
+			//åŠ è½½åºåˆ—é›†	
 		    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Record.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Record2.plist");		
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
@@ -373,7 +373,7 @@ bool NetworkLayer::init(){
 			}
 
 
-			//ÅÅÐÐ°ñ
+			//æŽ’è¡Œæ¦œ
 			CCMenuItem* ranking_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("ranking_btn.png"),NULL,NULL,this,menu_selector(NetworkLayer::onRankingBtn));
 			CCMenu* menu3 =CCMenu::create(ranking_btn,NULL);
 			ranking_btn->setAnchorPoint(ccp(1,0.5f));
@@ -430,7 +430,7 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -611,7 +611,7 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 		 }
 		
 		
-		//ÅÅÐÐ°ñ
+		//æŽ’è¡Œæ¦œ
 		CCMenuItem* ranking_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("ranking_btn.png"),NULL,NULL,this,menu_selector(NetworkLayer::onRankingBtn));
 		CCMenu* menu3 =CCMenu::create(ranking_btn,NULL);
 		ranking_btn->setAnchorPoint(ccp(1,0.5f));

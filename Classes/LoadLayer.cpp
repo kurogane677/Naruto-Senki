@@ -104,7 +104,7 @@ void LoadLayer::preloadIMG(){
 		CCString* player=CCString::create(tempdict->valueForKey("character")->getCString());
 
 		
-		//¼ÓÔØ¼¼ÄÜÍ¼°ü
+		//åŠ è½½æŠ€èƒ½å›¾åŒ…
 		CCTexture2D::PVRImagesHavePremultipliedAlpha(true); 
 
 		if (strcmp(player->getCString(),"Kiba")!=0 &&
@@ -115,7 +115,7 @@ void LoadLayer::preloadIMG(){
 				CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(path);
 		}
 
-		//Ô¤¼ÓÔØÒôĞ§
+		//é¢„åŠ è½½éŸ³æ•ˆ
 		tool->prepareFileOGG(player->getCString());
 
 	
@@ -145,7 +145,7 @@ void LoadLayer::preloadIMG(){
 
 
 
-		//¼ÓÔØ¶îÍâ½ÇÉ«
+		//åŠ è½½é¢å¤–è§’è‰²
 		if(strcmp(player->getCString(),"Jiraiya")==0){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/SageJiraiya/SageJiraiya.plist");
 			tool->prepareFileOGG("SageJiraiya");
@@ -229,7 +229,7 @@ void LoadLayer::preloadIMG(){
 	tempHeros->retain();
 
 
-	//¼ÓÔØÊØ»¤ÈÌ
+	//åŠ è½½å®ˆæŠ¤å¿
 	if(_isHardCoreMode){
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Roshi/Roshi.plist");
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Han/Han.plist");
@@ -365,9 +365,9 @@ void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	
 	filePath =CCString::createWithFormat("%s/DLC/%s.xml",CCFileUtils::sharedFileUtils()->getWritablePath().c_str(),response->getHttpRequest()->getTag())->getCString();
 	
-	std::ofstream fos(filePath);//´´½¨´ò¿ªÎÄ¼ş
-	if(!fos)cerr<<"error";//Ğ£ÑéÎÄ¼ş
-	fos<<buf;//Êä³ö
+	std::ofstream fos(filePath);//åˆ›å»ºæ‰“å¼€æ–‡ä»¶
+	if(!fos)cerr<<"error";//æ ¡éªŒæ–‡ä»¶
+	fos<<buf;//è¾“å‡º
 	fos.close();
 	//std::remove(filePath.c_str());
 	
@@ -455,7 +455,7 @@ void LoadLayer::onLoadFinish(float dt){
 
 void LoadLayer::preloadPlist(CCObject* obj){
 
-	CCTexture2D* texture=(CCTexture2D*)obj; //´«ÈëµÄobj¼´ÊÇÒì²½Éú³ÉµÄÎÆÀí  
+	CCTexture2D* texture=(CCTexture2D*)obj; //ä¼ å…¥çš„objå³æ˜¯å¼‚æ­¥ç”Ÿæˆçš„çº¹ç†  
 	
 	CCObject* pObject=tempHeros->objectAtIndex(loadNum);
 	CCDictionary* tempdict=(CCDictionary *) pObject;
@@ -463,7 +463,7 @@ void LoadLayer::preloadPlist(CCObject* obj){
 	const char* name=player->getCString();
 
     const char* path=CCString::createWithFormat("Element/%s/%s.plist",name,name)->getCString();
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(path,texture);//Í¨¹ıÎÆÀíºÍ.plistÎÄ¼ş¼ÓÈëCCSpriteFrameCache  
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(path,texture);//é€šè¿‡çº¹ç†å’Œ.plistæ–‡ä»¶åŠ å…¥CCSpriteFrameCache  
 
 	loadNum++;
 

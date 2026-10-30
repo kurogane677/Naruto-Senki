@@ -276,7 +276,7 @@ bool GearLayer::init(CCRenderTexture* snapshoot){
 		this->addChild(blend,1);
 
 		
-		//ÈÌ¾ß½çÃæ
+		//å¿å…·ç•Œé¢
 
 
 		

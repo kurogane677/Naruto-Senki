@@ -350,7 +350,7 @@ void ActionManager::update(float dt){
 		
 		this->setPosition(ccp(posX,poxY));
 		_delegate->reorderChild(this,-this->getPositionY());
-		//¸üÐÂminimap
+		//æ›´æ–°minimap
 		if(strcmp(this->getRole()->getCString(),"Player")==0 || strcmp(this->getRole()->getCString(),"Com")==0){
 			CCNotificationCenter::sharedNotificationCenter()->postNotification("updateMap", this);
 		}
@@ -520,7 +520,7 @@ void ActionManager::acceptAttack(CCObject* object){
 					_hpBar->loseHP(this->getHpPercent());
 				}
 
-				//·ÉÀ×ÉñÏú»Ù
+				//é£žé›·ç¥žé”€æ¯
 				if(strcmp(Attacker->_character->getCString(),"HiraishinKunai")==0 ||
 					strcmp(Attacker->_character->getCString(),"Shintenshin")==0
 					){
@@ -602,7 +602,7 @@ void ActionManager::acceptAttack(CCObject* object){
 				float attackerPosY;
 				float currentPosY;
 		
-				//yÖá½ÃÕý
+				//yè½´çŸ«æ­£
 				if(Attacker->_actionState==ACTION_STATE_JUMP){
 					attackerPosY=Attacker->_originY;
 				}else{
@@ -1390,7 +1390,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		criticalValue=rand()%50;
 	}
 
-	//·É¶Î×Ô²Ð
+	//é£žæ®µè‡ªæ®‹
 	if(strcmp(attacker->getCharacter()->getCString(),"Hidan")==0 && attacker->_skillChangeBuffValue){
 		realValue=attackValue+criticalValue;
 	}else{
@@ -1605,7 +1605,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		}
 
 	}
-	//ÈÌ¾ß²é¿ËÀ­¹¥»÷»ñÈ¡
+	//å¿å…·æŸ¥å…‹æ‹‰æ”»å‡»èŽ·å–
 
 
 
@@ -2032,7 +2032,7 @@ void ActionManager::useGear(gearType type){
 
 					this->scheduleOnce(schedule_selector(ActionManager::enableGear00),15.0f);
 
-					//ÒþÉí
+					//éšèº«
 					if(strcmp(_role->getCString(),"Player")==0 || strcmp(this->getGroup()->getCString(),_delegate->currentPlayer->getGroup()->getCString())==0){
 						this->setOpacity(150);
 					}else{
@@ -2228,7 +2228,7 @@ void ActionManager::setRestore(float dt){
 void ActionManager::setRestore2(float dt){
 	
 	if(_hpBar ){
-		//°ËÃÅºÄÑª
+		//å…«é—¨è€—è¡€
 		if(bamen>=8){
 			if(atoi(_hp->getCString())-1000>0){
 				this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())-1000));
@@ -2369,7 +2369,7 @@ void ActionManager::setAttackBox(CCNode* sender,void* date){
 
 	_effectType=str;
 
-	//·´ÉË
+	//åä¼¤
 
 	if(_actionState==ACTION_STATE_HURT){
 
@@ -2936,7 +2936,7 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 						if(distanceX<winSize.width/2){
-							//È¡ÏûÒþÉí
+							//å–æ¶ˆéšèº«
 							if(!tempHero->_isVisable){
 								if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 									strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -3158,7 +3158,7 @@ void ActionManager::disableBuff(float dt){
 	}else if(_skillBuffEffect){
 		this->removeBuffEffect("sBuff");
 	}else if(!_isVisable && this->_actionState!=ACTION_STATE_HURT){ 
-		//·ÀÖ¹±»À§×¡µÄÊ±ºò½øÐÐ»¹Ô­
+		//é˜²æ­¢è¢«å›°ä½çš„æ—¶å€™è¿›è¡Œè¿˜åŽŸ
 
 		this->setOpacity(255);
 		this->setVisible(true);
@@ -3211,7 +3211,7 @@ void ActionManager::healBuff(float dt){
 		_buffStartTime=NULL;
 		return;
 	};
-	//ÏãÁ×Èº²¹
+	//é¦™ç£·ç¾¤è¡¥
 	if(strcmp(_character->getCString(),"Karin")==0){
 
 		CCObject* pObject;
@@ -3243,7 +3243,7 @@ void ActionManager::healBuff(float dt){
 								_delegate->setHPLose(tempHero->getHpPercent());
 							}
 
-							//Èº²¹ÌØÐ§
+							//ç¾¤è¡¥ç‰¹æ•ˆ
 
 							if(tempHero->_isVisable){
 								Effect* tmpEffect=Effect::create("Kagura",tempHero);
@@ -3320,7 +3320,7 @@ void ActionManager::healBuff(float dt){
 
 						}
 
-						//Èº²¹ÌØÐ§
+						//ç¾¤è¡¥ç‰¹æ•ˆ
 
 						if(tempHero->_isVisable){
 							Effect* tmpEffect=Effect::create("Hupo",tempHero);
@@ -3384,7 +3384,7 @@ void ActionManager::healBuff(float dt){
 		strcmp(_character->getCString(),"Tsunade")==0 
 		){
 
-		//Ð¡Ó£µ¥²¹
+		//å°æ¨±å•è¡¥
 		if(atoi(_maxHP->getCString())-atoi(_hp->getCString())<=_healBuffValue){
 			this->setHP(CCString::create(_maxHP->getCString()));
 			if(_hpBar){
@@ -3723,7 +3723,7 @@ void ActionManager::changeAction(){
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 						if(distanceX<winSize.width/2){
-							//È¡ÏûÒþÉí
+							//å–æ¶ˆéšèº«
 							if(!tempHero->_isVisable){
 								if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 									strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -3803,7 +3803,7 @@ void ActionManager::changeAction(){
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 						if(distanceX<winSize.width/2){
-							//È¡ÏûÒþÉí
+							//å–æ¶ˆéšèº«
 							if(!tempHero->_isVisable){
 								if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 									strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -3877,7 +3877,7 @@ void ActionManager::changeAction(){
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 					if(distanceX<winSize.width/2){
-						//È¡ÏûÒþÉí
+						//å–æ¶ˆéšèº«
 						if(!tempHero->_isVisable){
 							if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 								strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -3976,7 +3976,7 @@ void ActionManager::changeAction(){
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 					if(distanceX<winSize.width/2){
-						//È¡ÏûÒþÉí
+						//å–æ¶ˆéšèº«
 						if(!tempHero->_isVisable){
 							if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 								strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -4859,7 +4859,7 @@ void ActionManager::resumeAction(float dt){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 				ActionManager* mo=(ActionManager*) pObject;
-				//Çå³ý½ÇÉ«±íµÄmonter
+				//æ¸…é™¤è§’è‰²è¡¨çš„monter
 				int index=_delegate->_CharacterArray->indexOfObject(mo);
 				if(index>=0){
 					_delegate->_CharacterArray->removeObjectAtIndex(index);
@@ -5319,7 +5319,7 @@ void ActionManager::setActionResume(){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 				ActionManager* mo=(ActionManager*) pObject;
-				//Çå³ý½ÇÉ«±íµÄmonter
+				//æ¸…é™¤è§’è‰²è¡¨çš„monter
 				int index=_delegate->_CharacterArray->indexOfObject(mo);
 				if(index>=0){
 					_delegate->_CharacterArray->removeObjectAtIndex(index);
@@ -5747,7 +5747,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	}else if(strcmp(this->getCharacter()->getCString(),"SageNaruto")==0||
 		(strcmp(this->getCharacter()->getCString(),"RikudoNaruto")==0 && cloneTime==10)
 		){
-		//ÃùÈË
+		//é¸£äºº
 		clone->setID(this->getCharacter(),CCString::create("Clone"),this->_group);
 		clone->setSkill1Action(clone->createAnimation(clone->skillSPC1Array,10.0f,false,true));	
 		clone->_sattackValue1=_spcattackValue1;
@@ -6240,7 +6240,7 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 					if(distanceX<winSize.width/2){
-						//È¡ÏûÒþÉí
+						//å–æ¶ˆéšèº«
 						if(!tempHero->_isVisable){
 							if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 								strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -6528,7 +6528,7 @@ void ActionManager::setTransform(){
 		charName="Lee";
 	}
 
-	//»¹Ô­
+	//è¿˜åŽŸ
 	this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
 	this->setHP(CCString::createWithFormat("%d",tempHP));
 	if(_hpBar){
@@ -6586,7 +6586,7 @@ void ActionManager::setTransform(){
 		}
 		
 
-		//Ìæ»»Í·Ïñ
+		//æ›¿æ¢å¤´åƒ
 		this->_delegate->getHudLayer()->initGearButton();
 
 		
@@ -6604,7 +6604,7 @@ float ActionManager::getHpPercent(){
 
 
 void ActionManager::attack(abType type){
-	//·ÀÖ¹ÆÕÍ¨¹¥»÷Ë¢ÐÂ ¼¼ÄÜÀàÐÍµ¼ÖÂ¿ÉÒÔ¹¥»÷Ëþ
+	//é˜²æ­¢æ™®é€šæ”»å‡»åˆ·æ–° æŠ€èƒ½ç±»åž‹å¯¼è‡´å¯ä»¥æ”»å‡»å¡”
 
 	if(strcmp(_role->getCString(),"Player")==0 && type==NAttack){
 		if(!_delegate->getSkillFinish() && !_isOnlySkillLocked){
@@ -6720,7 +6720,7 @@ void ActionManager::sAttack(abType type){
 	if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 		
 	
-		//¹¥»÷È¡ÏûÒþÉí
+		//æ”»å‡»å–æ¶ˆéšèº«
 		if(!_isVisable){
 			if(strcmp(this->getCharacter()->getCString(),"Konan")==0 ||
 				strcmp(this->getCharacter()->getCString(),"Deidara")==0
@@ -6798,7 +6798,7 @@ void ActionManager::oAttack(abType type){
 			_delegate->setSkillFinish(false);
 		};	
 		
-		//¹¥»÷È¡ÏûÒþÉí
+		//æ”»å‡»å–æ¶ˆéšèº«
 		if(!_isVisable){
 			if(strcmp(this->getCharacter()->getCString(),"Konan")==0 ||
 				strcmp(this->getCharacter()->getCString(),"Deidara")==0
@@ -6955,7 +6955,7 @@ bool ActionManager::hurt(){
 		&& !_isBati
 		){
 
-		//Ç§´úbuff
+		//åƒä»£buff
 		CCObject* pObject;
 		CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 			Hero* tempHero=(Hero*) pObject;
@@ -7006,7 +7006,7 @@ bool ActionManager::hurt(){
 	}
 	return false;
 };
-//Ó²Ö±¹¥»÷
+//ç¡¬ç›´æ”»å‡»
 bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool isStick,bool isStun){
 
 	if(  (_actionState!=ACTION_STATE_JUMP  || isStick)
@@ -7028,7 +7028,7 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 					_delegate->reorderChild(this,-this->getPositionY());
 			}
 
-			//Ç§´úbuff
+			//åƒä»£buff
 			CCObject* pObject;
 			CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 				Hero* tempHero=(Hero*) pObject;
@@ -7213,7 +7213,7 @@ void ActionManager::floatUP(float floatHeight, bool isCancelSkill){
 		!_isBati
 		){
 
-			//Ç§´úbuff
+			//åƒä»£buff
 			CCObject* pObject;
 			CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 				Hero* tempHero=(Hero*) pObject;
@@ -7599,7 +7599,7 @@ bool ActionManager::findEnemy(const char* type,int searchRange,bool masterRange)
 				continue;
 		}
 
-		//°ÂÒå¶¨Î»¼¼ÄÜÌø¹ýÕÙ»½Îï
+		//å¥¥ä¹‰å®šä½æŠ€èƒ½è·³è¿‡å¬å”¤ç‰©
 		if((this->getActionState()==ACTION_STATE_OATTACK || 
 			this->getActionState()==ACTION_STATE_O2ATTACK) ||
 			(this->getMaster() && (
@@ -7691,7 +7691,7 @@ bool ActionManager::findEnemy2(const char* type){
 		distance=ccpDistance(target->getPosition(),this->getPosition());
 		sp=ccpSub(target->getPosition(),this->getPosition());
 
-		//¼ÆËãcombatpoint
+		//è®¡ç®—combatpoint
 		if(abs(sp.x)<winSize.width/2){
 			if(strcmp(target->_role->getCString(),"Clone")!=0 &&
 				strcmp(target->_role->getCString(),"Summon")!=0 

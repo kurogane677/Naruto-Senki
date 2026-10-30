@@ -82,11 +82,11 @@ void JoyStick::updateDirectionForTouchLocation(CCTouch* touch){
 	CCPoint startPoint=ccp(32+this->getContentSize().width/2,
 		32+this->getContentSize().height/2);
 	CCPoint curPoint = touch->getLocation();
-	//向量
+	//鍚戦噺
 	CCPoint sp=ccpSub(curPoint,startPoint);
-	//弧度
+	//寮у害
 	float radians = ccpToAngle(sp);
-	//角度
+	//瑙掑害
 	float degrees = -1 * CC_RADIANS_TO_DEGREES(radians);
 	float distance = ccpDistance(curPoint,startPoint);
 

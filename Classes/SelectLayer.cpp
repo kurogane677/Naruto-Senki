@@ -34,7 +34,7 @@ bool SelectLayer::init(){
 	do{
 		CC_BREAK_IF(!CCLayer::init());
 
-			//¼ÓÔØÐòÁÐ¼¯	
+			//åŠ è½½åºåˆ—é›†	
 		    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Record.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Record2.plist");		
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");

@@ -437,12 +437,12 @@ void GameOver::listResult(){
 
 		}
 
-		//¼ÇÂ¼ ×îËÙ»ñÊ¤Ê±¼ä
+		//è®°å½• æœ€é€Ÿè·èƒœæ—¶é—´
 		if(Cheats<=10){
 
 			resultChar=_delegate->currentPlayer->getCharacter();
 
-			//¾õĞÑ±Ø±¸
+			//è§‰é†’å¿…å¤‡
 			if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"SageNaruto")==0){
 				resultChar=CCString::create("Naruto");
 			}else if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"RikudoNaruto")==0){
@@ -523,7 +523,7 @@ void GameOver::listResult(){
 
 				}
 
-				//×îËÙ¼ÇÂ¼
+				//æœ€é€Ÿè®°å½•
 				CCString* recordTime=tool->readSQLite("CharRecord","name",resultChar->getCString(),"column3");
 				if(recordTime->length()==0){
 					if(CError!=1){
@@ -617,7 +617,7 @@ void GameOver::onUPloadBtn(CCObject* sender){
 	return;
 	if(!isPosting && strcmp(PWord.c_str(),"")!=0){
 		isPosting=true;
-		//Ë¢ĞÂ°´Å¥
+		//åˆ·æ–°æŒ‰é’®
 		if(!refreshBtn){
 			refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 			refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -660,7 +660,7 @@ void GameOver::onUPloadBtn(CCObject* sender){
 void GameOver::onHttpRequestCompleted(CCNode *sender ,void *data) {  
 
 	isPosting=false;
-	//Ë¢ĞÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();

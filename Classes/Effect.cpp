@@ -68,7 +68,7 @@ bool Effect::init(const char *szImage,CCObject* Attacker){
 			CCAction* effectAction=this->createEffectAnimation("bottom_damage_",6,20,false);
 			this->runAction(effectAction);
 		}
-		//¼¼ÄÜÌØÐ§
+		//æŠ€èƒ½ç‰¹æ•ˆ
 		else if(strcmp(szImage,"Kagura")==0){
 			this->initWithSpriteFrameName("Kagura_01.png");
 			CCAction* effectAction=this->createEffectAnimation("Kagura_",9,10,false);
@@ -176,7 +176,7 @@ bool Effect::init(const char *szImage,CCObject* Attacker){
 			CCAction* effectAction=this->createEffectAnimation(CCString::createWithFormat("%sEffect_",szImage)->getCString(),4,10,false);
 			this->runAction(effectAction);
 		}
-		//buffÌØÐ§
+		//buffç‰¹æ•ˆ
 		else if(strcmp(szImage,"hBuff")==0 ){
 			this->initWithSpriteFrameName(CCString::createWithFormat("%s_Effect_01.png",szImage)->getCString());
 			this->setAnchorPoint(ccp(0.5f,0));

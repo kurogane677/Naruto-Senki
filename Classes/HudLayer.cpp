@@ -263,7 +263,7 @@ void HudLayer::initHeroInterface(){
 	this->addChild(status_expbar,50);
 
 
-	//ÔİÍ£²Ëµ¥
+	//æš‚åœèœå•
 	CCMenuItem* menu_button=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("minimap_bg.png"),NULL,NULL,this,menu_selector(HudLayer::pauseButtonClick));
 	menu_button->setAnchorPoint(ccp(1,1));
 	pauseNenu=CCMenu::create(menu_button,NULL);	
@@ -508,12 +508,12 @@ void HudLayer::initHeroInterface(){
 	//init gear
 	this->updateGears();
 
-	//³õÊ¼»¯ÃÔÄãµØÍ¼
+	//åˆå§‹åŒ–è¿·ä½ åœ°å›¾
 	miniLayer=CCLayer::create();
 	miniLayer->setAnchorPoint(ccp(0,0));
 	miniLayer->setPosition(ccp(winSize.width-112,winSize.height-38));
 
-	//Ìí¼ÓµØÍ¼icon
+	//æ·»åŠ åœ°å›¾icon
 	CCObject* pObject;
 	CCARRAY_FOREACH(_delegate->_TowerArray,pObject){
 		ActionManager* player=(ActionManager*) pObject;
@@ -540,7 +540,7 @@ void HudLayer::initHeroInterface(){
 	}
 
 
-	//Ìí¼ÓÍæ¼Òicon
+	//æ·»åŠ ç©å®¶icon
 	
 	CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 		ActionManager* player=(ActionManager*) pObject;
@@ -1027,7 +1027,7 @@ void HudLayer::setReportCache(){
 					}
 				}
 
-				// ÌØÊâ»÷É±
+				// ç‰¹æ®Šå‡»æ€
 				if(num2==1){
 					
 					if(reportSPCSprite){
