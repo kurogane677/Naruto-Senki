@@ -579,8 +579,8 @@ void HeroElement::changeHPbar(){
 		}
 
 		if(_hpBar){	
-			CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("hp_bottom%d.png",int(_level))->getCString());  
-			_hpBar->getHPBottom()->setDisplayFrame(frame);
+			CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("hp_bottom%d.png",int(_level))->getCString());  
+			_hpBar->getHPBottom()->setSpriteFrame(frame);
 		}
 	
 
@@ -652,7 +652,7 @@ void HeroElement::dealloc(){
 
 			if(strcmp(this->getCharacter()->getCString(),"DevaPath")==0){
 							
-				this->getMaster()->_skillChangeBuffValue=NULL;
+				this->getMaster()->_skillChangeBuffValue=0;
 
 				if(strcmp(this->getMaster()->getRole()->getCString(),"Player")==0){
 					if(this->_delegate->getHudLayer()->skill5Button){
@@ -845,7 +845,7 @@ void HeroElement::reborn(float dt){
 			this->changeHPbar();
 
 			if(strcmp(this->getRole()->getCString(),"Player")==0){
-				_delegate->getHudLayer()->setEXPLose(NULL);
+				_delegate->getHudLayer()->setEXPLose(0);
 			}
 			
 		}
@@ -894,8 +894,8 @@ init flog
 
 Flog::Flog(void)
 {
-	_randomPosX=NULL;
-	_randomPosY=NULL;
+	_randomPosX=0;
+	_randomPosY=0;
 }
 
 
@@ -1073,11 +1073,11 @@ void Flog::setAI(float dt){
 
 	if(!hasTarget){
 			
-			if(!this->findEnemy("Flog",NULL)){
+			if(!this->findEnemy("Flog",0)){
 				
 				if(!this->findEnemy("Hero",64)){
 					
-					if(!this->findEnemy("Tower",NULL)){
+					if(!this->findEnemy("Tower",0)){
 						
 						_mainTarget=NULL;
 					};
@@ -1481,8 +1481,8 @@ void Monster::changeHPbar(){
 	}
 
 	if(_hpBar){	
-		CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("hp_bottom%d.png",int(_level))->getCString());  
-		_hpBar->getHPBottom()->setDisplayFrame(frame);
+		CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("hp_bottom%d.png",int(_level))->getCString());  
+		_hpBar->getHPBottom()->setSpriteFrame(frame);
 	}
 
 
@@ -1526,7 +1526,7 @@ void Monster::setAI(float dt){
 	if(strcmp(getCharacter()->getCString(),"Mouse")==0
 		){
 
-		if(!this->findEnemy("Hero",NULL)){
+		if(!this->findEnemy("Hero",0)){
 			_mainTarget=NULL;
 		}
 	}else if(strcmp(getCharacter()->getCString(),"Spider")==0 ||
@@ -1534,8 +1534,8 @@ void Monster::setAI(float dt){
 		){
 
 		
-			if(!this->findEnemy("Hero",NULL)){
-				if(!this->findEnemy("Tower",NULL)){	
+			if(!this->findEnemy("Hero",0)){
+				if(!this->findEnemy("Tower",0)){	
 					_mainTarget=NULL;
 				}				
 			}
@@ -1545,8 +1545,8 @@ void Monster::setAI(float dt){
 		
 	}else{
 
-		if(!this->findEnemy("Hero",NULL)){
-			if(!this->findEnemy("Flog",NULL)){
+		if(!this->findEnemy("Hero",0)){
+			if(!this->findEnemy("Flog",0)){
 				_mainTarget=NULL;
 			}
 		}
@@ -1665,8 +1665,8 @@ void Monster::dealloc(){
 		_master->scheduleOnce(schedule_selector(ActionManager::enableSkill1),_sattackcoldDown1);
 
 		if(strcmp(_master->getRole()->getCString(),"Player")==0){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("Minato_skill1.png"); 
-			_delegate->getHudLayer()->skill1Button->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Minato_skill1.png"); 
+			_delegate->getHudLayer()->skill1Button->setSpriteFrame(frame);
 			_delegate->getHudLayer()->skill1Button->_clickNum++;
 			_delegate->clearDoubleClick();
 		}

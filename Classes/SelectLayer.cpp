@@ -80,8 +80,8 @@ bool SelectLayer::init(){
 		//produce the cloud
 		CCSprite* cloud_left=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_left->setPosition(ccp(0,15));
-		cloud_left->setFlipX(true);
-		cloud_left->setFlipY(true);
+		cloud_left->setFlippedX(true);
+		cloud_left->setFlippedY(true);
 		cloud_left->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_left,2);
 
@@ -91,7 +91,7 @@ bool SelectLayer::init(){
 
 		CCSprite* cloud_right=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_right->setPosition(ccp(winSize.width-cloud_right->getContentSize().width,15));
-		cloud_right->setFlipY(true);
+		cloud_right->setFlippedY(true);
 		cloud_right->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_right,2);
 
@@ -128,7 +128,7 @@ bool SelectLayer::init(){
 		
 
 		if(!SaveError){
-			int first_player=NULL;
+			int first_player=0;
 			selectArray=CCArray::create();
 			
 			char* selectList[]={"Naruto","Sakura","Sai",

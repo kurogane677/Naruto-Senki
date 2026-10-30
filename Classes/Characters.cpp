@@ -153,9 +153,9 @@ void Hero::setAI(float dt){
 
 void Hero::AI_DevaPath(){
 
-	if(!this->findEnemy("Hero",NULL)){
-		if(!this->findEnemy("Flog",NULL)){
-			if(!this->findEnemy("Tower",NULL)){
+	if(!this->findEnemy("Hero",0)){
+		if(!this->findEnemy("Flog",0)){
+			if(!this->findEnemy("Tower",0)){
 				_mainTarget=NULL;
 
 			};
@@ -250,9 +250,9 @@ void Hero::AI_DevaPath(){
 void Hero::AI_AsuraPath(){
 
 
-	if(!this->findEnemy("Hero",NULL)){
-		if(!this->findEnemy("Flog",NULL)){
-			if(!this->findEnemy("Tower",NULL)){
+	if(!this->findEnemy("Hero",0)){
+		if(!this->findEnemy("Flog",0)){
+			if(!this->findEnemy("Tower",0)){
 				_mainTarget=NULL;
 
 			};
@@ -331,9 +331,9 @@ void Hero::AI_AsuraPath(){
 
 void Hero::AI_AnimalPath(){
 
-	if(!this->findEnemy("Flog",NULL)){
-		if(!this->findEnemy("Tower",NULL)){
-			if(!this->findEnemy("Hero",NULL)){
+	if(!this->findEnemy("Flog",0)){
+		if(!this->findEnemy("Tower",0)){
+			if(!this->findEnemy("Hero",0)){
 				_mainTarget=NULL;
 
 			};
@@ -958,9 +958,9 @@ void Hero::AI_Sanshouuo(){
 void Hero::AI_NarutoClone(){
 
 	
-	if(!this->findEnemy("Flog",NULL)){
-		if(!this->findEnemy("Hero",NULL)){
-			if(!this->findEnemy("Tower",NULL)){
+	if(!this->findEnemy("Flog",0)){
+		if(!this->findEnemy("Hero",0)){
+			if(!this->findEnemy("Tower",0)){
 				_mainTarget=NULL;
 			};
 
@@ -1000,9 +1000,9 @@ void Hero::AI_Kurama(){
 
 
 
-	if(!this->findEnemy("Hero",NULL)){		
-		if(!this->findEnemy("Flog",NULL)){
-			if(!this->findEnemy("Tower",NULL)){
+	if(!this->findEnemy("Hero",0)){		
+		if(!this->findEnemy("Flog",0)){
+			if(!this->findEnemy("Tower",0)){
 				_mainTarget=NULL;
 			};
 		}			
@@ -1039,9 +1039,9 @@ void Hero::AI_Kurama(){
 
 void Hero::AI_SageNarutoClone(){
 
-	if(!this->findEnemy("Hero",NULL)){
-		if(!this->findEnemy("Flog",NULL)){
-			if(!this->findEnemy("Tower",NULL)){
+	if(!this->findEnemy("Hero",0)){
+		if(!this->findEnemy("Flog",0)){
+			if(!this->findEnemy("Tower",0)){
 				_mainTarget=NULL;
 			};
 		}
@@ -1115,9 +1115,9 @@ void Hero::AI_SageNarutoClone(){
 
 void Hero::AI_RikudoNarutoClone(){
 
-	if(!this->findEnemy("Hero",NULL)){
-		if(!this->findEnemy("Flog",NULL)){
-			if(!this->findEnemy("Tower",NULL)){
+	if(!this->findEnemy("Hero",0)){
+		if(!this->findEnemy("Flog",0)){
+			if(!this->findEnemy("Tower",0)){
 				_mainTarget=NULL;
 			};
 		}
@@ -1188,9 +1188,9 @@ void Hero::AI_Mask(){
 
 	if(strcmp(this->getCharacter()->getCString(),"MaskRaidon")==0){
 
-		if(!this->findEnemy("Flog",NULL)){
-			if(!this->findEnemy("Hero",NULL)){
-				if(!this->findEnemy("Tower",NULL)){
+		if(!this->findEnemy("Flog",0)){
+			if(!this->findEnemy("Hero",0)){
+				if(!this->findEnemy("Tower",0)){
 					_mainTarget=NULL;
 				};
 			}
@@ -1198,9 +1198,9 @@ void Hero::AI_Mask(){
 	}else{
 
 		
-		if(!this->findEnemy("Hero",NULL)){
-			if(!this->findEnemy("Flog",NULL)){
-				if(!this->findEnemy("Tower",NULL)){
+		if(!this->findEnemy("Hero",0)){
+			if(!this->findEnemy("Flog",0)){
+				if(!this->findEnemy("Tower",0)){
 					_mainTarget=NULL;
 				};
 			}
@@ -1271,8 +1271,8 @@ void Hero::AI_Mask(){
 void Hero::AI_Slug(){
 
 	
-	if(!this->findEnemy("Flog",NULL)){
-		if(!this->findEnemy("Tower",NULL)){
+	if(!this->findEnemy("Flog",0)){
+		if(!this->findEnemy("Tower",0)){
 			_mainTarget=NULL;
 		};
 	};
@@ -1328,8 +1328,8 @@ void Hero::AI_Slug(){
 void Hero::AI_Centipede(){
 
 
-	if(!this->findEnemy("Flog",NULL)){
-		if(!this->findEnemy("Tower",NULL)){
+	if(!this->findEnemy("Flog",0)){
+		if(!this->findEnemy("Tower",0)){
 			_mainTarget=NULL;
 		};
 	};
@@ -5267,7 +5267,7 @@ void Hero::AI_Kakuzu(){
 		if(this->getHpPercent()>0.3f && !_isControled && _isCanSkill1){
 			CCObject* pObject;
 			float distance;
-			float curDistance=NULL ;
+			float curDistance=0 ;
 			CCPoint sp;
 	
 			CCARRAY_FOREACH(this->getDelegate()->_CharacterArray,pObject){

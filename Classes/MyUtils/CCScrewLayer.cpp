@@ -30,17 +30,17 @@ bool CCScrewLayer::init(){
 
 void CCScrewLayer::onEnter(){
 	CCLayer::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,1,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,1,true);
 };
 
 void CCScrewLayer::onExit(){
 	CCLayer::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 };
 
 bool CCScrewLayer::ccTouchBegan(CCTouch* touch,CCEvent* event){
 
-	prePosY=NULL;
+	prePosY=0;
 	return true;
 
 };
@@ -48,7 +48,7 @@ bool CCScrewLayer::ccTouchBegan(CCTouch* touch,CCEvent* event){
 void CCScrewLayer::ccTouchMoved(CCTouch* touch,CCEvent* event){
 	// touch area 
 	CCPoint curPoint = touch->getLocation();
-	if(prePosY==NULL){
+	if(prePosY==0){
 		prePosY=curPoint.y;
 	}else{
 		float distanceY=curPoint.y-prePosY;
@@ -65,7 +65,7 @@ void CCScrewLayer::ccTouchMoved(CCTouch* touch,CCEvent* event){
 
 
 void CCScrewLayer::ccTouchEnded(CCTouch* touch,CCEvent* event){
-	prePosY=NULL;
+	prePosY=0;
 
 	//CCLOG("y:%f",this->getPositionY());
 	if(this->getPositionY()>totalRow*line_height-line_height){
@@ -111,11 +111,11 @@ bool CCScrewItem::init(){
 
 void CCScrewItem::onEnter(){
 	CCSprite::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,0,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,0,true);
 }
 void CCScrewItem::onExit(){
 	CCSprite::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 }
 
 CCRect CCScrewItem::getRect2(){

@@ -1,10 +1,8 @@
 #pragma once
-#include "support/tinyxml2/tinyxml2.h"
-#include "cocos2d.h"
-#include "platform/CCFileUtils.h"
+#include "MyUtils/tinyxml2/tinyxml2.h"
+#include "Compat/Compat2x.h"
 #include "MyUtils/CMD5Checksum.h"
 #include "MyUtils/sqlite3.h"
-#include "SimpleAudioEngine.h"
 
 
 USING_NS_CC;

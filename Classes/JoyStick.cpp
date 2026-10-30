@@ -41,12 +41,12 @@ bool JoyStick::init(){
 
 void JoyStick::onEnter(){
 	CCSprite::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,0,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,0,true);
 };
 
 void JoyStick::onExit(){
 	CCSprite::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 };
 
 bool JoyStick::ccTouchBegan(CCTouch* touch,CCEvent* event){

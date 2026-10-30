@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cocos2d.h"
+#include "Compat/Compat2x.h"
 #include "Defines.h"
 
 USING_NS_CC;

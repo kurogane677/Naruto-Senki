@@ -447,7 +447,7 @@ int KTools::checkMD5(std::string findPath /* ="" */){
 
 	tinyxml2::XMLDocument* doc = new tinyxml2::XMLDocument();  
 	unsigned long nSize;
-	const char *pXmlBuffer = (const char*)CCFileUtils::sharedFileUtils()->getFileData(md5Path.c_str(), "r", &nSize);
+	const char *pXmlBuffer = (const char*)ccGetFileData(md5Path.c_str(), "r", &nSize);
 	doc->Parse(pXmlBuffer);
 
 	XMLElement *rootEle=doc->RootElement();
@@ -667,7 +667,7 @@ bool KTools::checkData(){
 
 	tinyxml2::XMLDocument* doc = new tinyxml2::XMLDocument();  
 	unsigned long nSize;
-	const char *pXmlBuffer = (const char*)CCFileUtils::sharedFileUtils()->getFileData(filePath.c_str(), "r", &nSize);
+	const char *pXmlBuffer = (const char*)ccGetFileData(filePath.c_str(), "r", &nSize);
 	doc->Parse(pXmlBuffer);
 
 	XMLElement *rootEle=doc->RootElement();
@@ -746,7 +746,7 @@ bool KTools::readXMLToArray(const char* filePath,CCArray* &array)
 	tinyxml2::XMLDocument* doc = new tinyxml2::XMLDocument();  
 	//doc->LoadFile(filePath);  this's doesn't work for android
 	unsigned long nSize;
-	const char *data = (const char*)CCFileUtils::sharedFileUtils()->getFileData(filePath, "r", &nSize);
+	const char *data = (const char*)ccGetFileData(filePath, "r", &nSize);
 	doc->Parse(data);
 
 
@@ -1114,7 +1114,7 @@ void KTools::prepareFileOGG(const char* listName,int type/* =0 */){
 
 	tinyxml2::XMLDocument* doc = new tinyxml2::XMLDocument();  
 	unsigned long nSize;
-	const char *pXmlBuffer = (const char*)CCFileUtils::sharedFileUtils()->getFileData(md5Path.c_str(), "r", &nSize);
+	const char *pXmlBuffer = (const char*)ccGetFileData(md5Path.c_str(), "r", &nSize);
 	doc->Parse(pXmlBuffer);
 
 	XMLElement *rootEle=doc->RootElement();

@@ -49,11 +49,11 @@ bool SelectButton::init(const char *szImage){
 
 void SelectButton::onEnter(){
 	CCSprite::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,0,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,0,true);
 }
 void SelectButton::onExit(){
 	CCSprite::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 }
 
 CCRect SelectButton::getRect(){
@@ -251,8 +251,8 @@ bool SkillLayer::init(){
 		//produce the cloud
 		CCSprite* cloud_left=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_left->setPosition(ccp(0,15));
-		cloud_left->setFlipX(true);
-		cloud_left->setFlipY(true);
+		cloud_left->setFlippedX(true);
+		cloud_left->setFlippedY(true);
 		cloud_left->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_left,2);
 
@@ -262,7 +262,7 @@ bool SkillLayer::init(){
 
 		CCSprite* cloud_right=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_right->setPosition(ccp(winSize.width-cloud_right->getContentSize().width,15));
-		cloud_right->setFlipY(true);
+		cloud_right->setFlippedY(true);
 		cloud_right->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_right,2);
 
@@ -488,14 +488,14 @@ void SkillLayer::initInterface(){
 			while (i<7)
 			{
 				CCString* path=CCString::createWithFormat("skill_blink%d.png",i);
-				CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(path->getCString());
+				CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(path->getCString());
 				tempArray->addObject(frame);
 
 
 				i+=1;
 			}
 
-			CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray, 0.1f);
+			CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray->toVector<CCSpriteFrame*>(), 0.1f);
 			CCAction* tempAction=CCAnimate::create(tempAnimation);
 			list->addObject(tempAction);
 			CCDelayTime* delay=CCDelayTime::create(2.0f);
@@ -566,19 +566,19 @@ void SkillLayer::initInterface(){
 
 	 }
 
-	 cocos2d::extension::CCHttpRequest* request = new  cocos2d::extension::CCHttpRequest(); 
+	 CCHttpRequest* request = new  CCHttpRequest(); 
 	 std::string codeFinal;
 	 std::string code2=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
 	 std::string code1=CCString::createWithFormat("code=200&id=%d&char=%s",MemberID,_delegate2->_selectHero)->getCString();
 	 std::string url=SERVER"nsk/list.php?"+code1+code2;
 	 request->setUrl(url.c_str());  
-	 request->setRequestType( cocos2d::extension::CCHttpRequest::kHttpGet);  
+	 request->setRequestType( CCHttpRequest::kHttpGet);  
 
 	 request->setResponseCallback(this, callfuncND_selector(SkillLayer::onSkillRequestCompleted));  
 
 
 	 request->setTag("Post_My_Data");  
-	 cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	 CCHttpClient::getInstance()->send(request);  
 	 request->release();  
 	 }*/
 
@@ -605,12 +605,12 @@ void SkillLayer::onSkillRequestCompleted(CCNode *sender ,void *data){
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		//CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -621,12 +621,12 @@ void SkillLayer::onSkillRequestCompleted(CCNode *sender ,void *data){
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());
+		CCLog("error buffer:%s" ,"");
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -756,8 +756,8 @@ void SkillLayer::onChangeBtn(CCObject* sender){
 		selectHero="ImmortalSasuke";
 	}
 
-	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("%s_full.png",selectHero)->getCString()); 
-	_heroFull->setDisplayFrame(frame);
+	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_full.png",selectHero)->getCString()); 
+	_heroFull->setSpriteFrame(frame);
 
 
 	//更新技能表

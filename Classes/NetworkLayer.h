@@ -1,7 +1,5 @@
 #pragma once
-#include "cocos2d.h"
-#include "SimpleAudioEngine.h"
-#include "cocos-ext.h"
+#include "Compat/Compat2x.h"
 #include "LoadLayer.h"
 #include "SkillLayer.h"
 #include "RankingLayer.h"

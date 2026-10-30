@@ -1,8 +1,6 @@
 #pragma once
-#include "cocos2d.h"
-#include "SimpleAudioEngine.h"
+#include "Compat/Compat2x.h"
 #include "Defines.h"
-#include "cocos-ext.h"
 #if (CC_TARGET_PLATFORM==CC_PLATFORM_ANDROID) 
 #include "../cocos2dx/platform/android/jni/JniHelper.h"  
 #endif  

@@ -1,9 +1,8 @@
 #pragma once
-#include "cocos2d.h"
+#include "Compat/Compat2x.h"
 #include "MyUtils/KTools.h"
 #include "GameLayer.h"
 #include "Defines.h"
-#include "SimpleAudioEngine.h"
 #include "Effect.h"
 
 
@@ -266,8 +265,8 @@ public:
 	CC_SYNTHESIZE(CCArray*,_monsterArray,MonsterArray);
 
 	//movement
-	CC_SYNTHESIZE(cocos2d::CCPoint, _velocity, Velocity);
-	CC_SYNTHESIZE(cocos2d::CCPoint, _desiredPosition, DesiredPosition);
+	CC_SYNTHESIZE(CCPoint, _velocity, Velocity);
+	CC_SYNTHESIZE(CCPoint, _desiredPosition, DesiredPosition);
 
 	CC_SYNTHESIZE(actionState, _actionState, ActionState);
 	CC_SYNTHESIZE(GameLayer*, _delegate, Delegate);

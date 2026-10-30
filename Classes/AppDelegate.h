@@ -1,7 +1,7 @@
 #ifndef  _APP_DELEGATE_H_
 #define  _APP_DELEGATE_H_
 
-#include "cocos2d.h"
+#include "Compat/Compat2x.h"
 
 
 /**
@@ -9,7 +9,7 @@
 
 The reason for implement as private inheritance is to hide some interface call by CCDirector.
 */
-class  AppDelegate : private cocos2d::CCApplication
+class  AppDelegate : private CCApplication
 {
 public:
     AppDelegate();
@@ -34,8 +34,7 @@ public:
     */
     virtual void applicationWillEnterForeground();
 
-
-	
+    void initGfxContextAttrs() override;
 };
 
 #endif // _APP_DELEGATE_H_

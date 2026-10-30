@@ -236,11 +236,11 @@ CCAction* Effect::createEffectAnimation(const char* file,int frameCount,float fp
 
 	for(int i = 1; i < frameCount; i++){	
 		str=CCString::createWithFormat("%s%02d.png",file,i);
-		CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(str->getCString());
+		CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(str->getCString());
 		animeFrames->addObject(frame);
 	}
 
-	CCAnimation* tempAnimation=CCAnimation::createWithSpriteFrames(animeFrames, float(1.0 / fps));
+	CCAnimation* tempAnimation=CCAnimation::createWithSpriteFrames(animeFrames->toVector<CCSpriteFrame*>(), float(1.0 / fps));
 	CCAction* tempAction=CCAnimate::create(tempAnimation);
 	CCArray* seqArray=CCArray::createWithObject(tempAction);
 	CCAction* seq;

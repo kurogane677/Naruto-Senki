@@ -4,8 +4,8 @@ USING_NS_CC_EXT;
 
 
 int Cheats=0;
-int MemberID=NULL;
-int GroupID=NULL;
+int MemberID=0;
+int GroupID=0;
 std::string PWord="";
 std::string CValue="999999";
 bool isFirst=false;
@@ -59,7 +59,7 @@ bool MenuButton::init(const char *szImage){
 
 void MenuButton::onEnter(){
 	CCSprite::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,10,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,10,true);
 	
 #if CC_TARGET_PLATFORM==CC_PLATFORM_ANDROID
 
@@ -76,7 +76,7 @@ void MenuButton::onEnter(){
 }
 void MenuButton::onExit(){
 	CCSprite::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 }
 
 CCRect MenuButton::getRect(){
@@ -105,7 +105,7 @@ bool MenuButton::ccTouchBegan(CCTouch* touch,CCEvent* event){
 
 	//click();
  
-	prePosY=NULL;
+	prePosY=0;
 
 	return true;
 
@@ -113,7 +113,7 @@ bool MenuButton::ccTouchBegan(CCTouch* touch,CCEvent* event){
 
 void MenuButton::ccTouchMoved(CCTouch* touch,CCEvent* event){
 	// touch area 
-	if(prePosY==NULL){
+	if(prePosY==0){
 		prePosY=touch->getLocation().y;
 
 	}else{
@@ -159,14 +159,14 @@ void MenuButton::ccTouchEnded(CCTouch* touch,CCEvent* event){
 			break;;
 		case HardCore:
 			/*SimpleAudioEngine::sharedEngine()->playEffect(SELECT_SOUND);
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("menu05_text.png"); 
-			_delegate->menuText->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("menu05_text.png"); 
+			_delegate->menuText->setSpriteFrame(frame);
 
 			if( CCUserDefault::sharedUserDefault()->getBoolForKey("isHardCore")==true){		
 			CCUserDefault::sharedUserDefault()->setBoolForKey("isHardCore",false);
 			if(_delegate->hardCore_btn){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("menu02_2.png"); 
-			_delegate->hardCore_btn->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("menu02_2.png"); 
+			_delegate->hardCore_btn->setSpriteFrame(frame);
 			}
 			}else{
 			_delegate->onHardLayerCallBack();
@@ -177,7 +177,7 @@ void MenuButton::ccTouchEnded(CCTouch* touch,CCEvent* event){
 		}
 	}else{
 		SimpleAudioEngine::sharedEngine()->playEffect(SELECT_SOUND);
-		prePosY=NULL;
+		prePosY=0;
 		_delegate->scrollMenu(this->getPositionY());
 		_delegate->isDrag=false;
 	}
@@ -303,8 +303,8 @@ bool StartMenu::init()
 		//produce the cloud
 		CCSprite* cloud_left=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_left->setPosition(ccp(0,15));
-		cloud_left->setFlipX(true);
-		cloud_left->setFlipY(true);
+		cloud_left->setFlippedX(true);
+		cloud_left->setFlippedY(true);
 		cloud_left->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_left,1);
 		
@@ -434,9 +434,9 @@ bool StartMenu::init()
 		while (i<5)
 		{
 			CCString* path=CCString::createWithFormat("avator%d.png",i);
-			CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(path->getCString());
+			CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(path->getCString());
 			tempArray->addObject(frame);
-			CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray, 0.1f);
+			CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray->toVector<CCSpriteFrame*>(), 0.1f);
 			CCAction* tempAction=CCAnimate::create(tempAnimation);
 			list->addObject(tempAction);
 			CCActionInterval* fadeIn=CCFadeIn::create(0.8f);	
@@ -621,7 +621,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 			this->addChild(group_layer,500);
 
 
-			cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+			CCHttpRequest* request = new CCHttpRequest();  
 			std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 			std::string code3=CCString::createWithFormat("%d",GroupID)->getCString();
 			std::string code="code=500&MemberID="+code2+"&GroupID="+code3;
@@ -630,7 +630,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 			request->setRequestType(CCHttpRequest::kHttpGet);  
 			request->setResponseCallback(this, callfuncND_selector(StartMenu::onGroupManageRequestCompleted));  
 			request->setTag("Post_My_Data");  
-			cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+			CCHttpClient::getInstance()->send(request);  
 			request->release();  
 
 		}else{
@@ -693,7 +693,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 			}
 			this->addChild(group_layer,500);
 
-			cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+			CCHttpRequest* request = new CCHttpRequest();  
 			std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 			std::string code="code=100&MemberID="+code2;
 			std::string url=SERVER"nsk/group.php?"+code;
@@ -701,7 +701,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 			request->setRequestType(CCHttpRequest::kHttpGet);  
 			request->setResponseCallback(this, callfuncND_selector(StartMenu::onGroupRequestCompleted));  
 			request->setTag("Post_My_Data");  
-			cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+			CCHttpClient::getInstance()->send(request);  
 			request->release();  
 			
 		}
@@ -718,12 +718,12 @@ void StartMenu::onGroupManageRequestCompleted(CCNode *sender ,void *data){
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -734,12 +734,12 @@ void StartMenu::onGroupManageRequestCompleted(CCNode *sender ,void *data){
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -798,7 +798,7 @@ void StartMenu::onGroupManageRequestCompleted(CCNode *sender ,void *data){
 				
 				 notice_label=CCLabelTTF::create(noticeString.c_str(),FONT_TYPE,10);
 				 
-				 notice_label->setDimensions(CCSizeMake(70, 0)); 
+				 notice_label->setDimensions(70, 0); 
 				  notice_label->setAnchorPoint(ccp(0,1));
 				 notice_label->setPosition(ccp(winSize.width/2+85,winSize.height/2+36));
 				 group_layer->addChild( notice_label);
@@ -1009,7 +1009,7 @@ void StartMenu::onQuitComfirm(CCObject* sender){
 		
 	isPosting=true;
 
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 	std::string code;
 	if(MemberID==item->getTag()){
@@ -1043,7 +1043,7 @@ void StartMenu::onQuitComfirm(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onQuitGroupRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();  
 }
 
@@ -1057,12 +1057,12 @@ void StartMenu::onQuitGroupRequestCompleted(CCNode *sender ,void *data) {
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1073,12 +1073,12 @@ void StartMenu::onQuitGroupRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1294,7 +1294,7 @@ void StartMenu::onNoticeComfirm(CCObject* sender){
 
 	}
 
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 	std::string code3=CCString::createWithFormat("%d",GroupID)->getCString();
 
@@ -1304,7 +1304,7 @@ void StartMenu::onNoticeComfirm(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onNoticeRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();  
 }
 
@@ -1324,7 +1324,7 @@ void StartMenu::onLockBtn(CCObject* sender){
 
 			}
 
-			cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+			CCHttpRequest* request = new CCHttpRequest();  
 			std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 			std::string code3=CCString::createWithFormat("%d",GroupID)->getCString();
 			std::string code="code=900&MemberID="+code2+"&GroupID="+code3+"&pw="+PWord ;	
@@ -1333,7 +1333,7 @@ void StartMenu::onLockBtn(CCObject* sender){
 			request->setRequestType(CCHttpRequest::kHttpGet);  
 			request->setResponseCallback(this, callfuncND_selector(StartMenu::onGPWRequestCompleted));  
 			request->setTag("Post_My_Data");  
-			cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+			CCHttpClient::getInstance()->send(request);  
 			request->release();  
 
 
@@ -1399,7 +1399,7 @@ void StartMenu::onGPWComfirm(CCObject* sender){
 
 	}
 
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 	std::string code3=CCString::createWithFormat("%d",GroupID)->getCString();
 	std::string code4=CCString::createWithFormat("%s", data1.c_str())->getCString();
@@ -1412,7 +1412,7 @@ void StartMenu::onGPWComfirm(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onGPWRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();  
 }
 
@@ -1430,12 +1430,12 @@ void StartMenu::onGPWRequestCompleted(CCNode *sender ,void *data) {
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1446,12 +1446,12 @@ void StartMenu::onGPWRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1536,7 +1536,7 @@ void StartMenu::onKickComfirm(CCObject* sender){
 
 	}
 
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 	std::string code3=CCString::createWithFormat("%d",GroupID)->getCString();
 	std::string code4=CCString::createWithFormat("%d",item->getTag())->getCString();
@@ -1546,7 +1546,7 @@ void StartMenu::onKickComfirm(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onQuitGroupRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();  
 };
 
@@ -1560,12 +1560,12 @@ void StartMenu::onGroupRequestCompleted(CCNode *sender ,void *data){
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1576,12 +1576,12 @@ void StartMenu::onGroupRequestCompleted(CCNode *sender ,void *data){
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1735,7 +1735,7 @@ void StartMenu::onJoinGroup(CCObject* sender){
 
 				isPosting=true;
 				
-				cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+				CCHttpRequest* request = new CCHttpRequest();  
 				std::string code3=CCString::createWithFormat("%d",MemberID)->getCString();
 				std::string code4=CCString::createWithFormat("%d",item->getTag())->getCString();
 				std::string code="code=300&MemberID="+code3+"&gpw="+"&GroupID="+code4+"&pw="+PWord;
@@ -1744,7 +1744,7 @@ void StartMenu::onJoinGroup(CCObject* sender){
 				request->setRequestType(CCHttpRequest::kHttpGet);  
 				request->setResponseCallback(this, callfuncND_selector(StartMenu::onJoinRequestCompleted));  
 				request->setTag("Post_My_Data");  
-				cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+				CCHttpClient::getInstance()->send(request);  
 				request->release();  
 
 				//刷新按钮
@@ -1776,7 +1776,7 @@ void StartMenu::onJoinComfirm(CCObject* sender){
 	}
 	isPosting=true;
 
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("%s",data1.c_str())->getCString();
 	std::string code3=CCString::createWithFormat("%d",MemberID)->getCString();
 	std::string code4=CCString::createWithFormat("%d",item->getTag())->getCString();
@@ -1786,7 +1786,7 @@ void StartMenu::onJoinComfirm(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onJoinRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();  
 
 	//刷新按钮
@@ -1811,12 +1811,12 @@ void StartMenu::onJoinRequestCompleted(CCNode *sender ,void *data) {
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1827,12 +1827,12 @@ void StartMenu::onJoinRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1865,7 +1865,7 @@ void StartMenu::onSearchBtn(CCObject* sender){
 		isPosting=true;
 		std::string data1=searchInput->getText();
 
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		CCHttpRequest* request = new CCHttpRequest();  
 		std::string code2=CCString::createWithFormat("%s",data1.c_str())->getCString();
 		std::string code="code=200&GroupID="+code2;
 		std::string url=SERVER"nsk/group.php?"+code;
@@ -1873,7 +1873,7 @@ void StartMenu::onSearchBtn(CCObject* sender){
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(StartMenu::onSeachRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();
 
 		
@@ -1907,12 +1907,12 @@ void StartMenu::onSeachRequestCompleted(CCNode *sender ,void *data) {
 	_screwLayer1->setPositionY(_screwLayer1->minY);
 	_screwLayer1->setItemArray(NULL);
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1923,12 +1923,12 @@ void StartMenu::onSeachRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -2106,7 +2106,7 @@ void StartMenu::onCreateComfirm(CCObject* sender){
 
 		isPosting=true;
 
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		CCHttpRequest* request = new CCHttpRequest();  
 		std::string code2=CCString::createWithFormat("%s",data1.c_str())->getCString();
 		std::string code3=CCString::createWithFormat("%d",MemberID)->getCString();
 		std::string code="code=400&MemberID="+code3+"&GroupName="+code2+"&pw="+PWord;;
@@ -2115,7 +2115,7 @@ void StartMenu::onCreateComfirm(CCObject* sender){
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(StartMenu::onCreateRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();  
 
 		if(!refreshBtn){
@@ -2146,12 +2146,12 @@ void StartMenu::onCreateRequestCompleted(CCNode *sender ,void *data) {
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -2162,12 +2162,12 @@ void StartMenu::onCreateRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -2273,7 +2273,7 @@ void  StartMenu::onProfileBtn(CCObject* sender){
 
 
 		
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		CCHttpRequest* request = new CCHttpRequest();  
 		std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 		std::string code="code=20&id="+code2;
 		std::string url=SERVER"nsk/rank.php?"+code+"&pw="+PWord;
@@ -2281,7 +2281,7 @@ void  StartMenu::onProfileBtn(CCObject* sender){
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(StartMenu::onProfileRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();
 
 		//刷新按钮
@@ -2310,12 +2310,12 @@ void StartMenu::onProfileRequestCompleted(CCNode *sender ,void *data) {
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -2326,12 +2326,12 @@ void StartMenu::onProfileRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -2694,7 +2694,7 @@ void  StartMenu::onNamePlateComfrim(CCObject* sender){
 	if(tempCoin>=0){
 
 	isPosting=true;
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("&np_id=np%d",item->getTag())->getCString();
 	std::string code3=CCString::createWithFormat("id=%d",MemberID)->getCString();
 	std::string code="code=50&"+code3+code2;
@@ -2703,7 +2703,7 @@ void  StartMenu::onNamePlateComfrim(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onNamePlateRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();
 
 	if(!refreshBtn){
@@ -2737,12 +2737,12 @@ void StartMenu::onNamePlateRequestCompleted(CCNode *sender ,void *data) {
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -2753,12 +2753,12 @@ void StartMenu::onNamePlateRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -2827,7 +2827,7 @@ void  StartMenu::onLoginBtn(CCObject* sender){
 	this->addChild(tip,5000);
 	return;
 
-	if(MemberID==NULL){
+	if(MemberID==0){
 		if(!input_layer){
 			input_layer=CCLayer::create();
 
@@ -2848,8 +2848,8 @@ void  StartMenu::onLoginBtn(CCObject* sender){
 			input_layer->addChild(usernameInput,200);
 
 
-			if(strcmp(CCUserDefault::sharedUserDefault()->getStringForKey("userName").c_str(),"")!=0){
-				usernameInput->setText(CCUserDefault::sharedUserDefault()->getStringForKey("userName").c_str());
+			if(strcmp(std::string(CCUserDefault::sharedUserDefault()->getStringForKey("userName")).c_str(),"")!=0){
+				usernameInput->setText(std::string(CCUserDefault::sharedUserDefault()->getStringForKey("userName")).c_str());
 			}
 			CCSprite* pwInputTitle=CCSprite::createWithSpriteFrameName("pwInput_title.png");
 			pwInputTitle->setPosition(ccp(winSize.width/2-60,winSize.height/2));
@@ -2864,8 +2864,8 @@ void  StartMenu::onLoginBtn(CCObject* sender){
 			input_layer->addChild(pwInput,200);
 
 
-			if(strcmp(CCUserDefault::sharedUserDefault()->getStringForKey("password").c_str(),"")!=0){
-				pwInput->setText(CCUserDefault::sharedUserDefault()->getStringForKey("password").c_str());
+			if(strcmp(std::string(CCUserDefault::sharedUserDefault()->getStringForKey("password")).c_str(),"")!=0){
+				pwInput->setText(std::string(CCUserDefault::sharedUserDefault()->getStringForKey("password")).c_str());
 			}
 
 			CCMenuItem* yes_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("login_btn2.png"),CCSprite::createWithSpriteFrameName("login_btn1.png"),this,menu_selector(StartMenu::onLoginOn));
@@ -2904,7 +2904,7 @@ void  StartMenu::onLoginOn(CCObject* sender){
 		std::string data2 =pwInput->getText();
 		std::string result;
 
-		if(strcmp(CCUserDefault::sharedUserDefault()->getStringForKey("password").c_str(),data2.c_str())!=0){
+		if(strcmp(std::string(CCUserDefault::sharedUserDefault()->getStringForKey("password")).c_str(),data2.c_str())!=0){
 			KTools *tool=new KTools();
 			result=tool->encodeData(data2);
 		}else{
@@ -2914,7 +2914,7 @@ void  StartMenu::onLoginOn(CCObject* sender){
 
 		CCUserDefault::sharedUserDefault()->setStringForKey("password",result);
 
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		CCHttpRequest* request = new CCHttpRequest();  
 
 	
 		std::string Andriodstr="";
@@ -2950,7 +2950,7 @@ void  StartMenu::onLoginOn(CCObject* sender){
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(StartMenu::onLoginRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();  
 
 		//刷新按钮
@@ -3020,14 +3020,14 @@ void StartMenu::setNotice(){
 		const char *reply = ((CCString*)strings->objectForKey("Notice"))->m_sString.c_str(); 
 		
 		noticeLabel->setString(reply);
-		/*cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		/*CCHttpRequest* request = new CCHttpRequest();  
 		std::string code2=CCString::createWithFormat("?version=%d",CURRENT_VERSION)->getCString();
 		std::string url=SERVER"nsk/notice.php"+code2;
 		request->setUrl(url.c_str());  
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(StartMenu::onNoticeRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();  */
 		
 	}
@@ -3035,12 +3035,12 @@ void StartMenu::setNotice(){
 
 }
 void StartMenu::onNoticeRequestCompleted(CCNode *sender ,void *data) {  
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -3051,12 +3051,12 @@ void StartMenu::onNoticeRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 	
@@ -3120,12 +3120,12 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 	}
 
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 	return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 	CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -3136,12 +3136,12 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 	CCLog("response failed");  
-	CCLog("error buffer:%s" ,response->getErrorBuffer());  
+	CCLog("error buffer:%s" ,"");  
 	CCTips *tip=CCTips::create("ServerError");
 	this->addChild(tip,5000);
 	return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -3267,8 +3267,8 @@ void  StartMenu::onNewsBtn(CCObject* sender){
 void StartMenu::onHardCoreOn(CCObject* sender){
 	CCUserDefault::sharedUserDefault()->setBoolForKey("isHardCore",true);
 	if(hardCore_btn){
-		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("menu02_1.png"); 
-		hardCore_btn->setDisplayFrame(frame);
+		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("menu02_1.png"); 
+		hardCore_btn->setSpriteFrame(frame);
 	}
 
 	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
@@ -3714,7 +3714,7 @@ void StartMenu::scrollMenu(int posY){
 					this->reorderChild(menu,1);
 					menu->_isBottom=true;
 					CCFadeOut* fo=CCFadeOut::create(0.3f);
-					CCSpawn* seq=CCSpawn::createWithTwoActions(spn,fo);
+					ax::Spawn* seq=CCSpawn::createWithTwoActions(spn,fo);
 					menu->runAction(seq);
 
 				}else if(menu->getPositionY()==_pos03){
@@ -3743,7 +3743,7 @@ void StartMenu::scrollMenu(int posY){
 					this->reorderChild(menu,1);
 					menu->setVisible(true);
 					CCFadeIn* fi=CCFadeIn::create(0.3f);
-					CCSpawn* seq=CCSpawn::createWithTwoActions(spn,fi);
+					ax::Spawn* seq=CCSpawn::createWithTwoActions(spn,fi);
 					menu->_isBottom=false;
 					menu->runAction(seq);
 				}else if(menu->getPositionY()==_pos02 && !menu->_isBottom){
@@ -3786,7 +3786,7 @@ void StartMenu::scrollMenu(int posY){
 					this->reorderChild(menu,1);
 					menu->_isBottom=true;
 					CCFadeOut* fo=CCFadeOut::create(0.3f);
-					CCSpawn* seq=CCSpawn::createWithTwoActions(spn,fo);
+					ax::Spawn* seq=CCSpawn::createWithTwoActions(spn,fo);
 					menu->runAction(seq);
 
 				}else if(menu->getPositionY()==_pos02 && menu->_isBottom){
@@ -3795,7 +3795,7 @@ void StartMenu::scrollMenu(int posY){
 					this->reorderChild(menu,2);
 					menu->setVisible(true);
 					CCFadeIn* fi=CCFadeIn::create(0.3f);
-					CCSpawn* seq=CCSpawn::createWithTwoActions(spn,fi);
+					ax::Spawn* seq=CCSpawn::createWithTwoActions(spn,fi);
 					menu->_isBottom=false;
 					menu->runAction(seq);
 				}
@@ -3837,8 +3837,8 @@ void StartMenu::scrollMenu(int posY){
 			}
 		}
 
-		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(src.c_str()); 
-		menuText->setDisplayFrame(frame);
+		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(src.c_str()); 
+		menuText->setSpriteFrame(frame);
 	
 }
 

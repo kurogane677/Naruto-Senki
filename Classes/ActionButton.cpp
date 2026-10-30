@@ -48,11 +48,11 @@ bool ActionButton::init(const char *szImage){
 
 void ActionButton::onEnter(){
 	CCSprite::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,-50,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,-50,true);
 }
 void ActionButton::onExit(){
 	CCSprite::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 }
 
 CCRect ActionButton::getRect(){

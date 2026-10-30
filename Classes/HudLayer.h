@@ -1,12 +1,11 @@
 #pragma once
-#include "cocos2d.h"
+#include "Compat/Compat2x.h"
 #include "Defines.h"
 #include "JoyStick.h"
 #include "GameLayer.h"
 #include "Characters.h"
 #include "Defines.h"
 #include "ActionButton.h"
-#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 

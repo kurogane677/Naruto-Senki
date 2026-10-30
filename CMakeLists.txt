@@ -108,6 +108,12 @@ endif()
 
 include(AXGameTargetSetup)
 
+# Legacy cocos2d-x 2.x game code: allow string literals -> char* and other
+# pre-C++11 idioms (game target only; the engine keeps strict mode).
+if(MSVC)
+  target_compile_options(${APP_NAME} PRIVATE /Zc:strictStrings-)
+endif()
+
 # mark app resources, resource will be copy auto after mark
 ax_setup_app_config(${APP_NAME})
 

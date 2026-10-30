@@ -6,7 +6,7 @@
     #ifndef __CMD5Checksum__  
     #define __CMD5Checksum__  
       
-    #include "cocos2d.h"  
+    #include "Compat/Compat2x.h"  
     USING_NS_CC;  
     /***************************************************************************************** 
       

@@ -358,8 +358,8 @@ void GameLayer::initHeros(){
 	int i=0;
 
 
-	CCTMXObjectGroup* group = currentMap->objectGroupNamed("object");
-	CCArray* objectArray = group->getObjects();
+	CCTMXObjectGroup* group = currentMap->getObjectGroup("object");
+	CCArray* objectArray = ccArrayFromValueVector(group->getObjects());
 
 	_isOugis2Game=true;
 	//4v4
@@ -472,7 +472,7 @@ void GameLayer::initHeros(){
 				currentPlayer->idle();
 				if(zhenying<=0){
 					currentPlayer->_isFlipped=true;
-					currentPlayer->setFlipX(true);
+					currentPlayer->setFlippedX(true);
 				}
 				currentPlayer->setCharNO(i+1);
 				currentPlayer->schedule(schedule_selector(ActionManager::setRestore2),1.0f);
@@ -491,7 +491,7 @@ void GameLayer::initHeros(){
 				Com->idle();
 				if(strcmp(Com->getGroup()->getCString(),"Akatsuki")==0){
 					Com->_isFlipped=true;
-					Com->setFlipX(true);
+					Com->setFlippedX(true);
 				}
 
 				Com->setCharNO(i+1);
@@ -693,8 +693,8 @@ void GameLayer::initTower(){
 
 
 
-	CCTMXObjectGroup* metaGroup = currentMap->objectGroupNamed("meta");
-	CCArray* metaArray= metaGroup->getObjects();
+	CCTMXObjectGroup* metaGroup = currentMap->getObjectGroup("meta");
+	CCArray* metaArray= ccArrayFromValueVector(metaGroup->getObjects());
 
 	_TowerArray=CCArray::create();
 
@@ -722,7 +722,7 @@ void GameLayer::initTower(){
 			tower->setID(name,CCString::create("Tower"),CCString::create("Konoha"));
 		}else{
 			tower->setID(name,CCString::create("Tower"),CCString::create("Akatsuki"));
-			tower->setFlipX(true);
+			tower->setFlippedX(true);
 			tower->_isFlipped=true;
 		}
 		float posX=metaX+metaWidth/2;
@@ -1014,7 +1014,7 @@ void GameLayer::onPause(){
 
 	CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
 	CCScene* f = CCDirector::sharedDirector()->getRunningScene();
-	CCObject* pObject= f->getChildren()->objectAtIndex(0);
+	CCObject* pObject= f->getChildren().at(0);
 	BGLayer* bg=(BGLayer*) pObject;
 	snapshoot->begin();
 	bg->visit();
@@ -1038,7 +1038,7 @@ void GameLayer::onGear(){
 
 		CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
 		CCScene* f = CCDirector::sharedDirector()->getRunningScene();
-		CCObject* pObject= f->getChildren()->objectAtIndex(0);
+		CCObject* pObject= f->getChildren().at(0);
 		BGLayer* bg=(BGLayer*) pObject;
 		snapshoot->begin();
 		bg->visit();
@@ -1065,7 +1065,7 @@ void GameLayer::onGameOver(bool isWin){
 	if(CError!=1){
 		CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
 		CCScene* f = CCDirector::sharedDirector()->getRunningScene();
-		CCObject* pObject= f->getChildren()->objectAtIndex(0);
+		CCObject* pObject= f->getChildren().at(0);
 		BGLayer* bg=(BGLayer*) pObject;
 		snapshoot->begin();
 		bg->visit();
@@ -1085,7 +1085,7 @@ void GameLayer::onGameOver(bool isWin){
 
 void GameLayer::onLeft(){
 
-	CCArray* childArray=this->getChildren();
+	CCArray* childArray=CCArray::createWithVector(this->getChildren());
 	CCObject* pObject;
 
 	CCARRAY_FOREACH(childArray,pObject){		
@@ -1202,7 +1202,7 @@ void GameLayer::checkPost(float dt){
 		
 		isPosting=true;
 		postTime++;
-		cocos2d::extension::CCHttpRequest* request = new  cocos2d::extension::CCHttpRequest(); 
+		CCHttpRequest* request = new  CCHttpRequest(); 
 		std::string codeFinal;
 		
 		
@@ -1211,13 +1211,13 @@ void GameLayer::checkPost(float dt){
 		std::string code3=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
 		std::string url=SERVER"nsk/list.php?"+code1+code2+code3;
 		request->setUrl(url.c_str());  
-		request->setRequestType( cocos2d::extension::CCHttpRequest::kHttpGet);  
+		request->setRequestType( CCHttpRequest::kHttpGet);  
 		
 		request->setResponseCallback(this, callfuncND_selector(GameLayer::onHttpRequestCompleted));  
 		
 
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();  
 
 	}else{
@@ -1232,7 +1232,7 @@ void GameLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 
 	isPosting=false;
 	
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
@@ -1245,7 +1245,7 @@ void GameLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	{  	
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	
 	Document doc;
 	
@@ -1286,7 +1286,7 @@ void GameLayer::checkBackgroundMusic(float dt){
 void GameLayer::setOugis(CCNode* sender){
 
 	if(!this->_hudLayer->ougisLayer){
-		CCArray* childArray=this->getChildren();
+		CCArray* childArray=CCArray::createWithVector(this->getChildren());
 		ougisChar=sender;
 		ActionManager* Sender=(ActionManager*) sender;
 		CCObject* pObject;
@@ -1294,17 +1294,17 @@ void GameLayer::setOugis(CCNode* sender){
 
 			CCNode* object=(CCNode*) pObject;
 
-			object->pauseSchedulerAndActions();
+			object->pause();
 
 		}
-		this->pauseSchedulerAndActions();
+		this->pause();
 
 		this->updateViewPoint(0.0);
 
 		blend=CCLayerColor::create(ccc4(0, 0, 0, 200),winSize.width,winSize.height);
 		blend->setPosition(ccp(-this->getPositionX(),0));
 		this->addChild(blend,1000);
-		sender->setZOrder(2000);
+		sender->setLocalZOrder(2000);
 
 		if(CCUserDefault::sharedUserDefault()->getBoolForKey("isVoice")!=false){
 			SimpleAudioEngine::sharedEngine()->playEffect(CCString::createWithFormat("Audio/Ougis/%s_ougis.mp3",Sender->getCharacter()->getCString())->getCString());
@@ -1318,14 +1318,14 @@ void GameLayer::setOugis(CCNode* sender){
 }
 
 void GameLayer::removeOugis(){
-	ougisChar->setZOrder(-ougisChar->getPositionY());
-	CCArray* childArray=this->getChildren();
+	ougisChar->setLocalZOrder(-ougisChar->getPositionY());
+	CCArray* childArray=CCArray::createWithVector(this->getChildren());
 	CCObject* pObject;
 	CCARRAY_FOREACH(childArray,pObject){
 		CCNode* object=(CCNode*) pObject;
-		object->resumeSchedulerAndActions();
+		object->resume();
 	}
-	this->resumeSchedulerAndActions();
+	this->resume();
 
 	blend->removeFromParent();
 	ougisChar=NULL;

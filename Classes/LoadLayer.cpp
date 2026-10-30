@@ -62,8 +62,8 @@ bool LoadLayer::init(){
 		//produce the cloud
 		CCSprite* cloud_left=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_left->setPosition(ccp(0,15));
-		cloud_left->setFlipX(true);
-		cloud_left->setFlipY(true);
+		cloud_left->setFlippedX(true);
+		cloud_left->setFlippedY(true);
 		cloud_left->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_left,1);
 
@@ -105,7 +105,7 @@ void LoadLayer::preloadIMG(){
 
 		
 		//加载技能图包
-		CCTexture2D::PVRImagesHavePremultipliedAlpha(true); 
+		// PVRImagesHavePremultipliedAlpha(true): not needed on Axmol (premultiplied alpha is read from the PVR header) 
 
 		if (strcmp(player->getCString(),"Kiba")!=0 &&
 			strcmp(player->getCString(),"Kakuzu")!=0 
@@ -188,7 +188,7 @@ void LoadLayer::preloadIMG(){
 		if(i==0 ||( (i==1 || i==2 ) && _isHardCoreMode) ){
 			
 			CCSprite* loadingAvator=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("%s_Walk_01.png",player->getCString())->getCString());
-			loadingAvator->setFlipX(true);
+			loadingAvator->setFlippedX(true);
 			loadingAvator->setPosition(ccp(winSize.width-100+i*16,30));
 			loadingAvator->setAnchorPoint(ccp(0,0));
 
@@ -205,11 +205,11 @@ void LoadLayer::preloadIMG(){
 
 			for(int i = 1; i < frameCount; i++){	
 				str=CCString::createWithFormat("%s%02d.png",file,i);
-				CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(str->getCString());
+				CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(str->getCString());
 				animeFrames->addObject(frame);
 			}
 
-			CCAnimation* tempAnimation=CCAnimation::createWithSpriteFrames(animeFrames, float(1.0 / 10.0));
+			CCAnimation* tempAnimation=CCAnimation::createWithSpriteFrames(animeFrames->toVector<CCSpriteFrame*>(), float(1.0 / 10.0));
 			CCAction* tempAction=CCAnimate::create(tempAnimation);
 			CCArray* seqArray=CCArray::createWithObject(tempAction);
 			CCAction* seq;
@@ -284,7 +284,7 @@ void LoadLayer::preloadIMG(){
 			CCDictionary* tempdict=(CCDictionary *) tmpObject;
 			CCString* heroString=CCString::create(tempdict->valueForKey("character")->getCString());
 			isPosting=true;
-			cocos2d::extension::CCHttpRequest* request = new  cocos2d::extension::CCHttpRequest(); 
+			CCHttpRequest* request = new  CCHttpRequest(); 
 			std::string codeFinal;
 			std::string code1=CCString::createWithFormat("code=300&id=%d",MemberID)->getCString();
 			std::string code2=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
@@ -295,7 +295,7 @@ void LoadLayer::preloadIMG(){
 			request->setRequestType(CCHttpRequest::kHttpGet);  
 			request->setResponseCallback(this, callfuncND_selector(LoadLayer::onHttpRequestCompleted));  
 			request->setTag(heroString->getCString());  
-			cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+			CCHttpClient::getInstance()->send(request);  
 			request->release();  
 			i++;
 		}
@@ -317,12 +317,12 @@ void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	freopen("CONOUT$", "w", stderr);*/
 	isPosting=false;
 	
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -332,7 +332,7 @@ void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());
+		CCLog("error buffer:%s" ,"");
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
@@ -341,7 +341,7 @@ void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	
 
 
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	std::string buf(buffer->begin(),buffer->end()); 
 	
 	/*for (unsigned int i = 0; i < buffer->size(); i ++)  
@@ -377,7 +377,7 @@ void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	CCARRAY_FOREACH(DLCArray,tmpObject){
 		CCDictionary* tempdict=(CCDictionary *) tmpObject;
 		CCString* heroString=CCString::create(tempdict->valueForKey("character")->getCString());
-		if(strcmp(heroString->getCString(),response->getHttpRequest()->getTag())==0){
+		if(strcmp(heroString->getCString(),response->getHttpRequest()->getTag().data())==0){
 			DLCArray->removeObject(tmpObject);
 		}
 		

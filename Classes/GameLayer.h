@@ -1,8 +1,6 @@
 #pragma once
-#include "cocos2d.h"
-#include "SimpleAudioEngine.h"
+#include "Compat/Compat2x.h"
 #include "Defines.h"
-#include "cocos-ext.h"
 #include "PauseLayer.h"
 #include "GearLayer.h"
 #include "GameOver.h"
@@ -119,7 +117,7 @@ public:
 
 	CCNode* controlChar;
 	
-	CCLayer* blend;
+	CCNode* blend;
 
 	void onLeft();
 

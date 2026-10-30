@@ -19,7 +19,7 @@ GameOver::~GameOver(void)
 {
 	CCAnimationCache::purgeSharedAnimationCache();
 	CCSpriteFrameCache::sharedSpriteFrameCache()->removeUnusedSpriteFrames();
-	CCTextureCache::sharedTextureCache()->removeUnusedTextures();
+	CCDirector::sharedDirector()->getTextureCache()->removeUnusedTextures();
 
 }
 
@@ -38,10 +38,10 @@ bool GameOver::init(CCRenderTexture* snapshoot){
 		CCTexture2D* bgTexture=snapshoot->getSprite()->getTexture();
 		CCSprite* bg=CCSprite::createWithTexture(bgTexture);
 		bg->setAnchorPoint(ccp(0,0));
-		bg->setFlipY(true);
+		bg->setFlippedY(true);
 		this->addChild(bg,0);
 
-		CCLayer* blend=CCLayerColor::create(ccc4(0, 0, 0, 150),winSize.width,winSize.height);
+		CCLayerColor* blend=CCLayerColor::create(ccc4(0, 0, 0, 150),winSize.width,winSize.height);
 		this->addChild(blend,1);
 
 		//produce the menu_bar
@@ -109,7 +109,7 @@ void GameOver::listResult(){
 	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Chiyo")==0||
 	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kisame")==0
 		){
-		half->setFlipX(true);
+		half->setFlippedX(true);
 	}
 
 	half->setAnchorPoint(ccp(0,0));
@@ -634,7 +634,7 @@ void GameOver::onUPloadBtn(CCObject* sender){
 		remove(filePath.c_str());
 		
 
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		CCHttpRequest* request = new CCHttpRequest();  
 		
 		std::string code="code=1000";
 		std::string mem=tool->encodeData(CCString::createWithFormat("%d",MemberID)->getCString());
@@ -650,7 +650,7 @@ void GameOver::onUPloadBtn(CCObject* sender){
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(GameOver::onHttpRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release(); 
 
 	}
@@ -666,12 +666,12 @@ void GameOver::onHttpRequestCompleted(CCNode *sender ,void *data) {
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 	CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -682,12 +682,12 @@ void GameOver::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 	CCLog("response failed");  
-	CCLog("error buffer:%s" ,response->getErrorBuffer()); 
+	CCLog("error buffer:%s" ,""); 
 	CCTips *tip=CCTips::create("ServerError");
 	this->addChild(tip,5000);
 	return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 	
 	std::string buf(buffer->begin(),buffer->end()); 

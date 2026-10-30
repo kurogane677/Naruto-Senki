@@ -39,11 +39,11 @@ bool RankCharButton::init(const char *szImage){
 
 void RankCharButton::onEnter(){
 	CCSprite::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,-1,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,-1,true);
 }
 void RankCharButton::onExit(){
 	CCSprite::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 }
 
 CCRect RankCharButton::getRect(){
@@ -173,8 +173,8 @@ bool RakingLayer::init(){
 		//produce the cloud
 		CCSprite* cloud_left=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_left->setPosition(ccp(0,15));
-		cloud_left->setFlipX(true);
-		cloud_left->setFlipY(true);
+		cloud_left->setFlippedX(true);
+		cloud_left->setFlippedY(true);
 		cloud_left->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_left,2);
 
@@ -184,7 +184,7 @@ bool RakingLayer::init(){
 
 		CCSprite* cloud_right=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_right->setPosition(ccp(winSize.width-cloud_right->getContentSize().width,15));
-		cloud_right->setFlipY(true);
+		cloud_right->setFlippedY(true);
 		cloud_right->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_right,2);
 
@@ -372,8 +372,8 @@ void RakingLayer::produceRanking(int type){
 
 	case 0:
 		if(ranking_title){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("ranking_title1.png"); 
-			ranking_title->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("ranking_title1.png"); 
+			ranking_title->setSpriteFrame(frame);
 			ranking_title->setPosition(ccp(ranking_bg->getPositionX()-62,ranking_bg->getPositionY()+ranking_bg->getContentSize().height/2-16));
 		}
 		if(side0_btn){
@@ -392,7 +392,7 @@ void RakingLayer::produceRanking(int type){
 		order_menu = CCMenu::create(day_btn,week_btn,month_btn,NULL);
 		order_menu->alignItemsHorizontallyWithPadding(20);
 		order_menu->setPosition(ccp(ranking_bg->getPositionX()+100,ranking_bg->getPositionY()-ranking_bg->getContentSize().height/2+14));
-		order_menu->setTouchPriority(-1);
+		/* order_menu->setTouchPriority(-1); (no touch priority on Axmol menus) */
 		ranking_layer->addChild(order_menu,10);
 		day_btn->selected();
 
@@ -401,8 +401,8 @@ void RakingLayer::produceRanking(int type){
 	case 1:
 
 		if(ranking_title){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("ranking_title1.png"); 
-			ranking_title->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("ranking_title1.png"); 
+			ranking_title->setSpriteFrame(frame);
 			ranking_title->setPosition(ccp(ranking_bg->getPositionX()-62,ranking_bg->getPositionY()+ranking_bg->getContentSize().height/2-16));
 		}
 		if(side0_btn){
@@ -421,7 +421,7 @@ void RakingLayer::produceRanking(int type){
 		order_menu = CCMenu::create(day_btn,week_btn,month_btn,NULL);
 		order_menu->alignItemsHorizontallyWithPadding(20);
 		order_menu->setPosition(ccp(ranking_bg->getPositionX()+100,ranking_bg->getPositionY()-ranking_bg->getContentSize().height/2+14));
-		order_menu->setTouchPriority(-1);
+		/* order_menu->setTouchPriority(-1); (no touch priority on Axmol menus) */
 		ranking_layer->addChild(order_menu,10);
 		day_btn->selected();
 
@@ -439,8 +439,8 @@ void RakingLayer::produceRanking(int type){
 		//side3_btn->unselected();
 
 		if(ranking_title){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("ranking_title2.png"); 
-			ranking_title->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("ranking_title2.png"); 
+			ranking_title->setSpriteFrame(frame);
 			ranking_title->setPosition(ccp(ranking_bg->getPositionX()-96,ranking_bg->getPositionY()+ranking_bg->getContentSize().height/2-16));
 		}
 
@@ -454,7 +454,7 @@ void RakingLayer::produceRanking(int type){
 		order_menu->setPosition(ccp(ranking_bg->getPositionX()+100,ranking_bg->getPositionY()-ranking_bg->getContentSize().height/2+14));
 		ranking_layer->addChild(order_menu,10);
 		JifenPoint_btn->selected();
-		order_menu->setTouchPriority(-1);
+		/* order_menu->setTouchPriority(-1); (no touch priority on Axmol menus) */
 		
 		this->postRequest(400);
 
@@ -468,8 +468,8 @@ void RakingLayer::produceRanking(int type){
 		side1_btn->unselected();
 		side2_btn->unselected();
 		if(ranking_title){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("ranking_title3.png"); 
-			ranking_title->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("ranking_title3.png"); 
+			ranking_title->setSpriteFrame(frame);
 			ranking_title->setPosition(ccp(ranking_bg->getPositionX()-106,ranking_bg->getPositionY()+ranking_bg->getContentSize().height/2-16));
 		}
 		isMemberSelect=false;
@@ -503,9 +503,9 @@ void RakingLayer::postRequest(int code,CCString* useChar/* =NULL */){
 	unsigned long size;
 	const char* data;
 	if(postingCode==400){
-		data=(const char*)CCFileUtils::sharedFileUtils()->getFileData("rank.json", "r",&size);
+		data=(const char*)ccGetFileData("rank.json", "r",&size);
 	}else {
-		data=(const char*)CCFileUtils::sharedFileUtils()->getFileData("rank2.json", "r",&size);
+		data=(const char*)ccGetFileData("rank2.json", "r",&size);
 	}
 
 	std::string clearData(data);
@@ -717,14 +717,14 @@ void RakingLayer::postRequest(int code,CCString* useChar/* =NULL */){
 						while (i<7)
 						{
 							CCString* path=CCString::createWithFormat("banner_blink%d.png",i);
-							CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(path->getCString());
+							CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(path->getCString());
 							tempArray->addObject(frame);
 
 
 							i+=1;
 						}
 
-						CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray, 0.1f);
+						CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray->toVector<CCSpriteFrame*>(), 0.1f);
 						CCAction* tempAction=CCAnimate::create(tempAnimation);
 						list->addObject(tempAction);
 						CCDelayTime* delay=CCDelayTime::create(1.0f);
@@ -766,7 +766,7 @@ void RakingLayer::postRequest(int code,CCString* useChar/* =NULL */){
 					pMenu ->setPosition(ccp(304,5));
 					item ->setAnchorPoint(ccp(0.5f,0));
 					item->setTag(groupID);
-					pMenu->setTouchPriority(1);
+					/* pMenu->setTouchPriority(1); (no touch priority on Axmol menus) */
 					screwItem->addChild(pMenu);
 					screwItem->setTag(groupID); 
 
@@ -809,7 +809,7 @@ void RakingLayer::postRequest(int code,CCString* useChar/* =NULL */){
 
 
 	//	}
-	//	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest(); 
+	//	CCHttpRequest* request = new CCHttpRequest(); 
 	//	std::string codeFinal;
 	//	if(useChar){
 	//		codeFinal=CCString::createWithFormat("code=%d&id=%d&char=%s",code,MemberID,useChar->getCString())->getCString();
@@ -829,7 +829,7 @@ void RakingLayer::postRequest(int code,CCString* useChar/* =NULL */){
 	//	}
 
 	//	request->setTag("Post_My_Data");  
-	//	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	//	CCHttpClient::getInstance()->send(request);  
 	//	request->release();  
 	//}
 
@@ -911,8 +911,8 @@ void  RakingLayer::onJifenBtn(CCObject* sender){
 	
 	if(isGroupSelect){
 		if(ranking_title){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("ranking_title3.png"); 
-			ranking_title->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("ranking_title3.png"); 
+			ranking_title->setSpriteFrame(frame);
 			ranking_title->setPosition(ccp(ranking_bg->getPositionX()-106,ranking_bg->getPositionY()+ranking_bg->getContentSize().height/2-16));
 		}
 		this->postRequest(600);
@@ -934,8 +934,8 @@ void  RakingLayer::onBattleBtn(CCObject* sender){
 	
 	if(isGroupSelect){
 		if(ranking_title){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("ranking_title3.png"); 
-			ranking_title->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("ranking_title3.png"); 
+			ranking_title->setSpriteFrame(frame);
 			ranking_title->setPosition(ccp(ranking_bg->getPositionX()-106,ranking_bg->getPositionY()+ranking_bg->getContentSize().height/2-16));
 		}
 		this->postRequest(700);
@@ -1002,12 +1002,12 @@ void RakingLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1018,12 +1018,12 @@ void RakingLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());
+		CCLog("error buffer:%s" ,"");
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1266,14 +1266,14 @@ void RakingLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 						while (i<7)
 						{
 							CCString* path=CCString::createWithFormat("banner_blink%d.png",i);
-							CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(path->getCString());
+							CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(path->getCString());
 							tempArray->addObject(frame);
 
 
 							i+=1;
 						}
 
-						CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray, 0.1f);
+						CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray->toVector<CCSpriteFrame*>(), 0.1f);
 						CCAction* tempAction=CCAnimate::create(tempAnimation);
 						list->addObject(tempAction);
 						CCDelayTime* delay=CCDelayTime::create(1.0f);
@@ -1353,12 +1353,12 @@ void RakingLayer::onHttpRequestCompleted2(CCNode *sender ,void *data) {
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1369,12 +1369,12 @@ void RakingLayer::onHttpRequestCompleted2(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());
+		CCLog("error buffer:%s" ,"");
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1578,14 +1578,14 @@ void RakingLayer::onHttpRequestCompleted2(CCNode *sender ,void *data) {
 						while (i<7)
 						{
 							CCString* path=CCString::createWithFormat("banner_blink%d.png",i);
-							CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(path->getCString());
+							CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(path->getCString());
 							tempArray->addObject(frame);
 							
 							
 							i+=1;
 						}
 
-						CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray, 0.1f);
+						CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray->toVector<CCSpriteFrame*>(), 0.1f);
 						CCAction* tempAction=CCAnimate::create(tempAnimation);
 						list->addObject(tempAction);
 						CCDelayTime* delay=CCDelayTime::create(1.0f);
@@ -1627,7 +1627,7 @@ void RakingLayer::onHttpRequestCompleted2(CCNode *sender ,void *data) {
 					pMenu ->setPosition(ccp(304,5));
 					item ->setAnchorPoint(ccp(0.5f,0));
 					item->setTag(groupID);
-					pMenu->setTouchPriority(1);
+					/* pMenu->setTouchPriority(1); (no touch priority on Axmol menus) */
 					screwItem->addChild(pMenu);
 					screwItem->setTag(groupID); 
 					
@@ -1669,12 +1669,12 @@ void RakingLayer::onHttpRequestCompleted3(CCNode *sender ,void *data) {
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1685,12 +1685,12 @@ void RakingLayer::onHttpRequestCompleted3(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());
+		CCLog("error buffer:%s" ,"");
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1849,8 +1849,8 @@ void RakingLayer::onSelectGroupBtn(CCObject* sender){
 	}
 
 	if(ranking_title){
-		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("ranking_title2.png"); 
-		ranking_title->setDisplayFrame(frame);
+		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("ranking_title2.png"); 
+		ranking_title->setSpriteFrame(frame);
 		ranking_title->setPosition(ccp(ranking_bg->getPositionX()-96,ranking_bg->getPositionY()+ranking_bg->getContentSize().height/2-16));
 	}
 
@@ -1870,7 +1870,7 @@ void RakingLayer::onSelectGroupBtn(CCObject* sender){
 		}
 		
 
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest(); 
+		CCHttpRequest* request = new CCHttpRequest(); 
 		std::string codeFinal;
 		if(postingCode==600 || postingCode==400){
 			postingCode=800;
@@ -1890,7 +1890,7 @@ void RakingLayer::onSelectGroupBtn(CCObject* sender){
 		
 
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();  
 	}
 

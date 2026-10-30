@@ -58,8 +58,8 @@ void MiniIcon::updateMap(CCObject* sender){
 	
 }
 void MiniIcon::updateState(){
-	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("tower_icon3.png"); 
-	this->setDisplayFrame(frame);
+	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("tower_icon3.png"); 
+	this->setSpriteFrame(frame);
 }
 
 void MiniIcon::updatePosition(CCPoint location){
@@ -149,7 +149,7 @@ bool HudLayer::init(){
 		CC_BREAK_IF(!CCLayer::init());
 
 	
-		texUI = CCTextureCache::sharedTextureCache()->addImage("UI.png");
+		texUI = CCDirector::sharedDirector()->getTextureCache()->addImage("UI.png");
 		uiBatch= CCSpriteBatchNode::createWithTexture(texUI);
 
 
@@ -193,7 +193,7 @@ void HudLayer::initGearButton(){
 	gear_button->setAnchorPoint(ccp(0,0));
 	gearMenu=CCMenu::create(gear_button,NULL);	
 	gearMenu->setPosition(ccp(0,winSize.height-gear_button->getContentSize().height));
-	gearMenu->setTouchPriority(10);
+	/* gearMenu->setTouchPriority(10); (no touch priority on Axmol menus) */
 	this->addChild(gearMenu,100);
 }
 
@@ -207,14 +207,14 @@ void HudLayer::onKaichang(){
 	while (i<9)
 	{
 		CCString* path=CCString::createWithFormat("gameStart_00%d.png",i);
-		CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(path->getCString());
+		CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(path->getCString());
 		tempArray->addObject(frame);
 		i+=1;
 	}
 
 
 
-	CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray, 0.1f);
+	CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray->toVector<CCSpriteFrame*>(), 0.1f);
 	CCAction* tempAction=CCAnimate::create(tempAnimation);
 	CCArray* list=CCArray::create();
 	list->addObject(tempAction);
@@ -779,7 +779,7 @@ void HudLayer::setTowerState(unsigned int charNO){
 
 void HudLayer::setCoin(const char* value){
 	
-	const char* cl=coinLabel->getString();
+	const char* cl=coinLabel->getString().data();
 	int tempCoin=atoi(cl);
 	tempCoin+=atoi(value);
 	CCString* realCoin=CCString::createWithFormat("%d",tempCoin);
@@ -789,7 +789,7 @@ void HudLayer::setCoin(const char* value){
 
 bool HudLayer::offCoin(const char* value){
 
-	const char* cl=coinLabel->getString();
+	const char* cl=coinLabel->getString().data();
 	int tempCoin=atoi(cl);
 	if(tempCoin-atoi(value)>=0){
 		tempCoin-=atoi(value);
@@ -895,8 +895,8 @@ void HudLayer::setBuffDisplay(const char* buffName, float buffStayTime){
 void HudLayer::updateBuffDisplay(float dt){
 	
 	if(bcdLabel1){
-		if( atoi(bcdLabel1->getString()) >0){
-			bcdLabel1->setString(CCString::createWithFormat("%d",atoi(bcdLabel1->getString())-1)->getCString());
+		if( atoi(bcdLabel1->getString().data()) >0){
+			bcdLabel1->setString(CCString::createWithFormat("%d",atoi(bcdLabel1->getString().data())-1)->getCString());
 		}else{
 			bcdLabel1->removeFromParentAndCleanup(true);
 			bcdLabel1=NULL;
@@ -917,8 +917,8 @@ void HudLayer::updateBuffDisplay2(float dt){
 
 
 	if(bcdLabel2){
-		if( atoi(bcdLabel2->getString()) >0){
-			bcdLabel2->setString(CCString::createWithFormat("%d",atoi(bcdLabel2->getString())-1)->getCString());
+		if( atoi(bcdLabel2->getString().data()) >0){
+			bcdLabel2->setString(CCString::createWithFormat("%d",atoi(bcdLabel2->getString().data())-1)->getCString());
 
 		}else{
 			bcdLabel2->removeFromParentAndCleanup(true);
@@ -1039,7 +1039,7 @@ void HudLayer::setReportCache(){
 					this->addChild(reportSPCSprite,500);
 					CCFadeIn* fn=CCFadeIn::create(0.8f);
 					CCMoveBy* mv=CCMoveBy::create(0.8f,ccp(0,10));
-					CCSpawn* sp=CCSpawn::createWithTwoActions(fn,mv);
+					ax::Spawn* sp=CCSpawn::createWithTwoActions(fn,mv);
 					CCDelayTime* delay2=CCDelayTime::create(1.6f);
 					CCFiniteTimeAction* call2=CCCallFunc::create(this,callfunc_selector(HudLayer::clearSPCReport));
 					CCArray* list=CCArray::create();
@@ -1299,10 +1299,10 @@ void HudLayer::setOugis(CCString* character,CCString* group){
 
 	if(!ougisLayer){
 		CCObject* pObject;
-		CCArray* childArray=this->getChildren();
+		CCArray* childArray=CCArray::createWithVector(this->getChildren());
 		CCARRAY_FOREACH(childArray,pObject){
 			CCNode* object=(CCNode*) pObject;
-			object->pauseSchedulerAndActions();
+			object->pause();
 		}
 
 
@@ -1333,7 +1333,7 @@ void HudLayer::setOugis(CCString* character,CCString* group){
 			startPosX=winSize.width+48;
 			endPosX=winSize.width;
 			CutBg=CCSprite::createWithSpriteFrameName(cutPath2);
-			CutBg->setFlipX(true);
+			CutBg->setFlippedX(true);
 			CutBg->setAnchorPoint(ccp(1,0.5f));
 		}
 
@@ -1345,11 +1345,11 @@ void HudLayer::setOugis(CCString* character,CCString* group){
 
 		CCArray* animeFrames=CCArray::create();
 		for (int i=1;i<=8; i++){
-			CCSpriteFrame *frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("CutLine_%02d.png",i)->getCString());
+			CCSpriteFrame *frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("CutLine_%02d.png",i)->getCString());
 			animeFrames->addObject(frame);
 		}
 
-		CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(animeFrames,0.1f);
+		CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(animeFrames->toVector<CCSpriteFrame*>(),0.1f);
 		CCAction* tempAction=CCAnimate::create(tempAnimation);	
 
 		CCSprite* CutLine=CCSprite::createWithSpriteFrameName("CutLine_01.png");
@@ -1359,7 +1359,7 @@ void HudLayer::setOugis(CCString* character,CCString* group){
 			CutLine->runAction(tempAction);
 			CutLine->runAction(CCMoveTo::create(0.3f,ccp(0,0)));
 		}else{
-			CutLine->setFlipX(true);
+			CutLine->setFlippedX(true);
 			CutLine->setAnchorPoint(ccp(1,0.5f));
 			CutLine->setPosition(ccp(winSize.width+48,winSize.height/2));
 			CutLine->runAction(tempAction);
@@ -1374,7 +1374,7 @@ void HudLayer::setOugis(CCString* character,CCString* group){
 			CutLineUP->setPosition(ccp(-48,2));
 			CutLineUP->runAction(CCMoveTo::create(0.3f,ccp(-1,1)));
 		}else{
-			CutLineUP->setFlipX(true);
+			CutLineUP->setFlippedX(true);
 			CutLineUP->setAnchorPoint(ccp(1,0.5f));
 			CutLineUP->setPosition(ccp(winSize.width+48,winSize.height/2+2));
 			CutLineUP->runAction(CCMoveTo::create(0.3f,ccp(winSize.width+1,winSize.height/2+1)));
@@ -1404,7 +1404,7 @@ void HudLayer::setOugis(CCString* character,CCString* group){
 			CutLineDown->setPosition(ccp(-48,0));
 			CutLineDown->runAction(CCMoveTo::create(0.3f,ccp(0,0)));
 		}else{
-			CutLineDown->setFlipX(true);
+			CutLineDown->setFlippedX(true);
 			CutLineDown->setAnchorPoint(ccp(1,0));
 			CutLineDown->setPosition(ccp(winSize.width+48,winSize.height/2-CutBg->getContentSize().height/2));
 			CutLineDown->runAction(CCMoveTo::create(0.3f,ccp(winSize.width,winSize.height/2-CutBg->getContentSize().height/2)));
@@ -1429,10 +1429,10 @@ void HudLayer::removeOugis(CCNode* sender){
 	ougisLayer=NULL;
 
 	CCObject* pObject;
-	CCArray* childArray=this->getChildren();
+	CCArray* childArray=CCArray::createWithVector(this->getChildren());
 	CCARRAY_FOREACH(childArray,pObject){
 		CCNode* object=(CCNode*) pObject;
-		object->resumeSchedulerAndActions();
+		object->resume();
 	}
 
 

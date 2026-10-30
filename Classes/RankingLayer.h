@@ -1,8 +1,6 @@
 #pragma once
-#include "cocos2d.h"
-#include "SimpleAudioEngine.h"
+#include "Compat/Compat2x.h"
 #include "Defines.h"
-#include "cocos-ext.h"
 #include "MyUtils/CCScrewLayer.h"
 #include "MyUtils/CCStrokeLabel.h"
 

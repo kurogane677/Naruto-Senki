@@ -4,8 +4,7 @@
       
     #include "MD5ChecksumDefines.h"  
     #include "CMD5Checksum.h"  
-#include "platform/CCFileUtils.h"
-#include "cocos2d.h"
+#include "Compat/Compat2x.h"
       
     #ifdef _DEBUG  
     #undef THIS_FILE  
@@ -50,7 +49,7 @@
 		unsigned long nSize;
 		
 		std::string filepath =CCFileUtils::sharedFileUtils()->fullPathForFilename(strFilePath.c_str());
-	    unsigned char* data=CCFileUtils::sharedFileUtils()->getFileData(filepath.c_str(), "r", &nSize);
+	    unsigned char* data=ccGetFileData(filepath.c_str(), "r", &nSize);
 
 
 			 CMD5Checksum MD5Checksum;   //checksum object  

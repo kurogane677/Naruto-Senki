@@ -109,8 +109,8 @@ bool NetworkLayer::init(){
 		//produce the cloud
 		CCSprite* cloud_left=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_left->setPosition(ccp(0,15));
-		cloud_left->setFlipX(true);
-		cloud_left->setFlipY(true);
+		cloud_left->setFlippedX(true);
+		cloud_left->setFlippedY(true);
 		cloud_left->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_left,2);
 
@@ -120,7 +120,7 @@ bool NetworkLayer::init(){
 
 		CCSprite* cloud_right=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_right->setPosition(ccp(winSize.width-cloud_right->getContentSize().width,15));
-		cloud_right->setFlipY(true);
+		cloud_right->setFlippedY(true);
 		cloud_right->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_right,2);
 
@@ -169,7 +169,7 @@ bool NetworkLayer::init(){
 //
 //				}
 //
-//				cocos2d::extension::CCHttpRequest* request = new  cocos2d::extension::CCHttpRequest(); 
+//				CCHttpRequest* request = new  CCHttpRequest(); 
 //				std::string codeFinal;
 //
 //				std::string Andriodstr="";
@@ -203,12 +203,12 @@ bool NetworkLayer::init(){
 //				std::string code2=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
 //				std::string url=SERVER"nsk/list.php?"+code1+code2+"&pw="+PWord+"&androidID="+Andriodstr+"&Imei="+Imeistr;
 //				request->setUrl(url.c_str());  
-//				request->setRequestType( cocos2d::extension::CCHttpRequest::kHttpGet);  
+//				request->setRequestType( CCHttpRequest::kHttpGet);  
 //
 //				request->setResponseCallback(this, callfuncND_selector(NetworkLayer::onListRequestCompleted));  
 //
 //				request->setTag("Post_My_Data");  
-//				cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+//				CCHttpClient::getInstance()->send(request);  
 //				request->release();  
 //
 //			}
@@ -437,12 +437,12 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		//CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -453,12 +453,12 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());
+		CCLog("error buffer:%s" ,"");
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -758,16 +758,16 @@ void NetworkLayer::setSelected(CCObject* sender){
 			
 
 		}else if(!_com1Select){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
-			this->getComSelector1()->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
+			this->getComSelector1()->setSpriteFrame(frame);
 
 			if(btn->_clickTime>=2){
 				_com1Select=_selectHero;
 
 				this->getComLabel1()->stopAllActions();
 				this->getComLabel1()->setOpacity(255);
-				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("com_label2.png"); 
-				this->getComLabel1()->setDisplayFrame(frame);
+				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("com_label2.png"); 
+				this->getComLabel1()->setSpriteFrame(frame);
 				this->getComLabel2()->runAction(seq);
 			}
 
@@ -776,16 +776,16 @@ void NetworkLayer::setSelected(CCObject* sender){
 		}else if(!_com2Select){
 
 
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
-			this->getComSelector2()->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
+			this->getComSelector2()->setSpriteFrame(frame);
 
 			if(btn->_clickTime>=2){
 				_com2Select=_selectHero;
 
 				this->getComLabel2()->stopAllActions();
 				this->getComLabel2()->setOpacity(255);
-				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("com_label2.png"); 
-				this->getComLabel2()->setDisplayFrame(frame);
+				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("com_label2.png"); 
+				this->getComLabel2()->setSpriteFrame(frame);
 
 				_selectImg->removeFromParent();
 				_selectImg=NULL;
