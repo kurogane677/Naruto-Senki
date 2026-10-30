@@ -135,6 +135,7 @@ Uji secara berurutan dan perbaiki temuan sebelum lanjut ke langkah berikutnya.
   - bug crash `Element.cpp` L766 kemungkinan muncul di sini → **perbaiki di langkah ini** (sudah diperbaiki di commit `ba24e58`, menunggu uji)
 
 **Exit:** 3 match berturut-turut tanpa crash, lalu tag `mvp`.
+✅ **MVP disetujui user (2026-10-31)**, tag `mvp`. Dokumentasi setup/build ada di `README.md`.
 
 ### M6: Pasca-MVP
 Masing-masing menjadi milestone kecil tersendiri, dikerjakan sesuai urutan prioritas:
