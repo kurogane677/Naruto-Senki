@@ -24,3 +24,9 @@ out/
 # IDE
 .idea/
 .vscode/
+
+# Axmol generated
+/run.bat
+run.bat.txt
+CMakeCache.txt
+CMakeFiles/

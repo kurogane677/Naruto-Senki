@@ -76,13 +76,16 @@ Setiap milestone punya **exit criteria** dan ditutup dengan **commit + tag git**
 **Exit:** `git diff legacy-2.2.2 --stat` hanya berisi perubahan encoding, dan komentar Cina terbaca.
 
 ### M2: Kerangka proyek Axmol
-- [ ] `axmol new` ke folder sementara, lalu salin `CMakeLists.txt`, `proj.win32/` (`main.cpp`), dan struktur template ke root repo
-- [ ] `Resources/` dipetakan sebagai content folder template; `Classes/` tetap di tempatnya
-- [ ] `CMakeLists.txt`:
+- [x] `axmol new` ke folder sementara, lalu salin `CMakeLists.txt`, `proj.win32/` (`main.cpp`), dan struktur template ke root repo
+  - yang disalin: `cmake/`, `CMakeLists.txt`, `.axproj`, `build.bat`, `run.bat.in`, `.clang-format`, `proj.win32/`, `proj.android/`
+  - `.editorconfig` **tidak** disalin, karena memaksa LF dan trim whitespace pada kode lama
+- [x] `Resources/` dipetakan sebagai content folder template; `Classes/` tetap di tempatnya
+- [x] `CMakeLists.txt`:
   - source: semua `Classes/*.cpp` + `Classes/MyUtils/*.cpp` + `MyUtils/sqlite3.c` (dikompilasi sebagai C)
-  - opsi compiler `/utf-8`
-- [ ] Hapus `proj.win32/*.vcxproj`, `.sln`, `.sdf`, dan `ipch/` lama (tetap aman di tag `legacy-2.2.2`)
-- [ ] Cek di source Axmol status hal-hal berikut, lalu catat di Log Keputusan:
+  - opsi compiler `/utf-8` (otomatis dari `ax_setup_app_config`)
+- [x] Hapus `proj.win32/*.vcxproj`, `.sln`, `.sdf`, dan `ipch/` lama (tetap aman di tag `legacy-2.2.2`)
+  - binary engine 2.2.2 (`Debug.win32`, `Release.win32`) dipindah ke `C:\dev\naruto-senki-legacy-bin\`, bukan dihapus
+- [x] Cek di source Axmol status hal-hal berikut, lalu catat di Log Keputusan:
   - `__String`, `__Array`, `__Dictionary`, `__NotificationCenter`
   - `SimpleAudioEngine`
   - header compat `cocos2d.h`
@@ -168,3 +171,6 @@ Masing-masing menjadi milestone kecil tersendiri, dikerjakan sesuai urutan prior
 | 2026-10-31 | M0: CMake 4.4.4, pwsh 7.6.9, workload C++ VS 2026 (MSVC 14.51, SDK 10.0.26100), Axmol v2.11.5 di `C:\dev\axmol`. `setup.ps1` butuh Windows Developer Mode |
 | 2026-10-31 | M1: `.gitattributes` `* -text`, karena `core.autocrlf=true` di level sistem akan mengubah byte resource yang dicek MD5 |
 | 2026-10-31 | M1: 18 file GBK → UTF-8 tanpa BOM, round-trip terverifikasi, jumlah baris tetap. `RankingLayer.cpp` sudah UTF-8 BOM sejak awal. Byte `0x14` tersembunyi di `StartMenu.cpp` tetap utuh. **Wajib compile dengan `/utf-8`** (M2) |
+| 2026-10-31 | M2: Axmol 2.11.5 **sudah menghapus** `__String`, `__Array`, `__Dictionary`, `__NotificationCenter`, dan `SimpleAudioEngine`. Shim buatan sendiri di M3 wajib. `core/cocos2d.h` hanya berisi alias kecil (`namespace cocos2d = ax`, `Ref` = `Object`, `CC_SAFE_*`, `CCLOG`, `CC_CALLBACK_*`). C++20; `/utf-8` otomatis |
+| 2026-10-31 | M2: configure CMake berhasil dengan generator "Visual Studio 18 2026" x64 ke `build_x64/`. 28 source dari `Classes/` (termasuk `sqlite3.c`), resource dari `Resources/` |
+| 2026-10-31 | M2: binary engine 2.2.2 (`Debug.win32`/`Release.win32`, satu-satunya salinan) dipindah ke `C:\dev\naruto-senki-legacy-bin\` |
