@@ -328,10 +328,6 @@ void SkillLayer::initInterface(){
 
 	KTools* tool= KTools::create();
 
-	if(!tool->checkData()){
-		return;
-	}
-
 	
 
 		char* skillbg_src="skill_bg1.png";

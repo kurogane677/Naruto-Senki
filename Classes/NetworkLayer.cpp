@@ -72,17 +72,6 @@ bool NetworkLayer::init(){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
 			
-			KTools* tool= KTools::create();
-			
-
-
-			if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-				if(tool->checkMD5()==0){
-					SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-					CCDirector::sharedDirector()->end();
-					return false;
-				}
-			}
 			
 			
 		char* bg_src="blue_bg.png";

@@ -133,7 +133,6 @@ public:
 	bool _isExiting;
 
 	CREATE_FUNC(GameLayer);
-	std::vector<char*> KeyList;
 protected:
 	void onHttpRequestCompleted(CCNode *sender ,void *data);
 	virtual void	onEnter();

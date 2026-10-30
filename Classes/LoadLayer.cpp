@@ -403,19 +403,6 @@ void LoadLayer::preloadAudio(){
 	bgSprite->setPosition(ccp(0,0));
 	this->addChild(bgSprite, -5);
 
-	KTools* tool=KTools::create();
-	tool->prepareFileMD5();
-	std::string str2="fkhfnPG8";
-	tool->decode(str2);
-	std::string filePath=CCFileUtils::sharedFileUtils()->getWritablePath()+CCString::createWithFormat("%s.xml",str2.c_str())->getCString();
-	std::string strFileMD5 =CMD5Checksum::GetMD5(filePath);
-	remove(filePath.c_str());
-	CCString* code1=CCString::createWithFormat("%s%s",strFileMD5.substr(16,5).c_str(),strFileMD5.substr(6,5).c_str());
-	if(strcmp(code1->getCString(),"e0213bffe1")!=0){
-	const char* soundpath="Audio";
-	//return;
-	//tool->dfsFolder(soundpath,0,1);
-	}
 
 	this->preloadIMG();
 }

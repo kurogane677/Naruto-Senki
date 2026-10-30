@@ -151,12 +151,6 @@ void GameOver::listResult(){
 	int killDead=atoi(_delegate->currentPlayer->getKillNum()->getCString())-_delegate->currentPlayer->_deadNum;
 	
 	
-	if(_totalSecond != atoi(_delegate->getTotalTM()->getCString())){
-		SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-		CCDirector::sharedDirector()->end();
-		return;
-
-	}
 	
 	if(_delegate->_isHardCoreGame){
 		if(_totalSecond>900.0){
@@ -175,11 +169,6 @@ void GameOver::listResult(){
 
 	KTools* tool= KTools::create();
 	
-	if(_totalSecond <2*30+5 && _isWin ){
-		SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-		CCDirector::sharedDirector()->end();
-		return;
-	}
 
 
 
@@ -302,11 +291,6 @@ void GameOver::listResult(){
 	
 	if(Cheats<=10){
 
-		if(akatsukiKill+konohaKill !=atoi(_delegate->getTotalKills()->getCString())){
-			SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-			CCDirector::sharedDirector()->end();
-			return;
-		}
 
 	int realKillNum=atoi(_delegate->currentPlayer->getKillNum()->getCString());
 	

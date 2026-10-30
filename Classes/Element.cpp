@@ -68,12 +68,7 @@ void HeroElement::setID(CCString* character,CCString* role,CCString* group){
 	
 	filePath=CCString::createWithFormat("Element/%s/%s.xml",this->getCharacter()->getCString(),this->getCharacter()->getCString())->getCString();
 		
-	std::string key =tool->getKeycode(filePath);
-	int id=tool->checkMD5(filePath);
-	
-	if(strcmp(key.c_str(),_delegate->KeyList[id])!=0){
-		//return;
-	}
+
 	
 	
 	
@@ -1198,12 +1193,7 @@ void Tower::setID(CCString* character,CCString* role,CCString* group){
 	}
 	
 	KTools* tool= KTools::create();
-	std::string key =tool->getKeycode(filePath);
-	int id=tool->checkMD5(filePath);
-	
-	if(strcmp(key.c_str(),_delegate->KeyList[id])!=0){
-		//return;
-	}
+
 	
 
 	tool->readXMLToArray(filePath,animationArray);	
@@ -1350,7 +1340,6 @@ void Monster::setID(CCString* character,CCString* role,CCString* group){
 
 
 	KTools* tool= KTools::create();
-	std::string key =tool->getKeycode(filePath);
 	
 	tool->readXMLToArray(filePath,animationArray);	
 
@@ -1858,12 +1847,7 @@ void Bullet::setID(CCString* character,CCString* role,CCString* group){
 
 
 	KTools* tool= KTools::create();
-	std::string key =tool->getKeycode(filePath);
-	int id=tool->checkMD5(filePath);
-	
-	if(strcmp(key.c_str(),_delegate->KeyList[id])!=0){
-		//return;
-	}
+
 	
 
 	tool->readXMLToArray(filePath,animationArray);	

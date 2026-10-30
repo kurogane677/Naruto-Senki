@@ -3403,10 +3403,10 @@ void StartMenu::onTrainingCallBack(){
 	if(Cheats>10){
 		i=2;
 	}
+    this->onNormalCallBack(NULL);	
+	return;
 
-	if(i==0){
-		this->onNormalCallBack(NULL);	
-	}else if(i==1){
+	if(i==1){
 	
 	//加载序列集
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
