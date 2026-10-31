@@ -396,8 +396,9 @@ void GameLayer::onGameStart(float dt){
 	CCObject* pObject;
 	CCARRAY_FOREACH(this->_CharacterArray,pObject){
 		ActionManager* tempChar=(ActionManager*) pObject;
-		if(strcmp(tempChar->getRole()->getCString(),"Com")==0){
-		//tempChar->doAI();
+		// guardians (also "Com") already started their AI in initGard
+		if(strcmp(tempChar->getRole()->getCString(),"Com")==0 && !tempChar->_isAI){
+			tempChar->doAI();
 		}
 		
 	}
