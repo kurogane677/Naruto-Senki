@@ -112,10 +112,15 @@ void AIController::strike(ActionManager* target, int type)
 
 void AIController::tick(float dt)
 {
+    // Movement and attacks are re-evaluated every tick like the original AI:
+    // walk() keeps going until the next command, so skipping ticks made bots
+    // overshoot their target and never get in range. Reaction time only
+    // applies to switching targets (here) and to casting skills (ruleReady).
     _time += dt;
-    if (_time < _nextThink)
-        return;
-    _nextThink = _time + randFloat(_params->thinkMin, _params->thinkMax);
+    bool think = _time >= _nextThink;
+    _thinking = think;
+    if (think)
+        _nextThink = _time + randFloat(_params->thinkMin, _params->thinkMax);
 
     _hero->_mainTarget = nullptr;
     if (_profile->idleWhenBuff && _hero->_skillChangeBuffValue)
@@ -127,7 +132,7 @@ void AIController::tick(float dt)
                 return;
     }
 
-    _hero->_mainTarget = pickHeroTarget();
+    _hero->_mainTarget = pickHeroTarget(think);
     if (survive())
         return;
     buyGear();
@@ -145,7 +150,7 @@ void AIController::tick(float dt)
 // ---------------------------------------------------------------------------
 // targeting
 
-ActionManager* AIController::pickHeroTarget()
+ActionManager* AIController::pickHeroTarget(bool think)
 {
     // also refreshes enemy/friend combat points for the retreat check
     _hero->findEnemy2("Hero");
@@ -156,11 +161,12 @@ ActionManager* AIController::pickHeroTarget()
         return nullptr;
     }
 
-    bool committedOk = _committed && _time < _commitUntil &&
-                       _game->_CharacterArray->containsObject(_committed) &&
+    bool committedOk = _committed && _game->_CharacterArray->containsObject(_committed) &&
                        targetable(_hero, _committed, _game);
-    if (committedOk)
+    if (committedOk && (_time < _commitUntil || !think))
         return _committed;
+    if (!think && !_committed)
+        return nearest;  // first contact: react on the next decision
 
     ActionManager* choice = nearest;
     const TeamBrain& team = TeamBrain::get(_game, _hero->group());
@@ -420,10 +426,9 @@ bool AIController::retreatFromFight(const CCPoint& sp)
     const TeamBrain& team = TeamBrain::get(_game, h->group());
     if (gap <= _profile->retreatGap && !(team.outnumbered && role() != HeroRole::Tank))
         return false;
-    if (fabsf(sp.x) < 160)
-        h->stepBack2();
-    else
-        h->idle();
+    if (fabsf(sp.x) >= 160)
+        return false;  // keep a safe distance but keep farming (the old AI just stood still)
+    h->stepBack2();
     return true;
 }
 
@@ -484,7 +489,7 @@ bool AIController::fightHero()
     // waiting on cooldowns: sometimes side-step instead of face-tanking
     if (_time < _strafeUntil)
         return true;
-    if ((role() == HeroRole::Ranged || role() == HeroRole::Support) && randChance(0.08f))
+    if (_thinking && (role() == HeroRole::Ranged || role() == HeroRole::Support) && randChance(0.08f))
     {
         _strafeUntil = _time + 0.4f;
         h->stepBack2();

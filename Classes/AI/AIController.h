@@ -45,7 +45,7 @@ private:
     bool farm();
     void advance();
 
-    ActionManager* pickHeroTarget();
+    ActionManager* pickHeroTarget(bool think);
     bool ruleReady(const SkillRule& rule);
     bool condsHold(const SkillRule& rule, ActionManager* target);
     bool slotReady(Slot slot) const;
@@ -60,6 +60,7 @@ private:
 
     float _time = 0;
     float _nextThink = 0;
+    bool _thinking = false;  // this tick is a decision point (see tick())
     ActionManager* _committed = nullptr;  // hero target kept for a while
     float _commitUntil = 0;
     float _dodgeUntil = 0;

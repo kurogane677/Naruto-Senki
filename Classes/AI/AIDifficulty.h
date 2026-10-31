@@ -13,7 +13,7 @@ enum class Difficulty
 // Tunables per difficulty level. Applies to every bot, allies included.
 struct DifficultyParams
 {
-    float thinkMin, thinkMax;        // seconds between decisions
+    float thinkMin, thinkMax;        // seconds before a bot re-picks its target
     float castDelayMin, castDelayMax;  // hesitation after a skill comes off cooldown
     float castChance;                // chance to take a skill opportunity
     float potionHp;                  // drink a potion below this HP fraction
