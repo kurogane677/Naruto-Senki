@@ -19,7 +19,7 @@ GameOver::~GameOver(void)
 {
 	CCAnimationCache::purgeSharedAnimationCache();
 	CCSpriteFrameCache::sharedSpriteFrameCache()->removeUnusedSpriteFrames();
-	CCTextureCache::sharedTextureCache()->removeUnusedTextures();
+	CCDirector::sharedDirector()->getTextureCache()->removeUnusedTextures();
 
 }
 
@@ -38,10 +38,10 @@ bool GameOver::init(CCRenderTexture* snapshoot){
 		CCTexture2D* bgTexture=snapshoot->getSprite()->getTexture();
 		CCSprite* bg=CCSprite::createWithTexture(bgTexture);
 		bg->setAnchorPoint(ccp(0,0));
-		bg->setFlipY(true);
+		bg->setFlippedY(true);
 		this->addChild(bg,0);
 
-		CCLayer* blend=CCLayerColor::create(ccc4(0, 0, 0, 150),winSize.width,winSize.height);
+		CCLayerColor* blend=CCLayerColor::create(ccc4(0, 0, 0, 150),winSize.width,winSize.height);
 		this->addChild(blend,1);
 
 		//produce the menu_bar
@@ -109,7 +109,7 @@ void GameOver::listResult(){
 	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Chiyo")==0||
 	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kisame")==0
 		){
-		half->setFlipX(true);
+		half->setFlippedX(true);
 	}
 
 	half->setAnchorPoint(ccp(0,0));
@@ -151,12 +151,6 @@ void GameOver::listResult(){
 	int killDead=atoi(_delegate->currentPlayer->getKillNum()->getCString())-_delegate->currentPlayer->_deadNum;
 	
 	
-	if(_totalSecond != atoi(_delegate->getTotalTM()->getCString())){
-		SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-		CCDirector::sharedDirector()->end();
-		return;
-
-	}
 	
 	if(_delegate->_isHardCoreGame){
 		if(_totalSecond>900.0){
@@ -175,11 +169,6 @@ void GameOver::listResult(){
 
 	KTools* tool= KTools::create();
 	
-	if(_totalSecond <2*30+5 && _isWin ){
-		SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-		CCDirector::sharedDirector()->end();
-		return;
-	}
 
 
 
@@ -302,11 +291,6 @@ void GameOver::listResult(){
 	
 	if(Cheats<=10){
 
-		if(akatsukiKill+konohaKill !=atoi(_delegate->getTotalKills()->getCString())){
-			SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-			CCDirector::sharedDirector()->end();
-			return;
-		}
 
 	int realKillNum=atoi(_delegate->currentPlayer->getKillNum()->getCString());
 	
@@ -426,32 +410,31 @@ void GameOver::listResult(){
 			recordScore->setScale(0.35f);
 			this->addChild(recordScore,10);
 
-			upload_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("upload_btn.png"),CCSprite::createWithSpriteFrameName("upload_btn.png"),NULL,this,menu_selector(GameOver::onUPloadBtn));
-			CCMenu* upMenu=CCMenu::create(upload_btn,NULL);
-			upload_btn->setAnchorPoint(ccp(1.0,0));
-			upMenu->setPosition(ccp(winSize.width/2+result_bg->getContentSize().width/2-14,winSize.height/2+result_bg->getContentSize().height/2-62));
-			this->addChild(upMenu,7);
+			//upload_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("upload_btn.png"),CCSprite::createWithSpriteFrameName("upload_btn.png"),NULL,this,menu_selector(GameOver::onUPloadBtn));
+			//CCMenu* upMenu=CCMenu::create(upload_btn,NULL);
+			//upload_btn->setAnchorPoint(ccp(1.0,0));
+			//upMenu->setPosition(ccp(winSize.width/2+result_bg->getContentSize().width/2-14,winSize.height/2+result_bg->getContentSize().height/2-62));
+			//this->addChild(upMenu,7);
 
 
 			detailRecord=CCString::createWithFormat("%02d:%02d,%s,%d,%d",_minute,_delegate->_second,_delegate->currentPlayer->getKillNum()->getCString(),_delegate->currentPlayer->_deadNum,_delegate->currentPlayer->_flogNum)->getCString();
 
 		}
 
-		//¼ÇÂ¼ ×îËÙ»ñÊ¤Ê±¼ä
+		//è®°å½• æœ€é€ŸèŽ·èƒœæ—¶é—´
+
 		if(Cheats<=10){
 
 			resultChar=_delegate->currentPlayer->getCharacter();
-
-			//¾õÐÑ±Ø±¸
-			if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"SageNaruto")==0){
+			// records are kept under the base hero, not its transformation
+			const char* playerChar=resultChar->getCString();
+			if(strcmp(playerChar,"SageNaruto")==0 || strcmp(playerChar,"RikudoNaruto")==0){
 				resultChar=CCString::create("Naruto");
-			}else if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"RikudoNaruto")==0){
-				resultChar=CCString::create("Naruto");
-			}else if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"SageJiraiya")==0){
+			}else if(strcmp(playerChar,"SageJiraiya")==0){
 				resultChar=CCString::create("Jiraiya");
-			}else if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"ImmortalSasuke")==0){
+			}else if(strcmp(playerChar,"ImmortalSasuke")==0){
 				resultChar=CCString::create("Sasuke");
-			}else if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"RockLee")==0){
+			}else if(strcmp(playerChar,"RockLee")==0){
 				resultChar=CCString::create("Lee");
 			}
 
@@ -469,9 +452,7 @@ void GameOver::listResult(){
 				}
 				
 				CCString* realWin=CCString::createWithFormat("%d",tempWin);
-				if(CError!=1){
-					tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column1",(char*) realWin->getCString(),false);
-				}
+				tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column1",(char*) realWin->getCString(),false);
 				//
 				if(_delegate->_isRandomChar && resultScore>=120 ){
 					CCObject* pObject;
@@ -512,9 +493,7 @@ void GameOver::listResult(){
 							}
 
 							CCString* realWin=CCString::createWithFormat("%d",tempWin);
-							if(CError!=1){
-								tool->saveSQLite("CharRecord","name",hero->getCharacter()->getCString(),"column1",(char*) realWin->getCString(),false);
-							}
+							tool->saveSQLite("CharRecord","name",hero->getCharacter()->getCString(),"column1",(char*) realWin->getCString(),false);
 
 						}
 
@@ -523,12 +502,10 @@ void GameOver::listResult(){
 
 				}
 
-				//×îËÙ¼ÇÂ¼
+				//æœ€é€Ÿè®°å½•
 				CCString* recordTime=tool->readSQLite("CharRecord","name",resultChar->getCString(),"column3");
 				if(recordTime->length()==0){
-					if(CError!=1){
-						tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",(char*) tempTime->getCString(),false);
-					}
+					tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",(char*) tempTime->getCString(),false);
 				}else{
 					std::string bestTime=(std::string) recordTime->getCString();
 					std::string recordHour=bestTime.substr(0,2);
@@ -557,9 +534,7 @@ void GameOver::listResult(){
 					}
 
 					if(isNewRecord){
-						if(CError!=1){
-							tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",(char*) tempTime->getCString(),false);
-						}
+						tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",(char*) tempTime->getCString(),false);
 					}
 
 
@@ -572,9 +547,7 @@ void GameOver::listResult(){
 			 CCString* loseNum=tool->readSQLite("Achievement","name",resultChar->getCString(),"column2"); 
 			 int tempLose=atoi(loseNum->getCString())+1;
 			 CCString* realLose=CCString::createWithFormat("%d",tempLose);
-			 if(CError!=1){
 			 tool->saveSQLite("Achievement","name",resultChar->getCString(),"column2",(char*) realLose->getCString(),false);
-			 }
 			 }	*/
 
 
@@ -617,7 +590,7 @@ void GameOver::onUPloadBtn(CCObject* sender){
 	return;
 	if(!isPosting && strcmp(PWord.c_str(),"")!=0){
 		isPosting=true;
-		//Ë¢ÐÂ°´Å¥
+		//åˆ·æ–°æŒ‰é’®
 		if(!refreshBtn){
 			refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 			refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -634,7 +607,7 @@ void GameOver::onUPloadBtn(CCObject* sender){
 		remove(filePath.c_str());
 		
 
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		CCHttpRequest* request = new CCHttpRequest();  
 		
 		std::string code="code=1000";
 		std::string mem=tool->encodeData(CCString::createWithFormat("%d",MemberID)->getCString());
@@ -650,7 +623,7 @@ void GameOver::onUPloadBtn(CCObject* sender){
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(GameOver::onHttpRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release(); 
 
 	}
@@ -660,18 +633,18 @@ void GameOver::onUPloadBtn(CCObject* sender){
 void GameOver::onHttpRequestCompleted(CCNode *sender ,void *data) {  
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 	CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -682,12 +655,12 @@ void GameOver::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 	CCLog("response failed");  
-	CCLog("error buffer:%s" ,response->getErrorBuffer()); 
+	CCLog("error buffer:%s" ,""); 
 	CCTips *tip=CCTips::create("ServerError");
 	this->addChild(tip,5000);
 	return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 	
 	std::string buf(buffer->begin(),buffer->end()); 

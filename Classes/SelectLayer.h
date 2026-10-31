@@ -1,6 +1,5 @@
 #pragma once
-#include "cocos2d.h"
-#include "SimpleAudioEngine.h"
+#include "Compat/Compat2x.h"
 #include "LoadLayer.h"
 #include "SkillLayer.h"
 
@@ -37,7 +36,6 @@ public:
 private:
 	void	onGameStart(CCObject* sender);
 	void    onSkillMenu(CCObject* sender);
-	void	onError(CCObject* sender);
 	void	onBackToMenu(CCObject* sender);
 };
 

@@ -1,6 +1,5 @@
 #pragma once
-#include "cocos2d.h"
-#include "SimpleAudioEngine.h"
+#include "Compat/Compat2x.h"
 
 USING_NS_CC;
 

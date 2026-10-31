@@ -1,9 +1,8 @@
-#include "cocos2d.h"
+#include "Compat/Compat2x.h"
 #include "StartMenu.h"
 #include "MyUtils/KTools.h"
-#include "SimpleAudioEngine.h"
 #include "Defines.h"
-class GameScene :  public cocos2d::CCScene{
+class GameScene :  public CCScene{
 public:
 	GameScene(void);
 	~GameScene(void);

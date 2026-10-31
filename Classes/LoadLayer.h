@@ -1,14 +1,13 @@
 #pragma once
-#include "cocos2d.h"
+#include "Compat/Compat2x.h"
 #include "Defines.h"
-#include "SimpleAudioEngine.h"
 #include "GameLayer.h"
 #include "BGLayer.h"
 #include "HudLayer.h"
 
 
 #if (CC_TARGET_PLATFORM==CC_PLATFORM_ANDROID) 
-#include "../cocos2dx/platform/android/jni/JniHelper.h"  
+#include "platform/android/jni/JniHelper.h"  
 #endif  
 
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "cocos2d.h"
+#include "Compat/Compat2x.h"
 #include <map>
 
 
@@ -9,7 +9,7 @@
 #define random(x) (rand()%x)
 
 
-#define  FONT_TYPE "Î¢ÈíÑÅºÚ"
+#define  FONT_TYPE "å¾®è½¯é›…é»‘"
 
 // layer's tag
 #define BgTag	1
@@ -18,7 +18,6 @@
 
 
 extern int Cheats;
-extern int CError;
 extern int adResult;
 extern int MemberID;
 extern int GroupID;

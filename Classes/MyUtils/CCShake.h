@@ -1,9 +1,9 @@
 #ifndef __SHAKE_H__  
 #define __SHAKE_H__  
-#include "cocos2d.h"  
+#include "Compat/Compat2x.h"  
 USING_NS_CC;  
 
-class CCShake : public cocos2d::CCActionInterval  
+class CCShake : public CCActionInterval  
 {  
 	// Code by Francois Guibert  
 	// Contact: www.frozax.com - http://twitter.com/frozax - www.facebook.com/frozax  
@@ -18,7 +18,7 @@ public:
 
 protected:  
 
-	void startWithTarget(cocos2d::CCNode *pTarget);  
+	void startWithTarget(CCNode *pTarget);  
 	void update(float time);  
 	void stop(void);  
 

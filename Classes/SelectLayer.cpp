@@ -34,7 +34,7 @@ bool SelectLayer::init(){
 	do{
 		CC_BREAK_IF(!CCLayer::init());
 
-			//¼ÓÔØÐòÁÐ¼¯	
+			//åŠ è½½åºåˆ—é›†	
 		    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Record.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Record2.plist");		
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
@@ -44,15 +44,6 @@ bool SelectLayer::init(){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
 			
-			KTools* tool= KTools::create();
-
-			if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-				if(tool->checkMD5()==0){
-					SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-					CCDirector::sharedDirector()->end();
-					return false;
-				}
-			}
 			
 			
 		char* bg_src="red_bg.png";
@@ -80,8 +71,8 @@ bool SelectLayer::init(){
 		//produce the cloud
 		CCSprite* cloud_left=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_left->setPosition(ccp(0,15));
-		cloud_left->setFlipX(true);
-		cloud_left->setFlipY(true);
+		cloud_left->setFlippedX(true);
+		cloud_left->setFlippedY(true);
 		cloud_left->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_left,2);
 
@@ -91,7 +82,7 @@ bool SelectLayer::init(){
 
 		CCSprite* cloud_right=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_right->setPosition(ccp(winSize.width-cloud_right->getContentSize().width,15));
-		cloud_right->setFlipY(true);
+		cloud_right->setFlippedY(true);
 		cloud_right->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_right,2);
 
@@ -119,7 +110,7 @@ bool SelectLayer::init(){
 		this->addChild(menu_bar_t,2);
 
 		
-		CCSprite* select_title=CCSprite::createWithSpriteFrameName("select_title.png");
+		CCSprite* select_title=CCSprite::createWithSpriteFrameName("hcmode_title.png");
 		
 		select_title->setAnchorPoint(ccp(0,0));
 		select_title->setPosition(ccp(2,winSize.height-select_title->getContentSize().height-2));
@@ -128,7 +119,7 @@ bool SelectLayer::init(){
 		
 
 		if(!SaveError){
-			int first_player=NULL;
+			int first_player=0;
 			selectArray=CCArray::create();
 			
 			char* selectList[]={"Naruto","Sakura","Sai",
@@ -251,14 +242,6 @@ void SelectLayer::setSelected(CCObject* sender){
 }
 
 
-void SelectLayer::onError(CCObject* sender){
-
-	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-	CCDirector::sharedDirector()->end();
-	return;
-
-}
-
 
 void SelectLayer::onSkillMenu(CCObject* sender){
 
@@ -332,7 +315,7 @@ void SelectLayer::onGameStart(CCObject* sender){
 				continue;
 			}		
 			CCString* hero=CCString::create(heroList[i]);
-			if(num2<=2*3+3){
+			{
 				realHero->addObject(hero);
 			}
 		

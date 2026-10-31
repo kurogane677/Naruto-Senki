@@ -1,12 +1,10 @@
 #pragma once
 #include "Defines.h"
-#include "cocos2d.h"
-#include "SimpleAudioEngine.h"
+#include "Compat/Compat2x.h"
 #include "SelectLayer.h"
 #include "NetworkLayer.h"
 #include "CreditsLayer.h"
 
-#include "cocos-ext.h"
 #include "MyUtils/KTools.h"
 #include "MyUtils/CCStrokeLabel.h"
 #include "MyUtils/CCScrewLayer.h"
@@ -90,6 +88,7 @@ public:
 	void				onHardLayerCallBack();
 	void				onHardCoreCallBack();
 	void				onNormalCallBack(CCObject* sender);
+	void				openHeroSelect(bool isHardCore);
 	void				onCreditsCallBack();
 	void				onExitCallBack();
 	void				onNewsBtn(CCObject* sender);
@@ -141,11 +140,11 @@ public:
 	
 	CCLayer* input_layer;
 
-	cocos2d::extension::CCEditBox* usernameInput;
-	cocos2d::extension::CCEditBox* pwInput;
-	cocos2d::extension::CCEditBox* searchInput;
-	cocos2d::extension::CCEditBox* nameInput;
-	cocos2d::extension::CCEditBox* gpwInput;
+	CCEditBox* usernameInput;
+	CCEditBox* pwInput;
+	CCEditBox* searchInput;
+	CCEditBox* nameInput;
+	CCEditBox* gpwInput;
 
 	static const int	_pos01=48;
 	static const int	_pos02=92;

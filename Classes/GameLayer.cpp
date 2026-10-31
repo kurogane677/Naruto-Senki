@@ -4,7 +4,6 @@
 #include "HudLayer.h"
 #include "StartMenu.h"
 
-int CError=0;
 
 using namespace CocosDenshion;
 
@@ -55,154 +54,6 @@ bool GameLayer::init(){
 	do{
 		CC_BREAK_IF(!CCLayer::init());
 		//CCTexture2D::setDefaultAlphaPixelFormat(kCCTexture2DPixelFormat_RGBA4444);  
-		KeyList.push_back("8396c,4a035");
-		KeyList.push_back("8384b,880d8");
-		KeyList.push_back("f2e4e,4203d");
-		KeyList.push_back("452eb,8a5ca");
-		KeyList.push_back("ef77f,226b2");
-		KeyList.push_back("3c67e,65275");
-		KeyList.push_back("194fa,ed62c");
-		KeyList.push_back("738e3,3dcdd");
-		KeyList.push_back("1004b,fab1a");
-		KeyList.push_back("6eee4,724c5");
-		KeyList.push_back("c7475,b59d9");
-		KeyList.push_back("54339,e85f7");
-		KeyList.push_back("a0959,7364e");
-		KeyList.push_back("57dca,0f3bd");
-		KeyList.push_back("4cc9b,11374");
-		KeyList.push_back("d0705,f5120");
-		KeyList.push_back("59c42,32637");
-		KeyList.push_back("ba442,6aa6d");
-		KeyList.push_back("a80ce,75ddf");
-		KeyList.push_back("5c458,87e85");
-		KeyList.push_back("2bd55,60e5f");
-		KeyList.push_back("10d9b,ed7b0");
-		KeyList.push_back("893f9,1bd0a");
-		KeyList.push_back("0723f,ee621");
-		KeyList.push_back("cd67d,20fa5");
-		KeyList.push_back("e1b9e,0e13b");
-		KeyList.push_back("898df,7a17b");
-		KeyList.push_back("8f941,db312");
-		KeyList.push_back("6ef58,5e73b");
-		KeyList.push_back("8b4aa,da21a");
-		KeyList.push_back("5b3b4,f26c1");
-		KeyList.push_back("db7d1,25d60");
-		KeyList.push_back("37a08,c9b59");
-		KeyList.push_back("525c0,f4cad");
-		KeyList.push_back("58519,d99f8");
-		KeyList.push_back("af689,34cb2");
-		KeyList.push_back("7a8b4,efa9a");
-		KeyList.push_back("68e38,c9a65");
-		KeyList.push_back("c04d9,0caa7");
-		KeyList.push_back("10f02,d5e1c");
-		KeyList.push_back("24b7c,8a25a");
-		KeyList.push_back("2029e,01629");
-		KeyList.push_back("8d7d6,3ff38");
-		KeyList.push_back("80a78,cac62");
-		KeyList.push_back("2105b,32445");
-		KeyList.push_back("ea981,0ea5f");
-		KeyList.push_back("33ca1,ae63e");
-		KeyList.push_back("c8687,fde6d");
-		KeyList.push_back("fd008,faf10");
-		KeyList.push_back("38811,e1370");
-		KeyList.push_back("65459,2d764");
-		KeyList.push_back("a7bb2,5db37");
-		KeyList.push_back("4267f,f0025");
-		KeyList.push_back("ef094,5d08d");
-		KeyList.push_back("36a34,be5fc");
-		KeyList.push_back("d38d6,eccc8");
-		KeyList.push_back("923b1,4cc85");
-		KeyList.push_back("21a58,4d524");
-		KeyList.push_back("81cbc,7505c");
-		KeyList.push_back("b1b3d,0f5e4");
-		KeyList.push_back("222d6,fc46c");
-		KeyList.push_back("b763e,d5996");
-		KeyList.push_back("6635b,83b88");
-		KeyList.push_back("a207f,80adc");
-		KeyList.push_back("c9926,a34ca");
-		KeyList.push_back("ea652,e776e");
-		KeyList.push_back("61196,54b94");
-		KeyList.push_back("f528a,1bd6c");
-		KeyList.push_back("29f69,4b537");
-		KeyList.push_back("fb6d8,bf1ee");
-		KeyList.push_back("e88e3,44dbd");
-		KeyList.push_back("ef895,53aae");
-		KeyList.push_back("0a27e,3030e");
-		KeyList.push_back("b77aa,002f0");
-		KeyList.push_back("db99f,9e4f6");
-		KeyList.push_back("53e6f,fdeaa");
-		KeyList.push_back("6252d,b3c23");
-		KeyList.push_back("35807,0b2e8");
-		KeyList.push_back("bf35c,a2e06");
-		KeyList.push_back("da1bd,2927e");
-		KeyList.push_back("575d5,cd186");
-		KeyList.push_back("75978,df505");
-		KeyList.push_back("ebf33,01ba2");
-		KeyList.push_back("2fd64,20d11");
-		KeyList.push_back("f23e5,c7c03");
-		KeyList.push_back("6979f,fe257");
-		KeyList.push_back("15c08,f4ec9");
-		KeyList.push_back("10d49,580e7");
-		KeyList.push_back("7367c,111e7");
-		KeyList.push_back("72a0f,d06fb");
-		KeyList.push_back("e0ef6,20d2f");
-		KeyList.push_back("bb21b,54211");
-		KeyList.push_back("b1871,f58bc");
-		KeyList.push_back("c47a7,05b13");
-		KeyList.push_back("ebb56,cacca");
-		KeyList.push_back("bdf5e,46ab8");
-		KeyList.push_back("c8268,a3f47");
-		KeyList.push_back("7528e,7ef23");
-		KeyList.push_back("30779,4166b");
-		KeyList.push_back("b6e64,bb46b");
-		KeyList.push_back("51de9,7c3dc");
-		KeyList.push_back("a5c50,10757");
-		KeyList.push_back("8240d,edd82");
-		KeyList.push_back("22608,7cdd1");
-		KeyList.push_back("0e676,8361b");
-		KeyList.push_back("e3d38,ec408");
-		KeyList.push_back("f7e12,7c28b");
-		KeyList.push_back("bb902,0ddf9");
-		KeyList.push_back("b0a43,5dbc7");
-		KeyList.push_back("e9388,6eca3");
-		KeyList.push_back("2e91a,cca0b");
-		KeyList.push_back("f48a5,337e3");
-		KeyList.push_back("c10e3,d4d06");
-		KeyList.push_back("4bc9d,6975b");
-		KeyList.push_back("7a0a1,8bc38");
-		KeyList.push_back("377ec,f2a3f");
-		KeyList.push_back("5f3ff,d5a32");
-		KeyList.push_back("a060f,67454");
-		KeyList.push_back("2678e,ff54c");
-		KeyList.push_back("2c9b9,c8ab4");
-		KeyList.push_back("610b8,1e7e1");
-		KeyList.push_back("db1b5,b54cc");
-		KeyList.push_back("6d4d7,78d7c");
-		KeyList.push_back("7b1de,d49a7");
-		KeyList.push_back("69ba7,7fd27");
-		KeyList.push_back("cdab3,ec968");
-		KeyList.push_back("0fada,93b09");
-		KeyList.push_back("e5f1c,15d01");
-		KeyList.push_back("5c27d,b2fbb");
-		KeyList.push_back("54fdd,38ad7");
-		KeyList.push_back("4ab00,d766f");
-		KeyList.push_back("009eb,8eddc");
-		KeyList.push_back("de13f,8d841");
-		KeyList.push_back("78f66,170f0");
-		KeyList.push_back("98283,b7567");
-		KeyList.push_back("e467c,37ae8");
-		KeyList.push_back("53ce3,99f0f");
-		KeyList.push_back("89707,7ed31");
-		KeyList.push_back("61ffa,be0bd");
-		KeyList.push_back("67eb9,38789");
-		KeyList.push_back("51664,7bd60");
-		KeyList.push_back("2fdd9,d5807");
-		KeyList.push_back("3bbe7,ae702");
-		KeyList.push_back("407e9,c2b00");
-		KeyList.push_back("e815f,22c2e");
-		KeyList.push_back("5280f,69111");
-		KeyList.push_back("13b5b,74c91");
-		KeyList.push_back("49f61,5c2f9");
 
 		this->setTouchEnabled(true);
 
@@ -252,7 +103,7 @@ void GameLayer::onExit(){
 
 
 void GameLayer::initTileMap(){
-	//Ëæ»úµØÍ¼
+	//éšæœºåœ°å›¾
 	
 
 	if(_isHardCoreGame){
@@ -275,15 +126,6 @@ void GameLayer::initTileMap(){
 		filePath=S_MAP05;
 	}
 
-	KTools* tool= KTools::create();
-
-	std::string key =tool->getKeycode(filePath);
-	int id=tool->checkMD5(filePath);
-	if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-		if(strcmp(key.c_str(),KeyList[id])!=0){
-			return;
-		}
-	}
 
 	currentMap=CCTMXTiledMap::create(filePath);
 
@@ -358,8 +200,8 @@ void GameLayer::initHeros(){
 	int i=0;
 
 
-	CCTMXObjectGroup* group = currentMap->objectGroupNamed("object");
-	CCArray* objectArray = group->getObjects();
+	CCTMXObjectGroup* group = currentMap->getObjectGroup("object");
+	CCArray* objectArray = ccArrayFromValueVector(group->getObjects());
 
 	_isOugis2Game=true;
 	//4v4
@@ -472,7 +314,7 @@ void GameLayer::initHeros(){
 				currentPlayer->idle();
 				if(zhenying<=0){
 					currentPlayer->_isFlipped=true;
-					currentPlayer->setFlipX(true);
+					currentPlayer->setFlippedX(true);
 				}
 				currentPlayer->setCharNO(i+1);
 				currentPlayer->schedule(schedule_selector(ActionManager::setRestore2),1.0f);
@@ -491,7 +333,7 @@ void GameLayer::initHeros(){
 				Com->idle();
 				if(strcmp(Com->getGroup()->getCString(),"Akatsuki")==0){
 					Com->_isFlipped=true;
-					Com->setFlipX(true);
+					Com->setFlippedX(true);
 				}
 
 				Com->setCharNO(i+1);
@@ -554,8 +396,9 @@ void GameLayer::onGameStart(float dt){
 	CCObject* pObject;
 	CCARRAY_FOREACH(this->_CharacterArray,pObject){
 		ActionManager* tempChar=(ActionManager*) pObject;
-		if(strcmp(tempChar->getRole()->getCString(),"Com")==0){
-		//tempChar->doAI();
+		// guardians (also "Com") already started their AI in initGard
+		if(strcmp(tempChar->getRole()->getCString(),"Com")==0 && !tempChar->_isAI){
+			tempChar->doAI();
 		}
 		
 	}
@@ -693,8 +536,8 @@ void GameLayer::initTower(){
 
 
 
-	CCTMXObjectGroup* metaGroup = currentMap->objectGroupNamed("meta");
-	CCArray* metaArray= metaGroup->getObjects();
+	CCTMXObjectGroup* metaGroup = currentMap->getObjectGroup("meta");
+	CCArray* metaArray= ccArrayFromValueVector(metaGroup->getObjects());
 
 	_TowerArray=CCArray::create();
 
@@ -722,7 +565,7 @@ void GameLayer::initTower(){
 			tower->setID(name,CCString::create("Tower"),CCString::create("Konoha"));
 		}else{
 			tower->setID(name,CCString::create("Tower"),CCString::create("Akatsuki"));
-			tower->setFlipX(true);
+			tower->setFlippedX(true);
 			tower->_isFlipped=true;
 		}
 		float posX=metaX+metaWidth/2;
@@ -886,13 +729,10 @@ void GameLayer::checkTower(){
 		aEXPBound=100;	
 	}
 
-	if(postTime>=9){
-		currentPlayer=NULL;
-	}
 	
 
 
-	//Í¨ÖªÕ½¶·¾ÖÊÆ
+	//é€šçŸ¥æˆ˜æ–—å±€åŠ¿
 	CCARRAY_FOREACH(_CharacterArray,pObject){
 		ActionManager* tmpHero=(ActionManager*) pObject;
 
@@ -919,29 +759,6 @@ void GameLayer::checkTower(){
 
 	}
 
-	std::string bag="";
-	KTools* tool=KTools::create();
-	std::string str="rix2~eoyqi2keqi";
-	tool->decode(str);
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)  
-	JniMethodInfo minfo2;
-	bool isHave2 = JniHelper::getStaticMethodInfo(minfo2,"net/zakume/game/NarutoSenki","getCurrentName", "()Ljava/lang/String;");  
-
-	if (isHave2)   
-	{  
-		jstring jstr2=(jstring) minfo2.env->CallStaticObjectMethod(minfo2.classID, minfo2.methodID); 
-		bag = bag + JniHelper::jstring2string(jstr2);
-	}else{
-		_CharacterArray=NULL;
-
-	} 
-
-	if(strcmp(bag.c_str(),"")!=0 && strcmp(bag.c_str(),str.c_str())!=0 ){
-		_CharacterArray=NULL;
-	}
-
-#endif	
 
 
 	if(konohaTowerCount==0 || akatsukiTowerCount==0){
@@ -1014,13 +831,13 @@ void GameLayer::onPause(){
 
 	CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
 	CCScene* f = CCDirector::sharedDirector()->getRunningScene();
-	CCObject* pObject= f->getChildren()->objectAtIndex(0);
+	CCObject* pObject= f->getChildren().at(0);
 	BGLayer* bg=(BGLayer*) pObject;
 	snapshoot->begin();
-	bg->visit();
+	ccVisitForSnapshot(bg);
 
-	this->visit();
-	snapshoot->end();
+	ccVisitForSnapshot(this);
+	ccEndSnapshot(snapshoot);
 
 
 	CCScene* pscene =CCScene::create();
@@ -1038,13 +855,13 @@ void GameLayer::onGear(){
 
 		CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
 		CCScene* f = CCDirector::sharedDirector()->getRunningScene();
-		CCObject* pObject= f->getChildren()->objectAtIndex(0);
+		CCObject* pObject= f->getChildren().at(0);
 		BGLayer* bg=(BGLayer*) pObject;
 		snapshoot->begin();
-		bg->visit();
+		ccVisitForSnapshot(bg);
 
-		this->visit();
-		snapshoot->end();
+		ccVisitForSnapshot(this);
+		ccEndSnapshot(snapshoot);
 
 		CCScene* pscene =CCScene::create();
 		GearLayer* layer=GearLayer::create(snapshoot);
@@ -1062,39 +879,37 @@ void GameLayer::onGear(){
 void GameLayer::onGameOver(bool isWin){
 
 
-	if(CError!=1){
-		CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
-		CCScene* f = CCDirector::sharedDirector()->getRunningScene();
-		CCObject* pObject= f->getChildren()->objectAtIndex(0);
-		BGLayer* bg=(BGLayer*) pObject;
-		snapshoot->begin();
-		bg->visit();
-		this->visit();
-		snapshoot->end();
+	CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
+	CCScene* f = CCDirector::sharedDirector()->getRunningScene();
+	CCObject* pObject= f->getChildren().at(0);
+	BGLayer* bg=(BGLayer*) pObject;
+	snapshoot->begin();
+	ccVisitForSnapshot(bg);
+	ccVisitForSnapshot(this);
+	ccEndSnapshot(snapshoot);
 
-		CCScene* pscene =CCScene::create();
-		GameOver* layer=GameOver::create(snapshoot);
-		layer->setWin(isWin);
-		layer->setDelegate(this);	
-		pscene->addChild(layer);
-		CCDirector::sharedDirector()->pushScene(pscene);
-	}
+	CCScene* pscene =CCScene::create();
+	GameOver* layer=GameOver::create(snapshoot);
+	layer->setWin(isWin);
+	layer->setDelegate(this);	
+	pscene->addChild(layer);
+	CCDirector::sharedDirector()->pushScene(pscene);
 
 
 };
 
 void GameLayer::onLeft(){
 
-	CCArray* childArray=this->getChildren();
+	CCArray* childArray=CCArray::createWithVector(this->getChildren());
 	CCObject* pObject;
 
 	CCARRAY_FOREACH(childArray,pObject){		
-		//Çå³ýÕìÌý
+		//æ¸…é™¤ä¾¦å¬
 		ActionManager* ac=(ActionManager*) pObject;
 		CCNotificationCenter::sharedNotificationCenter()->removeObserver(ac,"acceptAttack");
 	}
 
-	//Çå³ýµØÍ¼»º´æ
+	//æ¸…é™¤åœ°å›¾ç¼“å­˜
 
 	if(randomMap==0) {
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Tower/Tower.plist");	
@@ -1120,11 +935,11 @@ void GameLayer::onLeft(){
 				continue;
 		}
 
-		//É¾³ýÈËÎï»º´æ
+		//åˆ é™¤äººç‰©ç¼“å­˜
 		path=CCString::createWithFormat("Element/%s/%s.plist",player->getCharacter()->getCString(),player->getCharacter()->getCString())->getCString();
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile(path);
 
-		//É¾³ýÔ¤¼ÓÔØÒôÐ§
+		//åˆ é™¤é¢„åŠ è½½éŸ³æ•ˆ
 		if(strcmp(player->getRole()->getCString(),"Com")==0 ||
 			strcmp(player->getRole()->getCString(),"Player")==0
 			){
@@ -1132,7 +947,7 @@ void GameLayer::onLeft(){
 		}
 		
 
-		//É¾³ý¶îÍâ½ÇÉ«
+		//åˆ é™¤é¢å¤–è§’è‰²
 		if(strcmp(player->getCharacter()->getCString(),"Jiraiya")==0){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/SageJiraiya/SageJiraiya.plist");
 			tool->prepareFileOGG("SageJiraiya",1);
@@ -1160,7 +975,7 @@ void GameLayer::onLeft(){
 
 	}
 
-	//¼ÓÔØÊØ»¤ÈÌ
+	//åŠ è½½å®ˆæŠ¤å¿
 	if(this->_isHardCoreGame){
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Roshi/Roshi.plist");
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Han/Han.plist");
@@ -1202,7 +1017,7 @@ void GameLayer::checkPost(float dt){
 		
 		isPosting=true;
 		postTime++;
-		cocos2d::extension::CCHttpRequest* request = new  cocos2d::extension::CCHttpRequest(); 
+		CCHttpRequest* request = new  CCHttpRequest(); 
 		std::string codeFinal;
 		
 		
@@ -1211,13 +1026,13 @@ void GameLayer::checkPost(float dt){
 		std::string code3=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
 		std::string url=SERVER"nsk/list.php?"+code1+code2+code3;
 		request->setUrl(url.c_str());  
-		request->setRequestType( cocos2d::extension::CCHttpRequest::kHttpGet);  
+		request->setRequestType( CCHttpRequest::kHttpGet);  
 		
 		request->setResponseCallback(this, callfuncND_selector(GameLayer::onHttpRequestCompleted));  
 		
 
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();  
 
 	}else{
@@ -1232,7 +1047,7 @@ void GameLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 
 	isPosting=false;
 	
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
@@ -1245,7 +1060,7 @@ void GameLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	{  	
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	
 	Document doc;
 	
@@ -1286,7 +1101,7 @@ void GameLayer::checkBackgroundMusic(float dt){
 void GameLayer::setOugis(CCNode* sender){
 
 	if(!this->_hudLayer->ougisLayer){
-		CCArray* childArray=this->getChildren();
+		CCArray* childArray=CCArray::createWithVector(this->getChildren());
 		ougisChar=sender;
 		ActionManager* Sender=(ActionManager*) sender;
 		CCObject* pObject;
@@ -1294,17 +1109,17 @@ void GameLayer::setOugis(CCNode* sender){
 
 			CCNode* object=(CCNode*) pObject;
 
-			object->pauseSchedulerAndActions();
+			object->pause();
 
 		}
-		this->pauseSchedulerAndActions();
+		this->pause();
 
 		this->updateViewPoint(0.0);
 
 		blend=CCLayerColor::create(ccc4(0, 0, 0, 200),winSize.width,winSize.height);
 		blend->setPosition(ccp(-this->getPositionX(),0));
 		this->addChild(blend,1000);
-		sender->setZOrder(2000);
+		sender->setLocalZOrder(2000);
 
 		if(CCUserDefault::sharedUserDefault()->getBoolForKey("isVoice")!=false){
 			SimpleAudioEngine::sharedEngine()->playEffect(CCString::createWithFormat("Audio/Ougis/%s_ougis.mp3",Sender->getCharacter()->getCString())->getCString());
@@ -1318,14 +1133,14 @@ void GameLayer::setOugis(CCNode* sender){
 }
 
 void GameLayer::removeOugis(){
-	ougisChar->setZOrder(-ougisChar->getPositionY());
-	CCArray* childArray=this->getChildren();
+	ougisChar->setLocalZOrder(-ougisChar->getPositionY());
+	CCArray* childArray=CCArray::createWithVector(this->getChildren());
 	CCObject* pObject;
 	CCARRAY_FOREACH(childArray,pObject){
 		CCNode* object=(CCNode*) pObject;
-		object->resumeSchedulerAndActions();
+		object->resume();
 	}
-	this->resumeSchedulerAndActions();
+	this->resume();
 
 	blend->removeFromParent();
 	ougisChar=NULL;

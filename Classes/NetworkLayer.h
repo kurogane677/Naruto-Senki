@@ -1,7 +1,5 @@
 #pragma once
-#include "cocos2d.h"
-#include "SimpleAudioEngine.h"
-#include "cocos-ext.h"
+#include "Compat/Compat2x.h"
 #include "LoadLayer.h"
 #include "SkillLayer.h"
 #include "RankingLayer.h"
@@ -14,7 +12,7 @@ public:
 	~NetworkLayer(void);
 
 	virtual bool		init();
-	static NetworkLayer*	create();
+	static NetworkLayer*	create(bool isHardCore=true);
 	void    setSelected(CCObject* sender);
 
 	const char* _selectHero;
@@ -70,7 +68,6 @@ private:
 	void	onQuestBtn(CCObject* sender);
 	void	onGameStart(CCObject* sender);
 	void    onSkillMenu(CCObject* sender);
-	void	onError(CCObject* sender);
 	void	onBackToMenu(CCObject* sender);
 	void	onListRequestCompleted(CCNode *sender ,void *data);
 	

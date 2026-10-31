@@ -48,11 +48,11 @@ bool ActionButton::init(const char *szImage){
 
 void ActionButton::onEnter(){
 	CCSprite::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,-50,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,-50,true);
 }
 void ActionButton::onExit(){
 	CCSprite::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 }
 
 CCRect ActionButton::getRect(){
@@ -154,13 +154,13 @@ bool ActionButton::isCanClick(){
 			 }
 			 //ougis click solution
 			 else if(this->_abType==OUGIS1){
-				 if(_delegate->getSkillFinish() /*&& _delegate->getOugisEnable(false)  && !_isLock*/  && !_delegate->ougisLayer ){
+				 if(_delegate->getSkillFinish() && _delegate->getOugisEnable(false) && !_isLock && !_delegate->ougisLayer ){
 					 _delegate->costCKR(15000,false);	
 					 return true;
 				 }
 			 }else if(this->_abType==OUGIS2){
 
-				 if(_delegate->getSkillFinish() /*&&_delegate->getOugisEnable(true)   && !_isLock  */&& !_delegate->ougisLayer){
+				 if(_delegate->getSkillFinish() && _delegate->getOugisEnable(true) && !_isLock && !_delegate->ougisLayer){
 					 _delegate->costCKR(25000,true);	
 					 return true;
 				 }

@@ -1,8 +1,6 @@
 #pragma once
-#include "cocos2d.h"
-#include "SimpleAudioEngine.h"
+#include "Compat/Compat2x.h"
 #include "Defines.h"
-#include "cocos-ext.h"
 #include "PauseLayer.h"
 #include "GearLayer.h"
 #include "GameOver.h"
@@ -11,7 +9,7 @@
 
 
 #if (CC_TARGET_PLATFORM==CC_PLATFORM_ANDROID) 
-#include "../cocos2dx/platform/android/jni/JniHelper.h"  
+#include "platform/android/jni/JniHelper.h"  
 #endif  
 
 USING_NS_CC;
@@ -119,7 +117,7 @@ public:
 
 	CCNode* controlChar;
 	
-	CCLayer* blend;
+	CCNode* blend;
 
 	void onLeft();
 
@@ -135,7 +133,6 @@ public:
 	bool _isExiting;
 
 	CREATE_FUNC(GameLayer);
-	std::vector<char*> KeyList;
 protected:
 	void onHttpRequestCompleted(CCNode *sender ,void *data);
 	virtual void	onEnter();

@@ -40,11 +40,11 @@ bool GearButton::init(const char *szImage){
 
 void GearButton::onEnter(){
 	CCSprite::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,-1,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,-1,true);
 }
 void GearButton::onExit(){
 	CCSprite::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 }
 
 CCRect GearButton::getRect(){
@@ -119,8 +119,8 @@ void GearButton::ccTouchEnded(CCTouch* touch,CCEvent* event){
 	}
 	
 
-	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("gearDetail_%02d.png",gearType(_gearType))->getCString()); 
-	_delegate->gearDetail->setDisplayFrame(frame);
+	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("gearDetail_%02d.png",gearType(_gearType))->getCString()); 
+	_delegate->gearDetail->setSpriteFrame(frame);
 };
 
 
@@ -175,17 +175,17 @@ bool ScrewLayer::init(){
 
 void ScrewLayer::onEnter(){
 	CCLayer::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,0,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,0,true);
 };
 
 void ScrewLayer::onExit(){
 	CCLayer::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 };
 
 bool ScrewLayer::ccTouchBegan(CCTouch* touch,CCEvent* event){
 
-	prePosY=NULL;
+	prePosY=0;
 	return true;
 
 };
@@ -193,7 +193,7 @@ bool ScrewLayer::ccTouchBegan(CCTouch* touch,CCEvent* event){
 void ScrewLayer::ccTouchMoved(CCTouch* touch,CCEvent* event){
 	// touch area 
 	CCPoint curPoint = touch->getLocation();
-	if(prePosY==NULL){
+	if(prePosY==0){
 		prePosY=curPoint.y;
 	}else{
 		float distanceY=curPoint.y-prePosY;
@@ -222,7 +222,7 @@ void ScrewLayer::ccTouchMoved(CCTouch* touch,CCEvent* event){
 
 
 void ScrewLayer::ccTouchEnded(CCTouch* touch,CCEvent* event){
-	prePosY=NULL;
+	prePosY=0;
 	//CCLOG("%f",this->getPositionY());
 	//CCLOG("Height:%f",this->getContentSize().height);
 
@@ -269,14 +269,14 @@ bool GearLayer::init(CCRenderTexture* snapshoot){
 		CCTexture2D* bgTexture=snapshoot->getSprite()->getTexture();
 		CCSprite* bg=CCSprite::createWithTexture(bgTexture);
 		bg->setAnchorPoint(ccp(0,0));
-		bg->setFlipY(true);
+		bg->setFlippedY(true);
 		this->addChild(bg,0);
 
-		CCLayer* blend=CCLayerColor::create(ccc4(0, 0, 0, 150),winSize.width,winSize.height);
+		CCLayerColor* blend=CCLayerColor::create(ccc4(0, 0, 0, 150),winSize.width,winSize.height);
 		this->addChild(blend,1);
 
 		
-		//ÈÌ¾ß½çÃæ
+		//å¿å…·ç•Œé¢
 
 
 		
@@ -441,8 +441,8 @@ void GearLayer::updateGearList(){
 
 			if(currentGear==None && !isBuyed){
 				currentGear=gearType(i);
-				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("gearDetail_%02d.png",i)->getCString()); 
-				gearDetail->setDisplayFrame(frame);
+				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("gearDetail_%02d.png",i)->getCString()); 
+				gearDetail->setSpriteFrame(frame);
 			}
 
 			btn->setPosition(ccp(6+column*46,-row*60));

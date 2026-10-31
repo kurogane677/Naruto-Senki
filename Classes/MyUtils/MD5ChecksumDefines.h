@@ -5,7 +5,7 @@
 
 #ifndef __MD5ChecksumDefines__  
 #define __MD5ChecksumDefines__  
-#include "cocos2d.h"  
+#include "Compat/Compat2x.h"  
 USING_NS_CC;  
 //Magic initialization constants  
 #define MD5_INIT_STATE_0 0x67452301  

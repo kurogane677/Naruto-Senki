@@ -7,7 +7,7 @@ using namespace CocosDenshion;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)   
 #include <jni.h>   
-#include "../cocos2dx/platform/android/jni/JniHelper.h"   
+#include "platform/android/jni/JniHelper.h"   
 
 #endif  
 
@@ -62,7 +62,7 @@ bool NetworkLayer::init(){
 	do{
 		CC_BREAK_IF(!CCLayer::init());
 
-			//¼ÓÔØÐòÁÐ¼¯	
+			//åŠ è½½åºåˆ—é›†	
 		    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Record.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Record2.plist");		
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
@@ -72,20 +72,9 @@ bool NetworkLayer::init(){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
 			
-			KTools* tool= KTools::create();
-			
-
-
-			if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
-				if(tool->checkMD5()==0){
-					SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-					CCDirector::sharedDirector()->end();
-					return false;
-				}
-			}
 			
 			
-		char* bg_src="blue_bg.png";
+		const char* bg_src=_isHardCoreMode ? "blue_bg.png" : "red_bg.png";
 		
 		CCSprite* bgSprite = CCSprite::create(bg_src);
 		bgSprite->setAnchorPoint(ccp(0,0));
@@ -109,8 +98,8 @@ bool NetworkLayer::init(){
 		//produce the cloud
 		CCSprite* cloud_left=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_left->setPosition(ccp(0,15));
-		cloud_left->setFlipX(true);
-		cloud_left->setFlipY(true);
+		cloud_left->setFlippedX(true);
+		cloud_left->setFlippedY(true);
 		cloud_left->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_left,2);
 
@@ -120,7 +109,7 @@ bool NetworkLayer::init(){
 
 		CCSprite* cloud_right=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_right->setPosition(ccp(winSize.width-cloud_right->getContentSize().width,15));
-		cloud_right->setFlipY(true);
+		cloud_right->setFlippedY(true);
 		cloud_right->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_right,2);
 
@@ -169,7 +158,7 @@ bool NetworkLayer::init(){
 //
 //				}
 //
-//				cocos2d::extension::CCHttpRequest* request = new  cocos2d::extension::CCHttpRequest(); 
+//				CCHttpRequest* request = new  CCHttpRequest(); 
 //				std::string codeFinal;
 //
 //				std::string Andriodstr="";
@@ -203,15 +192,16 @@ bool NetworkLayer::init(){
 //				std::string code2=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
 //				std::string url=SERVER"nsk/list.php?"+code1+code2+"&pw="+PWord+"&androidID="+Andriodstr+"&Imei="+Imeistr;
 //				request->setUrl(url.c_str());  
-//				request->setRequestType( cocos2d::extension::CCHttpRequest::kHttpGet);  
+//				request->setRequestType( CCHttpRequest::kHttpGet);  
 //
 //				request->setResponseCallback(this, callfuncND_selector(NetworkLayer::onListRequestCompleted));  
 //
 //				request->setTag("Post_My_Data");  
-//				cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+//				CCHttpClient::getInstance()->send(request);  
 //				request->release();  
 //
 //			}
+
 			_selectList=CCArray::create();
 			selectArray=CCArray::create();
 			_pageLayer1=CCLayer::create();
@@ -335,9 +325,7 @@ bool NetworkLayer::init(){
 			CCActionInterval* blink=CCBlink::create(0.6f,1);
 			_selectImg->runAction(CCRepeatForever::create(blink));
 
-
-
-			if(adResult==1){
+			if(_isHardCoreMode){
 				_teamSelector=CCLayer::create();
 
 				CCSprite* _teamBg=CCSprite::createWithSpriteFrameName("team_bg.png");
@@ -370,10 +358,14 @@ bool NetworkLayer::init(){
 				_teamSelector->addChild(_comLabel2);
 
 				this->addChild(_teamSelector,50);
+
+				// COM1 is the first pick: blink its label until it is chosen
+				CCActionInterval* fd=CCFadeOut::create(1.0f);
+				_comLabel1->runAction(CCRepeatForever::create(CCSequence::create(fd,fd->reverse(),NULL)));
 			}
 
 
-			//ÅÅÐÐ°ñ
+			//æŽ’è¡Œæ¦œ
 			CCMenuItem* ranking_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("ranking_btn.png"),NULL,NULL,this,menu_selector(NetworkLayer::onRankingBtn));
 			CCMenu* menu3 =CCMenu::create(ranking_btn,NULL);
 			ranking_btn->setAnchorPoint(ccp(1,0.5f));
@@ -426,23 +418,26 @@ bool NetworkLayer::init(){
 	return bRet;
 
 }
+
+/* 
+* SKIP THIS CODE
 void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		//CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -453,12 +448,12 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());
+		CCLog("error buffer:%s" ,"");
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -575,7 +570,7 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 
 
 
-		 if(adResult==1){
+		 //if(adResult==1){
 			 _teamSelector=CCLayer::create();
 
 			 CCSprite* _teamBg=CCSprite::createWithSpriteFrameName("team_bg.png");
@@ -608,10 +603,10 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 			 _teamSelector->addChild(_comLabel2);
 
 			 this->addChild(_teamSelector,50);
-		 }
+		 //}
 		
 		
-		//ÅÅÐÐ°ñ
+		//æŽ’è¡Œæ¦œ
 		CCMenuItem* ranking_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("ranking_btn.png"),NULL,NULL,this,menu_selector(NetworkLayer::onRankingBtn));
 		CCMenu* menu3 =CCMenu::create(ranking_btn,NULL);
 		ranking_btn->setAnchorPoint(ccp(1,0.5f));
@@ -640,9 +635,9 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 		menu2->setAnchorPoint(ccp(0,0));
 		menu2->setPosition(winSize.width-35,96);
 		this->addChild(menu2,5);
-	}else{
-		CCTips *tip=CCTips::create(buf.c_str());
-		this->addChild(tip,5000);
+	//}else{
+	//	CCTips *tip=CCTips::create(buf.c_str());
+	//	this->addChild(tip,5000);
 	}
 
 
@@ -653,6 +648,7 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 	
 
 }
+*/
 
 
 
@@ -710,89 +706,80 @@ void NetworkLayer::setSelected(CCObject* sender){
 		_selectImg->setPosition(ccp(btn->getPositionX()-2,btn->getPositionY()-2));
 	 }
 	
-	if(adResult!=1 && _playerSelect){
+	// HardCore: COM1, then COM2, then the player. Training: player only.
+	bool canPickCom= _isHardCoreMode;
+
+	if(_playerSelect){
 		return;
 	}
-	 
-
-	_selectHero=btn->getCharName()->getCString();
 
 
-	if(_isHardCoreMode){
+	_selectHero= btn->getCharName()->getCString();
+
+
+	{
 
 		CCActionInterval*  fd=CCFadeOut::create(1.0f);
 		CCAction* seq=CCRepeatForever::create(CCSequence::create(fd,fd->reverse(),NULL));
 
-		if(!_playerSelect){
-			
-			if(btn->_clickTime>=2){
-					_playerSelect=_selectHero;
-					
-					if(adResult!=1){
-						_selectImg->removeFromParent();
-						_selectImg=NULL;
-					}else{
-						this->getComLabel1()->runAction(seq);
-					}
-
-			}
-
-			_heroHalf->removeFromParent();
-			const char* charName=btn->getCharName()->getCString();
-
-
-			const char* path=CCString::createWithFormat("%s_half.png", charName)->getCString();
-			_heroHalf=CCSprite::createWithSpriteFrameName(path);
-
-			_heroHalf->setAnchorPoint(ccp(0,0));
-			_heroHalf->setPosition(ccp(10,10));
-			this->addChild(_heroHalf,1);
-
-			_heroName->removeFromParent();
-			const char* namePath=CCString::createWithFormat("%s_font.png",charName)->getCString();
-			_heroName=CCSprite::createWithSpriteFrameName(namePath);
-			_heroName->setAnchorPoint(ccp(0.5f,0));
-			_heroName->setPosition(ccp(100,20));
-			this->addChild(_heroName,5);
-
-			
-
-		}else if(!_com1Select){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
-			this->getComSelector1()->setDisplayFrame(frame);
+		if(canPickCom && !_com1Select){
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
+			this->getComSelector1()->setSpriteFrame(frame);
 
 			if(btn->_clickTime>=2){
 				_com1Select=_selectHero;
 
 				this->getComLabel1()->stopAllActions();
 				this->getComLabel1()->setOpacity(255);
-				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("com_label2.png"); 
-				this->getComLabel1()->setDisplayFrame(frame);
+				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("com_label2.png"); 
+				this->getComLabel1()->setSpriteFrame(frame);
 				this->getComLabel2()->runAction(seq);
 			}
 
 			
 
-		}else if(!_com2Select){
+		}else if(canPickCom && !_com2Select){
 
 
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
-			this->getComSelector2()->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
+			this->getComSelector2()->setSpriteFrame(frame);
 
 			if(btn->_clickTime>=2){
 				_com2Select=_selectHero;
 
 				this->getComLabel2()->stopAllActions();
 				this->getComLabel2()->setOpacity(255);
-				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("com_label2.png"); 
-				this->getComLabel2()->setDisplayFrame(frame);
-
-				_selectImg->removeFromParent();
-				_selectImg=NULL;
+				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("com_label2.png");
+				this->getComLabel2()->setSpriteFrame(frame);
 			}
 
 			
-		}
+		}else if (!_playerSelect){
+			if (btn->_clickTime >= 2)
+				{
+					// last pick in both modes: drop the cursor
+					_playerSelect = _selectHero;
+					_selectImg->removeFromParent();
+					_selectImg = NULL;
+                    }
+
+                    _heroHalf->removeFromParent();
+                    const char* charName = btn->getCharName()->getCString();
+
+                    const char* path = CCString::createWithFormat("%s_half.png", charName)->getCString();
+                    _heroHalf        = CCSprite::createWithSpriteFrameName(path);
+
+                    _heroHalf->setAnchorPoint(ccp(0, 0));
+                    _heroHalf->setPosition(ccp(10, 10));
+                    this->addChild(_heroHalf, 1);
+
+                    _heroName->removeFromParent();
+                    const char* namePath = CCString::createWithFormat("%s_font.png", charName)->getCString();
+                    _heroName            = CCSprite::createWithSpriteFrameName(namePath);
+                    _heroName->setAnchorPoint(ccp(0.5f, 0));
+                    _heroName->setPosition(ccp(100, 20));
+                    this->addChild(_heroName, 5);
+                }
 
 	}
 
@@ -800,14 +787,6 @@ void NetworkLayer::setSelected(CCObject* sender){
 }
 
 
-
-void NetworkLayer::onError(CCObject* sender){
-
-	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-	CCDirector::sharedDirector()->end();
-	return;
-
-}
 
 
 void NetworkLayer::onSkillMenu(CCObject* sender){
@@ -1051,9 +1030,11 @@ void NetworkLayer::keyBackClicked(){
 }
 
 
-NetworkLayer* NetworkLayer::create(){
+// isHardCore=false is Training: full roster, map 1, no gear/guardians, no COM teammate picks.
+NetworkLayer* NetworkLayer::create(bool isHardCore){
 
 	NetworkLayer* sl=new NetworkLayer();
+	sl->_isHardCoreMode=isHardCore;
 	if (sl && sl->init())
 	{
 		sl->autorelease();

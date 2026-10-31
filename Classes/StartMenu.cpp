@@ -4,8 +4,8 @@ USING_NS_CC_EXT;
 
 
 int Cheats=0;
-int MemberID=NULL;
-int GroupID=NULL;
+int MemberID=0;
+int GroupID=0;
 std::string PWord="";
 std::string CValue="999999";
 bool isFirst=false;
@@ -13,7 +13,7 @@ bool isPlayed=true;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)   
 #include <jni.h>   
-#include "../cocos2dx/platform/android/jni/JniHelper.h"   
+#include "platform/android/jni/JniHelper.h"   
 
 extern "C"  
 {  
@@ -59,7 +59,7 @@ bool MenuButton::init(const char *szImage){
 
 void MenuButton::onEnter(){
 	CCSprite::onEnter();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,10,true);
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,10,true);
 	
 #if CC_TARGET_PLATFORM==CC_PLATFORM_ANDROID
 
@@ -76,7 +76,7 @@ void MenuButton::onEnter(){
 }
 void MenuButton::onExit(){
 	CCSprite::onExit();
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
 }
 
 CCRect MenuButton::getRect(){
@@ -105,7 +105,7 @@ bool MenuButton::ccTouchBegan(CCTouch* touch,CCEvent* event){
 
 	//click();
  
-	prePosY=NULL;
+	prePosY=0;
 
 	return true;
 
@@ -113,7 +113,7 @@ bool MenuButton::ccTouchBegan(CCTouch* touch,CCEvent* event){
 
 void MenuButton::ccTouchMoved(CCTouch* touch,CCEvent* event){
 	// touch area 
-	if(prePosY==NULL){
+	if(prePosY==0){
 		prePosY=touch->getLocation().y;
 
 	}else{
@@ -155,29 +155,12 @@ void MenuButton::ccTouchEnded(CCTouch* touch,CCEvent* event){
 			break;
 		case Network:
 			SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
-			_delegate->onHardCoreCallBack();
-			break;;
-		case HardCore:
-			/*SimpleAudioEngine::sharedEngine()->playEffect(SELECT_SOUND);
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("menu05_text.png"); 
-			_delegate->menuText->setDisplayFrame(frame);
-
-			if( CCUserDefault::sharedUserDefault()->getBoolForKey("isHardCore")==true){		
-			CCUserDefault::sharedUserDefault()->setBoolForKey("isHardCore",false);
-			if(_delegate->hardCore_btn){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("menu02_2.png"); 
-			_delegate->hardCore_btn->setDisplayFrame(frame);
-			}
-			}else{
 			_delegate->onHardLayerCallBack();
-			}*/
-
-
 			break;
 		}
 	}else{
 		SimpleAudioEngine::sharedEngine()->playEffect(SELECT_SOUND);
-		prePosY=NULL;
+		prePosY=0;
 		_delegate->scrollMenu(this->getPositionY());
 		_delegate->isDrag=false;
 	}
@@ -303,8 +286,8 @@ bool StartMenu::init()
 		//produce the cloud
 		CCSprite* cloud_left=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_left->setPosition(ccp(0,15));
-		cloud_left->setFlipX(true);
-		cloud_left->setFlipY(true);
+		cloud_left->setFlippedX(true);
+		cloud_left->setFlippedY(true);
 		cloud_left->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_left,1);
 		
@@ -413,7 +396,7 @@ bool StartMenu::init()
 		};
 
 
-		//°æ±¾ºÅ
+		//ç‰ˆæœ¬å·
 		CCLabelBMFont* versionLabel=CCLabelBMFont::create("1.23 EX Version","Fonts/1.fnt");
 		versionLabel->setScale(0.3f);
 		versionLabel->setPosition(winSize.width-60,10);
@@ -434,9 +417,9 @@ bool StartMenu::init()
 		while (i<5)
 		{
 			CCString* path=CCString::createWithFormat("avator%d.png",i);
-			CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(path->getCString());
+			CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(path->getCString());
 			tempArray->addObject(frame);
-			CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray, 0.1f);
+			CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray->toVector<CCSpriteFrame*>(), 0.1f);
 			CCAction* tempAction=CCAnimate::create(tempAnimation);
 			list->addObject(tempAction);
 			CCActionInterval* fadeIn=CCFadeIn::create(0.8f);	
@@ -451,7 +434,7 @@ bool StartMenu::init()
 
 		avator->runAction(CCRepeatForever::create(CCSequence::create(list)));
 
-		//¹«¸æ°´Å¥
+		//å…¬å‘ŠæŒ‰é’®
 		CCMenuItem* news_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("news_btn.png"),NULL,NULL,this,menu_selector(StartMenu::onNewsBtn));
 		CCMenu* menu =CCMenu::create(news_btn,NULL);
 		news_btn->setAnchorPoint(ccp(0,0.5f));
@@ -461,7 +444,7 @@ bool StartMenu::init()
 
 		this->setNotice();
 		
-		//»ý·ÖÇ½¹«¸æ
+		//ç§¯åˆ†å¢™å…¬å‘Š
 		if(MemberID){
 			this->setGroup();
 			this->setOfferWall();
@@ -469,7 +452,7 @@ bool StartMenu::init()
 			this->scrollMenu(_pos03);
 			
 		}else{
-			//µÇÂ½°´Å¥
+			//ç™»é™†æŒ‰é’®
 			login_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("login_btn.png"),NULL,NULL,this,menu_selector(StartMenu::onLoginBtn));
 			CCMenu* menu2 =CCMenu::create(login_btn,NULL);
 			login_btn->setAnchorPoint(ccp(1,0.5f));
@@ -538,7 +521,7 @@ void StartMenu::setOfferWall(){
 	//	} 
 	//	#endif  
 
-	//	//»ý·ÖÇ½°´Å¥
+	//	//ç§¯åˆ†å¢™æŒ‰é’®
 	//	task_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("tasks_btn.png"),NULL,NULL,this,menu_selector(StartMenu::onTasksBtn));
 	//	CCMenu* menu3 =CCMenu::create(task_btn,NULL);
 	//	task_btn->setAnchorPoint(ccp(1,0.5f));
@@ -555,7 +538,7 @@ void StartMenu::setGroup(){
 
 	
 
-	//×éÖ¯°´Å¥
+	//ç»„ç»‡æŒ‰é’®
 	CCMenuItemSprite* group_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("group_btn.png"),NULL,NULL,this,menu_selector(StartMenu::onGroupBtn));
 	CCMenu* menu3 =CCMenu::create(group_btn,NULL);
 	group_btn->setAnchorPoint(ccp(1,0.5f));
@@ -570,7 +553,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 
 	if(!group_layer && !profile_layer){
 
-		//Ë¢ÐÂ°´Å¥
+		//åˆ·æ–°æŒ‰é’®
 		if(!refreshBtn){
 			refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 			refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -585,7 +568,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 
 		group_layer->addChild(group_bg);
 
-		//¹Ø±Õ
+		//å…³é—­
 		CCMenuItemSprite* close_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("profile_closeBtn.png"),NULL,NULL,this,menu_selector(StartMenu::onIterfaceClose));
 		CCMenu* menu =CCMenu::create( close_btn,NULL);
 		menu->setPosition(ccp(group_bg->getPositionX()+group_bg->getContentSize().width/2,group_bg->getPositionY()+group_bg->getContentSize().height/2-30));
@@ -600,7 +583,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 
 			group_layer->addChild(group_content);
 
-			//¼ÓÔØÄÚÈÝ
+			//åŠ è½½å†…å®¹
 
 			CCClippingNode* clipper = CCClippingNode::create();
 			CCNode *stencil = CCSprite::createWithSpriteFrameName("groupMask2.png");
@@ -621,7 +604,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 			this->addChild(group_layer,500);
 
 
-			cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+			CCHttpRequest* request = new CCHttpRequest();  
 			std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 			std::string code3=CCString::createWithFormat("%d",GroupID)->getCString();
 			std::string code="code=500&MemberID="+code2+"&GroupID="+code3;
@@ -630,7 +613,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 			request->setRequestType(CCHttpRequest::kHttpGet);  
 			request->setResponseCallback(this, callfuncND_selector(StartMenu::onGroupManageRequestCompleted));  
 			request->setTag("Post_My_Data");  
-			cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+			CCHttpClient::getInstance()->send(request);  
 			request->release();  
 
 		}else{
@@ -640,7 +623,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 
 			group_layer->addChild(group_content);
 
-			//¼ÓÔØÄÚÈÝ
+			//åŠ è½½å†…å®¹
 
 			CCClippingNode* clipper = CCClippingNode::create();
 			CCNode *stencil = CCSprite::createWithSpriteFrameName("groupMask1.png");
@@ -673,7 +656,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 
 
 
-			//²éÑ¯°´Å¥
+			//æŸ¥è¯¢æŒ‰é’®
 			CCMenuItemSprite* search_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("search_btn.png"),CCSprite::createWithSpriteFrameName("search_btn2.png"),NULL,this,menu_selector(StartMenu::onSearchBtn));
 			CCMenu* menu3 =CCMenu::create(search_btn,NULL);
 			menu3->setPosition(ccp(group_bg->getPositionX()-group_bg->getContentSize().width/2+150,43));
@@ -693,7 +676,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 			}
 			this->addChild(group_layer,500);
 
-			cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+			CCHttpRequest* request = new CCHttpRequest();  
 			std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 			std::string code="code=100&MemberID="+code2;
 			std::string url=SERVER"nsk/group.php?"+code;
@@ -701,7 +684,7 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 			request->setRequestType(CCHttpRequest::kHttpGet);  
 			request->setResponseCallback(this, callfuncND_selector(StartMenu::onGroupRequestCompleted));  
 			request->setTag("Post_My_Data");  
-			cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+			CCHttpClient::getInstance()->send(request);  
 			request->release();  
 			
 		}
@@ -711,19 +694,19 @@ void  StartMenu::onGroupBtn(CCObject* sender){
 void StartMenu::onGroupManageRequestCompleted(CCNode *sender ,void *data){  
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -734,12 +717,12 @@ void StartMenu::onGroupManageRequestCompleted(CCNode *sender ,void *data){
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -798,7 +781,7 @@ void StartMenu::onGroupManageRequestCompleted(CCNode *sender ,void *data){
 				
 				 notice_label=CCLabelTTF::create(noticeString.c_str(),FONT_TYPE,10);
 				 
-				 notice_label->setDimensions(CCSizeMake(70, 0)); 
+				 notice_label->setDimensions(70, 0); 
 				  notice_label->setAnchorPoint(ccp(0,1));
 				 notice_label->setPosition(ccp(winSize.width/2+85,winSize.height/2+36));
 				 group_layer->addChild( notice_label);
@@ -1009,7 +992,7 @@ void StartMenu::onQuitComfirm(CCObject* sender){
 		
 	isPosting=true;
 
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 	std::string code;
 	if(MemberID==item->getTag()){
@@ -1043,26 +1026,26 @@ void StartMenu::onQuitComfirm(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onQuitGroupRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();  
 }
 
 
 void StartMenu::onQuitGroupRequestCompleted(CCNode *sender ,void *data) {  
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1073,12 +1056,12 @@ void StartMenu::onQuitGroupRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1284,7 +1267,7 @@ void StartMenu::onNoticeComfirm(CCObject* sender){
 	}
 
 	isPosting=true;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(!refreshBtn){
 		refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 		refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1294,7 +1277,7 @@ void StartMenu::onNoticeComfirm(CCObject* sender){
 
 	}
 
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 	std::string code3=CCString::createWithFormat("%d",GroupID)->getCString();
 
@@ -1304,7 +1287,7 @@ void StartMenu::onNoticeComfirm(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onNoticeRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();  
 }
 
@@ -1314,7 +1297,7 @@ void StartMenu::onLockBtn(CCObject* sender){
 	if(MemberID==leaderID){
 		if(isLock){
 			isPosting=true;
-			//Ë¢ÐÂ°´Å¥
+			//åˆ·æ–°æŒ‰é’®
 			if(!refreshBtn){
 				refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 				refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1324,7 +1307,7 @@ void StartMenu::onLockBtn(CCObject* sender){
 
 			}
 
-			cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+			CCHttpRequest* request = new CCHttpRequest();  
 			std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 			std::string code3=CCString::createWithFormat("%d",GroupID)->getCString();
 			std::string code="code=900&MemberID="+code2+"&GroupID="+code3+"&pw="+PWord ;	
@@ -1333,7 +1316,7 @@ void StartMenu::onLockBtn(CCObject* sender){
 			request->setRequestType(CCHttpRequest::kHttpGet);  
 			request->setResponseCallback(this, callfuncND_selector(StartMenu::onGPWRequestCompleted));  
 			request->setTag("Post_My_Data");  
-			cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+			CCHttpClient::getInstance()->send(request);  
 			request->release();  
 
 
@@ -1389,7 +1372,7 @@ void StartMenu::onGPWComfirm(CCObject* sender){
 	}
 
 	isPosting=true;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(!refreshBtn){
 		refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 		refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1399,7 +1382,7 @@ void StartMenu::onGPWComfirm(CCObject* sender){
 
 	}
 
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 	std::string code3=CCString::createWithFormat("%d",GroupID)->getCString();
 	std::string code4=CCString::createWithFormat("%s", data1.c_str())->getCString();
@@ -1412,7 +1395,7 @@ void StartMenu::onGPWComfirm(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onGPWRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();  
 }
 
@@ -1423,19 +1406,19 @@ void StartMenu::onGPWRequestCompleted(CCNode *sender ,void *data) {
 
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1446,12 +1429,12 @@ void StartMenu::onGPWRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1526,7 +1509,7 @@ void StartMenu::onKickComfirm(CCObject* sender){
 	CCMenuItem* item=(CCMenuItem*) sender;
 
 	isPosting=true;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(!refreshBtn){
 		refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 		refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1536,7 +1519,7 @@ void StartMenu::onKickComfirm(CCObject* sender){
 
 	}
 
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 	std::string code3=CCString::createWithFormat("%d",GroupID)->getCString();
 	std::string code4=CCString::createWithFormat("%d",item->getTag())->getCString();
@@ -1546,26 +1529,26 @@ void StartMenu::onKickComfirm(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onQuitGroupRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();  
 };
 
 void StartMenu::onGroupRequestCompleted(CCNode *sender ,void *data){  
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1576,12 +1559,12 @@ void StartMenu::onGroupRequestCompleted(CCNode *sender ,void *data){
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1607,7 +1590,7 @@ void StartMenu::onGroupRequestCompleted(CCNode *sender ,void *data){
 			std::string idString=idValue.GetString();
 			int groupID=atoi(idString.c_str());
 
-			//½âÎöname
+			//è§£æžname
 			Value & nameValue= node["group_name"];
 			std::string nameString=nameValue.GetString();
 
@@ -1735,7 +1718,7 @@ void StartMenu::onJoinGroup(CCObject* sender){
 
 				isPosting=true;
 				
-				cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+				CCHttpRequest* request = new CCHttpRequest();  
 				std::string code3=CCString::createWithFormat("%d",MemberID)->getCString();
 				std::string code4=CCString::createWithFormat("%d",item->getTag())->getCString();
 				std::string code="code=300&MemberID="+code3+"&gpw="+"&GroupID="+code4+"&pw="+PWord;
@@ -1744,10 +1727,10 @@ void StartMenu::onJoinGroup(CCObject* sender){
 				request->setRequestType(CCHttpRequest::kHttpGet);  
 				request->setResponseCallback(this, callfuncND_selector(StartMenu::onJoinRequestCompleted));  
 				request->setTag("Post_My_Data");  
-				cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+				CCHttpClient::getInstance()->send(request);  
 				request->release();  
 
-				//Ë¢ÐÂ°´Å¥
+				//åˆ·æ–°æŒ‰é’®
 				if(!refreshBtn){
 					refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 					refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1776,7 +1759,7 @@ void StartMenu::onJoinComfirm(CCObject* sender){
 	}
 	isPosting=true;
 
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("%s",data1.c_str())->getCString();
 	std::string code3=CCString::createWithFormat("%d",MemberID)->getCString();
 	std::string code4=CCString::createWithFormat("%d",item->getTag())->getCString();
@@ -1786,10 +1769,10 @@ void StartMenu::onJoinComfirm(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onJoinRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();  
 
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(!refreshBtn){
 		refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 		refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -1804,19 +1787,19 @@ void StartMenu::onJoinComfirm(CCObject* sender){
 
 void StartMenu::onJoinRequestCompleted(CCNode *sender ,void *data) {  
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1827,12 +1810,12 @@ void StartMenu::onJoinRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -1865,7 +1848,7 @@ void StartMenu::onSearchBtn(CCObject* sender){
 		isPosting=true;
 		std::string data1=searchInput->getText();
 
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		CCHttpRequest* request = new CCHttpRequest();  
 		std::string code2=CCString::createWithFormat("%s",data1.c_str())->getCString();
 		std::string code="code=200&GroupID="+code2;
 		std::string url=SERVER"nsk/group.php?"+code;
@@ -1873,7 +1856,7 @@ void StartMenu::onSearchBtn(CCObject* sender){
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(StartMenu::onSeachRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();
 
 		
@@ -1894,7 +1877,7 @@ void StartMenu::onSearchBtn(CCObject* sender){
 void StartMenu::onSeachRequestCompleted(CCNode *sender ,void *data) {  
 
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -1907,12 +1890,12 @@ void StartMenu::onSeachRequestCompleted(CCNode *sender ,void *data) {
 	_screwLayer1->setPositionY(_screwLayer1->minY);
 	_screwLayer1->setItemArray(NULL);
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -1923,12 +1906,12 @@ void StartMenu::onSeachRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -2106,7 +2089,7 @@ void StartMenu::onCreateComfirm(CCObject* sender){
 
 		isPosting=true;
 
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		CCHttpRequest* request = new CCHttpRequest();  
 		std::string code2=CCString::createWithFormat("%s",data1.c_str())->getCString();
 		std::string code3=CCString::createWithFormat("%d",MemberID)->getCString();
 		std::string code="code=400&MemberID="+code3+"&GroupName="+code2+"&pw="+PWord;;
@@ -2115,7 +2098,7 @@ void StartMenu::onCreateComfirm(CCObject* sender){
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(StartMenu::onCreateRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();  
 
 		if(!refreshBtn){
@@ -2139,19 +2122,19 @@ void StartMenu::onCreateComfirm(CCObject* sender){
 
 void StartMenu::onCreateRequestCompleted(CCNode *sender ,void *data) {  
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -2162,12 +2145,12 @@ void StartMenu::onCreateRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -2238,7 +2221,7 @@ void StartMenu::setProfile(){
 
 	
 	
-	//µµ°¸°´Å¥
+	//æ¡£æ¡ˆæŒ‰é’®
 	CCMenuItemSprite* profile_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("profile_btn.png"),NULL,NULL,this,menu_selector(StartMenu::onProfileBtn));
 	CCMenu* menu3 =CCMenu::create(profile_btn,NULL);
 	profile_btn->setAnchorPoint(ccp(1,0.5f));
@@ -2263,7 +2246,7 @@ void  StartMenu::onProfileBtn(CCObject* sender){
 
 		profile_layer->addChild(profile_bg);
 
-		//¹Ø±Õ
+		//å…³é—­
 		CCMenuItemSprite* close_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("profile_closeBtn.png"),NULL,NULL,this,menu_selector(StartMenu::onIterfaceClose));
 		CCMenu* menu =CCMenu::create( close_btn,NULL);
 		menu->setPosition(ccp(profile_bg->getPositionX()+profile_bg->getContentSize().width/2-15,profile_bg->getPositionY()+profile_bg->getContentSize().height/2-12));
@@ -2273,7 +2256,7 @@ void  StartMenu::onProfileBtn(CCObject* sender){
 
 
 		
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		CCHttpRequest* request = new CCHttpRequest();  
 		std::string code2=CCString::createWithFormat("%d",MemberID)->getCString();
 		std::string code="code=20&id="+code2;
 		std::string url=SERVER"nsk/rank.php?"+code+"&pw="+PWord;
@@ -2281,10 +2264,10 @@ void  StartMenu::onProfileBtn(CCObject* sender){
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(StartMenu::onProfileRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();
 
-		//Ë¢ÐÂ°´Å¥
+		//åˆ·æ–°æŒ‰é’®
 		if(!refreshBtn){
 			refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 			refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -2303,19 +2286,19 @@ void  StartMenu::onProfileBtn(CCObject* sender){
 void StartMenu::onProfileRequestCompleted(CCNode *sender ,void *data) {  
 	
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -2326,12 +2309,12 @@ void StartMenu::onProfileRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -2694,7 +2677,7 @@ void  StartMenu::onNamePlateComfrim(CCObject* sender){
 	if(tempCoin>=0){
 
 	isPosting=true;
-	cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+	CCHttpRequest* request = new CCHttpRequest();  
 	std::string code2=CCString::createWithFormat("&np_id=np%d",item->getTag())->getCString();
 	std::string code3=CCString::createWithFormat("id=%d",MemberID)->getCString();
 	std::string code="code=50&"+code3+code2;
@@ -2703,7 +2686,7 @@ void  StartMenu::onNamePlateComfrim(CCObject* sender){
 	request->setRequestType(CCHttpRequest::kHttpGet);  
 	request->setResponseCallback(this, callfuncND_selector(StartMenu::onNamePlateRequestCompleted));  
 	request->setTag("Post_My_Data");  
-	cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+	CCHttpClient::getInstance()->send(request);  
 	request->release();
 
 	if(!refreshBtn){
@@ -2730,19 +2713,19 @@ void  StartMenu::onNamePlateComfrim(CCObject* sender){
 
 void StartMenu::onNamePlateRequestCompleted(CCNode *sender ,void *data) {  
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
 		refreshBtn=NULL;
 	}
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -2753,12 +2736,12 @@ void StartMenu::onNamePlateRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
@@ -2827,7 +2810,7 @@ void  StartMenu::onLoginBtn(CCObject* sender){
 	this->addChild(tip,5000);
 	return;
 
-	if(MemberID==NULL){
+	if(MemberID==0){
 		if(!input_layer){
 			input_layer=CCLayer::create();
 
@@ -2848,8 +2831,8 @@ void  StartMenu::onLoginBtn(CCObject* sender){
 			input_layer->addChild(usernameInput,200);
 
 
-			if(strcmp(CCUserDefault::sharedUserDefault()->getStringForKey("userName").c_str(),"")!=0){
-				usernameInput->setText(CCUserDefault::sharedUserDefault()->getStringForKey("userName").c_str());
+			if(strcmp(std::string(CCUserDefault::sharedUserDefault()->getStringForKey("userName")).c_str(),"")!=0){
+				usernameInput->setText(std::string(CCUserDefault::sharedUserDefault()->getStringForKey("userName")).c_str());
 			}
 			CCSprite* pwInputTitle=CCSprite::createWithSpriteFrameName("pwInput_title.png");
 			pwInputTitle->setPosition(ccp(winSize.width/2-60,winSize.height/2));
@@ -2864,8 +2847,8 @@ void  StartMenu::onLoginBtn(CCObject* sender){
 			input_layer->addChild(pwInput,200);
 
 
-			if(strcmp(CCUserDefault::sharedUserDefault()->getStringForKey("password").c_str(),"")!=0){
-				pwInput->setText(CCUserDefault::sharedUserDefault()->getStringForKey("password").c_str());
+			if(strcmp(std::string(CCUserDefault::sharedUserDefault()->getStringForKey("password")).c_str(),"")!=0){
+				pwInput->setText(std::string(CCUserDefault::sharedUserDefault()->getStringForKey("password")).c_str());
 			}
 
 			CCMenuItem* yes_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("login_btn2.png"),CCSprite::createWithSpriteFrameName("login_btn1.png"),this,menu_selector(StartMenu::onLoginOn));
@@ -2904,7 +2887,7 @@ void  StartMenu::onLoginOn(CCObject* sender){
 		std::string data2 =pwInput->getText();
 		std::string result;
 
-		if(strcmp(CCUserDefault::sharedUserDefault()->getStringForKey("password").c_str(),data2.c_str())!=0){
+		if(strcmp(std::string(CCUserDefault::sharedUserDefault()->getStringForKey("password")).c_str(),data2.c_str())!=0){
 			KTools *tool=new KTools();
 			result=tool->encodeData(data2);
 		}else{
@@ -2914,7 +2897,7 @@ void  StartMenu::onLoginOn(CCObject* sender){
 
 		CCUserDefault::sharedUserDefault()->setStringForKey("password",result);
 
-		cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		CCHttpRequest* request = new CCHttpRequest();  
 
 	
 		std::string Andriodstr="";
@@ -2950,10 +2933,10 @@ void  StartMenu::onLoginOn(CCObject* sender){
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(StartMenu::onLoginRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();  
 
-		//Ë¢ÐÂ°´Å¥
+		//åˆ·æ–°æŒ‰é’®
 		if(!refreshBtn){
 			refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
 			refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -3020,14 +3003,14 @@ void StartMenu::setNotice(){
 		const char *reply = ((CCString*)strings->objectForKey("Notice"))->m_sString.c_str(); 
 		
 		noticeLabel->setString(reply);
-		/*cocos2d::extension::CCHttpRequest* request = new CCHttpRequest();  
+		/*CCHttpRequest* request = new CCHttpRequest();  
 		std::string code2=CCString::createWithFormat("?version=%d",CURRENT_VERSION)->getCString();
 		std::string url=SERVER"nsk/notice.php"+code2;
 		request->setUrl(url.c_str());  
 		request->setRequestType(CCHttpRequest::kHttpGet);  
 		request->setResponseCallback(this, callfuncND_selector(StartMenu::onNoticeRequestCompleted));  
 		request->setTag("Post_My_Data");  
-		cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+		CCHttpClient::getInstance()->send(request);  
 		request->release();  */
 		
 	}
@@ -3035,12 +3018,12 @@ void StartMenu::setNotice(){
 
 }
 void StartMenu::onNoticeRequestCompleted(CCNode *sender ,void *data) {  
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -3051,17 +3034,17 @@ void StartMenu::onNoticeRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());  
+		CCLog("error buffer:%s" ,"");  
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 	
 	Document doc;
-	//°Ñvector×ª»»³Éstd::string 
+	//æŠŠvectorè½¬æ¢æˆstd::string 
 	std::string buf(buffer->begin(),buffer->end()); 
 	//CCLog("%s",buf.c_str()); 
 	const char* json=(char*) buf.c_str();
@@ -3084,7 +3067,7 @@ void StartMenu::onNoticeRequestCompleted(CCNode *sender ,void *data) {
 		
 	}else{
 		isPosting=false;
-		//Ë¢ÐÂ°´Å¥
+		//åˆ·æ–°æŒ‰é’®
 		if(refreshBtn){
 			refreshBtn->stopAllActions();
 			refreshBtn->removeFromParent();
@@ -3112,7 +3095,7 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 	//freopen("CONOUT$", "w", stdout);  
 	//freopen("CONOUT$", "w", stderr);
 	isPosting=false;
-	//Ë¢ÐÂ°´Å¥
+	//åˆ·æ–°æŒ‰é’®
 	if(refreshBtn){
 		refreshBtn->stopAllActions();
 		refreshBtn->removeFromParent();
@@ -3120,12 +3103,12 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 	}
 
 
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 	return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 	CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -3136,17 +3119,17 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 	CCLog("response failed");  
-	CCLog("error buffer:%s" ,response->getErrorBuffer());  
+	CCLog("error buffer:%s" ,"");  
 	CCTips *tip=CCTips::create("ServerError");
 	this->addChild(tip,5000);
 	return;
 	}  
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	printf("Http response,dump data:");  
 
 
 	Document doc;
-	//°Ñvector×ª»»³Éstd::string 
+	//æŠŠvectorè½¬æ¢æˆstd::string 
 	std::string buf(buffer->begin(),buffer->end()); 
 	//CCLog("%s",buf.c_str()); 
 	const char* json=(char*) buf.c_str();
@@ -3159,7 +3142,7 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 
 			Value & node=arr[i];
 			
-			//½âÎöid
+			//è§£æžid
 			Value & idValue= node["id"];
 			std::string idString=idValue.GetString();
 			MemberID=atoi(idString.c_str());
@@ -3187,7 +3170,7 @@ void StartMenu::onLoginRequestCompleted(CCNode *sender ,void *data) {
 
 			
 		this->setOfferWall();
-		//ÉèÖÃ¹«¸æ
+		//è®¾ç½®å…¬å‘Š
 		this->setNotice();	
 		this->setProfile();
 		this->setGroup();
@@ -3249,14 +3232,14 @@ void  StartMenu::onNewsBtn(CCObject* sender){
 	JniMethodInfo minfo;
 
 	bool isHave = JniHelper::getStaticMethodInfo(minfo,"net/zakume/game/NarutoSenki","getInstance","()Lnet/zakume/game/NarutoSenki;"); 
-	jobject jobj;//´æ¶ÔÏó  
+	jobject jobj;//å­˜å¯¹è±¡  
 	if (isHave) {  
-		//ÕâÀïµÄµ÷ÓÃgetInstance£¬·µ»ØTestÀàµÄ¶ÔÏó¡£  
+		//è¿™é‡Œçš„è°ƒç”¨getInstanceï¼Œè¿”å›žTestç±»çš„å¯¹è±¡ã€‚  
 		jobj = minfo.env->CallStaticObjectMethod(minfo.classID, minfo.methodID);  
 
 		isHave = JniHelper::getMethodInfo(minfo,"net/zakume/game/NarutoSenki","openWebview","()V");  
 		if (isHave) {  
-			//µ÷ÓÃopenWebview, ²ÎÊý1£ºTest¶ÔÏó   ²ÎÊý2£º·½·¨ID  
+			//è°ƒç”¨openWebview, å‚æ•°1ï¼šTestå¯¹è±¡   å‚æ•°2ï¼šæ–¹æ³•ID  
 			minfo.env->CallVoidMethod(jobj, minfo.methodID);  
 		}  
 	}  
@@ -3267,8 +3250,8 @@ void  StartMenu::onNewsBtn(CCObject* sender){
 void StartMenu::onHardCoreOn(CCObject* sender){
 	CCUserDefault::sharedUserDefault()->setBoolForKey("isHardCore",true);
 	if(hardCore_btn){
-		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("menu02_1.png"); 
-		hardCore_btn->setDisplayFrame(frame);
+		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("menu02_1.png"); 
+		hardCore_btn->setSpriteFrame(frame);
 	}
 
 	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
@@ -3277,6 +3260,8 @@ void StartMenu::onHardCoreOn(CCObject* sender){
 		hardCoreLayer->removeFromParent();
 		hardCoreLayer=NULL;
 	}
+
+	this->onHardCoreCallBack();
 }
 
 void StartMenu::onHardCoreOff(CCObject* sender){
@@ -3290,11 +3275,17 @@ void StartMenu::onHardCoreOff(CCObject* sender){
 
 }
 
+// Network button: the HardCore warning is shown until the player accepts it once, then it goes straight to hero select.
 void StartMenu::onHardLayerCallBack(){
 
+	if( CCUserDefault::sharedUserDefault()->getBoolForKey("isHardCore")==true){
+		this->onHardCoreCallBack();
+		return;
+	}
 
-
-
+	if( input_layer || profile_layer || group_layer ){
+		return;
+	}
 
 	if( CCUserDefault::sharedUserDefault()->getBoolForKey("isHardCore")==false){
 		if(!hardCoreLayer){
@@ -3304,10 +3295,13 @@ void StartMenu::onHardLayerCallBack(){
 		CCSprite* confirm_bg=CCSprite::createWithSpriteFrameName("confirm_bg.png");
 		confirm_bg->setPosition(ccp(winSize.width/2,winSize.height/2));
 
-		CCSprite* hardcore_title=CCSprite::createWithSpriteFrameName("hardcore_title.png");
+		// hardcore_title.png / hardcore_text.png were never shipped in Menu.plist; use the generic confirm title and a text label instead
+		CCSprite* hardcore_title=CCSprite::createWithSpriteFrameName("confirm_title.png");
 		hardcore_title->setPosition(ccp(winSize.width/2,winSize.height/2+38));
 
-		CCSprite* hardcore_text=CCSprite::createWithSpriteFrameName("hardcore_text.png");
+		CCDictionary *strings = CCDictionary::createWithContentsOfFile("Element/strings.xml");
+		const char *tips = ((CCString*)strings->objectForKey("HardCoreTips"))->getCString();
+		CCLabelTTF* hardcore_text=CCLabelTTF::create(tips,FONT_TYPE,12,CCSizeMake(confirm_bg->getContentSize().width-24,0),ax::TextHAlignment::CENTER);
 		hardcore_text->setPosition(ccp(winSize.width/2,winSize.height/2+8));
 
 		CCMenuItem* yes_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("yes_btn1.png"),CCSprite::createWithSpriteFrameName("yes_btn2.png"),this,menu_selector(StartMenu::onHardCoreOn));
@@ -3330,37 +3324,23 @@ void StartMenu::onHardLayerCallBack(){
 
 void StartMenu::onHardCoreCallBack(){
 
-	
-	/*if(MemberID){
+	if(input_layer || profile_layer || group_layer) {
+		return;
+	}
 
-		
-
-		//¼ÓÔØÐòÁÐ¼¯
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");	
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis2.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
-
-	CCScene* selectScene=CCScene::create();
-	NetworkLayer* selectLayer=NetworkLayer::create();
-	KTools* tool= KTools::create();
-
-
-	selectScene->addChild(selectLayer);
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,selectScene));
-	}*/
-	CCTips *tip=CCTips::create("ServerMainten");
-	this->addChild(tip,5000);
-
+	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
+	this->openHeroSelect(true);
 }
 
 void StartMenu::onNormalCallBack(CCObject* sender){
 
-	//¼ÓÔØÐòÁÐ¼¯
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");	
+	this->openHeroSelect(false);
+}
+
+void StartMenu::openHeroSelect(bool isHardCore){
+
+	//åŠ è½½åºåˆ—é›†
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
@@ -3368,19 +3348,19 @@ void StartMenu::onNormalCallBack(CCObject* sender){
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
 
-	CCScene* selectScene=CCScene::create();
-	NetworkLayer* selectLayer=NetworkLayer::create();
-	KTools* tool= KTools::create();
-
-
-	selectScene->addChild(selectLayer);
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,selectScene));
-
-
-	/*CCScene* selectScene=CCScene::create();
-	SelectLayer* selectLayer=SelectLayer::create();
-	selectScene->addChild(selectLayer);
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,selectScene));	*/
+	if (isHardCore==true)
+        {
+		CCScene* selectScene=CCScene::create();
+		NetworkLayer* networkLayer=NetworkLayer::create(isHardCore);
+		selectScene->addChild(networkLayer);
+		CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,selectScene));
+	}
+	else {
+		CCScene* selectScene      = CCScene::create();
+        SelectLayer* selectLayer = SelectLayer::create();
+        selectScene->addChild(selectLayer);
+        CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f, selectScene));
+	}
 }
 
 void StartMenu::onTrainingCallBack(){
@@ -3389,305 +3369,20 @@ void StartMenu::onTrainingCallBack(){
 		return;
 	}
 
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis2.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
+
 
 	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");	
-
-
-	int i=1;
-
-	if(adResult!=1){
-	Cheats=0;
-	}
-	
-	if(Cheats>10){
-		i=2;
-	}
-
-	if(i==0){
-		this->onNormalCallBack(NULL);	
-	}else if(i==1){
-	
-	//¼ÓÔØÐòÁÐ¼¯
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis2.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
-
-
-	CCDictionary* dic=CCDictionary::create();
-
-
-	char* heroList[]={"Lee","Shino","Kakashi","Kakuzu",
-		"Asuma"};
-
-	srand((int)time(0));
-	CCString* tmpChar=CCString::create("Tsunade");
-	CCString* tmpRole=CCString::create("Player");
-	CCString* tmpGroup=CCString::create("Konoha");
-
-	dic->setObject(tmpChar,"character");
-	dic->setObject(tmpRole,"role");
-	dic->setObject(tmpGroup,"group");
-
-	CCArray* tempHeros=CCArray::createWithObject(dic);
-	
-	CCArray* realHero=CCArray::create();
-	int num= sizeof(heroList)/sizeof(char*);
-	for(int i=0;i<num;i++){
-		if(strcmp(tmpChar->getCString(),heroList[i])==0){
-			continue;
-		}
-		CCString* hero=CCString::create(heroList[i]);
-		realHero->addObject(hero);
-	}
-
-	//ÌØÊâ×é¶Ó
-	/*char* heroList2[]={"Naruto","Deidara","Konan"};
-
-	CCArray* enemyHero=CCArray::create();
-	int num2= sizeof(heroList2)/sizeof(char*);
-	for(int x=0;x<num2;x++){
-	if(strcmp(tmpChar->getCString(),heroList2[x])==0){
-	continue;
-	}
-	CCString* hero=CCString::create(heroList2[x]);
-	enemyHero->addObject(hero);
-	}*/
-	//--------------
-
-	for(int i=0;i<5;i++){
-
-		if(i<2){
-			int length=realHero->count();
-			srand((int)time(0));
-			int index=random(length);
-			if(index==(int)realHero->count()){
-				
-				index=realHero->count()-1;
-			}
-
-
-			CCObject* tempObject=realHero->objectAtIndex(index);
-			CCString* hero=(CCString*) tempObject;
-
-			dic=CCDictionary::create();
-			tmpChar=CCString::create(hero->getCString());
-			tmpRole=CCString::create("Com");
-			tmpGroup=CCString::create("Konoha");
-
-			dic->setObject(tmpChar,"character");
-			dic->setObject(tmpRole,"role");
-			dic->setObject(tmpGroup,"group");
-
-			tempHeros->addObject(dic);
-			realHero->removeObjectAtIndex(index);
-
-
-		}else{
-
-			int length=realHero->count();
-			srand((int)time(0));
-			int index=random(length);
-			if(index==(int)realHero->count()){
-				index=realHero->count()-1;
-			}
-
-			CCObject* tempObject=realHero->objectAtIndex(index);
-			CCString* hero=(CCString*) tempObject;
-
-			dic=CCDictionary::create();
-			tmpChar=CCString::create(hero->getCString());
-			tmpRole=CCString::create("Com");
-			tmpGroup=CCString::create("Akatsuki");
-
-			dic->setObject(tmpChar,"character");
-			dic->setObject(tmpRole,"role");
-			dic->setObject(tmpGroup,"group");
-
-			tempHeros->addObject(dic);
-			realHero->removeObjectAtIndex(index);
-
-
-			////ÌØÊâ×é¶Ó
-			//int length=enemyHero->count();
-			//srand((int)time(0));
-			//int index=random(length);
-			//if(index==(int)enemyHero->count()){
-			//	index=enemyHero->count()-1;
-			//}
-
-			//CCObject* tempObject=enemyHero->objectAtIndex(index);
-			//CCString* hero=(CCString*) tempObject;
-
-			//dic=CCDictionary::create();
-			//tmpChar=CCString::create(hero->getCString());
-			//tmpRole=CCString::create("Com");
-			//tmpGroup=CCString::create("Akatsuki");
-
-
-			//dic->setObject(tmpChar,"character");
-			//dic->setObject(tmpRole,"role");
-			//dic->setObject(tmpGroup,"group");
-
-			//tempHeros->addObject(dic);
-			//enemyHero->removeObjectAtIndex(index);
-
-			////---------
-
-		} 
-
-	}
-
-
-	CCScene* loadScene=CCScene::create();
-	LoadLayer* loadLayer=LoadLayer::create();
-	loadLayer->tempHeros=tempHeros;
-	loadLayer->_isHardCoreMode=true;
-	loadScene->addChild(loadLayer);
-	loadLayer->preloadAudio();
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,loadScene));
-
-	}else if(i==2){
-
-	//4v4
-
-	//¼ÓÔØÐòÁÐ¼¯
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis2.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
-
-
-	CCDictionary* dic=CCDictionary::create();
-
-	
-	char* heroList1[]={"Konan","Sakura","Naruto","Sai","Deidara",
-		"Kakashi","Itachi","Tenten","Jiraiya","Suigetsu",
-		"Tsunade","Tobirama","Neji","Ino","Asuma","Gaara",
-		"Karin","Sasuke","Hidan","Choji","Kankuro",
-		"Shino","Minato","Tobi","Kakuzu","Hinata",
-		"Shikamaru","Chiyo","Kisame",
-		"Hiruzen","Kiba","Jugo","Lee"
-	};
-
-	srand((int)time(0));
-	int index2=random(sizeof(heroList1)/sizeof(char*));
-	CCString* tmpChar=CCString::create(heroList1[index2]);
-	CCString* tmpRole=CCString::create("Player");
-	CCString* tmpGroup=CCString::create("Konoha");
-
-	dic->setObject(tmpChar,"character");
-	dic->setObject(tmpRole,"role");
-	dic->setObject(tmpGroup,"group");
-
-	CCArray* tempHeros=CCArray::createWithObject(dic);
-	
-	CCArray* realHero=CCArray::create();
-	int num= sizeof(heroList1)/sizeof(char*);
-	for(int i=0;i<num;i++){
-		if(strcmp(tmpChar->getCString(),heroList1[i])==0){
-			continue;
-		}
-		CCString* hero=CCString::create(heroList1[i]);
-		realHero->addObject(hero);
-	}
-
-	//ÌØÊâ×é¶Ó
-	/*char* heroList2[]={"Naruto","Deidara","Konan"};
-
-	CCArray* enemyHero=CCArray::create();
-	int num2= sizeof(heroList2)/sizeof(char*);
-	for(int x=0;x<num2;x++){
-	if(strcmp(tmpChar->getCString(),heroList2[x])==0){
-	continue;
-	}
-	CCString* hero=CCString::create(heroList2[x]);
-	enemyHero->addObject(hero);
-	}*/
-	//--------------
-
-	for(int i=0;i<7;i++){
-
-		if(i<3){
-			int length=realHero->count();
-			srand((int)time(0));
-			int index=random(length);
-			if(index==(int)realHero->count()){
-				
-				index=realHero->count()-1;
-			}
-
-
-			CCObject* tempObject=realHero->objectAtIndex(index);
-			CCString* hero=(CCString*) tempObject;
-
-			dic=CCDictionary::create();
-			tmpChar=CCString::create(hero->getCString());
-			tmpRole=CCString::create("Com");
-			tmpGroup=CCString::create("Konoha");
-
-			dic->setObject(tmpChar,"character");
-			dic->setObject(tmpRole,"role");
-			dic->setObject(tmpGroup,"group");
-
-			tempHeros->addObject(dic);
-			realHero->removeObjectAtIndex(index);
-
-
-		}else{
-
-			int length=realHero->count();
-			srand((int)time(0));
-			int index=random(length);
-			if(index==(int)realHero->count()){
-				index=realHero->count()-1;
-			}
-
-			CCObject* tempObject=realHero->objectAtIndex(index);
-			CCString* hero=(CCString*) tempObject;
-
-			dic=CCDictionary::create();
-			tmpChar=CCString::create(hero->getCString());
-			tmpRole=CCString::create("Com");
-			tmpGroup=CCString::create("Akatsuki");
-
-			dic->setObject(tmpChar,"character");
-			dic->setObject(tmpRole,"role");
-			dic->setObject(tmpGroup,"group");
-
-			tempHeros->addObject(dic);
-			realHero->removeObjectAtIndex(index);
-
-		} 
-
-	}
-
-
-	CCScene* loadScene=CCScene::create();
-	LoadLayer* loadLayer=LoadLayer::create();
-	loadLayer->tempHeros=tempHeros;
-	loadScene->addChild(loadLayer);
-	loadLayer->preloadAudio();
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,loadScene));
-
-
-	}
-
-
-	
-
-
-
-
-
-
-
-
+        CCScene* selectScene     = CCScene::create();
+        SelectLayer* selectLayer = SelectLayer::create();
+        selectScene->addChild(selectLayer);
+        CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f, selectScene));
 }
 
 void StartMenu::onCreditsCallBack(){
@@ -3696,6 +3391,7 @@ void StartMenu::onCreditsCallBack(){
 
 		return;
 	}
+
 	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
 	CCScene* creditsScene=CCScene::create();
 	CreditsLayer* creditsLayer=CreditsLayer::create();
@@ -3706,7 +3402,7 @@ void StartMenu::onCreditsCallBack(){
 
 void StartMenu::scrollMenu(int posY){
 		CCObject* pObject=NULL;
-		if(posY>_pos02 || (isDrag && isClockwise)){ //Ë³Ê±Õë
+		if(posY>_pos02 || (isDrag && isClockwise)){ //é¡ºæ—¶é’ˆ
 			CCARRAY_FOREACH(_menu_array,pObject){
 				MenuButton* menu=(MenuButton *)pObject;
 				if(menu->getPositionY()==_pos01){
@@ -3714,7 +3410,7 @@ void StartMenu::scrollMenu(int posY){
 					this->reorderChild(menu,1);
 					menu->_isBottom=true;
 					CCFadeOut* fo=CCFadeOut::create(0.3f);
-					CCSpawn* seq=CCSpawn::createWithTwoActions(spn,fo);
+					ax::Spawn* seq=CCSpawn::createWithTwoActions(spn,fo);
 					menu->runAction(seq);
 
 				}else if(menu->getPositionY()==_pos03){
@@ -3743,7 +3439,7 @@ void StartMenu::scrollMenu(int posY){
 					this->reorderChild(menu,1);
 					menu->setVisible(true);
 					CCFadeIn* fi=CCFadeIn::create(0.3f);
-					CCSpawn* seq=CCSpawn::createWithTwoActions(spn,fi);
+					ax::Spawn* seq=CCSpawn::createWithTwoActions(spn,fi);
 					menu->_isBottom=false;
 					menu->runAction(seq);
 				}else if(menu->getPositionY()==_pos02 && !menu->_isBottom){
@@ -3760,7 +3456,7 @@ void StartMenu::scrollMenu(int posY){
 
 			};
 
-		}else{ //ÄæÊ±Õë
+		}else{ //é€†æ—¶é’ˆ
 			CCARRAY_FOREACH(_menu_array,pObject){
 				MenuButton* menu=(MenuButton *)pObject;
 				if(menu->getPositionY()==_pos01){
@@ -3786,7 +3482,7 @@ void StartMenu::scrollMenu(int posY){
 					this->reorderChild(menu,1);
 					menu->_isBottom=true;
 					CCFadeOut* fo=CCFadeOut::create(0.3f);
-					CCSpawn* seq=CCSpawn::createWithTwoActions(spn,fo);
+					ax::Spawn* seq=CCSpawn::createWithTwoActions(spn,fo);
 					menu->runAction(seq);
 
 				}else if(menu->getPositionY()==_pos02 && menu->_isBottom){
@@ -3795,7 +3491,7 @@ void StartMenu::scrollMenu(int posY){
 					this->reorderChild(menu,2);
 					menu->setVisible(true);
 					CCFadeIn* fi=CCFadeIn::create(0.3f);
-					CCSpawn* seq=CCSpawn::createWithTwoActions(spn,fi);
+					ax::Spawn* seq=CCSpawn::createWithTwoActions(spn,fi);
 					menu->_isBottom=false;
 					menu->runAction(seq);
 				}
@@ -3837,8 +3533,8 @@ void StartMenu::scrollMenu(int posY){
 			}
 		}
 
-		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(src.c_str()); 
-		menuText->setDisplayFrame(frame);
+		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(src.c_str()); 
+		menuText->setSpriteFrame(frame);
 	
 }
 

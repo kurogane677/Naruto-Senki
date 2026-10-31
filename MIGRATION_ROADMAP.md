@@ -53,34 +53,39 @@ Akibatnya semua file tetap harus bisa dikompilasi walaupun fiturnya tidak diuji 
 Setiap milestone punya **exit criteria** dan ditutup dengan **commit + tag git** (`m0` … `m5`, `mvp`).
 
 ### M0: Tooling siap
-- [ ] CMake ≥ 4.2 (`cmake --version`); sedang diinstal: 4.4.4 via winget
-- [ ] PowerShell 7 (`pwsh --version`); sedang diinstal via winget
-- [ ] VS 2026: workload **Desktop development with C++** + Windows 11 SDK
+- [x] CMake ≥ 4.2 (`cmake --version`): 4.4.4
+- [x] PowerShell 7 (`pwsh --version`): 7.6.9
+- [x] VS 2026: workload **Desktop development with C++** + Windows SDK (MSVC 14.51, SDK 10.0.26100)
   - cek: `vswhere -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`
 - [x] Git (2.37.3 sudah ada)
-- [ ] Clone Axmol **v2.11.5** ke `C:\dev\axmol`, jalankan `pwsh setup.ps1`, lalu cek env `AX_ROOT` dan perintah `axmol`
+- [x] Clone Axmol **v2.11.5** ke `C:\dev\axmol`, jalankan `pwsh setup.ps1`, lalu cek env `AX_ROOT` dan perintah `axmol` (butuh **Windows Developer Mode**)
+- [x] Build HelloWorld uji di `C:\dev\HelloAx` (RelWithDebInfo x64, jendela muncul)
 
 **Exit:** `axmol new -p net.zakume.hello -l cpp Hello` → `axmol build -p win32 -a x64` → jendela HelloWorld muncul.
 
 ### M1: Repo siap migrasi
-- [ ] `git init` + `.gitignore`:
+- [x] `git init` + `.gitignore`:
   - `Debug.win32/`, `Release.win32/`, `ipch/`, `*.sdf`, `*.VC.db`, `*.suo`, `*.user`, `build/`, `.vs/`
-- [ ] Commit "original 2.2.2 snapshot", lalu tag `legacy-2.2.2`
-- [ ] Konversi GBK → UTF-8 untuk `Classes/**/*.{cpp,h}` (kecuali `sqlite3*`) dengan script `iconv`
+  - plus `.gitattributes` berisi `* -text`, agar `core.autocrlf` tidak mengubah byte file
+- [x] Commit "original 2.2.2 snapshot", lalu tag `legacy-2.2.2`
+- [x] Konversi GBK → UTF-8 untuk `Classes/**/*.{cpp,h}` (kecuali `sqlite3*`): 18 file
   - cek `FONT_TYPE` di `Defines.h` dan string Cina lain
   - commit terpisah: "convert sources to UTF-8"
-- [ ] Buat branch `axmol-migration`
+- [x] Buat branch `axmol-migration`
 
 **Exit:** `git diff legacy-2.2.2 --stat` hanya berisi perubahan encoding, dan komentar Cina terbaca.
 
 ### M2: Kerangka proyek Axmol
-- [ ] `axmol new` ke folder sementara, lalu salin `CMakeLists.txt`, `proj.win32/` (`main.cpp`), dan struktur template ke root repo
-- [ ] `Resources/` dipetakan sebagai content folder template; `Classes/` tetap di tempatnya
-- [ ] `CMakeLists.txt`:
+- [x] `axmol new` ke folder sementara, lalu salin `CMakeLists.txt`, `proj.win32/` (`main.cpp`), dan struktur template ke root repo
+  - yang disalin: `cmake/`, `CMakeLists.txt`, `.axproj`, `build.bat`, `run.bat.in`, `.clang-format`, `proj.win32/`, `proj.android/`
+  - `.editorconfig` **tidak** disalin, karena memaksa LF dan trim whitespace pada kode lama
+- [x] `Resources/` dipetakan sebagai content folder template; `Classes/` tetap di tempatnya
+- [x] `CMakeLists.txt`:
   - source: semua `Classes/*.cpp` + `Classes/MyUtils/*.cpp` + `MyUtils/sqlite3.c` (dikompilasi sebagai C)
-  - opsi compiler `/utf-8`
-- [ ] Hapus `proj.win32/*.vcxproj`, `.sln`, `.sdf`, dan `ipch/` lama (tetap aman di tag `legacy-2.2.2`)
-- [ ] Cek di source Axmol status hal-hal berikut, lalu catat di Log Keputusan:
+  - opsi compiler `/utf-8` (otomatis dari `ax_setup_app_config`)
+- [x] Hapus `proj.win32/*.vcxproj`, `.sln`, `.sdf`, dan `ipch/` lama (tetap aman di tag `legacy-2.2.2`)
+  - binary engine 2.2.2 (`Debug.win32`, `Release.win32`) dipindah ke `C:\dev\naruto-senki-legacy-bin\`, bukan dihapus
+- [x] Cek di source Axmol status hal-hal berikut, lalu catat di Log Keputusan:
   - `__String`, `__Array`, `__Dictionary`, `__NotificationCenter`
   - `SimpleAudioEngine`
   - header compat `cocos2d.h`
@@ -88,13 +93,13 @@ Setiap milestone punya **exit criteria** dan ditutup dengan **commit + tag git**
 **Exit:** CMake configure sukses. Build boleh gagal di kode game, tetapi tidak boleh gagal karena engine/toolchain.
 
 ### M3: Lapisan kompatibilitas (`Classes/Compat/`)
-- [ ] `Compat2x.h`, di-include dari `Defines.h`:
+- [x] `Compat2x.h`, menggantikan setiap `#include "cocos2d.h"`:
   - alias tipe/namespace
   - `ccp`, `*_selector`, `sharedXxx()`
-- [ ] `CCStringCompat` / `CCArrayCompat` / `CCDictCompat` + `CCARRAY_FOREACH`
+- [x] `CCString` / `CCArray` / `CCDictionary` + `CCARRAY_FOREACH` (implementasi sendiri di `Compat2x.cpp`)
   - **hanya** jika M2 menunjukkan kelas aslinya sudah dihapus
-- [ ] `GameAudio`: API mirip `SimpleAudioEngine` di atas `ax::AudioEngine`
-- [ ] Bungkus semua include `../cocos2dx/platform/android/jni/JniHelper.h` dengan `#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID`
+- [x] `CocosDenshion::SimpleAudioEngine` di atas `ax::AudioEngine` (nama kelas lama dipertahankan)
+- [x] Bungkus semua include `../cocos2dx/platform/android/jni/JniHelper.h` dengan `#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID`
 
 **Exit:** jumlah error compile turun drastis. Catat jumlah error sebelum dan sesudah.
 
@@ -103,33 +108,34 @@ Kerjakan dari dependensi terkecil. **Setiap baris = 1 commit, dan build harus hi
 
 | # | Status | Modul | Pekerjaan utama |
 |---|---|---|---|
-| 4.1 | [ ] | `proj.win32/main.cpp`, `AppDelegate` | `GLViewImpl`, `ResolutionPolicy::FIXED_HEIGHT` 480x320, window 960x640 |
-| 4.2 | [ ] | `MyUtils/` (KTools, MD5, CCShake, CCScrewLayer, CCStrokeLabel) | `getDataFromFile`, tinyxml2, `uint32_t` di MD5, include path baru |
-| 4.3 | [ ] | Input: `ActionButton`, `JoyStick`, `GearButton`, `SelectButton`, `MenuButton`, `ScrewLayer` | `CCTouchDelegate` → `EventListenerTouchOneByOne` (fixed priority -50, swallow) |
-| 4.4 | [ ] | `Effect`, `HPBar`, `BGLayer` | kecil, sebagian besar sudah tertutup shim |
-| 4.5 | [ ] | `ActionManager` | 16 `CCCallFuncND` → lambda (sekaligus hapus leak `callValue->retain()`), `CCNotificationCenter` → custom event, `setFlipX` → `setFlippedX`, cast pointer→`intptr_t` |
-| 4.6 | [ ] | `Element`, `Characters` | sebagian besar shim; `Characters` hampir murni AI |
-| 4.7 | [ ] | `GameLayer`, `HudLayer`, `PauseLayer`, `GameOver`, `LoadLayer` | TMX → `ValueVector`/`ValueMap`, snapshot `RenderTexture`, HTTP → lambda/stub |
-| 4.8 | [ ] | `GameScene`, `StartMenu`, `SelectLayer` | `ui::EditBox`/`ui::Scale9Sprite`, keyboard back, matikan menu non-MVP |
-| 4.9 | [ ] | Cukup dikompilasi: `NetworkLayer`, `SkillLayer`, `RankingLayer`, `GearLayer`, `CreditsLayer` | cukup compile; HTTP di-stub |
-| 4.10 | [ ] | Matikan anti-tamper | `KeyList`, `checkMD5`, `checkPost`, sabotase di `checkTower`, exit `CError` di `GameOver` → `#if 0` atau hapus |
+| 4.1 | [x] | `proj.win32/main.cpp`, `AppDelegate` | `GLViewImpl`, `ResolutionPolicy::FIXED_HEIGHT` 480x320, window 960x640 |
+| 4.2 | [x] | `MyUtils/` (KTools, MD5, CCShake, CCScrewLayer, CCStrokeLabel) | `getDataFromFile`, tinyxml2, `uint32_t` di MD5, include path baru |
+| 4.3 | [x] | Input: `ActionButton`, `JoyStick`, `GearButton`, `SelectButton`, `MenuButton`, `ScrewLayer` | `CCTouchDelegate` → `EventListenerTouchOneByOne` (fixed priority -50, swallow) |
+| 4.4 | [x] | `Effect`, `HPBar`, `BGLayer` | kecil, sebagian besar sudah tertutup shim |
+| 4.5 | [x] | `ActionManager` | 16 `CCCallFuncND` → lambda (sekaligus hapus leak `callValue->retain()`), `CCNotificationCenter` → custom event, `setFlipX` → `setFlippedX`, cast pointer→`intptr_t` |
+| 4.6 | [x] | `Element`, `Characters` | sebagian besar shim; `Characters` hampir murni AI |
+| 4.7 | [x] | `GameLayer`, `HudLayer`, `PauseLayer`, `GameOver`, `LoadLayer` | TMX → `ValueVector`/`ValueMap`, snapshot `RenderTexture`, HTTP → lambda/stub |
+| 4.8 | [x] | `GameScene`, `StartMenu`, `SelectLayer` | `ui::EditBox`/`ui::Scale9Sprite`, keyboard back, matikan menu non-MVP |
+| 4.9 | [x] | Cukup dikompilasi: `NetworkLayer`, `SkillLayer`, `RankingLayer`, `GearLayer`, `CreditsLayer` | cukup compile; HTTP di-stub |
+| 4.10 | [x] | Matikan anti-tamper | `KeyList`, `checkMD5`, `checkPost`, sabotase di `checkTower`, exit `CError` di `GameOver` → `#if 0` atau hapus |
 
 **Exit:** `axmol build -p win32 -a x64` sukses dengan 0 error (warning dicatat).
 
 ### M5: MVP berjalan (runtime)
 Uji secara berurutan dan perbaiki temuan sebelum lanjut ke langkah berikutnya.
-- [ ] Intro → logo → push start → menu roda bisa diputar
-- [ ] `sql.db` terbentuk di writable path (`%LOCALAPPDATA%\NarutoSenki`)
-- [ ] Training: loading selesai, 6 hero muncul di posisi dari TMX, kamera mengikuti player
+- [x] Intro → logo → push start → menu roda bisa diputar
+- [x] `sql.db` terbentuk di writable path (`%LOCALAPPDATA%\NarutoSenki`); UserDefault sekarang `UserDefault.bin` (format Axmol)
+- [x] Training: loading selesai, 6 hero muncul di posisi dari TMX, kamera mengikuti player
 - [ ] Joystick 8 arah, attack, skill 1–3 + cooldown, item potion
 - [ ] Level-up → ougis terbuka → cut-in (dunia di-pause) → resume
 - [ ] Creep tiap 15 detik → tower hancur → creep naik level → core hancur → GameOver
 - [ ] Coin reward tersimpan; kembali ke menu, lalu main lagi (cek crash/leak saat scene diulang)
 - [ ] Pause: resume, surrender, toggle BGM/voice
 - [ ] Kakuzu memanggil mask; hero yang punya summon mati lalu respawn
-  - bug crash `Element.cpp` L766 kemungkinan muncul di sini → **perbaiki di langkah ini**
+  - bug crash `Element.cpp` L766 kemungkinan muncul di sini → **perbaiki di langkah ini** (sudah diperbaiki di commit `ba24e58`, menunggu uji)
 
 **Exit:** 3 match berturut-turut tanpa crash, lalu tag `mvp`.
+✅ **MVP disetujui user (2026-10-31)**, tag `mvp`. Dokumentasi setup/build ada di `README.md`.
 
 ### M6: Pasca-MVP
 Masing-masing menjadi milestone kecil tersendiri, dikerjakan sesuai urutan prioritas:
@@ -163,4 +169,20 @@ Masing-masing menjadi milestone kecil tersendiri, dikerjakan sesuai urutan prior
 |---|---|
 | 2026-10-31 | Target engine Axmol 2.11.5 (bukan cocos2d-x 4.0); platform pertama Windows x64 |
 | 2026-10-31 | MVP = Training 3v3; anti-tamper dimatikan; HTTP di-stub |
-| 2026-10-31 | M0: VS 2026 Community 18.10 terpasang **tanpa** workload C++; CMake 4.4.4 & pwsh sedang diinstal via winget |
+| 2026-10-31 | M0: CMake 4.4.4, pwsh 7.6.9, workload C++ VS 2026 (MSVC 14.51, SDK 10.0.26100), Axmol v2.11.5 di `C:\dev\axmol`. `setup.ps1` butuh Windows Developer Mode |
+| 2026-10-31 | M1: `.gitattributes` `* -text`, karena `core.autocrlf=true` di level sistem akan mengubah byte resource yang dicek MD5 |
+| 2026-10-31 | M1: 18 file GBK → UTF-8 tanpa BOM, round-trip terverifikasi, jumlah baris tetap. `RankingLayer.cpp` sudah UTF-8 BOM sejak awal. Byte `0x14` tersembunyi di `StartMenu.cpp` tetap utuh. **Wajib compile dengan `/utf-8`** (M2) |
+| 2026-10-31 | M2: Axmol 2.11.5 **sudah menghapus** `__String`, `__Array`, `__Dictionary`, `__NotificationCenter`, dan `SimpleAudioEngine`. Shim buatan sendiri di M3 wajib. `core/cocos2d.h` hanya berisi alias kecil (`namespace cocos2d = ax`, `Ref` = `Object`, `CC_SAFE_*`, `CCLOG`, `CC_CALLBACK_*`). C++20; `/utf-8` otomatis |
+| 2026-10-31 | M2: configure CMake berhasil dengan generator "Visual Studio 18 2026" x64 ke `build_x64/`. 28 source dari `Classes/` (termasuk `sqlite3.c`), resource dari `Resources/` |
+| 2026-10-31 | M2: binary engine 2.2.2 (`Debug.win32`/`Release.win32`, satu-satunya salinan) dipindah ke `C:\dev\naruto-senki-legacy-bin\` |
+| 2026-10-31 | M3/M4: semua 4.1–4.9 dikerjakan dalam satu putaran, karena pola error lintas file sama. Build: 598 → 230 → 7 → 0 error. Commit `eabe64b` |
+| 2026-10-31 | M3: Axmol tidak lagi membundel tinyxml2, jadi tinyxml2 10.0.0 di-vendor ke `Classes/MyUtils/tinyxml2/`. `NULL` didefinisikan ulang sebagai `nullptr` (vararg x64 aman); `NULL`-sebagai-angka diganti `0`. Game target memakai `/Zc:strictStrings-`; `/permissive` **tidak** bisa dipakai karena merusak header engine (`or`) |
+| 2026-10-31 | M3: prioritas touch 2.x dipetakan ke fixed priority Axmol (p > -128 → p + 200) supaya tetap diproses setelah menu, seperti di 2.x |
+| 2026-10-31 | **Peringatan**: `sed -i` di Git Bash mengubah CRLF → LF. Untuk edit massal pakai Python (per byte) |
+| 2026-10-31 | Run pertama: game jalan, sampai in-game Training (HUD, peta, hero tampil). Uji M5 belum dilakukan |
+| 2026-10-31 | M4.10: anti-tamper dihapus (commit `d7b51be`). `KTools::checkMD5/prepareFileMD5/checkData` masih ada sebagai kode mati. `CError` tidak pernah di-set, jadi cabangnya tidak aktif |
+| 2026-10-31 | M5: crash `Element.cpp` (release setelah NULL pada `_monsterArray`) diperbaiki (commit `ba24e58`) karena ada di jalur MVP (summon Kakuzu). Baris 621 (bocor tanpa release) dibiarkan sesuai aturan "jangan perbaiki selain crash" |
+| 2026-10-31 | M5: user sudah mencoba main dan menyatakan MVP bisa dicoba. Mode HardCore (pilih Naruto, peta lain) juga terlihat jalan |
+| 2026-10-31 | M5: user melaporkan crash pada ougis LV4 (Naruto, Tsunade) dan saat GameOver. Ditambahkan crash handler Win32 (`proj.win32/CrashHandler.cpp`): stack trace ber-simbol ke `crash.log` + `crash.dmp` di folder exe. **Saat ada crash, lihat file ini dulu** |
+| 2026-10-31 | M5: crash GameOver terjadi karena snapshot `visit()` di luar render, sehingga `Camera::getVisitingCamera()` null di `FastTMXLayer::draw`. Diperbaiki dengan `ccVisitForSnapshot()`. Crash LV4 terjadi karena ikon buff `<Hero>_cBuff.png` tidak ada (hanya Sakura/Chiyo yang punya), lalu sprite null. Ikon kini dilewati (commit `67f0e6f`). Diverifikasi: LV4 Naruto tidak crash, RESULT tampil, kembali ke menu lalu match baru berjalan |
+| 2026-10-31 | M5: crash skill buff Kakuzu terjadi di build **Debug** (`build_x64/bin/NarutoSenki/Debug/`). Di Debug, `createWithSpriteFrameName()` meng-assert frame yang hilang sebelum sempat return null. Sekarang frame dicek dulu (commit `7f9ccd5`). Pelajaran: uji di **Debug dan RelWithDebInfo**, dan `crash.log` ada di folder exe masing-masing config. Crash yang lolos dari handler bisa dilacak lewat Windows Event Log (Application, id 1000) |

@@ -1,8 +1,7 @@
 #pragma once
-#include "cocos2d.h"
+#include "Compat/Compat2x.h"
 #include "ActionManager.h"
 #include "HPBar.h"
-#include "cocos-ext.h"
 
 class HPBar;
 

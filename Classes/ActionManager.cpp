@@ -40,8 +40,8 @@ ActionManager::ActionManager(void)
 	_isSuicide=false;
 
 	_charNO=0;
-	_backY=NULL;
-	_DiretionY=NULL;
+	_backY=0;
+	_DiretionY=0;
 
 	_isAllAttackLocked=false;
 	_isOnlySkillLocked=false;
@@ -106,15 +106,15 @@ ActionManager::ActionManager(void)
 	_deadNum=0;
 	_flogNum=0;
 	
-	_knockLength=NULL;
-	_knockDiretion=NULL;
+	_knockLength=0;
+	_knockDiretion=false;
 
 	_effectType=NULL;
 
 	_damageArray=NULL;
 	_monsterArray=NULL;
 
-	_originY=NULL;
+	_originY=0;
 	
 	_nattackValue=NULL;
 	_sattackValue1=NULL;
@@ -135,17 +135,17 @@ ActionManager::ActionManager(void)
 	_speedItemEffect=NULL;
 	_dehealBuffEffect=NULL;
 
-	_buffStartTime=NULL;
-	_debuffStartTime=NULL;
+	_buffStartTime=0;
+	_debuffStartTime=0;
 	_heartEffect=NULL;
 
 	_shadow=NULL;
 
-	_healBuffValue=NULL;
-	_skillUPBuffValue=NULL;
-	_skillChangeBuffValue=NULL;
-	_dehealBuffValue=NULL;
-	_powerUPBuffValue=NULL;
+	_healBuffValue=0;
+	_skillUPBuffValue=0;
+	_skillChangeBuffValue=0;
+	_dehealBuffValue=0;
+	_powerUPBuffValue=0;
 	_hpBar=NULL;
 	_maxHP=NULL;
 	_hp=NULL;
@@ -350,7 +350,7 @@ void ActionManager::update(float dt){
 		
 		this->setPosition(ccp(posX,poxY));
 		_delegate->reorderChild(this,-this->getPositionY());
-		//¸üÐÂminimap
+		//æ›´æ–°minimap
 		if(strcmp(this->getRole()->getCString(),"Player")==0 || strcmp(this->getRole()->getCString(),"Com")==0){
 			CCNotificationCenter::sharedNotificationCenter()->postNotification("updateMap", this);
 		}
@@ -520,7 +520,7 @@ void ActionManager::acceptAttack(CCObject* object){
 					_hpBar->loseHP(this->getHpPercent());
 				}
 
-				//·ÉÀ×ÉñÏú»Ù
+				//é£žé›·ç¥žé”€æ¯
 				if(strcmp(Attacker->_character->getCString(),"HiraishinKunai")==0 ||
 					strcmp(Attacker->_character->getCString(),"Shintenshin")==0
 					){
@@ -602,7 +602,7 @@ void ActionManager::acceptAttack(CCObject* object){
 				float attackerPosY;
 				float currentPosY;
 		
-				//yÖá½ÃÕý
+				//yè½´çŸ«æ­£
 				if(Attacker->_actionState==ACTION_STATE_JUMP){
 					attackerPosY=Attacker->_originY;
 				}else{
@@ -637,10 +637,10 @@ void ActionManager::acceptAttack(CCObject* object){
 						}else if(strcmp(hitType,"f_hit")==0  || strcmp(hitType,"bf_hit")==0){
 							if(_isFlipped==Attacker->_isFlipped){
 								if(_isFlipped){
-									this->setFlipX(false);
+									this->setFlippedX(false);
 									_isFlipped=false;
 								}else{
-									this->setFlipX(true);
+									this->setFlippedX(true);
 									_isFlipped=true;
 								}
 							}
@@ -648,10 +648,10 @@ void ActionManager::acceptAttack(CCObject* object){
 						}else if(strcmp(hitType,"f2_hit")==0 ){
 							if(_isFlipped==Attacker->_isFlipped){
 								if(_isFlipped){
-									this->setFlipX(false);
+									this->setFlippedX(false);
 									_isFlipped=false;
 								}else{
-									this->setFlipX(true);
+									this->setFlippedX(true);
 									_isFlipped=true;
 								}
 							}
@@ -660,10 +660,10 @@ void ActionManager::acceptAttack(CCObject* object){
 						else if(strcmp(hitType,"b_hit")==0){
 							if(_isFlipped==Attacker->_isFlipped){
 								if(_isFlipped){
-									this->setFlipX(false);
+									this->setFlippedX(false);
 									_isFlipped=false;
 								}else{
-									this->setFlipX(true);
+									this->setFlippedX(true);
 									_isFlipped=true;
 								}
 							}
@@ -699,8 +699,8 @@ void ActionManager::acceptAttack(CCObject* object){
 									Attacker->hearts+=1;	
 
 									if(Attacker->_heartEffect){
-										CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",Attacker->hearts)->getCString()); 
-										Attacker->_heartEffect->setDisplayFrame(frame);
+										CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",Attacker->hearts)->getCString()); 
+										Attacker->_heartEffect->setSpriteFrame(frame);
 									}																	
 	
 								}
@@ -906,7 +906,7 @@ void ActionManager::acceptAttack(CCObject* object){
 														Attacker->_isCatchOne=true;
 														this->setPosition(CCPointMake(Attacker->getPositionX()+(Attacker->_isFlipped?-28:28)
 															,Attacker->getPositionY()-1));
-														this->setFlipX(Attacker->_isFlipped?false:true);
+														this->setFlippedX(Attacker->_isFlipped?false:true);
 														_delegate->reorderChild(this,-this->getPositionY());
 
 													}
@@ -925,10 +925,10 @@ void ActionManager::acceptAttack(CCObject* object){
 						}else if(strcmp(hitType,"f_hit")==0  || strcmp(hitType,"bf_hit")==0){
 							if(_isFlipped==Attacker->_isFlipped){
 								if(_isFlipped){
-									this->setFlipX(false);
+									this->setFlippedX(false);
 									_isFlipped=false;
 								}else{
-									this->setFlipX(true);
+									this->setFlippedX(true);
 									_isFlipped=true;
 								}
 
@@ -945,10 +945,10 @@ void ActionManager::acceptAttack(CCObject* object){
 
 							if(_isFlipped==Attacker->_isFlipped){
 								if(_isFlipped){
-									this->setFlipX(false);
+									this->setFlippedX(false);
 									_isFlipped=false;
 								}else{
-									this->setFlipX(true);
+									this->setFlippedX(true);
 									_isFlipped=true;
 								}
 							}
@@ -963,10 +963,10 @@ void ActionManager::acceptAttack(CCObject* object){
 
 							if(_isFlipped==Attacker->_isFlipped){
 								if(_isFlipped){
-									this->setFlipX(false);
+									this->setFlippedX(false);
 									_isFlipped=false;
 								}else{
-									this->setFlipX(true);
+									this->setFlippedX(true);
 									_isFlipped=true;
 								}
 							}
@@ -1108,11 +1108,11 @@ CCAction* ActionManager::createAnimation(CCArray* ationArray,float fps,bool isRe
 			const char* keyValue=dic->valueForKey(key)->getCString();
 			if(strcmp(key,"frameName")==0){
 
-				CCSpriteFrame *frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(keyValue);
+				CCSpriteFrame *frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(keyValue);
 				animeFrames->addObject(frame);
 
 			}else{
-				tempAnimation=CCAnimation::createWithSpriteFrames(animeFrames, float(1.0 / fps));
+				tempAnimation=CCAnimation::createWithSpriteFrames(animeFrames->toVector<CCSpriteFrame*>(), float(1.0 / fps));
 				tempAction=CCAnimate::create(tempAnimation);
 			
 				seqArray->addObject(tempAction);
@@ -1258,7 +1258,7 @@ CCAction* ActionManager::createAnimation(CCArray* ationArray,float fps,bool isRe
 		}
 	};
 	if(animeFrames->count()>0){
-		tempAnimation= CCAnimation::createWithSpriteFrames(animeFrames, float(1.0 / fps));
+		tempAnimation= CCAnimation::createWithSpriteFrames(animeFrames->toVector<CCSpriteFrame*>(), float(1.0 / fps));
 		tempAction=CCAnimate::create(tempAnimation);
 		seqArray->addObject(tempAction);
 	};
@@ -1283,10 +1283,10 @@ CCAction* ActionManager::createAnimation(CCArray* ationArray,float fps,bool isRe
 void ActionManager::setCharFlip(){
 
 	if (_isFlipped){
-		this->setFlipX(false);
+		this->setFlippedX(false);
 		_isFlipped=false;
 	}else{
-		this->setFlipX(true);
+		this->setFlippedX(true);
 		_isFlipped=true;
 
 	}
@@ -1307,7 +1307,7 @@ void ActionManager::setShadow(CCNode* sender,void* date){
 	
 	charN->setOpacity(180);
 	charN->setAnchorPoint(ccp(0.5,0));
-	charN->setFlipX(_isFlipped);
+	charN->setFlippedX(_isFlipped);
 	charN->setPosition(this->getPosition());
 	CCDelayTime* delay=CCDelayTime::create(0.1f);
 	CCFiniteTimeAction *call = CCCallFuncN::create(charN,callfuncN_selector(ActionManager::enableShadow));
@@ -1347,7 +1347,7 @@ CCRect ActionManager::setHalfBox(){
 };
 
 CCRect ActionManager::setHitBox(){
-	CCRect hitbox=this->boundingBox();
+	CCRect hitbox=this->getBoundingBox();
 	return hitbox;
 };
 
@@ -1390,7 +1390,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		criticalValue=rand()%50;
 	}
 
-	//·É¶Î×Ô²Ð
+	//é£žæ®µè‡ªæ®‹
 	if(strcmp(attacker->getCharacter()->getCString(),"Hidan")==0 && attacker->_skillChangeBuffValue){
 		realValue=attackValue+criticalValue;
 	}else{
@@ -1605,7 +1605,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		}
 
 	}
-	//ÈÌ¾ß²é¿ËÀ­¹¥»÷»ñÈ¡
+	//å¿å…·æŸ¥å…‹æ‹‰æ”»å‡»èŽ·å–
 
 
 
@@ -2032,7 +2032,7 @@ void ActionManager::useGear(gearType type){
 
 					this->scheduleOnce(schedule_selector(ActionManager::enableGear00),15.0f);
 
-					//ÒþÉí
+					//éšèº«
 					if(strcmp(_role->getCString(),"Player")==0 || strcmp(this->getGroup()->getCString(),_delegate->currentPlayer->getGroup()->getCString())==0){
 						this->setOpacity(150);
 					}else{
@@ -2087,7 +2087,7 @@ void ActionManager::useGear(gearType type){
 					if(this->getActionState()==ACTION_STATE_FLOAT ||
 						this->getActionState()==ACTION_STATE_AIRHURT){
 							this->setPositionY(_originY);
-							_originY=NULL;
+							_originY=0;
 							_delegate->reorderChild(this,-this->getPositionY());
 					}
 
@@ -2228,7 +2228,7 @@ void ActionManager::setRestore(float dt){
 void ActionManager::setRestore2(float dt){
 	
 	if(_hpBar ){
-		//°ËÃÅºÄÑª
+		//å…«é—¨è€—è¡€
 		if(bamen>=8){
 			if(atoi(_hp->getCString())-1000>0){
 				this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())-1000));
@@ -2369,7 +2369,7 @@ void ActionManager::setAttackBox(CCNode* sender,void* date){
 
 	_effectType=str;
 
-	//·´ÉË
+	//åä¼¤
 
 	if(_actionState==ACTION_STATE_HURT){
 
@@ -2459,7 +2459,7 @@ void ActionManager::setMove(CCNode* sender,void* date){
 		} 
 		moveLength=this->getKnockLength();
 	}else{
-		moveLength=(int) date;
+		moveLength=(int)(intptr_t) date;
 	}
 
 	if( this->getPositionX()>_delegate->currentMap->getTileSize().width &&
@@ -2514,7 +2514,7 @@ void ActionManager::setJump(CCNode* sender,void* date){
 
 
 void ActionManager::setCharge(CCNode* sender,void* date){
-	int moveLength=(int) date;
+	int moveLength=(int)(intptr_t) date;
 	if( (this->getPositionX()<_delegate->currentMap->getTileSize().width && _isFlipped) ||
 		(this->getPositionX()>(_delegate->currentMap->getMapSize().width-1)*_delegate->currentMap->getTileSize().width && !_isFlipped)
 		){
@@ -2529,7 +2529,7 @@ void ActionManager::setCharge(CCNode* sender,void* date){
 
 // with out getCollider
 void ActionManager::setChargeB(CCNode* sender,void* date){
-	int moveLength=(int) date;
+	int moveLength=(int)(intptr_t) date;
 	float delay;
 	if(_actionState==ACTION_STATE_OATTACK || _actionState==ACTION_STATE_O2ATTACK){
 		delay=0.4f;
@@ -2651,10 +2651,10 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 		if(_mainTarget){
 
 			if(_mainTarget->_isFlipped){
-				this->setFlipX(true);
+				this->setFlippedX(true);
 				this->_isFlipped=true;
 			}else{
-				this->setFlipX(false);
+				this->setFlippedX(false);
 				this->_isFlipped=false;
 			}
 		}
@@ -2693,14 +2693,14 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 	}
 	else if(strcmp(commandType->getCString(),"reTransport")==0){
 		this->setPosition(ccp(this->getPositionX(),_originY));
-		_originY=NULL;
+		_originY=0;
 	}else if(strcmp(commandType->getCString(),"setDead")==0){
 		this->_isSuicide=true;
 		this->dead();
 	}else if(strcmp(commandType->getCString(),"findTarget")==0){
 
-		if(!this->findEnemy("Hero",NULL)){
-			if(!this->findEnemy("Flog",NULL) || strcmp(this->getCharacter()->getCString(),"RikudoNaruto")==0 ||
+		if(!this->findEnemy("Hero",0)){
+			if(!this->findEnemy("Flog",0) || strcmp(this->getCharacter()->getCString(),"RikudoNaruto")==0 ||
 				strcmp(this->getCharacter()->getCString(),"SageNaruto")==0
 				){
 					_mainTarget=NULL;
@@ -2803,7 +2803,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 			while (i<11)
 			{
 				CCString* path=CCString::createWithFormat("Tenten_Extern_0%d.png",i);
-				CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(path->getCString());
+				CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(path->getCString());
 				tempArray->addObject(frame);
 				i+=1;
 			}
@@ -2811,7 +2811,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 		
 
 
-		CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray, 0.1f);
+		CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray->toVector<CCSpriteFrame*>(), 0.1f);
 		CCFiniteTimeAction *call = CCCallFuncN::create(this,callfuncN_selector(ActionManager::disableShadow));
 		CCAction* tempAction=CCAnimate::create(tempAnimation);
 		CCArray* list=CCArray::create();
@@ -2902,7 +2902,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 
 
 void ActionManager::setBuff(CCNode* sender,void* date){
-	int buffValue=(int) date;
+	int buffValue=(int)(intptr_t) date;
 	float buffStayTime=_attackRangeY;
 
 	if(strcmp(_attackType->getCString(),"hBuff")==0){
@@ -2936,7 +2936,7 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 						if(distanceX<winSize.width/2){
-							//È¡ÏûÒþÉí
+							//å–æ¶ˆéšèº«
 							if(!tempHero->_isVisable){
 								if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 									strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -3123,8 +3123,8 @@ void ActionManager::removeBuffEffect(const char* type){
 		if(_healBuffEffect){
 			_healBuffEffect->removeFromParent();
 			_healBuffEffect=NULL;
-			_healBuffValue=NULL;
-			_buffStartTime=NULL;
+			_healBuffValue=0;
+			_buffStartTime=0;
 		}
 		if(_powerBuffEffect){
 			_powerBuffEffect->removeFromParent();
@@ -3136,9 +3136,9 @@ void ActionManager::removeBuffEffect(const char* type){
 		}
 		if(_dehealBuffEffect){
 			_dehealBuffEffect->removeFromParent();
-			_dehealBuffValue=NULL;
+			_dehealBuffValue=0;
 			_dehealBuffEffect=NULL;
-			_debuffStartTime=NULL;
+			_debuffStartTime=0;
 
 		}
 	}
@@ -3149,7 +3149,7 @@ void ActionManager::disableBuff(float dt){
 		this->setsAttackValue1(CCString::createWithFormat("%d",atoi(this->_sattackValue1->getCString())-_skillUPBuffValue));
 		this->setsAttackValue2(CCString::createWithFormat("%d",atoi(this->_sattackValue2->getCString())-_skillUPBuffValue));
 		this->setsAttackValue3(CCString::createWithFormat("%d",atoi(this->_sattackValue3->getCString())-_skillUPBuffValue));
-		_skillUPBuffValue=NULL;
+		_skillUPBuffValue=0;
 
 		if(strcmp(this->getCharacter()->getCString(),"Neji")==0){
 			_isBati=false;
@@ -3158,7 +3158,7 @@ void ActionManager::disableBuff(float dt){
 	}else if(_skillBuffEffect){
 		this->removeBuffEffect("sBuff");
 	}else if(!_isVisable && this->_actionState!=ACTION_STATE_HURT){ 
-		//·ÀÖ¹±»À§×¡µÄÊ±ºò½øÐÐ»¹Ô­
+		//é˜²æ­¢è¢«å›°ä½çš„æ—¶å€™è¿›è¡Œè¿˜åŽŸ
 
 		this->setOpacity(255);
 		this->setVisible(true);
@@ -3207,11 +3207,11 @@ void ActionManager::healBuff(float dt){
 	if(_buffStartTime && curTime-_buffStartTime>=limitTime){
 		this->unschedule(schedule_selector(ActionManager::healBuff));
 		this->removeBuffEffect("hBuff");
-		_healBuffValue=NULL;
-		_buffStartTime=NULL;
+		_healBuffValue=0;
+		_buffStartTime=0;
 		return;
 	};
-	//ÏãÁ×Èº²¹
+	//é¦™ç£·ç¾¤è¡¥
 	if(strcmp(_character->getCString(),"Karin")==0){
 
 		CCObject* pObject;
@@ -3243,7 +3243,7 @@ void ActionManager::healBuff(float dt){
 								_delegate->setHPLose(tempHero->getHpPercent());
 							}
 
-							//Èº²¹ÌØÐ§
+							//ç¾¤è¡¥ç‰¹æ•ˆ
 
 							if(tempHero->_isVisable){
 								Effect* tmpEffect=Effect::create("Kagura",tempHero);
@@ -3320,7 +3320,7 @@ void ActionManager::healBuff(float dt){
 
 						}
 
-						//Èº²¹ÌØÐ§
+						//ç¾¤è¡¥ç‰¹æ•ˆ
 
 						if(tempHero->_isVisable){
 							Effect* tmpEffect=Effect::create("Hupo",tempHero);
@@ -3384,7 +3384,7 @@ void ActionManager::healBuff(float dt){
 		strcmp(_character->getCString(),"Tsunade")==0 
 		){
 
-		//Ð¡Ó£µ¥²¹
+		//å°æ¨±å•è¡¥
 		if(atoi(_maxHP->getCString())-atoi(_hp->getCString())<=_healBuffValue){
 			this->setHP(CCString::create(_maxHP->getCString()));
 			if(_hpBar){
@@ -3421,8 +3421,8 @@ void ActionManager::dehealBuff(float dt){
 		this->unschedule(schedule_selector(ActionManager::dehealBuff));
 		this->setWalkSpeed(_originSpeed);
 		this->removeBuffEffect("dhBuff");
-		_dehealBuffValue=NULL;
-		_debuffStartTime=NULL;
+		_dehealBuffValue=0;
+		_debuffStartTime=0;
 		return;
 	};
 
@@ -3677,7 +3677,7 @@ void ActionManager::changeAction(){
 			if(_hpBar){
 			_hpBar->setPositionY(65);
 			}
-			_skillChangeBuffValue=NULL;
+			_skillChangeBuffValue=0;
 
 		}else if(_skillChangeBuffValue==18){
 			CCObject* pObject;
@@ -3723,7 +3723,7 @@ void ActionManager::changeAction(){
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 						if(distanceX<winSize.width/2){
-							//È¡ÏûÒþÉí
+							//å–æ¶ˆéšèº«
 							if(!tempHero->_isVisable){
 								if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 									strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -3803,7 +3803,7 @@ void ActionManager::changeAction(){
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 						if(distanceX<winSize.width/2){
-							//È¡ÏûÒþÉí
+							//å–æ¶ˆéšèº«
 							if(!tempHero->_isVisable){
 								if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 									strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -3877,7 +3877,7 @@ void ActionManager::changeAction(){
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 					if(distanceX<winSize.width/2){
-						//È¡ÏûÒþÉí
+						//å–æ¶ˆéšèº«
 						if(!tempHero->_isVisable){
 							if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 								strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -3976,7 +3976,7 @@ void ActionManager::changeAction(){
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 					if(distanceX<winSize.width/2){
-						//È¡ÏûÒþÉí
+						//å–æ¶ˆéšèº«
 						if(!tempHero->_isVisable){
 							if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 								strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -4005,10 +4005,10 @@ void ActionManager::changeAction(){
 		
 
 		if(strcmp(this->_role->getCString(),"Player")==0){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("Kakashi_skill1_1.png"); 
-			_delegate->getHudLayer()->skill1Button->setDisplayFrame(frame);
-			frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("Kakashi_skill2_1.png"); 
-			_delegate->getHudLayer()->skill2Button->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Kakashi_skill1_1.png"); 
+			_delegate->getHudLayer()->skill1Button->setSpriteFrame(frame);
+			frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Kakashi_skill2_1.png"); 
+			_delegate->getHudLayer()->skill2Button->setSpriteFrame(frame);
 
 		}
 		
@@ -4168,8 +4168,8 @@ void ActionManager::changeAction(){
 
 			if(strcmp(this->_role->getCString(),"Player")==0){
 
-				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("Minato_skill1_1.png"); 
-				_delegate->getHudLayer()->skill1Button->setDisplayFrame(frame);
+				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Minato_skill1_1.png"); 
+				_delegate->getHudLayer()->skill1Button->setSpriteFrame(frame);
 				if(_delegate->getHudLayer()->skill1Button->_clickNum<2){
 					_delegate->getHudLayer()->skill1Button->_clickNum++;
 				}
@@ -4197,8 +4197,8 @@ void ActionManager::changeAction(){
 		}
 		if(bamen<5){
 			bamen+=1;
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("Bamen_Effect_%02d.png",this->bamen-1)->getCString()); 
-			this->_heartEffect->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("Bamen_Effect_%02d.png",this->bamen-1)->getCString()); 
+			this->_heartEffect->setSpriteFrame(frame);
 		}else{
 			return;
 		}
@@ -4550,7 +4550,7 @@ void ActionManager::resumeAction(float dt){
 				this->setKnockDownAction(createAnimation(skillSPC5Array,10.0f,false,true));
 				this->knockDown();
 				this->setKnockDownAction(createAnimation(knockDownArray,10.0f,false,true));
-				_skillChangeBuffValue=NULL;
+				_skillChangeBuffValue=0;
 				return;
 			}
 			_actionState=ACTION_STATE_WALK;
@@ -4573,10 +4573,10 @@ void ActionManager::resumeAction(float dt){
 
 		if(strcmp(this->_role->getCString(),"Player")==0){
 			
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("Kakashi_skill1.png"); 
-			_delegate->getHudLayer()->skill1Button->setDisplayFrame(frame);
-			frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("Kakashi_skill2.png"); 
-			_delegate->getHudLayer()->skill2Button->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Kakashi_skill1.png"); 
+			_delegate->getHudLayer()->skill1Button->setSpriteFrame(frame);
+			frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Kakashi_skill2.png"); 
+			_delegate->getHudLayer()->skill2Button->setSpriteFrame(frame);
 
 		}
 
@@ -4634,7 +4634,7 @@ void ActionManager::resumeAction(float dt){
 			if(_powerUPBuffValue){
 				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-_powerUPBuffValue));
 				this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
-				_powerUPBuffValue=NULL;
+				_powerUPBuffValue=0;
 			}
 
 			if(_actionState==ACTION_STATE_IDLE||
@@ -4652,7 +4652,7 @@ void ActionManager::resumeAction(float dt){
 			this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 			this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
 			this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
-			_powerUPBuffValue=NULL;
+			_powerUPBuffValue=0;
 
 			if(_actionState==ACTION_STATE_IDLE||
 				_actionState==ACTION_STATE_WALK ||
@@ -4859,7 +4859,7 @@ void ActionManager::resumeAction(float dt){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 				ActionManager* mo=(ActionManager*) pObject;
-				//Çå³ý½ÇÉ«±íµÄmonter
+				//æ¸…é™¤è§’è‰²è¡¨çš„monter
 				int index=_delegate->_CharacterArray->indexOfObject(mo);
 				if(index>=0){
 					_delegate->_CharacterArray->removeObjectAtIndex(index);
@@ -4886,7 +4886,7 @@ void ActionManager::resumeAction(float dt){
 
 	}
 
-	_skillChangeBuffValue=NULL;
+	_skillChangeBuffValue=0;
 
 }
 void ActionManager::setActionResume(){
@@ -4917,7 +4917,7 @@ void ActionManager::setActionResume(){
 			this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
 			this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
 			
-			_skillChangeBuffValue=NULL;
+			_skillChangeBuffValue=0;
 
 		}
 	
@@ -4950,7 +4950,7 @@ void ActionManager::setActionResume(){
 			this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
 			this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
 
-			_skillChangeBuffValue=NULL;
+			_skillChangeBuffValue=0;
 
 
 			
@@ -4988,7 +4988,7 @@ void ActionManager::setActionResume(){
 			this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
 			this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
 
-			_skillChangeBuffValue=NULL;
+			_skillChangeBuffValue=0;
 
 
 
@@ -5018,7 +5018,7 @@ void ActionManager::setActionResume(){
 			this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
 			this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
 
-			_skillChangeBuffValue=NULL;
+			_skillChangeBuffValue=0;
 
 			this->setWalkSpeed(224);
 
@@ -5039,7 +5039,7 @@ void ActionManager::setActionResume(){
 		this->unschedule(schedule_selector(ActionManager::resumeAction));
 		this->removeBuffEffect("sBuff");	
 
-		_skillChangeBuffValue=NULL;
+		_skillChangeBuffValue=0;
 
 	}else if(strcmp(this->_character->getCString(),"Tobi")==0 && _skillChangeBuffValue){
 
@@ -5055,14 +5055,14 @@ void ActionManager::setActionResume(){
 		
 		_originSpeed=224;
 
-		_skillChangeBuffValue=NULL;
+		_skillChangeBuffValue=0;
 
 	}else if(strcmp(this->_character->getCString(),"Kiba")==0 ){
 
 		if(_powerUPBuffValue){
 			this->unschedule(schedule_selector(ActionManager::resumeAction));
 			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-_powerUPBuffValue));
-			_powerUPBuffValue=NULL;
+			_powerUPBuffValue=0;
 		}
 		_isBati=true;		
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
@@ -5087,7 +5087,7 @@ void ActionManager::setActionResume(){
 		}
 
 
-		_skillChangeBuffValue=NULL;
+		_skillChangeBuffValue=0;
 
 	}else if(strcmp(this->_character->getCString(),"Hiruzen")==0 && _skillChangeBuffValue){
 
@@ -5110,7 +5110,7 @@ void ActionManager::setActionResume(){
 			}
 		}
 
-		_skillChangeBuffValue=NULL;
+		_skillChangeBuffValue=0;
 		
 
 	}else if(strcmp(this->_character->getCString(),"Kankuro")==0){
@@ -5119,7 +5119,7 @@ void ActionManager::setActionResume(){
 				_delegate->getHudLayer()->skill1Button->unLock();
 				_delegate->getHudLayer()->skill2Button->setLock();
 			}
-			_skillChangeBuffValue=NULL;
+			_skillChangeBuffValue=0;
 
 	}else if(strcmp(this->_character->getCString(),"Chiyo")==0){
 
@@ -5128,17 +5128,17 @@ void ActionManager::setActionResume(){
 			_delegate->getHudLayer()->skill2Button->setLock();
 			_delegate->getHudLayer()->skill3Button->setLock();
 		}
-		_skillChangeBuffValue=NULL;
+		_skillChangeBuffValue=0;
 	}else if(strcmp(this->_character->getCString(),"Minato")==0){
 		this->setSkill1Action(createAnimation(skill1Array,10.0f,false,true));
-		_skillChangeBuffValue=NULL;
+		_skillChangeBuffValue=0;
 	}else if((strcmp(this->_character->getCString(),"Sasuke")==0||
 		strcmp(this->_character->getCString(),"ImmortalSasuke")==0) && this->_isTaunt){
 
 			this->unschedule(schedule_selector(ActionManager::resumeAction));
 			this->_isTaunt=false;
 			this->setHurtAction(createAnimation(hurtArray,10.0f,false,true));
-			_skillChangeBuffValue=NULL;
+			_skillChangeBuffValue=0;
 
 	}else if(strcmp(this->_character->getCString(),"ImmortalSasuke")==0  &&  _skillChangeBuffValue ){
 		if(_skillChangeBuffValue==18){
@@ -5174,7 +5174,7 @@ void ActionManager::setActionResume(){
 			_nattackRangeX=16;
 			_nattackRangeY=48;
 
-			_skillChangeBuffValue=NULL;
+			_skillChangeBuffValue=0;
 		}
 		
 
@@ -5211,7 +5211,7 @@ void ActionManager::setActionResume(){
 			_gardValue-=5000;
 			_isBati=false;
 
-			_skillChangeBuffValue=NULL;
+			_skillChangeBuffValue=0;
 
 		}
 		
@@ -5247,7 +5247,7 @@ void ActionManager::setActionResume(){
 			_hpBar->setPositionY(this->getHeight());
 		}
 
-		_skillChangeBuffValue=NULL;
+		_skillChangeBuffValue=0;
 
 
 	}else if(strcmp(this->_character->getCString(),"Gaara")==0 && _skillChangeBuffValue){
@@ -5268,7 +5268,7 @@ void ActionManager::setActionResume(){
 		}
 		_gardValue-=5000;
 		_isBati=false;
-		_skillChangeBuffValue=NULL;
+		_skillChangeBuffValue=0;
 
 		if(_hpBar){
 			_hpBar->setPositionY(this->getHeight());
@@ -5319,7 +5319,7 @@ void ActionManager::setActionResume(){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 				ActionManager* mo=(ActionManager*) pObject;
-				//Çå³ý½ÇÉ«±íµÄmonter
+				//æ¸…é™¤è§’è‰²è¡¨çš„monter
 				int index=_delegate->_CharacterArray->indexOfObject(mo);
 				if(index>=0){
 					_delegate->_CharacterArray->removeObjectAtIndex(index);
@@ -5343,7 +5343,7 @@ void ActionManager::setActionResume(){
 			this->idle();
 		}
 
-		_skillChangeBuffValue=NULL;
+		_skillChangeBuffValue=0;
 
 	}else if(strcmp(this->_character->getCString(),"Deidara")==0 ||
 		strcmp(this->_character->getCString(),"Sai")==0
@@ -5381,7 +5381,7 @@ void ActionManager::setActionResume(){
 				this->unschedule(schedule_selector(ActionManager::setMonPer));
 			}
 
-			_skillChangeBuffValue=NULL;
+			_skillChangeBuffValue=0;
 		}
 		
 	}
@@ -5435,7 +5435,7 @@ void ActionManager::stopMove(float dt){
 }
 
 void ActionManager::stopJump(CCNode* sender,void* date){
-	int stopTime=(int) date;
+	int stopTime=(int)(intptr_t) date;
 
 	if(_actionState==ACTION_STATE_JUMP){
 		this->getActionManager()->pauseTarget(this);
@@ -5459,7 +5459,7 @@ void ActionManager::setBullet(CCNode* sender,void* date){
 	}
 	
 	if(this->_isFlipped){
-		bullet->setFlipX(true);
+		bullet->setFlippedX(true);
 		bullet->_isFlipped=true;
 	}
 
@@ -5555,7 +5555,7 @@ void ActionManager::setBulletGroup(float dt){
 		bullet->setScale(0.8f);
 		
 		if(this->_isFlipped){
-			bullet->setFlipX(true);
+			bullet->setFlippedX(true);
 			bullet->_isFlipped=true;
 		}
 		if(i==0){
@@ -5580,7 +5580,7 @@ void ActionManager::setBulletGroup(float dt){
 
 
 void ActionManager::setClone(CCNode* sender,void* date){
-	int cloneTime=(int) date;
+	int cloneTime=(int)(intptr_t) date;
 	Hero* clone=Hero::create();
 	
 	if(this->_master){
@@ -5649,8 +5649,8 @@ void ActionManager::setClone(CCNode* sender,void* date){
 			
 			this->hearts-=1;
 			if(this->_heartEffect){
-				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",this->hearts)->getCString()); 
-				this->_heartEffect->setDisplayFrame(frame);
+				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",this->hearts)->getCString()); 
+				this->_heartEffect->setSpriteFrame(frame);
 			}
 			
 			if(this->hearts<1 || countMon >=2){
@@ -5747,7 +5747,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	}else if(strcmp(this->getCharacter()->getCString(),"SageNaruto")==0||
 		(strcmp(this->getCharacter()->getCString(),"RikudoNaruto")==0 && cloneTime==10)
 		){
-		//ÃùÈË
+		//é¸£äºº
 		clone->setID(this->getCharacter(),CCString::create("Clone"),this->_group);
 		clone->setSkill1Action(clone->createAnimation(clone->skillSPC1Array,10.0f,false,true));	
 		clone->_sattackValue1=_spcattackValue1;
@@ -5802,7 +5802,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 
 
 	
-	clone->setFlipX(this->_isFlipped);
+	clone->setFlippedX(this->_isFlipped);
 	clone->_isFlipped=this->_isFlipped;
 	CCDictionary* callValue = CCDictionary::create(); 
 	callValue->setObject(CCString::create("smk"), 1);
@@ -5870,7 +5870,7 @@ void ActionManager::setMon(CCNode* sender,void* date){
 
 	monster->idle();
 	monster->setPosition(ccp(this->getPositionX()+(this->_isFlipped?-32:32),this->_originY?this->_originY:this->getPositionY()));
-	monster->setFlipX(_isFlipped);
+	monster->setFlippedX(_isFlipped);
 	monster->_isFlipped=_isFlipped;
 
 	
@@ -5985,7 +5985,7 @@ void ActionManager::setMon(CCNode* sender,void* date){
 		monster->attack(NAttack);
 
 	}else if(strcmp(monsterType->getCString(),"Bikyu")==0){
-		monster->setFlipX(_isFlipped);
+		monster->setFlippedX(_isFlipped);
 		monster->isPofang=true;
 		monster->setPosition(ccp(this->getPositionX()+(_isFlipped?-(16+this->getContentSize().width):
 		(16+this->getContentSize().width)),this->getPositionY()-32));
@@ -6163,13 +6163,13 @@ void ActionManager::setMon(CCNode* sender,void* date){
 
 
 	if (strcmp(monsterType->getCString(),"ItachiSusano")==0){
-		 monster->setFlipX(_isFlipped);
+		 monster->setFlippedX(_isFlipped);
 		monster->setAnchorPoint(ccp(0.5f,0));
 		monster->setPosition(ccp(146/2-10,-40));
 		this->addChild(monster,-1000);
 
 	}else if( strcmp(monsterType->getCString(),"SasukeSusano")==0 ){
-		monster->setFlipX(_isFlipped);
+		monster->setFlippedX(_isFlipped);
 		monster->setAnchorPoint(ccp(0.5f,0));
 		monster->setPosition(ccp(141/2,-6));
 		this->addChild(monster,-1000);
@@ -6212,7 +6212,7 @@ void ActionManager::setMonPer(float dt){
 
 	monster->idle();
 	monster->setPosition(ccp(this->getPositionX()+(this->_isFlipped?-32:32),this->_originY?this->_originY:this->getPositionY()));
-	monster->setFlipX(_isFlipped);
+	monster->setFlippedX(_isFlipped);
 	monster->_isFlipped=_isFlipped;
 
 	
@@ -6240,7 +6240,7 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 					if(distanceX<winSize.width/2){
-						//È¡ÏûÒþÉí
+						//å–æ¶ˆéšèº«
 						if(!tempHero->_isVisable){
 							if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
 								strcmp(tempHero->getCharacter()->getCString(),"Deidara")==0
@@ -6431,7 +6431,7 @@ void ActionManager::removeSelf(float dt){
 }
 
 void ActionManager::setMonAttack(CCNode* sender,void* date){
-	int skillNum=(int) date;
+	int skillNum=(int)(intptr_t) date;
 	if(this->getMonsterArray()){
 		CCObject* pObject;
 		CCARRAY_FOREACH(this->getMonsterArray(),pObject){
@@ -6528,7 +6528,7 @@ void ActionManager::setTransform(){
 		charName="Lee";
 	}
 
-	//»¹Ô­
+	//è¿˜åŽŸ
 	this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
 	this->setHP(CCString::createWithFormat("%d",tempHP));
 	if(_hpBar){
@@ -6562,31 +6562,31 @@ void ActionManager::setTransform(){
 		this->_delegate->getHudLayer()->skill3Button->_isColdChanged=true;
 
 
-		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("%s_skill1.png",charName)->getCString()); 
-		_delegate->getHudLayer()->skill1Button->setDisplayFrame(frame);
-		frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("%s_skill2.png",charName)->getCString()); 
-		_delegate->getHudLayer()->skill2Button->setDisplayFrame(frame);
+		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_skill1.png",charName)->getCString()); 
+		_delegate->getHudLayer()->skill1Button->setSpriteFrame(frame);
+		frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_skill2.png",charName)->getCString()); 
+		_delegate->getHudLayer()->skill2Button->setSpriteFrame(frame);
 	
 		
 
-		frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("%s_skill3.png",charName)->getCString()); 
-		_delegate->getHudLayer()->skill3Button->setDisplayFrame(frame);
+		frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_skill3.png",charName)->getCString()); 
+		_delegate->getHudLayer()->skill3Button->setSpriteFrame(frame);
 
 
-		frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("%s_skill4.png",charName)->getCString()); 
+		frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_skill4.png",charName)->getCString()); 
 		if(_delegate->getHudLayer()->skill4Button){
-			_delegate->getHudLayer()->skill4Button->setDisplayFrame(frame);
+			_delegate->getHudLayer()->skill4Button->setSpriteFrame(frame);
 		}
 
 
 
-		frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("%s_skill5.png",charName)->getCString()); 
+		frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_skill5.png",charName)->getCString()); 
 		if(_delegate->getHudLayer()->skill5Button){
-			_delegate->getHudLayer()->skill5Button->setDisplayFrame(frame);
+			_delegate->getHudLayer()->skill5Button->setSpriteFrame(frame);
 		}
 		
 
-		//Ìæ»»Í·Ïñ
+		//æ›¿æ¢å¤´åƒ
 		this->_delegate->getHudLayer()->initGearButton();
 
 		
@@ -6604,7 +6604,7 @@ float ActionManager::getHpPercent(){
 
 
 void ActionManager::attack(abType type){
-	//·ÀÖ¹ÆÕÍ¨¹¥»÷Ë¢ÐÂ ¼¼ÄÜÀàÐÍµ¼ÖÂ¿ÉÒÔ¹¥»÷Ëþ
+	//é˜²æ­¢æ™®é€šæ”»å‡»åˆ·æ–° æŠ€èƒ½ç±»åž‹å¯¼è‡´å¯ä»¥æ”»å‡»å¡”
 
 	if(strcmp(_role->getCString(),"Player")==0 && type==NAttack){
 		if(!_delegate->getSkillFinish() && !_isOnlySkillLocked){
@@ -6720,7 +6720,7 @@ void ActionManager::sAttack(abType type){
 	if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 		
 	
-		//¹¥»÷È¡ÏûÒþÉí
+		//æ”»å‡»å–æ¶ˆéšèº«
 		if(!_isVisable){
 			if(strcmp(this->getCharacter()->getCString(),"Konan")==0 ||
 				strcmp(this->getCharacter()->getCString(),"Deidara")==0
@@ -6798,7 +6798,7 @@ void ActionManager::oAttack(abType type){
 			_delegate->setSkillFinish(false);
 		};	
 		
-		//¹¥»÷È¡ÏûÒþÉí
+		//æ”»å‡»å–æ¶ˆéšèº«
 		if(!_isVisable){
 			if(strcmp(this->getCharacter()->getCString(),"Konan")==0 ||
 				strcmp(this->getCharacter()->getCString(),"Deidara")==0
@@ -6846,16 +6846,16 @@ void ActionManager::idle(){
 		
 		_actionState=ACTION_STATE_IDLE;
 		this->stopAllActions();
-		_backY=NULL;
+		_backY=0;
 		_hurtFromLeft=false;
 		_hurtFromRight=false;
 		_isHitOne=false;
 		_isCatchOne=false;
 		_isSticking=false;
-		_knockLength=NULL;
-		_originY=NULL;
+		_knockLength=0;
+		_originY=0;
 		_sticker=NULL;
-		_knockDiretion=NULL;
+		_knockDiretion=false;
 
 		this->unschedule(schedule_selector(ActionManager::stopMove));
 
@@ -6904,9 +6904,9 @@ void ActionManager::walk(CCPoint direction){
 		_actionState=ACTION_STATE_WALK;
 		
 		_isFlipped=direction.x>0?false:true;
-		this->setFlipX(_isFlipped);
+		this->setFlippedX(_isFlipped);
 		if(_healBuffEffect){
-			_healBuffEffect->setFlipX(_isFlipped);
+			_healBuffEffect->setFlippedX(_isFlipped);
 		} 
 
 		
@@ -6921,10 +6921,10 @@ void ActionManager::walk(CCPoint direction){
 					Monster* mo=(Monster*) pObject;
 					if(strcmp(mo->getCharacter()->getCString(),"ItachiSusano")==0||
 						strcmp(mo->getCharacter()->getCString(),"SasukeSusano")==0){
-						mo->setFlipX(_isFlipped);
+						mo->setFlippedX(_isFlipped);
 					}else if(strcmp(mo->getCharacter()->getCString(),"Parents")==0){
 						if (mo->_actionState==ACTION_STATE_IDLE){
-							mo->setFlipX(_isFlipped);
+							mo->setFlippedX(_isFlipped);
 							mo->_isFlipped=_isFlipped;
 						}
 
@@ -6955,7 +6955,7 @@ bool ActionManager::hurt(){
 		&& !_isBati
 		){
 
-		//Ç§´úbuff
+		//åƒä»£buff
 		CCObject* pObject;
 		CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 			Hero* tempHero=(Hero*) pObject;
@@ -7006,7 +7006,7 @@ bool ActionManager::hurt(){
 	}
 	return false;
 };
-//Ó²Ö±¹¥»÷
+//ç¡¬ç›´æ”»å‡»
 bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool isStick,bool isStun){
 
 	if(  (_actionState!=ACTION_STATE_JUMP  || isStick)
@@ -7024,11 +7024,11 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 				this->getActionState()==ACTION_STATE_JUMP 
 				){
 					this->setPositionY(_originY);
-					_originY=NULL;
+					_originY=0;
 					_delegate->reorderChild(this,-this->getPositionY());
 			}
 
-			//Ç§´úbuff
+			//åƒä»£buff
 			CCObject* pObject;
 			CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 				Hero* tempHero=(Hero*) pObject;
@@ -7095,10 +7095,10 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 					path=CCString::createWithFormat("%s_Hurt_02.png",this->getCharacter()->getCString());
 				}
 				
-				CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(path->getCString());
+				CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(path->getCString());
 				CCArray* tempArray= CCArray::create();
 				tempArray->addObject(frame);
-				CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray, 0.1f);
+				CCAnimation* tempAnimation= CCAnimation::createWithSpriteFrames(tempArray->toVector<CCSpriteFrame*>(), 0.1f);
 				CCAction* tempAction=CCAnimate::create(tempAnimation);
 				list->addObject(tempAction);
 			}
@@ -7213,7 +7213,7 @@ void ActionManager::floatUP(float floatHeight, bool isCancelSkill){
 		!_isBati
 		){
 
-			//Ç§´úbuff
+			//åƒä»£buff
 			CCObject* pObject;
 			CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 				Hero* tempHero=(Hero*) pObject;
@@ -7355,7 +7355,7 @@ void ActionManager::dead(){
 	if(strcmp(this->_role->getCString(),"Player")==0 ||  strcmp(this->_role->getCString(),"Com")==0){
 
 		this->unschedule(schedule_selector(ActionManager::healBuff));
-		this->_buffStartTime=NULL;
+		this->_buffStartTime=0;
 		this->unschedule(schedule_selector(ActionManager::dehealBuff));	
 		if(strcmp(this->getCharacter()->getCString(),"RockLee")!=0 &&
 			strcmp(this->getCharacter()->getCString(),"Lee")!=0
@@ -7374,7 +7374,7 @@ void ActionManager::dead(){
 			_deadNum++;
 
 			if(strcmp(this->_role->getCString(),"Player")==0){
-				const char* dl=_delegate->getHudLayer()->deadLabel->getString();
+				const char* dl=_delegate->getHudLayer()->deadLabel->getString().data();
 				int deads=atoi(dl)+1;
 				_delegate->getHudLayer()->deadLabel->setString(CCString::createWithFormat("%d",deads)->getCString());
 			}
@@ -7414,8 +7414,8 @@ void ActionManager::dead(){
 
 	if(strcmp(this->getCharacter()->getCString(),"Kakuzu") ==0){
 		if(_heartEffect){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",this->hearts)->getCString()); 
-			this->_heartEffect->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",this->hearts)->getCString()); 
+			this->_heartEffect->setSpriteFrame(frame);
 		}
 
 		if(strcmp(this->getRole()->getCString(),"Player")==0 && this->getLV()>=2){
@@ -7471,8 +7471,8 @@ void ActionManager::dead(){
 				this->_heartEffect->removeFromParent();
 				this->_heartEffect=NULL;
 			}else {
-				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("Bamen_Effect_%02d.png",this->bamen-1)->getCString()); 
-				this->_heartEffect->setDisplayFrame(frame);
+				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("Bamen_Effect_%02d.png",this->bamen-1)->getCString()); 
+				this->_heartEffect->setSpriteFrame(frame);
 			}
 
 		}
@@ -7488,7 +7488,7 @@ void ActionManager::dead(){
 		
 	}else if(_actionState==ACTION_STATE_JUMP){
 		this->setPositionY(_originY);
-		_originY=NULL;
+		_originY=0;
 		_delegate->reorderChild(this,-this->getPositionY());
 	}
 	
@@ -7586,7 +7586,7 @@ bool ActionManager::findEnemy(const char* type,int searchRange,bool masterRange)
 
 	CCObject* pObject;
 	float distance;
-	float curDistance=NULL ;
+	float curDistance=0 ;
 	CCPoint sp;
 	bool findSome=false;
 	CCARRAY_FOREACH(list,pObject){
@@ -7599,7 +7599,7 @@ bool ActionManager::findEnemy(const char* type,int searchRange,bool masterRange)
 				continue;
 		}
 
-		//°ÂÒå¶¨Î»¼¼ÄÜÌø¹ýÕÙ»½Îï
+		//å¥¥ä¹‰å®šä½æŠ€èƒ½è·³è¿‡å¬å”¤ç‰©
 		if((this->getActionState()==ACTION_STATE_OATTACK || 
 			this->getActionState()==ACTION_STATE_O2ATTACK) ||
 			(this->getMaster() && (
@@ -7671,7 +7671,7 @@ bool ActionManager::findEnemy2(const char* type){
 	
 	CCObject* pObject;
 	float distance;
-	float curDistance=NULL ;
+	float curDistance=0 ;
 	CCPoint sp;
 	bool findSome=false;
 	
@@ -7691,7 +7691,7 @@ bool ActionManager::findEnemy2(const char* type){
 		distance=ccpDistance(target->getPosition(),this->getPosition());
 		sp=ccpSub(target->getPosition(),this->getPosition());
 
-		//¼ÆËãcombatpoint
+		//è®¡ç®—combatpoint
 		if(abs(sp.x)<winSize.width/2){
 			if(strcmp(target->_role->getCString(),"Clone")!=0 &&
 				strcmp(target->_role->getCString(),"Summon")!=0 
@@ -7832,7 +7832,7 @@ bool ActionManager::findTargetEnemy(const char* type,bool isTowerDected){
 
 	CCObject* pObject;
 
-	float curDistance=NULL ;
+	float curDistance=0 ;
 	CCPoint sp;
 	bool findSome=false;
 
@@ -8062,10 +8062,10 @@ bool ActionManager::stepBack2(){
 
 void ActionManager::changeSide(CCPoint sp){
 	if(sp.x>0){
-		this->setFlipX(false);
+		this->setFlippedX(false);
 		this->_isFlipped=false;
 	}else{
-		this->setFlipX(true);
+		this->setFlippedX(true);
 		this->_isFlipped=true;
 	}
 
@@ -8081,7 +8081,7 @@ void ActionManager::changeSide(CCPoint sp){
 						) 
 						
 						mo->_isFlipped=_isFlipped;
-						mo->setFlipX(_isFlipped);
+						mo->setFlippedX(_isFlipped);
 				};
 			}
 	}

@@ -51,8 +51,8 @@ bool HPBar::init(const char *szImage){
 }
 
 void HPBar::changeBar(const char *szImage){
-	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(szImage); 
-	hpBar->setDisplayFrame(frame);
+	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(szImage); 
+	hpBar->setSpriteFrame(frame);
 }
 
 void HPBar::loseHP(float percent){
@@ -97,7 +97,7 @@ void HPBar::loseHP(float percent){
 		ActionManager* currentSlayer;
 
 
-		//É±ËÀÇàÍÜ
+		//æ€æ­»é’è›™
 		if(strcmp(_delegate->getRole()->getCString(),"Flog")==0){
 
 			if(_slayer->getSecMaster()  && strcmp(_slayer->getCharacter()->getCString(),"KageHand")!=0
@@ -123,7 +123,7 @@ void HPBar::loseHP(float percent){
 				}
 			}
 
-			//È«¶î¾­Ñé
+			//å…¨é¢ç»éªŒ
 
 
 			if(currentSlayer->getLV()!=6){
@@ -149,15 +149,15 @@ void HPBar::loseHP(float percent){
 					if(_delegate->getMaxHP()->intValue()==10000){
 						_delegate->setCoinDisplay(30);
 						_delegate->getDelegate()->setCoin("30");
-						_delegate->getDelegate()->getHudLayer()->setEXPLose(NULL);
+						_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
 					}else if(_delegate->getMaxHP()->intValue()==5000){
 						_delegate->setCoinDisplay(20);
 						_delegate->getDelegate()->setCoin("20");
-						_delegate->getDelegate()->getHudLayer()->setEXPLose(NULL);
+						_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
 					}else{
 						_delegate->setCoinDisplay(10);
 						_delegate->getDelegate()->setCoin("10");
-						_delegate->getDelegate()->getHudLayer()->setEXPLose(NULL);
+						_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
 	
 					}
 					
@@ -174,7 +174,7 @@ void HPBar::loseHP(float percent){
 			currentSlayer->addCoin(10);
 		}
 
-		}//²ğËş
+		}//æ‹†å¡”
 		else if(strcmp(_delegate->getRole()->getCString(),"Tower")==0){
 
 
@@ -237,7 +237,7 @@ void HPBar::loseHP(float percent){
 						 _delegate->setCoinDisplay(300);
 					 }
 				
-					_delegate->getDelegate()->getHudLayer()->setEXPLose(NULL);
+					_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
 				}
 
 				if(_delegate->getDelegate()->_isHardCoreGame){
@@ -253,7 +253,7 @@ void HPBar::loseHP(float percent){
 			}
 
 
-			//Í¬¶Ó·ÖÏí
+			//åŒé˜Ÿåˆ†äº«
 			CCObject* pObject;
 			CCARRAY_FOREACH(_delegate->getDelegate()->_CharacterArray,pObject){
 				Hero* otherSlayer=(Hero*) pObject;
@@ -286,7 +286,7 @@ void HPBar::loseHP(float percent){
 								_delegate->setCoinDisplay(150);
 							}
 
-							_delegate->getDelegate()->getHudLayer()->setEXPLose(NULL);
+							_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
 						}
 							
 
@@ -338,7 +338,7 @@ void HPBar::loseHP(float percent){
 					if(_delegate->getActionState()==ACTION_STATE_FLOAT ||
 						_delegate->getActionState()==ACTION_STATE_AIRHURT){
 							this->setPositionY(_delegate->_originY);
-							_delegate->_originY=NULL;
+							_delegate->_originY=0;
 							_delegate->getDelegate()->reorderChild(_delegate,-_delegate->getPositionY());
 					}
 
@@ -364,8 +364,8 @@ void HPBar::loseHP(float percent){
 					_delegate->hearts-=1;
 
 					if(_delegate->_heartEffect){
-						CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",_delegate->hearts)->getCString()); 
-						_delegate->_heartEffect->setDisplayFrame(frame);
+						CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",_delegate->hearts)->getCString()); 
+						_delegate->_heartEffect->setSpriteFrame(frame);
 					}
 
 					if(_delegate->hearts<1){
@@ -421,8 +421,8 @@ void HPBar::loseHP(float percent){
 						currentSlayer->hearts+=1;	
 
 						if(currentSlayer->_heartEffect){
-							CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",currentSlayer->hearts)->getCString()); 
-							currentSlayer->_heartEffect->setDisplayFrame(frame);
+							CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",currentSlayer->hearts)->getCString()); 
+							currentSlayer->_heartEffect->setSpriteFrame(frame);
 						}
 
 						if(strcmp(currentSlayer->getRole()->getCString(),"Player")==0){
@@ -444,7 +444,7 @@ void HPBar::loseHP(float percent){
 					_delegate->getDelegate()->setReport(currentSlayer->getCharacter()->getCString(),_delegate->getCharacter()->getCString(),currentSlayer->getKillNum());
 				
 					
-					//¼Ç·ÖÅÆ
+					//è®°åˆ†ç‰Œ
 					const char* currentTeam;
 					if(_delegate->getDelegate()->zhenying>0){
 						 currentTeam="Konoha";
@@ -453,10 +453,10 @@ void HPBar::loseHP(float percent){
 					}
 					
 					if(strcmp(currentSlayer->getGroup()->getCString(),currentTeam)==0){
-						int teamKills=atoi(_delegate->getDelegate()->getHudLayer()->KonoLabel->getString())+1;
+						int teamKills=atoi(_delegate->getDelegate()->getHudLayer()->KonoLabel->getString().data())+1;
 						_delegate->getDelegate()->getHudLayer()->KonoLabel->setString(CCString::createWithFormat("%d",teamKills)->getCString());
 					}else{
-						int teamKills=atoi(_delegate->getDelegate()->getHudLayer()->AkaLabel->getString())+1;
+						int teamKills=atoi(_delegate->getDelegate()->getHudLayer()->AkaLabel->getString().data())+1;
 						_delegate->getDelegate()->getHudLayer()->AkaLabel->setString(CCString::createWithFormat("%d",teamKills)->getCString());
 					}
 					//
@@ -508,8 +508,8 @@ void HPBar::loseHP(float percent){
 
 						}
 
-						_delegate->getDelegate()->getHudLayer()->setEXPLose(NULL);
-						const char* kl=_delegate->getDelegate()->getHudLayer()->killLabel->getString();
+						_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
+						const char* kl=_delegate->getDelegate()->getHudLayer()->killLabel->getString().data();
 						int kills=atoi(kl)+1;
 						_delegate->getDelegate()->getHudLayer()->killLabel->setString(CCString::createWithFormat("%d",kills)->getCString());
 					}
@@ -535,7 +535,7 @@ void HPBar::loseHP(float percent){
 
 				}
 
-				//Í¬¶Ó·ÖÏí
+				//åŒé˜Ÿåˆ†äº«
 				CCObject* pObject;
 				CCARRAY_FOREACH(_delegate->getDelegate()->_CharacterArray,pObject){
 					Hero* otherSlayer=(Hero*) pObject;
@@ -566,7 +566,7 @@ void HPBar::loseHP(float percent){
 								_delegate->getDelegate()->setCoin(CCString::createWithFormat("%d",25)->getCString());
 								_delegate->setCoinDisplay(25);
 							}
-							_delegate->getDelegate()->getHudLayer()->setEXPLose(NULL);
+							_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
 						}
 						if(_delegate->getDelegate()->_isHardCoreGame){		
 							if(strcmp(_delegate->getCharacter()->getCString(),"Han")==0||

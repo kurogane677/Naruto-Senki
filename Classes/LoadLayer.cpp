@@ -62,8 +62,8 @@ bool LoadLayer::init(){
 		//produce the cloud
 		CCSprite* cloud_left=CCSprite::createWithSpriteFrameName("cloud.png");	
 		cloud_left->setPosition(ccp(0,15));
-		cloud_left->setFlipX(true);
-		cloud_left->setFlipY(true);
+		cloud_left->setFlippedX(true);
+		cloud_left->setFlippedY(true);
 		cloud_left->setAnchorPoint(ccp(0,0));
 		this->addChild(cloud_left,1);
 
@@ -104,8 +104,8 @@ void LoadLayer::preloadIMG(){
 		CCString* player=CCString::create(tempdict->valueForKey("character")->getCString());
 
 		
-		//¼ÓÔØ¼¼ÄÜÍ¼°ü
-		CCTexture2D::PVRImagesHavePremultipliedAlpha(true); 
+		//åŠ è½½æŠ€èƒ½å›¾åŒ…
+		// PVRImagesHavePremultipliedAlpha(true): not needed on Axmol (premultiplied alpha is read from the PVR header) 
 
 		if (strcmp(player->getCString(),"Kiba")!=0 &&
 			strcmp(player->getCString(),"Kakuzu")!=0 
@@ -115,7 +115,7 @@ void LoadLayer::preloadIMG(){
 				CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(path);
 		}
 
-		//Ô¤¼ÓÔØÒôĞ§
+		//é¢„åŠ è½½éŸ³æ•ˆ
 		tool->prepareFileOGG(player->getCString());
 
 	
@@ -145,7 +145,7 @@ void LoadLayer::preloadIMG(){
 
 
 
-		//¼ÓÔØ¶îÍâ½ÇÉ«
+		//åŠ è½½é¢å¤–è§’è‰²
 		if(strcmp(player->getCString(),"Jiraiya")==0){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/SageJiraiya/SageJiraiya.plist");
 			tool->prepareFileOGG("SageJiraiya");
@@ -188,7 +188,7 @@ void LoadLayer::preloadIMG(){
 		if(i==0 ||( (i==1 || i==2 ) && _isHardCoreMode) ){
 			
 			CCSprite* loadingAvator=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("%s_Walk_01.png",player->getCString())->getCString());
-			loadingAvator->setFlipX(true);
+			loadingAvator->setFlippedX(true);
 			loadingAvator->setPosition(ccp(winSize.width-100+i*16,30));
 			loadingAvator->setAnchorPoint(ccp(0,0));
 
@@ -205,11 +205,11 @@ void LoadLayer::preloadIMG(){
 
 			for(int i = 1; i < frameCount; i++){	
 				str=CCString::createWithFormat("%s%02d.png",file,i);
-				CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(str->getCString());
+				CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(str->getCString());
 				animeFrames->addObject(frame);
 			}
 
-			CCAnimation* tempAnimation=CCAnimation::createWithSpriteFrames(animeFrames, float(1.0 / 10.0));
+			CCAnimation* tempAnimation=CCAnimation::createWithSpriteFrames(animeFrames->toVector<CCSpriteFrame*>(), float(1.0 / 10.0));
 			CCAction* tempAction=CCAnimate::create(tempAnimation);
 			CCArray* seqArray=CCArray::createWithObject(tempAction);
 			CCAction* seq;
@@ -229,7 +229,7 @@ void LoadLayer::preloadIMG(){
 	tempHeros->retain();
 
 
-	//¼ÓÔØÊØ»¤ÈÌ
+	//åŠ è½½å®ˆæŠ¤å¿
 	if(_isHardCoreMode){
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Roshi/Roshi.plist");
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Han/Han.plist");
@@ -284,7 +284,7 @@ void LoadLayer::preloadIMG(){
 			CCDictionary* tempdict=(CCDictionary *) tmpObject;
 			CCString* heroString=CCString::create(tempdict->valueForKey("character")->getCString());
 			isPosting=true;
-			cocos2d::extension::CCHttpRequest* request = new  cocos2d::extension::CCHttpRequest(); 
+			CCHttpRequest* request = new  CCHttpRequest(); 
 			std::string codeFinal;
 			std::string code1=CCString::createWithFormat("code=300&id=%d",MemberID)->getCString();
 			std::string code2=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
@@ -295,7 +295,7 @@ void LoadLayer::preloadIMG(){
 			request->setRequestType(CCHttpRequest::kHttpGet);  
 			request->setResponseCallback(this, callfuncND_selector(LoadLayer::onHttpRequestCompleted));  
 			request->setTag(heroString->getCString());  
-			cocos2d::extension::CCHttpClient::getInstance()->send(request);  
+			CCHttpClient::getInstance()->send(request);  
 			request->release();  
 			i++;
 		}
@@ -317,12 +317,12 @@ void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	freopen("CONOUT$", "w", stderr);*/
 	isPosting=false;
 	
-	cocos2d::extension::CCHttpResponse *response = (cocos2d::extension::CCHttpResponse*)data;    
+	CCHttpResponse *response = (CCHttpResponse*)data;    
 	if (!response)    
 	{  
 		return;    
 	}   
-	if (0 != strlen(response->getHttpRequest()->getTag()))   
+	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
 	{  
 		CCLog("%s completed", response->getHttpRequest()->getTag());  
 	}  
@@ -332,7 +332,7 @@ void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	if (!response->isSucceed())  
 	{  
 		CCLog("response failed");  
-		CCLog("error buffer:%s" ,response->getErrorBuffer());
+		CCLog("error buffer:%s" ,"");
 		CCTips *tip=CCTips::create("ServerError");
 		this->addChild(tip,5000);
 		return;
@@ -341,7 +341,7 @@ void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	
 
 
-	std::vector<char> *buffer = response->getResponseData();  
+	auto* buffer = response->getResponseData();  
 	std::string buf(buffer->begin(),buffer->end()); 
 	
 	/*for (unsigned int i = 0; i < buffer->size(); i ++)  
@@ -365,9 +365,9 @@ void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	
 	filePath =CCString::createWithFormat("%s/DLC/%s.xml",CCFileUtils::sharedFileUtils()->getWritablePath().c_str(),response->getHttpRequest()->getTag())->getCString();
 	
-	std::ofstream fos(filePath);//´´½¨´ò¿ªÎÄ¼ş
-	if(!fos)cerr<<"error";//Ğ£ÑéÎÄ¼ş
-	fos<<buf;//Êä³ö
+	std::ofstream fos(filePath);//åˆ›å»ºæ‰“å¼€æ–‡ä»¶
+	if(!fos)cerr<<"error";//æ ¡éªŒæ–‡ä»¶
+	fos<<buf;//è¾“å‡º
 	fos.close();
 	//std::remove(filePath.c_str());
 	
@@ -377,7 +377,7 @@ void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {
 	CCARRAY_FOREACH(DLCArray,tmpObject){
 		CCDictionary* tempdict=(CCDictionary *) tmpObject;
 		CCString* heroString=CCString::create(tempdict->valueForKey("character")->getCString());
-		if(strcmp(heroString->getCString(),response->getHttpRequest()->getTag())==0){
+		if(strcmp(heroString->getCString(),response->getHttpRequest()->getTag().data())==0){
 			DLCArray->removeObject(tmpObject);
 		}
 		
@@ -403,19 +403,6 @@ void LoadLayer::preloadAudio(){
 	bgSprite->setPosition(ccp(0,0));
 	this->addChild(bgSprite, -5);
 
-	KTools* tool=KTools::create();
-	tool->prepareFileMD5();
-	std::string str2="fkhfnPG8";
-	tool->decode(str2);
-	std::string filePath=CCFileUtils::sharedFileUtils()->getWritablePath()+CCString::createWithFormat("%s.xml",str2.c_str())->getCString();
-	std::string strFileMD5 =CMD5Checksum::GetMD5(filePath);
-	remove(filePath.c_str());
-	CCString* code1=CCString::createWithFormat("%s%s",strFileMD5.substr(16,5).c_str(),strFileMD5.substr(6,5).c_str());
-	if(strcmp(code1->getCString(),"e0213bffe1")!=0){
-	const char* soundpath="Audio";
-	//return;
-	//tool->dfsFolder(soundpath,0,1);
-	}
 
 	this->preloadIMG();
 }
@@ -455,7 +442,7 @@ void LoadLayer::onLoadFinish(float dt){
 
 void LoadLayer::preloadPlist(CCObject* obj){
 
-	CCTexture2D* texture=(CCTexture2D*)obj; //´«ÈëµÄobj¼´ÊÇÒì²½Éú³ÉµÄÎÆÀí  
+	CCTexture2D* texture=(CCTexture2D*)obj; //ä¼ å…¥çš„objå³æ˜¯å¼‚æ­¥ç”Ÿæˆçš„çº¹ç†  
 	
 	CCObject* pObject=tempHeros->objectAtIndex(loadNum);
 	CCDictionary* tempdict=(CCDictionary *) pObject;
@@ -463,7 +450,7 @@ void LoadLayer::preloadPlist(CCObject* obj){
 	const char* name=player->getCString();
 
     const char* path=CCString::createWithFormat("Element/%s/%s.plist",name,name)->getCString();
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(path,texture);//Í¨¹ıÎÆÀíºÍ.plistÎÄ¼ş¼ÓÈëCCSpriteFrameCache  
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(path,texture);//é€šè¿‡çº¹ç†å’Œ.plistæ–‡ä»¶åŠ å…¥CCSpriteFrameCache  
 
 	loadNum++;
 

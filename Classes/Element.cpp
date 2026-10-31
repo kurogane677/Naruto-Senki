@@ -68,12 +68,7 @@ void HeroElement::setID(CCString* character,CCString* role,CCString* group){
 	
 	filePath=CCString::createWithFormat("Element/%s/%s.xml",this->getCharacter()->getCString(),this->getCharacter()->getCString())->getCString();
 		
-	std::string key =tool->getKeycode(filePath);
-	int id=tool->checkMD5(filePath);
-	
-	if(strcmp(key.c_str(),_delegate->KeyList[id])!=0){
-		//return;
-	}
+
 	
 	
 	
@@ -133,7 +128,7 @@ void HeroElement::setID(CCString* character,CCString* role,CCString* group){
 	this->setWalkSpeed(tmpSpeed);
 	_originSpeed=tmpSpeed;
 
-	//¾õÐÑ±Ø±¸
+	//è§‰é†’å¿…å¤‡
 	if(this->getKillNum()==NULL){
 		this->setKillNum(CCString::createWithFormat("%d",0));
 	}
@@ -579,8 +574,8 @@ void HeroElement::changeHPbar(){
 		}
 
 		if(_hpBar){	
-			CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("hp_bottom%d.png",int(_level))->getCString());  
-			_hpBar->getHPBottom()->setDisplayFrame(frame);
+			CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("hp_bottom%d.png",int(_level))->getCString());  
+			_hpBar->getHPBottom()->setSpriteFrame(frame);
 		}
 	
 
@@ -601,7 +596,7 @@ void HeroElement::dealloc(){
 	_actionState=ACTION_STATE_DEAD;	
 	
 
-	//²»É¾³ý ±ê¼Ç
+	//ä¸åˆ é™¤ æ ‡è®°
 	if(strcmp(this->getCharacter()->getCString(),"Minato")!=0){
 
 		if(this->getMonsterArray() && getMonsterArray()->count()>0){
@@ -609,7 +604,7 @@ void HeroElement::dealloc(){
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 				ActionManager* mo=(ActionManager*) pObject;
 
-				//Çå³ý½ÇÉ«±íµÄmonter
+				//æ¸…é™¤è§’è‰²è¡¨çš„monter
 				int index=_delegate->_CharacterArray->indexOfObject(mo);
 				if(index>=0){
 					_delegate->_CharacterArray->removeObjectAtIndex(index);
@@ -636,7 +631,7 @@ void HeroElement::dealloc(){
 			this->unschedule(schedule_selector(ActionManager::setAI));
 			CCNotificationCenter::sharedNotificationCenter()->removeObserver(this,"acceptAttack");
 				
-			//ÒÆ³ý³ö½ÇÉ«±í
+			//ç§»é™¤å‡ºè§’è‰²è¡¨
 			int index=_delegate->_CharacterArray->indexOfObject(this);
 			if(index>=0){
 				_delegate->_CharacterArray->removeObjectAtIndex(index);
@@ -652,7 +647,7 @@ void HeroElement::dealloc(){
 
 			if(strcmp(this->getCharacter()->getCString(),"DevaPath")==0){
 							
-				this->getMaster()->_skillChangeBuffValue=NULL;
+				this->getMaster()->_skillChangeBuffValue=0;
 
 				if(strcmp(this->getMaster()->getRole()->getCString(),"Player")==0){
 					if(this->_delegate->getHudLayer()->skill5Button){
@@ -742,7 +737,7 @@ void HeroElement::dealloc(){
 			}
 
 
-			//²»É¾³ý ±ê¼Ç
+			//ä¸åˆ é™¤ æ ‡è®°
 			if(strcmp(this->getCharacter()->getCString(),"Minato")!=0 ){
 
 				if(this->getMonsterArray() && getMonsterArray()->count()>0){
@@ -750,7 +745,7 @@ void HeroElement::dealloc(){
 					CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 						ActionManager* mo=(ActionManager*) pObject;
 
-						//Çå³ý½ÇÉ«±íµÄmonter
+						//æ¸…é™¤è§’è‰²è¡¨çš„monter
 						int index=_delegate->_CharacterArray->indexOfObject(mo);
 						if(index>=0){
 							_delegate->_CharacterArray->removeObjectAtIndex(index);
@@ -763,8 +758,8 @@ void HeroElement::dealloc(){
 						
 					};
 					this->getMonsterArray()->removeAllObjects();
+					_monsterArray->release();  // was released after being set to NULL (crash)
 					_monsterArray=NULL;
-					_monsterArray->release();
 					
 				
 				}
@@ -785,7 +780,7 @@ void HeroElement::dealloc(){
 
 				
 
-					//¸´»îµ¹¼ÆÊ±
+					//å¤æ´»å€’è®¡æ—¶
 					if(!this->rebornSprite){
 
 						rebornSprite=CCSprite::create();
@@ -845,7 +840,7 @@ void HeroElement::reborn(float dt){
 			this->changeHPbar();
 
 			if(strcmp(this->getRole()->getCString(),"Player")==0){
-				_delegate->getHudLayer()->setEXPLose(NULL);
+				_delegate->getHudLayer()->setEXPLose(0);
 			}
 			
 		}
@@ -857,18 +852,9 @@ void HeroElement::reborn(float dt){
 			rebornSprite=NULL;
 		}
 		if(strcmp(this->getRole()->getCString(),"Player")!=0){	
-			bool ksan=true;
-			bool asan=true;
-			if(CError==1){
-				if(_delegate->zhenying>0) {
-					ksan=false;
-				}else{
-					asan=false;
-				}
-			}
-			if(strcmp(this->getGroup()->getCString(),"Konoha")==0 && ksan){
+			if(strcmp(this->getGroup()->getCString(),"Konoha")==0){
 				this->doAI();
-			}else if(strcmp(this->getGroup()->getCString(),"Akatsuki")==0  && asan){
+			}else if(strcmp(this->getGroup()->getCString(),"Akatsuki")==0){
 				this->doAI();
 			}
 			
@@ -894,8 +880,8 @@ init flog
 
 Flog::Flog(void)
 {
-	_randomPosX=NULL;
-	_randomPosY=NULL;
+	_randomPosX=0;
+	_randomPosY=0;
 }
 
 
@@ -1073,11 +1059,11 @@ void Flog::setAI(float dt){
 
 	if(!hasTarget){
 			
-			if(!this->findEnemy("Flog",NULL)){
+			if(!this->findEnemy("Flog",0)){
 				
 				if(!this->findEnemy("Hero",64)){
 					
-					if(!this->findEnemy("Tower",NULL)){
+					if(!this->findEnemy("Tower",0)){
 						
 						_mainTarget=NULL;
 					};
@@ -1198,12 +1184,7 @@ void Tower::setID(CCString* character,CCString* role,CCString* group){
 	}
 	
 	KTools* tool= KTools::create();
-	std::string key =tool->getKeycode(filePath);
-	int id=tool->checkMD5(filePath);
-	
-	if(strcmp(key.c_str(),_delegate->KeyList[id])!=0){
-		//return;
-	}
+
 	
 
 	tool->readXMLToArray(filePath,animationArray);	
@@ -1350,7 +1331,6 @@ void Monster::setID(CCString* character,CCString* role,CCString* group){
 
 
 	KTools* tool= KTools::create();
-	std::string key =tool->getKeycode(filePath);
 	
 	tool->readXMLToArray(filePath,animationArray);	
 
@@ -1481,8 +1461,8 @@ void Monster::changeHPbar(){
 	}
 
 	if(_hpBar){	
-		CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("hp_bottom%d.png",int(_level))->getCString());  
-		_hpBar->getHPBottom()->setDisplayFrame(frame);
+		CCSpriteFrame* frame = CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("hp_bottom%d.png",int(_level))->getCString());  
+		_hpBar->getHPBottom()->setSpriteFrame(frame);
 	}
 
 
@@ -1526,7 +1506,7 @@ void Monster::setAI(float dt){
 	if(strcmp(getCharacter()->getCString(),"Mouse")==0
 		){
 
-		if(!this->findEnemy("Hero",NULL)){
+		if(!this->findEnemy("Hero",0)){
 			_mainTarget=NULL;
 		}
 	}else if(strcmp(getCharacter()->getCString(),"Spider")==0 ||
@@ -1534,8 +1514,8 @@ void Monster::setAI(float dt){
 		){
 
 		
-			if(!this->findEnemy("Hero",NULL)){
-				if(!this->findEnemy("Tower",NULL)){	
+			if(!this->findEnemy("Hero",0)){
+				if(!this->findEnemy("Tower",0)){	
 					_mainTarget=NULL;
 				}				
 			}
@@ -1545,8 +1525,8 @@ void Monster::setAI(float dt){
 		
 	}else{
 
-		if(!this->findEnemy("Hero",NULL)){
-			if(!this->findEnemy("Flog",NULL)){
+		if(!this->findEnemy("Hero",0)){
+			if(!this->findEnemy("Flog",0)){
 				_mainTarget=NULL;
 			}
 		}
@@ -1657,7 +1637,7 @@ void Monster::dealloc(){
 
 	}
 
-	//·ÉÀ×Éñ±ê¼Ç
+	//é£žé›·ç¥žæ ‡è®°
 	if(strcmp(this->getCharacter()->getCString(),"HiraishinMark")==0){
 
 		_master->_isCanSkill1=false;
@@ -1665,8 +1645,8 @@ void Monster::dealloc(){
 		_master->scheduleOnce(schedule_selector(ActionManager::enableSkill1),_sattackcoldDown1);
 
 		if(strcmp(_master->getRole()->getCString(),"Player")==0){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("Minato_skill1.png"); 
-			_delegate->getHudLayer()->skill1Button->setDisplayFrame(frame);
+			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Minato_skill1.png"); 
+			_delegate->getHudLayer()->skill1Button->setSpriteFrame(frame);
 			_delegate->getHudLayer()->skill1Button->_clickNum++;
 			_delegate->clearDoubleClick();
 		}
@@ -1858,12 +1838,7 @@ void Bullet::setID(CCString* character,CCString* role,CCString* group){
 
 
 	KTools* tool= KTools::create();
-	std::string key =tool->getKeycode(filePath);
-	int id=tool->checkMD5(filePath);
-	
-	if(strcmp(key.c_str(),_delegate->KeyList[id])!=0){
-		//return;
-	}
+
 	
 
 	tool->readXMLToArray(filePath,animationArray);	

@@ -85,6 +85,8 @@
 		<string>组织任务即将开放</string> 
 		<key>LimitedChar</key>  
 		<string>无法选择该角色</string> 
+		<key>HardCoreTips</key>  
+		<string>困难模式：随机地图，开启守护忍与忍具，确定进入吗？</string> 
 		<key>Notice</key>  
 		<string>   火影战记已于2016年12月3日宣布停止更新，感谢玩家一路来的支持</string>  
 </dict>  

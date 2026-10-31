@@ -27,10 +27,10 @@ bool PauseLayer::init(CCRenderTexture* snapshoot){
 		CCTexture2D* bgTexture=snapshoot->getSprite()->getTexture();
 		CCSprite* bg=CCSprite::createWithTexture(bgTexture);
 		bg->setAnchorPoint(ccp(0,0));
-		bg->setFlipY(true);
+		bg->setFlippedY(true);
 		this->addChild(bg,0);
 
-		CCLayer* blend=CCLayerColor::create(ccc4(0, 0, 0, 150),winSize.width,winSize.height);
+		CCLayerColor* blend=CCLayerColor::create(ccc4(0, 0, 0, 150),winSize.width,winSize.height);
 		this->addChild(blend,1);
 
 		//produce the menu_bar

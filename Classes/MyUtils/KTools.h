@@ -1,10 +1,8 @@
 #pragma once
-#include "support/tinyxml2/tinyxml2.h"
-#include "cocos2d.h"
-#include "platform/CCFileUtils.h"
+#include "MyUtils/tinyxml2/tinyxml2.h"
+#include "Compat/Compat2x.h"
 #include "MyUtils/CMD5Checksum.h"
 #include "MyUtils/sqlite3.h"
-#include "SimpleAudioEngine.h"
 
 
 USING_NS_CC;
@@ -20,7 +18,6 @@ public:
 	bool init();
 	CREATE_FUNC(KTools);
 
-	void prepareFileMD5();
 	void prepareFileSHA();
 
 	bool readXMLToArray(const char* filePath,CCArray* &array);
@@ -31,22 +28,16 @@ public:
 
 
 	
-	bool checkData();
-	void updateData();
 	bool	saveToSQLite(const char* table="GameRecord",const char* column=NULL,const char* value=NULL,bool isBuy=false);
 	CCString*  readFromSQLite(const char* table="GameRecord",const char* column=NULL,const char* value=NULL);
 	
 	void encode(std::string &str,int randomKey);
 	void decode(std::string &str);
-	int checkMD5(std::string findPath ="");
 	
 
-	void dfsFolder(std::string folderPath, int depth = 0,int type=0);
 
-	bool checkPackage();
 	void prepareFileOGG(const char* listName,int type=0);
 
-	std::string getKeycode(std::string path);
 	
 
 	CCString*  readSQLite(const char* table,const char* column,const char* value,const char* targetColumn);
