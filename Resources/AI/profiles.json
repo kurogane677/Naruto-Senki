@@ -19,7 +19,7 @@
 {
   "heroes": {
     "Naruto": {
-      "role": "fighter", "panicGear06": false, "nattack": [96, 32],
+      "role": "fighter", "panicGear06": false, "nattack": [40, 32],
       "builds": { "default": [3, 7, 2] },
       "hero": [
         { "slot": "OUGIS2", "range": [999, 999], "approach": false, "if": ["selfNotBati"] },
@@ -32,7 +32,7 @@
       "farm": [ { "slot": "SKILL2", "on": "farm" } ]
     },
     "SageNaruto": {
-      "role": "fighter", "panicGear06": false, "nattack": [96, 32],
+      "role": "fighter", "panicGear06": false, "nattack": [40, 32],
       "builds": { "default": [3, 7, 2] },
       "hero": [
         { "slot": "OUGIS2", "range": [999, 999], "approach": false },

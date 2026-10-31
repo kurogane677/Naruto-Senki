@@ -117,6 +117,19 @@ void AIController::tick(float dt)
     // overshoot their target and never get in range. Reaction time only
     // applies to switching targets (here) and to casting skills (ruleReady).
     _time += dt;
+    switch (_hero->getActionState())
+    {
+    case ACTION_STATE_IDLE: _activity[0]++; break;
+    case ACTION_STATE_ATTACK: _activity[1]++; break;
+    case ACTION_STATE_SATTACK:
+    case ACTION_STATE_OATTACK:
+    case ACTION_STATE_O2ATTACK: _activity[2]++; break;
+    case ACTION_STATE_WALK:
+        // flipped = facing left; Konoha's base is on the left
+        _activity[(_hero->_isFlipped == (_hero->group() == Group::Konoha)) ? 4 : 3]++;
+        break;
+    default: _activity[5]++; break;
+    }
     bool think = _time >= _nextThink;
     _thinking = think;
     if (think)
@@ -145,6 +158,20 @@ void AIController::tick(float dt)
     if (farm())
         return;
     advance();
+}
+
+std::string AIController::activitySummary() const
+{
+    int total = 0;
+    for (int n : _activity)
+        total += n;
+    if (!total)
+        return "";
+    const char* keys = "iasfbh";
+    std::string out;
+    for (int i = 0; i < 6; i++)
+        out += CCString::createWithFormat("%c%d", keys[i], _activity[i] * 100 / total)->getCString();
+    return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -225,9 +252,10 @@ bool AIController::survive()
     else if (role() == HeroRole::Assassin || role() == HeroRole::Support || role() == HeroRole::Ranged)
         retreatAt += 0.05f;
 
+    // back to the lane once a potion or the base fountain gave some HP back
     if (hp < retreatAt)
         _retreating = true;
-    else if (hp >= 0.85f || (h->_isHealling && hp >= 0.99f))
+    else if (hp >= retreatAt + 0.2f)
         _retreating = false;
 
     if (!_retreating)
@@ -422,12 +450,20 @@ bool AIController::retreatFromFight(const CCPoint& sp)
     Hero* h = _hero;
     if (h->_isHealling || h->_isControled)
         return false;
-    int gap = h->enemyCombatPoint - h->friendCombatPoint;
-    const TeamBrain& team = TeamBrain::get(_game, h->group());
-    if (gap <= _profile->retreatGap && !(team.outnumbered && role() != HeroRole::Tank))
+    if (_time < _kiteUntil)
+    {
+        h->stepBack2();
+        return true;
+    }
+    if (_time < _braveUntil || fabsf(sp.x) >= 160)
         return false;
-    if (fabsf(sp.x) >= 160)
-        return false;  // keep a safe distance but keep farming (the old AI just stood still)
+    int gap = h->enemyCombatPoint - h->friendCombatPoint;
+    if (gap <= _profile->retreatGap)
+        return false;
+    // outmatched: back off for a moment, then fight again for a while,
+    // instead of running back and forth at the edge of the fight
+    _kiteUntil = _time + randFloat(0.8f, 1.5f);
+    _braveUntil = _kiteUntil + randFloat(3.0f, 5.0f);
     h->stepBack2();
     return true;
 }
@@ -554,19 +590,6 @@ void AIController::advance()
         if (canAct())
             h->idle();
         return;
-    }
-    // back-liners keep a step behind the front hero instead of leading the wave
-    if (role() == HeroRole::Support || role() == HeroRole::Ranged)
-    {
-        const TeamBrain& team = TeamBrain::get(_game, h->group());
-        float dir = h->group() == Group::Konoha ? 1.0f : -1.0f;
-        if (team.hasFront && (h->getPositionX() - team.frontX) * dir > -48 &&
-            fabsf(h->getPositionX() - team.frontX) > 1)
-        {
-            if (canAct())
-                h->idle();
-            return;
-        }
     }
     h->stepOn();
 }

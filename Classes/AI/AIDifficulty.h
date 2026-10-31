@@ -30,8 +30,8 @@ inline const DifficultyParams& params(Difficulty d)
     static const DifficultyParams table[] = {
         // think        castDelay    chance potion retreat dodge  combo  focus  strictGp build
         {0.35f, 0.60f, 0.80f, 1.50f, 0.50f, 0.15f, 0.10f, 0.00f, false, false, true,  0.0f},  // Easy
-        {0.20f, 0.35f, 0.30f, 0.80f, 0.75f, 0.35f, 0.20f, 0.40f, true,  true,  true,  0.3f},  // Normal
-        {0.10f, 0.15f, 0.00f, 0.20f, 0.95f, 0.50f, 0.30f, 0.80f, true,  true,  false, 0.6f},  // Hard
+        {0.20f, 0.35f, 0.30f, 0.80f, 0.75f, 0.35f, 0.15f, 0.40f, true,  true,  true,  0.3f},  // Normal
+        {0.10f, 0.15f, 0.00f, 0.20f, 0.95f, 0.50f, 0.20f, 0.80f, true,  true,  false, 0.6f},  // Hard
     };
     return table[(int)d];
 }

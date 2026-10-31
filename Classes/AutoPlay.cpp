@@ -1,6 +1,7 @@
 #include "AutoPlay.h"
 #include "GameLayer.h"
 #include "Characters.h"
+#include "AI/AIController.h"
 #include "SelectLayer.h"
 #include "MyUtils/KTools.h"
 #include <cstdio>
@@ -127,6 +128,12 @@ void report(GameLayer* game, bool playerWon)
                                            unit->getCharacter()->getCString(), unit->getLV(), unit->getKillNum(),
                                            unit->_deadNum)
                     ->getCString();
+        if (unit->role() == Role::Com || unit->role() == Role::Player)
+        {
+            Hero* hero = (Hero*)unit;
+            if (hero->brain())
+                line += " " + hero->brain()->activitySummary();
+        }
         if (game->_isHardCoreGame)
         {
             line += " gear[";

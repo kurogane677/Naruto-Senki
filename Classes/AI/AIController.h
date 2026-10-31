@@ -24,6 +24,10 @@ public:
 
     void tick(float dt);
 
+    // share of AI ticks spent per activity, for the NS_AUTOPLAY log:
+    // i=idle a=basic attack s=skill/ougis f=walking forward b=walking home h=hurt/down
+    std::string activitySummary() const;
+
     Hero* hero() const { return _hero; }
     const Profile* profile() const { return _profile; }
     HeroRole role() const { return _profile->role; }
@@ -66,10 +70,13 @@ private:
     float _dodgeUntil = 0;
     float _strafeUntil = 0;
     bool _retreating = false;
+    float _kiteUntil = 0;
+    float _braveUntil = 0;
     std::map<int, float> _readySince;     // slot -> time it came off cooldown
     std::map<int, float> _skipUntil;      // slot -> declined opportunity
     std::map<ActionManager*, bool> _dodgeRolled;
     std::vector<int> _build;
+    int _activity[6] = {0, 0, 0, 0, 0, 0};
     bool _buildChosen = false;
 };
 

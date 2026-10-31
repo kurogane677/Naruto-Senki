@@ -10,6 +10,7 @@ public:
 	~Hero();
 	CREATE_FUNC(Hero);
 	bool	init();
+	ai::AIController*	brain() const { return _brain; }
 
 	
 
