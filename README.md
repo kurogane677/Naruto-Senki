@@ -10,7 +10,7 @@ Port dari game Naruto Senki (game 2D *lane battle* Konoha vs Akatsuki dengan tow
 |---|---|
 | **Status** | **MVP selesai**. M6 berjalan: Training dengan semua hero dan mode HardCore bisa dimainkan di Windows x64 |
 | Engine | [Axmol](https://github.com/axmolengine/axmol) **v2.11.5** (LTS) |
-| Platform | Windows 10/11 **x64**. Android: panduan build tersedia, tetapi kode belum di-port (lihat [Build APK Android](#build-apk-android)) |
+| Platform | Windows 10/11 **x64**. Android arm64: APK debug teruji di Galaxy A55 / Android 16 (lihat [Build APK Android](#build-apk-android)) |
 | Bahasa | C++20 (kode game legacy C++03 melalui lapisan kompatibilitas) |
 | Branch kerja | `axmol-migration` |
 
@@ -49,17 +49,18 @@ Port dari game Naruto Senki (game 2D *lane battle* Konoha vs Akatsuki dengan tow
 | Axmol | **2.11.5** | 2.11.5 | Di-clone ke `C:\dev\axmol` (lihat setup) |
 | Python | 3.x (opsional) | 3.13 | Hanya untuk script bantu migrasi; tidak dibutuhkan untuk build |
 
-Tambahan khusus build Android (versi diambil dari `C:\dev\axmol\1k\build.profiles`). Semuanya **dipasang otomatis** oleh CLI `axmol` saat build Android pertama, kecuali sudah ada:
+Tambahan khusus build Android (versi diambil dari `C:\dev\axmol\1k\build.profiles`). CLI `axmol` memasangnya ke `C:\dev\axmol\tools\external\`, tetapi JDK, NDK, dan lisensi SDK perlu disiapkan manual (lihat [Build APK Android](#build-apk-android)):
 
 | Tool | Versi yang diminta Axmol 2.11.5 | Catatan |
 |---|---|---|
-| JDK | **17** (17.0.10–17.0.17) | JDK lain (mis. 25) tidak dipakai; Axmol memasang JDK 17 sendiri |
+| JDK | **17** (17.0.10+) | **Wajib 17.** Kalau JDK 25 ada di `PATH`, Axmol memakainya dan `sdkmanager` gagal |
 | Android SDK cmdline-tools | 19.0 | |
-| Android NDK | **r23d** | Minimum untuk Axmol v2 |
+| Android NDK | **r23d** (23.3.12186248) | Unduh manual dari ci.android.com (endpoint otomatis Axmol membalas 501) |
 | Build-tools / target SDK / min SDK | 35.0.0 / 36 / 17 | |
 | Gradle / Android Gradle Plugin | 9.2.1 / 8.11.1 | Lewat `proj.android/gradlew` |
 | Android Studio (opsional) | 2025.1.1+ | Hanya jika ingin debug lewat IDE |
-| HP Android | arm64, Android 4.2+ | Untuk uji; aktifkan *USB debugging* |
+| PowerShell | **7** (`pwsh`) | Build Android harus dijalankan dari `pwsh`. Di PowerShell 5.1, output stderr Gradle dianggap error |
+| HP Android | arm64, Android 4.2+ | Untuk uji; aktifkan *USB debugging* (teruji: Galaxy A55, Android 16) |
 
 ### Hardware (perkiraan)
 - Disk: ±6–10 GB untuk workload C++ VS, ±3 GB untuk Axmol + hasil build engine, ±50 MB untuk resource game.
@@ -150,7 +151,7 @@ build_x64\bin\NarutoSenki\<Config>\NarutoSenki.exe
 ```
 `<Config>` = `RelWithDebInfo` atau `Debug`. Resource dari `Resources/` disalin otomatis ke folder `Content\` di samping exe saat build.
 
-- Jendela 960×640 (resolusi desain 480×320, `FIXED_HEIGHT`). Jendela konsol ikut terbuka dan menampilkan log Axmol.
+- Jendela 1280×720 (resolusi desain **568×320, 16:9**, `SHOW_ALL`). Jendela konsol ikut terbuka dan menampilkan log Axmol.
 - **Kontrol**: mouse menggantikan sentuhan (joystick kiri bawah, tombol attack/skill/ougis kanan bawah, minimap kanan atas = **Pause**, ESC = tombol *back*).
 
 ### Mode permainan
@@ -168,7 +169,7 @@ Cara memilih di layar HardCore: **double-click** = kunci pilihan. Urutannya **CO
 | File | Isi |
 |---|---|
 | `sql.db` | Coin & record per hero (SQLite, nilai di-obfuscate) |
-| `CheckMD5_113.xml` | Hash `sql.db` (peninggalan anti-tamper, tidak lagi dicek) |
+| `CheckMD5_113.xml` | Sisa dari versi lama (hash `sql.db`). Tidak lagi dibuat maupun dicek, aman dihapus |
 | `UserDefault.bin` | Pengaturan BGM/voice (format Axmol; save dari versi 2.x tidak ikut terbawa) |
 
 Hapus folder ini untuk reset save.
@@ -177,37 +178,68 @@ Hapus folder ini untuk reset save.
 
 ## Build APK Android
 
-> ⚠️ **Status: belum bisa di-build.** Langkah di bawah adalah alur resmi Axmol yang sudah disiapkan untuk proyek ini (`proj.android/` + `.axproj`), tetapi **belum pernah dijalankan sampai APK jadi**. Sebelum APK bisa dibuat, kode game harus di-port dulu (milestone M6 Android):
-> - 5 file masih meng-include header JNI cocos2d-x 2.x yang tidak ada di Axmol: `GameLayer.h`, `GameOver.h`, `LoadLayer.h`, `NetworkLayer.cpp`, `StartMenu.cpp` (`../cocos2dx/platform/android/jni/JniHelper.h`, `<jni.h>`). Pada build Android, header ini harus diganti `platform/android/jni/JniHelper.h` milik Axmol atau dihapus.
-> - Kode lama memanggil class Java `net/zakume/game/NarutoSenki` (iklan, webview berita, MAC/IMEI). Class itu tidak ada di template Axmol (`dev.axmol.app.AppActivity`), jadi pemanggilannya harus di-stub atau di-port.
-> - Anti-tamper khusus Android (cek MD5 dan nama paket) sudah dihapus di M4.10, jadi tidak lagi menghalangi.
->
-> Begitu poin di atas selesai, bagian ini akan diperbarui menjadi "teruji".
+> ✅ **Status: teruji.** APK debug di-build dan dimainkan di Samsung Galaxy A55 (Android 16, arm64). Yang dikerjakan untuk port:
+> - Include JNI lama (`../cocos2dx/platform/android/jni/JniHelper.h`) diganti header Axmol `platform/android/jni/JniHelper.h`.
+> - Dialog "Exit Game" (tombol Exit / Back) memanggil class Java baru `net.zakume.game.DialogUtils` (`proj.android/app/src/net/zakume/game/`).
+> - Panggilan lain ke class Java lama `net/zakume/game/NarutoSenki` (iklan, webview berita, MAC/IMEI) dibiarkan. Class itu tidak ada, jadi `JniHelper` hanya menulis error ke logcat dan game tetap jalan.
+> - `proj.android/app/build.gradle` menyalin aset dari `Resources/` (template Axmol memakai `Content/`).
+> - Perbaikan compile clang/arm64: alias `JniHelper`/`JniMethodInfo` di `Compat2x.h`, cast pointer → `int` lewat `intptr_t` di `ActionManager.cpp`, `const char*` untuk string literal.
+> - Anti-tamper khusus Android (cek MD5, nama paket) sudah dihapus (`d7b51be`, `e8f290d`).
 
-### 1. Persiapan (sekali saja)
-1. Selesaikan [Setup lingkungan](#setup-lingkungan-sekali-saja) untuk Windows terlebih dahulu (CMake, PowerShell 7, Axmol di `C:\dev\axmol`, `AX_ROOT`).
-2. **Pasang toolchain Android.** Pilih salah satu:
-   - **Otomatis (disarankan)**: tidak perlu melakukan apa pun. Build Android pertama memasang JDK 17, Android SDK cmdline-tools, build-tools, platform SDK, dan NDK r23d ke `%USERPROFILE%\.1kiss\` (SDK di `%USERPROFILE%\.1kiss\adt\sdk`). Download-nya beberapa GB; pastikan koneksi stabil.
-     Bisa juga dipicu lebih awal dengan:
-     ```powershell
-     pwsh C:\dev\axmol\setup.ps1 -p android
-     ```
-   - **Pakai Android Studio / SDK yang sudah ada**: set environment variable user `ANDROID_HOME` ke folder SDK (mis. `%LOCALAPPDATA%\Android\Sdk`), lalu pasang **NDK r23d** lewat *SDK Manager → SDK Tools → NDK (Side by side)*. Axmol akan memakai SDK itu dan hanya mengunduh yang kurang.
-3. **Restart terminal** agar environment variable baru terbaca.
+### 1. Persiapan toolchain (sekali saja)
+
+Selesaikan dulu [Setup lingkungan](#setup-lingkungan-sekali-saja) untuk Windows (CMake, PowerShell 7, Axmol di `C:\dev\axmol`, `AX_ROOT`).
+
+CLI `axmol` memasang toolchain Android sendiri ke **`C:\dev\axmol\tools\external\`** (SDK di `...\external\adt\sdk`) pada build Android pertama. Dalam praktiknya ada tiga hal yang membuat proses otomatis itu gagal atau macet. Lakukan langkah di bawah sebelum build pertama.
+
+1. **JDK 17 (wajib, jangan JDK 21/25).** Kalau di `PATH` sudah ada JDK yang lebih baru, Axmol memakainya. JDK 25 membuat `sdkmanager` mencetak warning yang dianggap error oleh skrip Axmol, sehingga build berhenti tanpa pesan jelas. Pasang JDK 17 khusus untuk Axmol tanpa mengubah JDK sistem:
+   ```powershell
+   curl.exe -L -o $env:TEMP\jdk17.zip https://aka.ms/download-jdk/microsoft-jdk-17-windows-x64.zip
+   Expand-Archive $env:TEMP\jdk17.zip C:\dev\axmol\tools\external
+   # nama foldernya mengikuti versi, mis. jdk-17.0.21.0.2+1
+   ```
+   Lalu, **di setiap terminal sebelum build Android**:
+   ```powershell
+   $env:JAVA_HOME = (Get-ChildItem C:\dev\axmol\tools\external -Directory -Filter 'jdk-17*')[0].FullName
+   $env:Path = "$env:JAVA_HOME\bin;$env:Path"
+   java -version   # harus 17.x
+   ```
+
+2. **NDK r23d.** Axmol mengambil NDK r23d dari endpoint `androidbuildinternal.googleapis.com`, yang sekarang membalas **501**. Unduh manual dari link *raw* ci.android.com ke cache Axmol (±790 MB). Axmol akan memakai file di cache dan mengekstraknya sendiri:
+   ```powershell
+   curl.exe -L -C - -o C:\dev\axmol\cache\android-ndk-12186248-windows-x86_64.zip `
+     https://ci.android.com/builds/submitted/12186248/win64/latest/raw/android-ndk-12186248-windows-x86_64.zip
+   ```
+
+3. **Lisensi Android SDK.** Build pertama memasang cmdline-tools, lalu memanggil `sdkmanager`. Kalau lisensi belum diterima, `sdkmanager` menunggu jawaban "y" selamanya. Setelah cmdline-tools terpasang (folder `C:\dev\axmol\tools\external\adt\sdk\cmdline-tools\` sudah ada), terima lisensi dan pasang paketnya sekali:
+   ```powershell
+   $sdk = "C:\dev\axmol\tools\external\adt\sdk"
+   $sm  = "$sdk\cmdline-tools\19.0\bin\sdkmanager.bat"
+   1..20 | ForEach-Object { 'y' } | & $sm --sdk_root=$sdk --licenses
+   & $sm --sdk_root=$sdk "platform-tools" "platforms;android-36" "build-tools;35.0.0"
+   ```
+   Kalau cmdline-tools belum ada, jalankan sekali `axmol build -p android -a arm64 -O0` sampai log menampilkan *Using cmdlinetools*, hentikan, lalu jalankan langkah ini.
+
+> **Alternatif: Android Studio / SDK yang sudah ada.** Set environment variable user `ANDROID_HOME` ke folder SDK (mis. `%LOCALAPPDATA%\Android\Sdk`) dan pasang **NDK r23d** di folder `ndk\` SDK tersebut. Axmol hanya mengunduh yang kurang. Tetap gunakan JDK 17.
+
+Ukuran total yang diunduh: ±1,5 GB (NDK ±790 MB, cmdline-tools 143 MB, JDK 187 MB, platform/build-tools, Gradle + dependensi).
 
 ### 2. Identitas aplikasi
 | Item | Nilai | Lokasi |
 |---|---|---|
-| Package / applicationId | `net.zakume.narutosenki` | `.axproj` (`package_name`) |
-| Nama aplikasi | `NarutoSenki` | `proj.android/app/res/values/strings.xml` |
+| Package / applicationId | `com.yusrilcode.game` | `.axproj` (`package_name`) |
+| Nama aplikasi | `Naruto Senki` | `proj.android/app/res/values/strings.xml` |
 | ABI | `arm64-v8a` | `proj.android/gradle.properties` (`__1K_ARCHS`), atau opsi `-a` |
 | Icon | `proj.android/app/res/mipmap-*/ic_launcher.png` | ganti dengan icon game |
 | Orientasi | `sensorLandscape` | `proj.android/app/AndroidManifest.xml` |
+| Resolusi | 568×320 (16:9), `SHOW_ALL` | `Classes/AppDelegate.cpp`. Di HP 19.5:9/20:9 ada strip hitam tipis kiri-kanan, karena kecepatan jalan dan jangkauan AI dihitung dari lebar layar |
+
+Package Java `net.zakume.game` (untuk `DialogUtils`) **tidak** perlu ikut diganti. Itu nama class yang dipanggil dari C++, bukan package aplikasi. `proguard-rules.pro` menjaga class ini agar tidak dihapus saat build release.
 
 Resource diambil dari `Resources/` dan kode dari `Classes/` lewat `CMakeLists.txt` yang sama dengan build Windows.
 
 ### 3. Build APK
-Jalankan dari root repo:
+Jalankan dari root repo, di terminal yang `JAVA_HOME`-nya sudah JDK 17:
 ```powershell
 # APK debug: ditandatangani otomatis dengan debug key, bisa langsung di-install ke HP
 axmol build -p android -a arm64 -O0
@@ -218,7 +250,7 @@ axmol build -p android -a arm64
 # Beberapa ABI sekaligus (HP arm64 + emulator x86_64)
 axmol build -p android -a 'arm64;x64' -O0
 ```
-Build pertama memakan waktu lama (mengunduh toolchain + mengompilasi seluruh engine untuk tiap ABI).
+Build pertama memakan waktu lama: Gradle mengunduh dependensinya, lalu seluruh engine dikompilasi untuk tiap ABI.
 
 Hasil APK (lokasi standar Gradle):
 ```
@@ -228,29 +260,63 @@ proj.android\app\build\outputs\apk\release\*.apk   # default / release
 Jika lokasinya berbeda, cari dengan `Get-ChildItem proj.android -Recurse -Filter *.apk`.
 
 ### 4. APK release yang ditandatangani
-1. Buat keystore (sekali saja; `keytool` ada di JDK 17 yang dipasang Axmol, `%USERPROFILE%\.1kiss\jdk\bin`):
+1. Buat keystore sekali saja. `keytool` ada di JDK mana pun (tidak perlu Android Studio):
    ```powershell
    keytool -genkeypair -v -keystore C:\keys\narutosenki.jks -alias narutosenki -keyalg RSA -keysize 2048 -validity 10000
    ```
+   Simpan file `.jks` dan password-nya di luar repo. Kalau hilang, update aplikasi tidak bisa ditandatangani dengan kunci yang sama.
 2. Build dengan keystore tersebut (**jangan commit keystore maupun password ke repo**):
    ```powershell
    axmol build -p android -a arm64 -xc "-PKEY_STORE_FILE=C:/keys/narutosenki.jks,-PKEY_STORE_PASSWORD=<password>,-PKEY_ALIAS=narutosenki,-PKEY_PASSWORD=<password>"
    ```
 3. Tambahkan `-aab` untuk menghasilkan `.aab` (format Google Play) alih-alih `.apk`.
 
-### 5. Install & uji di HP
+### 5. Debug di HP (USB)
+**Di HP:**
+1. *Setelan → Tentang ponsel → Informasi perangkat lunak* → ketuk **Nomor build** 7×, sampai Opsi pengembang aktif.
+2. *Setelan → Opsi pengembang* → nyalakan **Debugging USB**.
+3. Colok kabel data, lalu pilih mode USB **Mentransfer file**. Mode **USB tethering** (RNDIS) dan *Mengisi daya saja* **tidak** membuka jalur ADB.
+4. Saat muncul dialog *"Izinkan debugging USB?"*, centang **Selalu izinkan dari komputer ini** → **Izinkan**.
+
+**Di PC:** `adb` ada di `C:\dev\axmol\tools\external\adt\sdk\platform-tools\` setelah langkah 1.3. Bisa juga memakai platform-tools mandiri (`C:\dev\platform-tools`, unduh dari `https://dl.google.com/android/repository/platform-tools-latest-windows.zip`).
 ```powershell
-$adb = "$env:USERPROFILE\.1kiss\adt\sdk\platform-tools\adb.exe"   # atau adb dari ANDROID_HOME
-& $adb devices                                    # HP harus muncul (USB debugging aktif)
+$adb = "C:\dev\axmol\tools\external\adt\sdk\platform-tools\adb.exe"
+& $adb devices -l                                  # status harus "device", bukan "unauthorized"
 & $adb install -r proj.android\app\build\outputs\apk\debug\<nama>.apk
-& $adb logcat -s axmol debug AndroidRuntime       # lihat log / crash
+& $adb shell monkey -p com.yusrilcode.game 1       # jalankan game
+& $adb logcat -s axmol debug AndroidRuntime        # lihat log / crash
 ```
+
+**Kalau HP tidak terdeteksi (Samsung):** buka Device Manager. Harus ada **ADB Interface** di bawah *SAMSUNG Mobile USB Composite Device*. Kalau tidak ada:
+- matikan USB tethering;
+- matikan lalu nyalakan lagi *Debugging USB*;
+- ketuk *Cabut otorisasi debugging USB*;
+- colok ulang kabel, atau coba port/kabel lain.
+
+Driver Samsung biasanya terpasang otomatis lewat Windows Update. Kalau tidak, pasang *Samsung Android USB Driver*.
+
+### 6. GitHub Actions (rilis otomatis)
+`.github/workflows/build.yaml` berjalan saat **push tag `v*`**:
+- build Win64 (zip `build_x64/bin/NarutoSenki/Release`);
+- build APK release bertanda tangan;
+- membuat GitHub Release berisi keduanya.
+
+Workflow ini juga mengunduh NDK r23d dari link ci.android.com, seperti langkah 1.2. Secret yang wajib diisi di *Settings → Secrets and variables → Actions*:
+
+| Secret | Isi |
+|---|---|
+| `KEYSTORE_BASE64` | `[Convert]::ToBase64String([IO.File]::ReadAllBytes("C:\keys\narutosenki.jks"))` |
+| `KEYSTORE_PASSWORD` | password keystore |
+| `KEY_ALIAS` | alias key (mis. `narutosenki`) |
+| `KEY_PASSWORD` | password key |
+
+Contoh rilis: `git tag v1.0.0 && git push origin v1.0.0`. Saat ini (masa testing) tag dari branch mana pun ikut di-build. Pengecekan "tag harus dari `main` lewat PR" belum diaktifkan.
 
 ### Alternatif: Android Studio
 ```powershell
 axmol build -p android -c     # hanya generate/sync proyek, tanpa build
 ```
-Lalu buka folder `proj.android` di Android Studio, pilih varian *debug*, dan tekan Run.
+Lalu buka folder `proj.android` di Android Studio, set *Gradle JDK* ke JDK 17, pilih varian *debug*, dan tekan Run.
 
 ---
 
@@ -273,7 +339,9 @@ Lalu buka folder `proj.android` di Android Studio, pilih varian *debug*, dan tek
 | Gear shop, guardian Roshi/Han | 🟡 belum diuji |
 | Ranking, Skill/Record, Credits | 🟡 compile & tampil, belum diuji menyeluruh |
 | Login / group / upload skor (online) | ⛔ dimatikan (server lama tidak ada; tombol upload disembunyikan) |
-| Android | ⛔ kode belum di-port (lihat [Build APK Android](#build-apk-android)) |
+| Bot COM (kawan & lawan) bergerak sejak awal match | ✅ (`9cd562d`) |
+| Resolusi 16:9 | ✅ (`75c1a22`) |
+| Android (APK arm64) | ✅ teruji di Galaxy A55 / Android 16 (lihat [Build APK Android](#build-apk-android)) |
 
 ---
 
@@ -296,6 +364,8 @@ Naruto Senki/
 ├─ Resources/                # aset (sprite plist/pvr, audio mp3/ogg, peta .tmx, data XML)
 ├─ proj.win32/               # entry point Windows + CrashHandler
 ├─ proj.android/             # proyek Gradle Android dari template Axmol (lihat Build APK Android)
+│  └─ app/src/net/zakume/game/DialogUtils.java   # dialog Exit yang dipanggil lewat JNI
+├─ .github/workflows/        # build.yaml: build Win64 + APK dan GitHub Release saat push tag v*
 ├─ .axproj                   # metadata proyek Axmol: versi engine, package name Android
 ├─ MIGRATION_ROADMAP.md      # urutan kerja migrasi, checklist, log keputusan
 └─ MIGRATION_PLAN_AXMOL.md   # referensi teknis: pemetaan API, risiko
@@ -331,7 +401,8 @@ Kode game sengaja **tidak ditulis ulang**. Kode tetap memakai API cocos2d-x 2.x,
 - Target game dikompilasi dengan `/Zc:strictStrings-` (string literal → `char*` legacy). `/permissive` **tidak** bisa dipakai karena merusak header engine.
 - Prioritas touch 2.x dipetakan ke fixed priority Axmol (`p > -128 → p + 200`) agar tetap diproses setelah menu, seperti di 2.x.
 - Source dikonversi dari **GBK → UTF-8** (18 file). Compile memakai `/utf-8` (otomatis dari Axmol).
-- **Anti-tamper/sabotase asli sudah dihapus** (cek MD5 resource, `CCDirector::end()` diam-diam di GameOver, dll.). Rincian ada di commit `d7b51be`.
+- **Anti-tamper/sabotase asli sudah dihapus** (cek MD5 resource, `CCDirector::end()` diam-diam di GameOver, flag `CError`, dll.). Rinciannya ada di commit `d7b51be` (pemanggilan) dan `e8f290d` (fungsi MD5 di `KTools`). Kode lamanya bisa dilihat dengan `git show 724e999:Classes/MyUtils/KTools.cpp`.
+- **AI bot COM** dinyalakan di `GameLayer::onGameStart`. Di source asli, baris `doAI()` ini ter-comment, sehingga bot diam sampai respawn pertama.
 
 ---
 
@@ -389,7 +460,7 @@ Detail lengkap dan checklist ada di [`MIGRATION_ROADMAP.md`](MIGRATION_ROADMAP.m
 | M6.2 | Gear, guardian, ranking/skill/credits | ⏳ |
 | M6.3 | Perbaikan bug asli (lihat [Known issues](#known-issues)) | ⏳ |
 | M6.4 | Hapus shim → API Axmol native | ⏳ |
-| M6.5 | Android: port JNI → APK teruji | ⏳ |
+| M6.5 | Android: port JNI → APK teruji | ✅ |
 
 ---
 
