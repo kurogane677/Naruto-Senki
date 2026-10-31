@@ -24,8 +24,6 @@ public:
 	CCLayer* cheatLayer;
 	CCSprite* result_bg;
 
-	bool isPosting;
-	CCSprite* refreshBtn;
 
 	CCMenuItem* upload_btn;
 
@@ -39,8 +37,6 @@ private:
 	void	listResult();
 	void	onCancel(CCObject* sender);
 	void	onLeft(CCObject* sender);
-	void	onUPloadBtn(CCObject* sender);
 	CC_SYNTHESIZE(GameLayer*,_delegate,Delegate);
-	void onHttpRequestCompleted(CCNode *sender ,void *data);
 };
 

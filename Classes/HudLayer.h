@@ -39,7 +39,6 @@ public:
 	~HudLayer(void);
 
 
-	void			updateSQL(float dt);
 	bool			isOpenSQL;
 
 	CCSprite*			status_bar;

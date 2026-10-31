@@ -44,10 +44,8 @@ public:
 
 	CCSpriteBatchNode* rankingBatch;
 
-	bool isPosting;
 	
 
-	CCSprite* refreshBtn;
 	CC_SYNTHESIZE(NetworkLayer*,_delegate,Delegate);
 
 	void postRequest(int code,CCString* useChar=NULL);
@@ -57,9 +55,6 @@ public:
 	int postingCode;
 
 private:
-	void onHttpRequestCompleted(CCNode *sender ,void *data);
-	void onHttpRequestCompleted2(CCNode *sender ,void *data);
-	void onHttpRequestCompleted3(CCNode *sender ,void *data);
 
 	
 	void produceRanking(int type);
@@ -70,7 +65,6 @@ private:
 
 	void				onBattleBtn(CCObject* sender);
 	void				onJifenBtn(CCObject* sender);
-	void				onSelectGroupBtn(CCObject* sender);
 
 	void				onSideBar1(CCObject* sender);
 	void				onSideBar2(CCObject* sender);

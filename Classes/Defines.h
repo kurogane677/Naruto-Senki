@@ -20,15 +20,9 @@
 
 extern int Cheats;
 extern int adResult;
-extern int MemberID;
-extern int GroupID;
 extern std::string CValue;
-extern std::string PWord;
-extern bool isPlayed;
 
 
-#define SERVER "http://localhost/" 
-#define CURRENT_VERSION 12200
 
 //menu sound
 

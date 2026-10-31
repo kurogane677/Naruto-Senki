@@ -91,42 +91,7 @@ public:
 	void				openHeroSelect(bool isHardCore);
 	void				onCreditsCallBack();
 	void				onExitCallBack();
-	void				onNewsBtn(CCObject* sender);
-	void				onLoginBtn(CCObject* sender);
-	void				onTasksBtn(CCObject* sender);
-	void				onProfileBtn(CCObject* sender);
 
-	void				onIterfaceClose(CCObject* sender);
-	void				onInputBoxClose(CCObject* sender);
-
-
-	void				onLoginOn(CCObject* sender);
-	void				onLoginCancel(CCObject* sender);
-	void				setOfferWall();
-	void				setProfile();
-	void				setGroup();
-	
-	void				onGroupBtn(CCObject* sender);
-	void				onSearchBtn(CCObject* sender);
-	void				onCreateBtn(CCObject* sender);
-	void				onCreateComfirm(CCObject* sender);
-	void				onSelectGroupBtn(CCObject* sender);
-	void				onJoinGroup(CCObject* sender);
-	void				onKickBtn(CCObject* sender);
-	void				onQuitBtn(CCObject* sender);
-	void				onJoinComfirm(CCObject* sender);
-	void				onDissolveBtn(CCObject* sender);
-	void				onQuitComfirm(CCObject* sender);
-	void				onKickComfirm(CCObject* sender);
-
-	void				onGPWComfirm(CCObject* sender);
-	void				onLockBtn(CCObject* sender);
-	void				onNoticeBtn(CCObject* sender);
-	void				onNoticeComfirm(CCObject* sender);
-
-	void				onNamePlate(CCObject* sender);
-	void				onNamePlateClick(CCObject* sender);
-	void				onNamePlateComfrim(CCObject* sender);
 	void				scrollMenu(int posY);
 	CCSprite*			menuText;
 
@@ -134,50 +99,17 @@ public:
 
 	CCLayer* hardCoreLayer;
 
-	
-	CCLayer* profile_layer;
-	CCLayer* group_layer;
-	
-	CCLayer* input_layer;
-
-	CCEditBox* usernameInput;
-	CCEditBox* pwInput;
-	CCEditBox* searchInput;
-	CCEditBox* nameInput;
-	CCEditBox* gpwInput;
-
 	static const int	_pos01=48;
 	static const int	_pos02=92;
 	static const int	_pos03=150;
 
 	bool  isClockwise;
 	bool  isDrag;
-	bool  isNewAviable;
-	bool  isBondAviable;	
 
-	bool isTasking;
-	bool isPosting;
-
-	int leaderID;
-
-	CCMenuItem*  lock_btn;
-	bool isLock;
-	 CCLabelTTF* notice_label;
-
-	CCLabelTTF* totalGroupNum;
-	int maxGroupNum;
-
-	CCSprite* refreshBtn;
-	CCMenuItem* task_btn;
-	CCMenuItem* login_btn;
 	void setNotice();
-
 	CCLayer* notice_layer;
 	void update(float dt);
 	CCLabelTTF* noticeLabel;
-
-	CCScrewLayer* _screwLayer1;
-
 
 	virtual void   keyBackClicked();
 
@@ -185,17 +117,6 @@ public:
 	CREATE_FUNC(StartMenu);
 
     
-	void onLoginRequestCompleted(CCNode *sender ,void *data);
-	void onGroupRequestCompleted(CCNode *sender ,void *data);
-	void onGroupManageRequestCompleted(CCNode *sender ,void *data);
-	void onJoinRequestCompleted(CCNode *sender ,void *data);
-	void onSeachRequestCompleted(CCNode *sender ,void *data);
-	void onCreateRequestCompleted(CCNode *sender ,void *data);
-	void onQuitGroupRequestCompleted(CCNode *sender ,void *data);
-	void onNoticeRequestCompleted(CCNode *sender ,void *data);
-	void onProfileRequestCompleted(CCNode *sender ,void *data);
-	void onGPWRequestCompleted(CCNode *sender ,void *data);
-	void onNamePlateRequestCompleted(CCNode *sender ,void *data);
 
 protected:
 	void onEnter();

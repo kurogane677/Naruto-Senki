@@ -217,8 +217,6 @@ SkillLayer::SkillLayer(void)
 	_delegate=NULL;
 	_delegate2=NULL;
 
-	refreshBtn=NULL;
-	isPosting=false;
 }
 
 
@@ -552,32 +550,6 @@ void SkillLayer::initInterface(){
 		//更新技能表
 		this->updateSkillGroup();
 	
-	/*else if(_delegate2){
-
-	 if(!refreshBtn){
-	 refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
-	 refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
-	 CCActionInterval* rt=CCRotateBy::create(0.3f,180,180);
-	 refreshBtn->runAction(CCRepeatForever::create(rt));
-	 this->addChild(refreshBtn,1000);
-
-	 }
-
-	 CCHttpRequest* request = new  CCHttpRequest(); 
-	 std::string codeFinal;
-	 std::string code2=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
-	 std::string code1=CCString::createWithFormat("code=200&id=%d&char=%s",MemberID,_delegate2->_selectHero)->getCString();
-	 std::string url=SERVER"nsk/list.php?"+code1+code2;
-	 request->setUrl(url.c_str());  
-	 request->setRequestType( CCHttpRequest::kHttpGet);  
-
-	 request->setResponseCallback(this, callfuncND_selector(SkillLayer::onSkillRequestCompleted));  
-
-
-	 request->setTag("Post_My_Data");  
-	 CCHttpClient::getInstance()->send(request);  
-	 request->release();  
-	 }*/
 
 
 	
@@ -587,146 +559,6 @@ void SkillLayer::initInterface(){
 
 
 	this->scheduleUpdate();
-
-}
-
-
-void SkillLayer::onSkillRequestCompleted(CCNode *sender ,void *data){
-
-
-	isPosting=false;
-	//刷新按钮
-	if(refreshBtn){
-		refreshBtn->stopAllActions();
-		refreshBtn->removeFromParent();
-		refreshBtn=NULL;
-	}
-
-	CCHttpResponse *response = (CCHttpResponse*)data;    
-	if (!response)    
-	{  
-		return;    
-	}   
-	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
-	{  
-		//CCLog("%s completed", response->getHttpRequest()->getTag());  
-	}  
-	int statusCode = response->getResponseCode();  
-	char statusString[64] = {};  
-	sprintf(statusString ,"Http status code:%d ,tag = %s" ,statusCode ,response->getHttpRequest()->getTag());  
-	CCLog("response code:%d" ,statusCode);  
-	if (!response->isSucceed())  
-	{  
-		CCLog("response failed");  
-		CCLog("error buffer:%s" ,"");
-		CCTips *tip=CCTips::create("ServerError");
-		this->addChild(tip,5000);
-		return;
-	}  
-	auto* buffer = response->getResponseData();  
-	printf("Http response,dump data:");  
-
-
-	Document doc;
-	std::string buf(buffer->begin(),buffer->end()); 	
-	const char* json=(char*) buf.c_str();
-	doc.Parse<kParseDefaultFlags>(json);
-	Value &arr=doc;
-	
-	std::string bondString="0";
-	std::string scoreString="0";
-	if(arr.IsArray()){
-
-				for (SizeType i = 0; i < arr.Size(); i++)  {
-
-					Value & node=arr[i];
-					if(i==0){
-						Value & bondValue= node["bonds"];
-						bondString=bondValue.GetString();
-					}else{
-						Value & scoreValue= node["score"];
-						scoreString=scoreValue.GetString();
-					}
-			
-
-				}
-
-		
-		
-			
-
-			CCMenuItem* change_bt=NULL;
-			if(strcmp(selectHero,"Naruto")==0 ||
-			strcmp(selectHero,"Jiraiya")==0  ||
-			strcmp(selectHero,"Sasuke")==0 
-			){
-
-			change_bt=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("change_btn.png"),NULL,NULL,this,menu_selector(SkillLayer::onChangeBtn));
-
-			}
-
-			if(change_bt){
-			changemenu =CCMenu::create(change_bt,NULL);
-			changemenu->setPosition(ccp(winSize.width/2,winSize.height/2-skillSprite->getContentSize().height/2+120));
-			CCActionInterval*  fd=CCFadeOut::create(1.0f);
-			CCAction* seq=CCRepeatForever::create(CCSequence::create(fd,fd->reverse(),NULL));
-			change_bt->runAction(seq);
-			this->addChild(changemenu,15);
-			}
-
-			CCSprite* goldBG=CCSprite::createWithSpriteFrameName("gold_bg.png");
-			goldBG->setAnchorPoint(ccp(0.5,0));
-			goldBG->setPosition(ccp(winSize.width/2+skillSprite->getContentSize().width/4+25,winSize.height/2+skillSprite->getContentSize().width/2-74));
-			this->addChild(goldBG,9);
-
-			KTools* tool= KTools::create();
-			CCString* cl=tool->readFromSQLite();
-			coinLabel=CCLabelBMFont::create(cl->getCString(),"Fonts/1.fnt");
-			coinLabel->setScale(0.3f);
-			coinLabel->setAnchorPoint(ccp(0,0));
-			coinLabel->setPosition(ccp(goldBG->getPositionX()-goldBG->getContentSize().width/2+23,goldBG->getPositionY()+4));
-			this->addChild(coinLabel,10);
-
-
-
-
-
-			CCSprite* bondBG=CCSprite::createWithSpriteFrameName("golds_1.png");
-			bondBG->setAnchorPoint(ccp(0.5,0));
-			bondBG->setPosition(ccp(goldBG->getPositionX()-goldBG->getContentSize().width/2+15,goldBG->getPositionY()+4));
-			this->addChild(bondBG,15);
-
-			CCSprite* bondBG2=CCSprite::createWithSpriteFrameName("golds_2.png");
-			bonds=CCProgressTimer::create(bondBG2);
-			bonds->setType(kCCProgressTimerTypeBar);
-			bonds->setAnchorPoint(ccp(0.5,0));
-			bonds->setMidpoint(ccp(0,0));
-			bonds->setBarChangeRate(ccp(0, 1));
-
-
-			if(atoi(cl->getCString())>=99999){
-				bonds->setPercentage(100);
-			}else if(atoi(cl->getCString())>=80000){
-				bonds->setPercentage(80);
-			}else if(atoi(cl->getCString())>=60000){
-				bonds->setPercentage(60);
-			}else if(atoi(cl->getCString())>=40000){
-				bonds->setPercentage(40);
-			}else if(atoi(cl->getCString())>=20000){
-				bonds->setPercentage(20);
-			}
-
-			bonds->setPosition(ccp(goldBG->getPositionX()-goldBG->getContentSize().width/2+15,goldBG->getPositionY()+4));
-			this->addChild(bonds,20);
-
-
-
-
-			this->updateSkillGroup();
-
-	}
-
-
 
 }
 

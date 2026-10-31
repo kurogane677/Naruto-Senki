@@ -36,7 +36,6 @@ GameLayer::GameLayer(void)
 	_isRandomChar=false;
 	zhenying=1;
 	currentPlayer=NULL;
-	isPosting=false;
 	postTime=0;
 
 }
@@ -1003,68 +1002,6 @@ void GameLayer::onLeft(){
 
 
 }
-
-void GameLayer::checkPost(float dt){
-
-	if(!isPosting && postTime<10){
-		
-		isPosting=true;
-		postTime++;
-		CCHttpRequest* request = new  CCHttpRequest(); 
-		std::string codeFinal;
-		
-		
-		std::string code2="&pw="+PWord;
-		std::string code1=CCString::createWithFormat("code=50&id=%d",MemberID)->getCString();
-		std::string code3=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
-		std::string url=SERVER"nsk/list.php?"+code1+code2+code3;
-		request->setUrl(url.c_str());  
-		request->setRequestType( CCHttpRequest::kHttpGet);  
-		
-		request->setResponseCallback(this, callfuncND_selector(GameLayer::onHttpRequestCompleted));  
-		
-
-		request->setTag("Post_My_Data");  
-		CCHttpClient::getInstance()->send(request);  
-		request->release();  
-
-	}else{
-		SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-		CCDirector::sharedDirector()->end();
-		return;
-	}
-
-}
-
-void GameLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {  
-
-	isPosting=false;
-	
-	CCHttpResponse *response = (CCHttpResponse*)data;    
-	if (!response)    
-	{  
-		return;    
-	}   
-	
-	int statusCode = response->getResponseCode();  
-	char statusString[64] = {};  
-	
-	if (!response->isSucceed())  
-	{  	
-		return;
-	}  
-	auto* buffer = response->getResponseData();  
-	
-	Document doc;
-	
-	std::string buf(buffer->begin(),buffer->end()); 
-
-	if(strcmp(buf.c_str(),"postOK")==0){
-		this->unschedule(schedule_selector(GameLayer::checkPost));
-	}
-}  
-
-
 
 void GameLayer::checkBackgroundMusic(float dt){
 	if(CCUserDefault::sharedUserDefault()->getBoolForKey("isBGM")!=false){

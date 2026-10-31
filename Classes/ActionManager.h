@@ -312,7 +312,6 @@ public:
 	bool				hurt();
 	bool				hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool isStick,bool isStun);
 	void				absorb(CCPoint position,bool isImmediate);
-	void				jump();
 	void				knockDown();
 	void				dead();
 	void				floatUP(float floatHeight,bool isCancelSkill);
@@ -428,7 +427,6 @@ protected:
 	void				setDamage(CCString* effectType,unsigned int attackValue,bool isFlipped);
 	void				setDamgeDisplay(unsigned int value,const char* type);
 	
-	void				setItemEffect(CCNode* sender,void* date);
 	void				setDamgeEffect(CCString* type);
 	void				setMonAttack(CCNode* sender,void* date);
 	void				setTransform();

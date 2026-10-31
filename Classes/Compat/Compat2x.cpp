@@ -870,39 +870,6 @@ CCLabelBMFont* CCLabelBMFont::create(const char* str, const char* fntFile, float
 }
 
 /* ---------------------------------------------------------------------------
- * HTTP
- * ------------------------------------------------------------------------- */
-void CCHttpRequest::setRequestType(HttpRequestType type)
-{
-    using Type = ax::network::HttpRequest::Type;
-    switch (type)
-    {
-    case kHttpGet:
-        setRequestType(Type::GET);
-        break;
-    case kHttpPost:
-        setRequestType(Type::POST);
-        break;
-    case kHttpPut:
-        setRequestType(Type::PUT);
-        break;
-    case kHttpDelete:
-        setRequestType(Type::DELETE);
-        break;
-    default:
-        setRequestType(Type::UNKNOWN);
-        break;
-    }
-}
-
-void CCHttpRequest::setResponseCallback(ax::Object* target, ax::SEL_CallFuncND selector)
-{
-    setCompleteCallback([target, selector](ax::network::HttpClient*, ax::network::HttpResponse* response) {
-        (target->*selector)(nullptr, response);
-    });
-}
-
-/* ---------------------------------------------------------------------------
  * SimpleAudioEngine
  * ------------------------------------------------------------------------- */
 namespace CocosDenshion

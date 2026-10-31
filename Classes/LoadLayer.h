@@ -50,10 +50,7 @@ public:
 	void playBGM(float dt);
 	void onLoadFinish(float dt);
 
-	bool isPosting;
-	void onHttpRequestCompleted(CCNode *sender ,void *data);
 
-	CCArray* DLCArray;
 private:
 	
 	void preloadPlist(CCObject* obj);

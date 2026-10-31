@@ -19,7 +19,6 @@
 
 #include "axmol.h"
 #include "audio/AudioEngine.h"
-#include "network/HttpClient.h"
 #include "ui/UIEditBox/UIEditBox.h"
 #include "ui/UIScale9Sprite.h"
 #include "rapidjson/document.h"
@@ -203,8 +202,6 @@ using ccBlendFunc         = ax::BlendFunc;
 using CCScale9Sprite      = ax::ui::Scale9Sprite;
 using CCEditBox           = ax::ui::EditBox;
 using CCEditBoxDelegate   = ax::ui::EditBoxDelegate;
-using CCHttpClient        = ax::network::HttpClient;
-using CCHttpResponse      = ax::network::HttpResponse;
 
 /* ---------------------------------------------------------------------------
  * Geometry / colour helpers
@@ -601,26 +598,6 @@ public:
     static CCLabelBMFont* create(const char* str, const char* fntFile);
     static CCLabelBMFont* create(const char* str, const char* fntFile, float width,
                                  ax::TextHAlignment alignment = ax::TextHAlignment::LEFT);
-};
-
-/* ---------------------------------------------------------------------------
- * HTTP (cocos2d::extension::CCHttpRequest)
- * ------------------------------------------------------------------------- */
-class CCHttpRequest : public ax::network::HttpRequest
-{
-public:
-    enum HttpRequestType
-    {
-        kHttpGet,
-        kHttpPost,
-        kHttpPut,
-        kHttpDelete,
-        kHttpUnkown,
-    };
-
-    using ax::network::HttpRequest::setRequestType;
-    void setRequestType(HttpRequestType type);
-    void setResponseCallback(ax::Object* target, ax::SEL_CallFuncND selector);
 };
 
 /* ---------------------------------------------------------------------------

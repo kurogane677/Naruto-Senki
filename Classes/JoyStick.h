@@ -22,8 +22,6 @@ public:
 	virtual void	onExit();
 
 
-	void			keyUpdate(float direction);
-	void			keyEnded(float direction);
 
 	CREATE_FUNC(JoyStick);
 	CC_SYNTHESIZE(HudLayer*,_delegate,Delegate);

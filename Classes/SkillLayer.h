@@ -29,8 +29,6 @@ public:
 	CREATE_FUNC(SkillLayer);
 	CCSprite* _skillExplain;
 
-	bool isPosting;
-	CCSprite* refreshBtn;
 
 	CCLabelBMFont* coinLabel;
 
@@ -63,7 +61,6 @@ private:
 	void	updateSkillGroup();
 	void	onChangeBtn(CCObject* sender);
 	void	onResume(CCObject* sender);
-	void	onSkillRequestCompleted(CCNode *sender ,void *data);
 };
 
 
