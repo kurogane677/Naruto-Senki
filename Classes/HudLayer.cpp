@@ -399,9 +399,9 @@ void HudLayer::initHeroInterface(){
 		skill2Button->setDoubleSkill(true);
 	};
 	skill2Button->setMarkSprite("skill_freeze.png");
-	if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kankuro")== 0 || 
-		strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Chiyo")==0 ||
-		strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kiba")== 0 
+	if(_delegate->currentPlayer->isCharacter("Kankuro") || 
+		_delegate->currentPlayer->isCharacter("Chiyo") ||
+		_delegate->currentPlayer->isCharacter("Kiba") 
 		){
 		skill2Button->setLock();
 	}
@@ -418,9 +418,9 @@ void HudLayer::initHeroInterface(){
 		skill3Button->setDoubleSkill(true);
 
 	};
-	if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kiba")==0||
-		strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Chiyo")==0 ||
-		strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Lee")== 0 
+	if(_delegate->currentPlayer->isCharacter("Kiba")||
+		_delegate->currentPlayer->isCharacter("Chiyo") ||
+		_delegate->currentPlayer->isCharacter("Lee") 
 		){
 		skill3Button->setLock();
 	}
@@ -520,7 +520,7 @@ void HudLayer::initHeroInterface(){
 		const char* path="";
 		MiniIcon* mi;
 
-		if(strcmp(player->getGroup()->getCString(),_delegate->currentPlayer->getGroup()->getCString())==0){
+		if(player->group()==_delegate->currentPlayer->group()){
 			path="tower_icon1.png";
 		}else{
 			path="tower_icon2.png";
@@ -544,19 +544,19 @@ void HudLayer::initHeroInterface(){
 	
 	CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 		ActionManager* player=(ActionManager*) pObject;
-		if(strcmp(player->getRole()->getCString(),"Player")==0 ||
-			strcmp(player->getRole()->getCString(),"Com")==0
+		if(player->role()==Role::Player ||
+			player->role()==Role::Com
 			){
 				MiniIcon* mi;
 				const char* path="";
-				if(strcmp(player->getRole()->getCString(),"Player")==0){
+				if(player->role()==Role::Player){
 					path="player_icon.png";
-				}else if(strcmp(player->getRole()->getCString(),"Com")==0){
-					if(strcmp(player->getCharacter()->getCString(),"Han")==0 ||
-						strcmp(player->getCharacter()->getCString(),"Roshi")==0){
+				}else if(player->role()==Role::Com){
+					if(player->isCharacter("Han") ||
+						player->isCharacter("Roshi")){
 							path="guardian_icon.png";	
 					}else{
-						if(strcmp(player->getGroup()->getCString(),_delegate->currentPlayer->getGroup()->getCString())==0){
+						if(player->group()==_delegate->currentPlayer->group()){
 							path="com_icon.png";
 
 						}else{
@@ -587,8 +587,8 @@ void HudLayer::addMapIcon(){
 	CCObject* pObject;
 	CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 		ActionManager* player=(ActionManager*) pObject;
-		if(strcmp(player->getCharacter()->getCString(),"Han")==0 ||
-			strcmp(player->getCharacter()->getCString(),"Roshi")==0){
+		if(player->isCharacter("Han") ||
+			player->isCharacter("Roshi")){
 				MiniIcon* mi;
 				const char* path="guardian_icon.png";	
 				mi=MiniIcon::create(path,true);

@@ -89,22 +89,22 @@ void GameOver::listResult(){
 	CCString* path=CCString::createWithFormat("%s_half.png",_delegate->currentPlayer->getCharacter()->getCString());
 	CCSprite* half=CCSprite::createWithSpriteFrameName(path->getCString());
 
-	if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Konan")==0||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Karin")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Suigetsu")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Hidan")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Tobirama")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Tsunade")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kankuro")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"SageJiraiya")==0||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Minato")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Tobi")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Lee")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"RockLee")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Hinata")==0||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Asuma")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Chiyo")==0||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kisame")==0
+	if(_delegate->currentPlayer->isCharacter("Konan")||
+	_delegate->currentPlayer->isCharacter("Karin") ||
+	_delegate->currentPlayer->isCharacter("Suigetsu") ||
+	_delegate->currentPlayer->isCharacter("Hidan") ||
+	_delegate->currentPlayer->isCharacter("Tobirama") ||
+	_delegate->currentPlayer->isCharacter("Tsunade") ||
+	_delegate->currentPlayer->isCharacter("Kankuro") ||
+	_delegate->currentPlayer->isCharacter("SageJiraiya")||
+	_delegate->currentPlayer->isCharacter("Minato") ||
+	_delegate->currentPlayer->isCharacter("Tobi") ||
+	_delegate->currentPlayer->isCharacter("Lee") ||
+	_delegate->currentPlayer->isCharacter("RockLee") ||
+	_delegate->currentPlayer->isCharacter("Hinata")||
+	_delegate->currentPlayer->isCharacter("Asuma") ||
+	_delegate->currentPlayer->isCharacter("Chiyo")||
+	_delegate->currentPlayer->isCharacter("Kisame")
 		){
 		half->setFlippedX(true);
 	}
@@ -181,18 +181,18 @@ void GameOver::listResult(){
 
 		
 		Hero* hero=(Hero*)pObject;
-		if(strcmp(hero->getRole()->getCString(),"Clone")==0 || 
-			strcmp(hero->getRole()->getCString(),"Summon")==0|| 
-			strcmp(hero->getRole()->getCString(),"Kuilei")==0 || 
-			strcmp(hero->getCharacter()->getCString(),"Han")==0 ||
-			strcmp(hero->getCharacter()->getCString(),"Roshi")==0 
+		if(hero->role()==Role::Clone || 
+			hero->role()==Role::Summon|| 
+			hero->role()==Role::Kuilei || 
+			hero->isCharacter("Han") ||
+			hero->isCharacter("Roshi") 
 			){
 				continue;
 		}
 
 		//4v4
 		if(Cheats>10){
-			if(strcmp(hero->getRole()->getCString(),"Player")!=0){
+			if(hero->role()!=Role::Player){
 				continue;
 			}
 		}
@@ -210,7 +210,7 @@ void GameOver::listResult(){
 
 		int realKillNum=hero->getKillNum();
 
-		if(strcmp(hero->getGroup()->getCString(),"Konoha")==0){
+		if(hero->group()==Group::Konoha){
 			konohaKill+=realKillNum;
 		}else{
 			akatsukiKill+=realKillNum;
@@ -232,7 +232,7 @@ void GameOver::listResult(){
 
 		float posX=winSize.width/2-result_bg->getContentSize().width/2+2;
 
-		if(strcmp(hero->getGroup()->getCString(),"Konoha")==0){
+		if(hero->group()==Group::Konoha){
 			avator_small->setPosition(ccp(posX,result_bg->getPositionY()-result_bg->getContentSize().height/2+152-(i*25)));
 			killNum->setPosition(ccp(posX+44,avator_small->getPositionY()+avator_small->getContentSize().height/2));
 			deadNum->setPosition(ccp(posX+68,avator_small->getPositionY()+avator_small->getContentSize().height/2));
@@ -273,7 +273,7 @@ void GameOver::listResult(){
 
 	bool isTKO=false;
 	if(_totalSecond>900 && _delegate->_isSurrender){
-		if(strcmp(_delegate->currentPlayer->getGroup()->getCString(),"Konoha")==0){
+		if(_delegate->currentPlayer->group()==Group::Konoha){
 			if(konohaKill>akatsukiKill){
 			 _isWin=true;
 			  isTKO=true;
@@ -463,12 +463,12 @@ void GameOver::listResult(){
 					CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 
 						Hero* hero=(Hero*)pObject;
-						if(strcmp(hero->getRole()->getCString(),"Clone")==0 || 
-							strcmp(hero->getRole()->getCString(),"Player")==0 ||
-							strcmp(hero->getRole()->getCString(),"Summon")==0|| 
-							strcmp(hero->getRole()->getCString(),"Kuilei")==0 || 
-							strcmp(hero->getCharacter()->getCString(),"Han")==0 ||
-							strcmp(hero->getCharacter()->getCString(),"Roshi")==0 
+						if(hero->role()==Role::Clone || 
+							hero->role()==Role::Player ||
+							hero->role()==Role::Summon|| 
+							hero->role()==Role::Kuilei || 
+							hero->isCharacter("Han") ||
+							hero->isCharacter("Roshi") 
 							){
 								continue;
 						}
@@ -479,7 +479,7 @@ void GameOver::listResult(){
 						}
 
 						
-						if(strcmp(hero->getGroup()->getCString(),_delegate->currentPlayer->getGroup()->getCString())==0){
+						if(hero->group()==_delegate->currentPlayer->group()){
 
 							CCString* winNum=tool->readSQLite("CharRecord","name",hero->getCharacter()->getCString(),"column1");
 							int tempWin=0;

@@ -98,10 +98,10 @@ void HPBar::loseHP(float percent){
 
 
 		//杀死青蛙
-		if(strcmp(_delegate->getRole()->getCString(),"Flog")==0){
+		if(_delegate->role()==Role::Flog){
 
-			if(_slayer->getSecMaster()  && strcmp(_slayer->getCharacter()->getCString(),"KageHand")!=0
-				 && strcmp(_slayer->getCharacter()->getCString(),"KageHands")!=0
+			if(_slayer->getSecMaster()  && !_slayer->isCharacter("KageHand")
+				 && !_slayer->isCharacter("KageHands")
 				){
 				if(_slayer->getSecMaster()->getControler()){
 					currentSlayer=_slayer->getSecMaster()->getControler();
@@ -128,8 +128,8 @@ void HPBar::loseHP(float percent){
 
 			if(currentSlayer->getLV()!=6){
 
-				if(strcmp(currentSlayer->getCharacter()->getCString(),"Naruto")==0||
-					strcmp(currentSlayer->getCharacter()->getCString(),"SageNaruto")==0
+				if(currentSlayer->isCharacter("Naruto")||
+					currentSlayer->isCharacter("SageNaruto")
 					){
 						currentSlayer->setEXP(currentSlayer->getEXP()+12);
 						currentSlayer->changeHPbar();
@@ -144,7 +144,7 @@ void HPBar::loseHP(float percent){
 			
 
 			
-			if(strcmp(currentSlayer->getRole()->getCString(),"Player")==0 
+			if(currentSlayer->role()==Role::Player 
 				){
 					if(_delegate->getMaxHP()==10000){
 						_delegate->setCoinDisplay(30);
@@ -175,13 +175,13 @@ void HPBar::loseHP(float percent){
 		}
 
 		}//拆塔
-		else if(strcmp(_delegate->getRole()->getCString(),"Tower")==0){
+		else if(_delegate->role()==Role::Tower){
 
 
 			if(_slayer->getSecMaster()  
-				&& strcmp(_slayer->getCharacter()->getCString(),"KageHand")!=0
-				 && strcmp(_slayer->getCharacter()->getCString(),"KageHands")!=0
-				&& strcmp(_slayer->getCharacter()->getCString(),"SmallSlug")!=0){
+				&& !_slayer->isCharacter("KageHand")
+				 && !_slayer->isCharacter("KageHands")
+				&& !_slayer->isCharacter("SmallSlug")){
 					if(_slayer->getSecMaster()->getControler()){
 						currentSlayer=_slayer->getSecMaster()->getControler();
 					}else{
@@ -201,13 +201,13 @@ void HPBar::loseHP(float percent){
 				}
 			}
 
-			if((strcmp(currentSlayer->getRole()->getCString(),"Flog")!=0)){
+			if((currentSlayer->role()!=Role::Flog)){
 				_delegate->getDelegate()->setReport(currentSlayer->getCharacter()->getCString(),"Tower",currentSlayer->getKillNum()) ;
 			
 
 				if(currentSlayer->getLV()!=6){
-					if(strcmp(currentSlayer->getCharacter()->getCString(),"Naruto")==0||
-						strcmp(currentSlayer->getCharacter()->getCString(),"SageNaruto")==0
+					if(currentSlayer->isCharacter("Naruto")||
+						currentSlayer->isCharacter("SageNaruto")
 						){
 							currentSlayer->setEXP(currentSlayer->getEXP()+625);
 							currentSlayer->changeHPbar();
@@ -222,7 +222,7 @@ void HPBar::loseHP(float percent){
 
 			
 				
-				if(strcmp(currentSlayer->getRole()->getCString(),"Player")==0){
+				if(currentSlayer->role()==Role::Player){
 					 if(_delegate->getDelegate()->_isHardCoreGame){
 						 if(this->_delegate->getMaxHP() >40000){
 							 _delegate->getDelegate()->setCoin("1000");
@@ -257,7 +257,7 @@ void HPBar::loseHP(float percent){
 			CCObject* pObject;
 			CCARRAY_FOREACH(_delegate->getDelegate()->_CharacterArray,pObject){
 				Hero* otherSlayer=(Hero*) pObject;
-				if(strcmp(currentSlayer->getGroup()->getCString(),otherSlayer->getGroup()->getCString())==0 &&
+				if(currentSlayer->group()==otherSlayer->group() &&
 					strcmp(currentSlayer->getCharacter()->getCString(),otherSlayer->getCharacter()->getCString())!=0
 					){
 
@@ -270,7 +270,7 @@ void HPBar::loseHP(float percent){
 						
 
 
-						if (strcmp(otherSlayer->getRole()->getCString(),"Player")==0){
+						if (otherSlayer->role()==Role::Player){
 
 							if(_delegate->getDelegate()->_isHardCoreGame){
 								if(this->_delegate->getMaxHP() >40000){
@@ -311,19 +311,19 @@ void HPBar::loseHP(float percent){
 
 		}
 	
-		else if((strcmp(_delegate->getRole()->getCString(),"Player")==0 || strcmp(_delegate->getRole()->getCString(),"Com")==0)){
+		else if((_delegate->role()==Role::Player || _delegate->role()==Role::Com)){
 				
 
 
-			if(strcmp(_delegate->getCharacter()->getCString(),"Kakuzu")==0 && _delegate->getDelegate()->_isOugis2Game){
+			if(_delegate->isCharacter("Kakuzu") && _delegate->getDelegate()->_isOugis2Game){
 				
 				bool reieveAble=false;
 				if(_delegate->getCKR2()>=25000 && _delegate->hearts>0){
-					if(strcmp(_delegate->getRole()->getCString(),"Player")==0){
+					if(_delegate->role()==Role::Player){
 						if(_delegate->getDelegate()->getHudLayer()->skill5Button){
 							reieveAble=true;
 						}
-					}else if(strcmp(_delegate->getRole()->getCString(),"Com")==0){
+					}else if(_delegate->role()==Role::Com){
 						reieveAble=true;
 					}
 
@@ -343,7 +343,7 @@ void HPBar::loseHP(float percent){
 					}
 
 					
-					if(strcmp(_delegate->getRole()->getCString(),"Player")==0){
+					if(_delegate->role()==Role::Player){
 
 						_delegate->getDelegate()->getHudLayer()->skill5Button->unLock();
 						_delegate->setActionState(ACTION_STATE_IDLE);
@@ -369,7 +369,7 @@ void HPBar::loseHP(float percent){
 					}
 
 					if(_delegate->hearts<1){
-						if(strcmp(_delegate->getRole()->getCString(),"Player")==0){
+						if(_delegate->role()==Role::Player){
 							if(_delegate->getDelegate()->getHudLayer()->skill4Button){
 								_delegate->getDelegate()->getHudLayer()->skill4Button->setLock();
 							}
@@ -392,10 +392,10 @@ void HPBar::loseHP(float percent){
 					_delegate->_isSuicide=true;
 					currentSlayer=_delegate->getControler();
 				}else if(_slayer->getSecMaster() 
-					&& strcmp(_slayer->getCharacter()->getCString(),"KageHand")!=0
-					 && strcmp(_slayer->getCharacter()->getCString(),"KageHands")!=0
-					&& strcmp(_slayer->getCharacter()->getCString(),"SmallSlug")!=0
-					&& strcmp(_slayer->getCharacter()->getCString(),"FakeItachi")!=0
+					&& !_slayer->isCharacter("KageHand")
+					 && !_slayer->isCharacter("KageHands")
+					&& !_slayer->isCharacter("SmallSlug")
+					&& !_slayer->isCharacter("FakeItachi")
 					){
 					if(_slayer->getSecMaster()->getControler()){
 						currentSlayer=_slayer->getSecMaster()->getControler();
@@ -416,7 +416,7 @@ void HPBar::loseHP(float percent){
 					}
 				}
 
-				if(strcmp(currentSlayer->getCharacter()->getCString(),"Kakuzu")==0 ){
+				if(currentSlayer->isCharacter("Kakuzu") ){
 					if(currentSlayer->hearts<=4){
 						currentSlayer->hearts+=1;	
 
@@ -425,7 +425,7 @@ void HPBar::loseHP(float percent){
 							currentSlayer->_heartEffect->setSpriteFrame(frame);
 						}
 
-						if(strcmp(currentSlayer->getRole()->getCString(),"Player")==0){
+						if(currentSlayer->role()==Role::Player){
 							if(currentSlayer->getMonsterArray() && currentSlayer->getMonsterArray()->count()<3 && currentSlayer->getLV()>=2){
 								if(_delegate->getDelegate()->getHudLayer()->skill4Button){
 									_delegate->getDelegate()->getHudLayer()->skill4Button->unLock();
@@ -437,7 +437,7 @@ void HPBar::loseHP(float percent){
 
 				}
 
-				if(strcmp(currentSlayer->getRole()->getCString(),"Flog")!=0){
+				if(currentSlayer->role()!=Role::Flog){
 
 					int realKillNum=currentSlayer->getKillNum()+1;
 					currentSlayer->setKillNum(realKillNum);
@@ -460,8 +460,8 @@ void HPBar::loseHP(float percent){
 						_delegate->getDelegate()->getHudLayer()->AkaLabel->setString(CCString::createWithFormat("%d",teamKills)->getCString());
 					}
 					//
-					if(strcmp(currentSlayer->getCharacter()->getCString(),"Han")!=0 &&
-						strcmp(currentSlayer->getCharacter()->getCString(),"Roshi")!=0
+					if(!currentSlayer->isCharacter("Han") &&
+						!currentSlayer->isCharacter("Roshi")
 						){
 							int newValue=atoi(_delegate->getDelegate()->getTotalKills()->getCString())+1;
 							_delegate->getDelegate()->setTotalKills(CCString::createWithFormat("%d",newValue));
@@ -472,8 +472,8 @@ void HPBar::loseHP(float percent){
 					
 					if( currentSlayer->getLV()!=6){
 
-						if(strcmp(currentSlayer->getCharacter()->getCString(),"Naruto")==0||
-							strcmp(currentSlayer->getCharacter()->getCString(),"SageNaruto")==0
+						if(currentSlayer->isCharacter("Naruto")||
+							currentSlayer->isCharacter("SageNaruto")
 							){
 								currentSlayer->setEXP(currentSlayer->getEXP()+125);
 								currentSlayer->changeHPbar();
@@ -489,10 +489,10 @@ void HPBar::loseHP(float percent){
 				
 
 				
-					if (strcmp(currentSlayer->getRole()->getCString(),"Player")==0){
+					if (currentSlayer->role()==Role::Player){
 						
-						if(strcmp(_delegate->getCharacter()->getCString(),"Han")==0||
-							strcmp(_delegate->getCharacter()->getCString(),"Roshi")==0
+						if(_delegate->isCharacter("Han")||
+							_delegate->isCharacter("Roshi")
 							){
 								_delegate->getDelegate()->setCoin("1000");
 								_delegate->setCoinDisplay(1000);
@@ -516,8 +516,8 @@ void HPBar::loseHP(float percent){
 
 
 
-					if(strcmp(_delegate->getCharacter()->getCString(),"Han")==0||
-					strcmp(_delegate->getCharacter()->getCString(),"Roshi")==0
+					if(_delegate->isCharacter("Han")||
+					_delegate->isCharacter("Roshi")
 					){
 					currentSlayer->addCoin(1000);
 					}else{
@@ -539,7 +539,7 @@ void HPBar::loseHP(float percent){
 				CCObject* pObject;
 				CCARRAY_FOREACH(_delegate->getDelegate()->_CharacterArray,pObject){
 					Hero* otherSlayer=(Hero*) pObject;
-					if(strcmp(currentSlayer->getGroup()->getCString(),otherSlayer->getGroup()->getCString())==0 &&
+					if(currentSlayer->group()==otherSlayer->group() &&
 						strcmp(currentSlayer->getCharacter()->getCString(),otherSlayer->getCharacter()->getCString())!=0
 						){
 
@@ -550,10 +550,10 @@ void HPBar::loseHP(float percent){
 						}
 
 						
-						if (strcmp(otherSlayer->getRole()->getCString(),"Player")==0){
+						if (otherSlayer->role()==Role::Player){
 							if(_delegate->getDelegate()->_isHardCoreGame){
-								if(strcmp(_delegate->getCharacter()->getCString(),"Han")==0||
-									strcmp(_delegate->getCharacter()->getCString(),"Roshi")==0
+								if(_delegate->isCharacter("Han")||
+									_delegate->isCharacter("Roshi")
 									){
 										_delegate->getDelegate()->setCoin(CCString::createWithFormat("%d",850)->getCString());
 										_delegate->setCoinDisplay(850);
@@ -569,8 +569,8 @@ void HPBar::loseHP(float percent){
 							_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
 						}
 						if(_delegate->getDelegate()->_isHardCoreGame){		
-							if(strcmp(_delegate->getCharacter()->getCString(),"Han")==0||
-								strcmp(_delegate->getCharacter()->getCString(),"Roshi")==0
+							if(_delegate->isCharacter("Han")||
+								_delegate->isCharacter("Roshi")
 								){
 									otherSlayer->addCoin(850);
 							}else{
@@ -594,7 +594,7 @@ void HPBar::loseHP(float percent){
 	}else{
 		CCActionInterval* s=CCScaleTo::create(0.2f,percent,1);
 		hpBar->runAction(s);
-		if(strcmp(_delegate->getRole()->getCString(),"Player")==0){
+		if(_delegate->role()==Role::Player){
 			_delegate->getDelegate()->setHPLose(percent);
 		}
 	}

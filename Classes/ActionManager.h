@@ -4,6 +4,7 @@
 #include "GameLayer.h"
 #include "Defines.h"
 #include "Effect.h"
+#include "Types.h"
 
 
 USING_NS_CC;
@@ -104,9 +105,25 @@ public:
 
 	CC_SYNTHESIZE_RETAIN(CCLabelTTF*,cpLabel,CPLabel);
 	//attributes
-	CC_SYNTHESIZE_RETAIN(CCString*, _role,Role);
-	CC_SYNTHESIZE_RETAIN(CCString*, _group,Group);
-	CC_SYNTHESIZE_RETAIN(CCString*, _character,Character);
+	// identity: the strings are kept for resource paths and the scene code,
+	// comparisons go through role()/group()/isCharacter()
+protected:
+	CCString*			_role;
+	CCString*			_group;
+	CCString*			_character;
+	Role				_roleId;
+	Group				_groupId;
+public:
+	CCString*			getRole() const { return _role; }
+	CCString*			getGroup() const { return _group; }
+	CCString*			getCharacter() const { return _character; }
+	void				setRole(CCString* role);
+	void				setGroup(CCString* group);
+	void				setCharacter(CCString* character);
+	Role				role() const { return _roleId; }
+	Group				group() const { return _groupId; }
+	bool				isCharacter(const char* name) const { return _character && strcmp(_character->getCString(),name)==0; }
+	bool				isEnemy(const ActionManager* other) const { return other && other->_groupId!=_groupId; }
 	CC_SYNTHESIZE_RETAIN(CCArray*,_gearArray,GearArray);
 
 

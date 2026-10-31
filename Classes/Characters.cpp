@@ -19,133 +19,133 @@ bool Hero::init(){
 
 void Hero::setAI(float dt){
 
-	if(strcmp(getCharacter()->getCString(),"Sakura")==0){
+	if(isCharacter("Sakura")){
 		AI_Sakura();
-	}else if(strcmp(getCharacter()->getCString(),"Pain")==0){
+	}else if(isCharacter("Pain")){
 		AI_Pain();
-	}else if(strcmp(getCharacter()->getCString(),"MaskRaidon")==0){
+	}else if(isCharacter("MaskRaidon")){
 		AI_Mask();
-	}else if(strcmp(getCharacter()->getCString(),"MaskFudon")==0){
+	}else if(isCharacter("MaskFudon")){
 		AI_Mask();
-	}else if(strcmp(getCharacter()->getCString(),"MaskKadon")==0){
+	}else if(isCharacter("MaskKadon")){
 		AI_Mask();
-	}else if(strcmp(getCharacter()->getCString(),"Slug")==0){
+	}else if(isCharacter("Slug")){
 		AI_Slug();
-	}else if(strcmp(getCharacter()->getCString(),"Centipede")==0){
+	}else if(isCharacter("Centipede")){
 		AI_Centipede();
-	}else if(strcmp(getCharacter()->getCString(),"Nagato")==0){
+	}else if(isCharacter("Nagato")){
 		AI_Nagato();
-	}else if(strcmp(getCharacter()->getCString(),"Asuma")==0){
+	}else if(isCharacter("Asuma")){
 		AI_Asuma();
-	}else if(strcmp(getCharacter()->getCString(),"DevaPath")==0){
+	}else if(isCharacter("DevaPath")){
 		AI_DevaPath();
-	}else if(strcmp(getCharacter()->getCString(),"AsuraPath")==0){
+	}else if(isCharacter("AsuraPath")){
 		AI_AsuraPath();
-	}else if(strcmp(getCharacter()->getCString(),"AnimalPath")==0){
+	}else if(isCharacter("AnimalPath")){
 		AI_AnimalPath();
-	}else if(strcmp(getCharacter()->getCString(),"Sai")==0){
+	}else if(isCharacter("Sai")){
 		AI_Sai();
-	}else if(strcmp(getCharacter()->getCString(),"Tenten")==0){
+	}else if(isCharacter("Tenten")){
 		AI_Tenten();
-	}else if(strcmp(getCharacter()->getCString(),"Suigetsu")==0){
+	}else if(isCharacter("Suigetsu")){
 		AI_Suigetsu();
-	}else if(strcmp(getCharacter()->getCString(),"Konan")==0){
+	}else if(isCharacter("Konan")){
 		AI_Konan();
-	}else if(strcmp(getCharacter()->getCString(),"Jiraiya")==0){
+	}else if(isCharacter("Jiraiya")){
 		AI_Jiraiya();
-	}else if(strcmp(getCharacter()->getCString(),"Shikamaru")==0){
+	}else if(isCharacter("Shikamaru")){
 		AI_Shikamaru();
-	}else if(strcmp(getCharacter()->getCString(),"Sasuke")==0){
+	}else if(isCharacter("Sasuke")){
 		AI_Sasuke();
-	}else if(strcmp(getCharacter()->getCString(),"ImmortalSasuke")==0){
+	}else if(isCharacter("ImmortalSasuke")){
 		AI_ImmortalSasuke();
-	}else if(strcmp(getCharacter()->getCString(),"Deidara")==0){
+	}else if(isCharacter("Deidara")){
 		AI_Deidara();
-	}else if(strcmp(getCharacter()->getCString(),"Minato")==0){
+	}else if(isCharacter("Minato")){
 		AI_Minato();
-	}else if(strcmp(getCharacter()->getCString(),"DogWall")==0){
+	}else if(isCharacter("DogWall")){
 		AI_DogWall();
-	}else if(strcmp(getCharacter()->getCString(),"Kakashi")==0){
+	}else if(isCharacter("Kakashi")){
 		AI_Kakashi();
-	}else if(strcmp(getCharacter()->getCString(),"Tobi")==0){
+	}else if(isCharacter("Tobi")){
 		AI_Tobi();
-	}else if(strcmp(getCharacter()->getCString(),"Hinata")==0){
+	}else if(isCharacter("Hinata")){
 		AI_Hinata();
-	}else if(strcmp(getCharacter()->getCString(),"Neji")==0){
+	}else if(isCharacter("Neji")){
 		AI_Neji();
-	}else if(strcmp(getCharacter()->getCString(),"Choji")==0){
+	}else if(isCharacter("Choji")){
 		AI_Choji();
-	}else if(strcmp(getCharacter()->getCString(),"Itachi")==0){
+	}else if(isCharacter("Itachi")){
 		AI_Itachi();
-	}else if(strcmp(getCharacter()->getCString(),"Orochimaru")==0){
+	}else if(isCharacter("Orochimaru")){
 		AI_Orochimaru();
-	}else if(strcmp(getCharacter()->getCString(),"Naruto")==0 &&
-		strcmp(getRole()->getCString(),"Clone")==0 
+	}else if(isCharacter("Naruto") &&
+		role()==Role::Clone 
 		){
 			AI_NarutoClone();
-	}else if(strcmp(getCharacter()->getCString(),"Naruto")==0){
+	}else if(isCharacter("Naruto")){
 		AI_Naruto();
-	}else if(strcmp(getCharacter()->getCString(),"Kurama")==0){
+	}else if(isCharacter("Kurama")){
 		AI_Kurama();
-	}else if(strcmp(getCharacter()->getCString(),"SageNaruto")==0 &&
-		strcmp(getRole()->getCString(),"Clone")==0 
+	}else if(isCharacter("SageNaruto") &&
+		role()==Role::Clone 
 		){
 			AI_SageNarutoClone();
-	}else if(strcmp(getCharacter()->getCString(),"RikudoNaruto")==0 &&
-		strcmp(getRole()->getCString(),"Clone")==0 
+	}else if(isCharacter("RikudoNaruto") &&
+		role()==Role::Clone 
 		){
 			AI_RikudoNarutoClone();
-	}else if(strcmp(getCharacter()->getCString(),"SageNaruto")==0
+	}else if(isCharacter("SageNaruto")
 		){
 			AI_SageNaruto();
-	}else if(strcmp(getCharacter()->getCString(),"RikudoNaruto")==0){
+	}else if(isCharacter("RikudoNaruto")){
 		AI_RikudoNaruto();
-	}else if(strcmp(getCharacter()->getCString(),"Gaara")==0){
+	}else if(isCharacter("Gaara")){
 		AI_Gaara();
-	}else if(strcmp(getCharacter()->getCString(),"Tobirama")==0){
+	}else if(isCharacter("Tobirama")){
 		AI_Tobirama();
-	}else if(strcmp(getCharacter()->getCString(),"Akamaru")==0){
+	}else if(isCharacter("Akamaru")){
 		AI_Akamaru();
-	}else if(strcmp(getCharacter()->getCString(),"Karasu")==0){
+	}else if(isCharacter("Karasu")){
 		AI_Karasu();
-	}else if(strcmp(getCharacter()->getCString(),"Saso")==0){
+	}else if(isCharacter("Saso")){
 		AI_Saso();
-	}else if(strcmp(getCharacter()->getCString(),"Parents")==0){
+	}else if(isCharacter("Parents")){
 		AI_Parents();
-	}else if(strcmp(getCharacter()->getCString(),"Sanshouuo")==0){
+	}else if(isCharacter("Sanshouuo")){
 		AI_Sanshouuo();
-	}else if(strcmp(getCharacter()->getCString(),"Kankuro")==0){
+	}else if(isCharacter("Kankuro")){
 		AI_Kankuro();
-	}else if(strcmp(getCharacter()->getCString(),"Chiyo")==0){
+	}else if(isCharacter("Chiyo")){
 		AI_Chiyo();
-	}else if(strcmp(getCharacter()->getCString(),"Kiba")==0){
+	}else if(isCharacter("Kiba")){
 		AI_Kiba();
-	}else if(strcmp(getCharacter()->getCString(),"SageJiraiya")==0){
+	}else if(isCharacter("SageJiraiya")){
 		AI_SageJiraiya();
-	}else if(strcmp(getCharacter()->getCString(),"Karin")==0){
+	}else if(isCharacter("Karin")){
 		AI_Karin();
-	}else if(strcmp(getCharacter()->getCString(),"Lee")==0){
+	}else if(isCharacter("Lee")){
 		AI_Lee();
-	}else if(strcmp(getCharacter()->getCString(),"RockLee")==0){
+	}else if(isCharacter("RockLee")){
 		AI_RockLee();
-	}else if(strcmp(getCharacter()->getCString(),"Tsunade")==0){
+	}else if(isCharacter("Tsunade")){
 		AI_Tsunade();
-	}else if(strcmp(getCharacter()->getCString(),"Jugo")==0){
+	}else if(isCharacter("Jugo")){
 		AI_Jugo();
-	}else if(strcmp(getCharacter()->getCString(),"Kisame")==0){
+	}else if(isCharacter("Kisame")){
 		AI_Kisame();
-	}else if(strcmp(getCharacter()->getCString(),"Ino")==0){
+	}else if(isCharacter("Ino")){
 		AI_Ino();
-	}else if(strcmp(getCharacter()->getCString(),"Hidan")==0){
+	}else if(isCharacter("Hidan")){
 		AI_Hidan();
-	}else if(strcmp(getCharacter()->getCString(),"Shino")==0){
+	}else if(isCharacter("Shino")){
 		AI_Shino();
-	}else if(strcmp(getCharacter()->getCString(),"Hiruzen")==0){
+	}else if(isCharacter("Hiruzen")){
 		AI_Hiruzen();
-	}else if(strcmp(getCharacter()->getCString(),"Kakuzu")==0){
+	}else if(isCharacter("Kakuzu")){
 		AI_Kakuzu();
-	}else if(strcmp(getCharacter()->getCString(),"Roshi")==0 ||
-		strcmp(getCharacter()->getCString(),"Han")==0){
+	}else if(isCharacter("Roshi") ||
+		isCharacter("Han")){
 		AI_Guardian();
 	}
 
@@ -166,8 +166,8 @@ void Hero::AI_DevaPath(){
 			CCPoint moveDirection;
 			CCPoint sp=ccpSub(_mainTarget->getPosition(),this->getPosition());
 
-			if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0||
-				strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_mainTarget->role()==Role::Tower||
+				_mainTarget->role()==Role::Flog){
 
 
 					if(abs(sp.x)> 32 || abs(sp.y)>32){
@@ -206,11 +206,11 @@ void Hero::AI_DevaPath(){
 						CCObject* pObject;
 						CCARRAY_FOREACH(getMonsterArray(),pObject){
 							Monster* mo=(Monster*) pObject;
-							if (strcmp(mo->getCharacter()->getCString(),"AnimalPath")==0){
+							if (mo->isCharacter("AnimalPath")){
 								isHaveKuilei1=true;
 							}
 
-							if (strcmp(mo->getCharacter()->getCString(),"AsuraPath")==0){
+							if (mo->isCharacter("AsuraPath")){
 								isHaveKuilei2=true;
 							}
 
@@ -263,8 +263,8 @@ void Hero::AI_AsuraPath(){
 			CCPoint moveDirection;
 			CCPoint sp=ccpSub(_mainTarget->getPosition(),this->getPosition());
 
-			if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0||
-				strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_mainTarget->role()==Role::Tower||
+				_mainTarget->role()==Role::Flog){
 
 
 					if(abs(sp.x)> 32 || abs(sp.y)>32){
@@ -344,8 +344,8 @@ void Hero::AI_AnimalPath(){
 			CCPoint moveDirection;
 			CCPoint sp=ccpSub(_mainTarget->getPosition(),this->getPosition());
 
-			if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0||
-				strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_mainTarget->role()==Role::Tower||
+				_mainTarget->role()==Role::Flog){
 
 
 					if(abs(sp.x)> 32 || abs(sp.y)>32){
@@ -356,7 +356,7 @@ void Hero::AI_AnimalPath(){
 					}else{
 						if( this->getActionState()==ACTION_STATE_IDLE ||  this->getActionState()==ACTION_STATE_WALK || this->getActionState()==ACTION_STATE_ATTACK){
 
-							if(_isCanSkill1 && strcmp(_mainTarget->getRole()->getCString(),"Tower")!=0 ){
+							if(_isCanSkill1 && _mainTarget->role()!=Role::Tower ){
 							
 								this->attack(SKILL1);
 								this->scheduleOnce(schedule_selector(Hero::enableSkill1),_sattackcoldDown1);
@@ -441,7 +441,7 @@ void Hero::AI_Akamaru(){
 			sp=ccpSub(_mainTarget->getPosition(),this->getPosition());
 		}
 
-		if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+		if(_mainTarget->role()==Role::Flog){
 
 			if(abs(sp.x)> 48 || abs(sp.y)> 32 ){		
 				moveDirection =ccpNormalize(sp);
@@ -472,9 +472,9 @@ void Hero::AI_Akamaru(){
 						(_master->getActionState()==ACTION_STATE_IDLE ||  _master->getActionState()==ACTION_STATE_WALK ||_master->getActionState()==ACTION_STATE_ATTACK)
 						){
 							this->changeSide(sp);
-							if(strcmp(_master->getRole()->getCString(),"Player")!=0){
+							if(_master->role()!=Role::Player){
 								_master->attack(SKILL2);
-							}else if(strcmp(_master->getRole()->getCString(),"Player")==0){
+							}else if(_master->role()==Role::Player){
 								_master->attack(SKILL2);
 							}
 
@@ -538,7 +538,7 @@ void Hero::AI_Karasu(){
 
 			
 
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_mainTarget->role()==Role::Flog){
 
 					if(abs(sp.x)> 32 || abs(sp.y)>32 ){
 						if(this->_master->getActionState()== ACTION_STATE_IDLE ||
@@ -592,9 +592,9 @@ void Hero::AI_Karasu(){
 
 							this->changeSide(sp);
 						
-							if(strcmp(_master->getRole()->getCString(),"Player")!=0){
+							if(_master->role()!=Role::Player){
 								_master->attack(SKILL2);
-							}else if(strcmp(_master->getRole()->getCString(),"Player")==0){
+							}else if(_master->role()==Role::Player){
 								_master->attack(SKILL2);
 							}
 
@@ -664,7 +664,7 @@ void Hero::AI_Saso(){
 			CCPoint sp=ccpSub(ccp(_mainTarget->getPositionX(),_mainTarget->_originY?_mainTarget->_originY:_mainTarget->getPositionY()),
 			ccp(this->getPositionX(),_originY?_originY:this->getPositionY()));
 
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_mainTarget->role()==Role::Flog){
 
 				if(abs(sp.x)> 48 || abs(sp.y)> 16 ){
 					if(this->_master->getActionState()== ACTION_STATE_IDLE ||
@@ -769,7 +769,7 @@ void Hero::AI_Parents(){
 		CCPoint sp=ccpSub(ccp(_mainTarget->getPositionX(),_mainTarget->_originY?_mainTarget->_originY:_mainTarget->getPositionY()),
 			ccp(this->getPositionX(),_originY?_originY:this->getPositionY()));
 
-		if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 || strcmp(_mainTarget->getRole()->getCString(),"Tower")==0 ){
+		if(_mainTarget->role()==Role::Flog || _mainTarget->role()==Role::Tower ){
 
 			
 			if(abs(sp.x)> 48 || abs(sp.y)> 32 ){
@@ -864,7 +864,7 @@ void Hero::AI_Sanshouuo(){
 				ccp(this->getPositionX(),_originY?_originY:this->getPositionY()));
 					
 
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_mainTarget->role()==Role::Flog){
 
 
 					if(abs(sp.x)> 32 || abs(sp.y)>32 ){
@@ -1056,8 +1056,8 @@ void Hero::AI_SageNarutoClone(){
 				sp=ccpSub(_mainTarget->getPosition(),this->getPosition());
 			}
 
-			if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0||
-				strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_mainTarget->role()==Role::Tower||
+				_mainTarget->role()==Role::Flog){
 
 					if(abs(sp.x)> 32 || abs(sp.y)>32){
 
@@ -1132,8 +1132,8 @@ void Hero::AI_RikudoNarutoClone(){
 			sp=ccpSub(_mainTarget->getPosition(),this->getPosition());
 		}
 
-		if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0||
-			strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+		if(_mainTarget->role()==Role::Tower||
+			_mainTarget->role()==Role::Flog){
 
 				if(abs(sp.x)> 32 || abs(sp.y)>32){
 
@@ -1186,7 +1186,7 @@ void Hero::AI_RikudoNarutoClone(){
 
 void Hero::AI_Mask(){
 
-	if(strcmp(this->getCharacter()->getCString(),"MaskRaidon")==0){
+	if(this->isCharacter("MaskRaidon")){
 
 		if(!this->findEnemy("Flog",0)){
 			if(!this->findEnemy("Hero",0)){
@@ -1217,7 +1217,7 @@ void Hero::AI_Mask(){
 			sp=ccpSub(_mainTarget->getPosition(),this->getPosition());
 		}
 
-		if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0){
+		if(_mainTarget->role()==Role::Tower){
 
 				if(abs(sp.x)> 32 || abs(sp.y)>32){
 
@@ -1282,8 +1282,8 @@ void Hero::AI_Slug(){
 			CCPoint moveDirection;
 			CCPoint sp=ccpSub(_mainTarget->getPosition(),this->getPosition());
 
-			if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0||
-				strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_mainTarget->role()==Role::Tower||
+				_mainTarget->role()==Role::Flog){
 
 
 					if(abs(sp.x)> 32 || abs(sp.y)>32){
@@ -1339,8 +1339,8 @@ void Hero::AI_Centipede(){
 		CCPoint moveDirection;
 		CCPoint sp=ccpSub(_mainTarget->getPosition(),this->getPosition());
 
-		if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0||
-			strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+		if(_mainTarget->role()==Role::Tower||
+			_mainTarget->role()==Role::Flog){
 
 
 				if(abs(sp.x)> 32 || abs(sp.y)>32){
@@ -1405,7 +1405,7 @@ void Hero::AI_Naruto(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -1423,7 +1423,7 @@ void Hero::AI_Naruto(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -1571,7 +1571,7 @@ void Hero::AI_SageNaruto(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -1590,7 +1590,7 @@ void Hero::AI_SageNaruto(){
 	}
 
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -1741,7 +1741,7 @@ void Hero::AI_RikudoNaruto(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -1760,7 +1760,7 @@ void Hero::AI_RikudoNaruto(){
 	}
 
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -1847,7 +1847,7 @@ void Hero::AI_RikudoNaruto(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill1  && !_isBati && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_isCanSkill1  && !_isBati && _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 			}else if(_isCanSkill2 && !_isBati){
@@ -1918,7 +1918,7 @@ void Hero::AI_Asuma(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -1936,7 +1936,7 @@ void Hero::AI_Asuma(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -2038,11 +2038,11 @@ void Hero::AI_Asuma(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			if(_isCanSkill2 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
-			}else if(_isCanSkill1 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 ){
+			}else if(_isCanSkill1 && _mainTarget->role()==Role::Flog ){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 
@@ -2107,7 +2107,7 @@ void Hero::AI_Kakashi(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -2125,7 +2125,7 @@ void Hero::AI_Kakashi(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -2212,11 +2212,11 @@ void Hero::AI_Kakashi(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill3 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_isCanSkill3 && _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 				
-			}else if(_isCanSkill1 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 ){
+			}else if(_isCanSkill1 && _mainTarget->role()==Role::Flog ){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 
@@ -2275,7 +2275,7 @@ void Hero::AI_Konan(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -2293,7 +2293,7 @@ void Hero::AI_Konan(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -2430,12 +2430,12 @@ void Hero::AI_Konan(){
 			}
 			//技能清兵
 			if(_isCanOugis1  && !_isControled && !_isBati 
-				&& strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+				&& _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				
 				this->attack(OUGIS1);
 			}else if(_isCanSkill2 && !_isBati
-				&& strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+				&& _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 			}else if(!_isBati){
@@ -2623,7 +2623,7 @@ void Hero::AI_Deidara(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0 &&
+			if(_mainTarget->role()==Role::Tower &&
 				_isCanOugis2 &&
 				!_isControled && _delegate->_isOugis2Game 
 				 && !_isBati && isBaseDanger){
@@ -2631,7 +2631,7 @@ void Hero::AI_Deidara(){
 				this->changeSide(sp);
 				this->attack(OUGIS2);
 
-			}else if(_isCanSkill1 && !_isBati && strcmp(_mainTarget->getRole()->getCString(),"Tower")==0  ){
+			}else if(_isCanSkill1 && !_isBati && _mainTarget->role()==Role::Tower  ){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 
@@ -2708,7 +2708,7 @@ void Hero::AI_Ino(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -2733,7 +2733,7 @@ void Hero::AI_Ino(){
 	}
 	
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -2837,7 +2837,7 @@ void Hero::AI_Ino(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill1 ){
+			if(_mainTarget->role()==Role::Flog && _isCanSkill1 ){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 			}else{
@@ -2899,7 +2899,7 @@ void Hero::AI_Sai(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -2917,7 +2917,7 @@ void Hero::AI_Sai(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -3040,11 +3040,11 @@ void Hero::AI_Sai(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill1 && !_isBati){
+			if(_mainTarget->role()==Role::Flog && _isCanSkill1 && !_isBati){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 			}else if(_isCanSkill2  && _mainTarget->getGP()<5000 &&!_isBati
-				 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+				 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 			}else if(!_isBati){
@@ -3216,10 +3216,10 @@ void Hero::AI_Sakura(){
 			if(_isCanSkill1 && this->getHpPercent()<0.9){
 				this->changeSide(sp);
 				this->attack(SKILL1);
-			}else if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill2 ){
+			}else if(_mainTarget->role()==Role::Flog && _isCanSkill2 ){
 				this->changeSide(sp);
 				this->attack(SKILL2);
-			}else if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0  && _isCanSkill3 && !_skillChangeBuffValue){
+			}else if(_mainTarget->role()==Role::Tower  && _isCanSkill3 && !_skillChangeBuffValue){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 			}else{
@@ -3368,7 +3368,7 @@ void Hero::AI_Tenten(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -3390,7 +3390,7 @@ void Hero::AI_Tenten(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -3504,13 +3504,13 @@ void Hero::AI_Tenten(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill1){
+			if(_mainTarget->role()==Role::Flog && _isCanSkill1){
 				this->changeSide(sp);
 				this->attack(SKILL1);
-			}else if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill3){
+			}else if(_mainTarget->role()==Role::Flog && _isCanSkill3){
 				this->changeSide(sp);
 				this->attack(SKILL3);
-			}else if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill2 && isBaseDanger){
+			}else if(_mainTarget->role()==Role::Flog && _isCanSkill2 && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 			}else{
@@ -3577,7 +3577,7 @@ void Hero::AI_Itachi(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -3595,7 +3595,7 @@ void Hero::AI_Itachi(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -3701,15 +3701,15 @@ void Hero::AI_Itachi(){
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
 			if(_isCanSkill3 && !_isBati 
-				&& strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+				&& _mainTarget->role()==Role::Flog && isBaseDanger){
 					this->changeSide(sp);
 					this->attack(SKILL3);
 			}else if(_isCanSkill2 && !_isBati 
-				&& strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+				&& _mainTarget->role()==Role::Flog && isBaseDanger){
 					this->changeSide(sp);
 					this->attack(SKILL2);
 			}else if(_isCanSkill1  && !_isBati 
-				&& strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 ){
+				&& _mainTarget->role()==Role::Flog ){
 					this->changeSide(sp);
 					this->attack(SKILL1);
 			}else{
@@ -3775,7 +3775,7 @@ void Hero::AI_Jiraiya(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -3793,7 +3793,7 @@ void Hero::AI_Jiraiya(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -3881,11 +3881,11 @@ void Hero::AI_Jiraiya(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill3 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			if(_isCanSkill3 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 
-			}else if(_isCanSkill1 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			}else if(_isCanSkill1 && _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 
@@ -3950,7 +3950,7 @@ void Hero::AI_SageJiraiya(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -3968,7 +3968,7 @@ void Hero::AI_SageJiraiya(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -4069,11 +4069,11 @@ void Hero::AI_SageJiraiya(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill3 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			if(_isCanSkill3 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 
-			}else if(_isCanSkill1 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			}else if(_isCanSkill1 && _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 
@@ -4133,7 +4133,7 @@ void Hero::AI_Suigetsu(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -4156,7 +4156,7 @@ void Hero::AI_Suigetsu(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -4273,11 +4273,11 @@ void Hero::AI_Suigetsu(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill1 && !_isBati){
+			if(_mainTarget->role()==Role::Flog && _isCanSkill1 && !_isBati){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 			}else if(_isCanSkill2  && _mainTarget->getGP()<5000 &&!_isBati
-				&& strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+				&& _mainTarget->role()==Role::Flog && isBaseDanger){
 					this->changeSide(sp);
 					this->attack(SKILL2);
 			}else{
@@ -4330,7 +4330,7 @@ void Hero::AI_Tsunade(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -4348,7 +4348,7 @@ void Hero::AI_Tsunade(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -4458,7 +4458,7 @@ void Hero::AI_Tsunade(){
 				this->useGear(gear03);
 			}
 			//技能清兵
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill1 && !_isBati && isBaseDanger ){
+			if(_mainTarget->role()==Role::Flog && _isCanSkill1 && !_isBati && isBaseDanger ){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 
@@ -4525,7 +4525,7 @@ void Hero::AI_Sasuke(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -4543,7 +4543,7 @@ void Hero::AI_Sasuke(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -4641,13 +4641,13 @@ void Hero::AI_Sasuke(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill1  && !_isBati && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_isCanSkill1  && !_isBati && _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL1);
-			}else if(_isCanSkill2  && isBaseDanger && !_isBati && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			}else if(_isCanSkill2  && isBaseDanger && !_isBati && _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL2);
-			}else if(_isCanSkill3  && !_isBati && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			}else if(_isCanSkill3  && !_isBati && _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 			}else{
@@ -4714,7 +4714,7 @@ void Hero::AI_ImmortalSasuke(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -4732,7 +4732,7 @@ void Hero::AI_ImmortalSasuke(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -4839,10 +4839,10 @@ void Hero::AI_ImmortalSasuke(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill1   && !_isBati && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_isCanSkill1   && !_isBati && _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL1);
-			}else if(_isCanSkill2  && isBaseDanger && !_isBati && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			}else if(_isCanSkill2  && isBaseDanger && !_isBati && _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 			}else{
@@ -4906,7 +4906,7 @@ void Hero::AI_Kankuro(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -4931,20 +4931,20 @@ void Hero::AI_Kankuro(){
 		CCObject* pObject;
 		CCARRAY_FOREACH(getMonsterArray(),pObject){
 			Monster* mo=(Monster*) pObject;
-			if (strcmp(mo->getCharacter()->getCString(),"Saso")==0){
+			if (mo->isCharacter("Saso")){
 				isFound3=true;
 			};
-			if (strcmp(mo->getCharacter()->getCString(),"Sanshouuo")==0){
+			if (mo->isCharacter("Sanshouuo")){
 				isFound2=true;
 			}
-			if (strcmp(mo->getCharacter()->getCString(),"Karasu")==0){
+			if (mo->isCharacter("Karasu")){
 				isFound1=true;
 			};
 		}
 	};
 	
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -5098,7 +5098,7 @@ void Hero::AI_Chiyo(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -5121,14 +5121,14 @@ void Hero::AI_Chiyo(){
 		CCObject* pObject;
 		CCARRAY_FOREACH(getMonsterArray(),pObject){
 			Monster* mo=(Monster*) pObject;
-			if (strcmp(mo->getCharacter()->getCString(),"Parents")==0){
+			if (mo->isCharacter("Parents")){
 				isFound1=true;
 			};
 		}
 	};
 
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -5144,10 +5144,10 @@ void Hero::AI_Chiyo(){
 				int countNum=0;
 				CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 					Hero* tempHero=(Hero*) pObject;
-					if(strcmp(this->getGroup()->getCString(),tempHero->getGroup()->getCString())==0
-						&& (strcmp(tempHero->getRole()->getCString(),"Player")==0 || strcmp(tempHero->getRole()->getCString(),"Com")==0)
+					if(this->group()==tempHero->group()
+						&& (tempHero->role()==Role::Player || tempHero->role()==Role::Com)
 						&& tempHero->_actionState!=ACTION_STATE_DEAD
-						&& strcmp(tempHero->getCharacter()->getCString(),"Chiyo")!=0
+						&& !tempHero->isCharacter("Chiyo")
 						){
 							CCPoint	sp=ccpSub(tempHero->getPosition(),this->getPosition());
 							if(abs(sp.x)<=winSize.width/2){
@@ -5272,8 +5272,8 @@ void Hero::AI_Kakuzu(){
 	
 			CCARRAY_FOREACH(this->getDelegate()->_CharacterArray,pObject){
 				ActionManager* target=(ActionManager*) pObject;
-				if((strcmp(target->getRole()->getCString(),"Player")==0 ||
-					strcmp(target->getRole()->getCString(),"Com")==0) &&
+				if((target->role()==Role::Player ||
+					target->role()==Role::Com) &&
 					target->getActionState()==ACTION_STATE_DEAD
 					){
 						distance=ccpDistance(target->getPosition(),this->getPosition());
@@ -5352,7 +5352,7 @@ void Hero::AI_Kakuzu(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -5376,7 +5376,7 @@ void Hero::AI_Kakuzu(){
 	}
 
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -5528,7 +5528,7 @@ void Hero::AI_Shikamaru(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -5546,7 +5546,7 @@ void Hero::AI_Shikamaru(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -5668,7 +5668,7 @@ void Hero::AI_Shikamaru(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			if(_isCanSkill2 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
@@ -5735,7 +5735,7 @@ void Hero::AI_Gaara(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -5753,7 +5753,7 @@ void Hero::AI_Gaara(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -5838,7 +5838,7 @@ void Hero::AI_Gaara(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill1 && !_isBati){
+			if(_mainTarget->role()==Role::Flog && _isCanSkill1 && !_isBati){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 			}else{
@@ -5898,7 +5898,7 @@ void Hero::AI_Tobirama(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -5916,7 +5916,7 @@ void Hero::AI_Tobirama(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -6017,11 +6017,11 @@ void Hero::AI_Tobirama(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill3 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			if(_isCanSkill3 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 
-			}else if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			}else if(_isCanSkill2 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 			}else{
@@ -6089,7 +6089,7 @@ void Hero::AI_Choji(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -6107,7 +6107,7 @@ void Hero::AI_Choji(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -6210,14 +6210,14 @@ void Hero::AI_Choji(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill2 && !_isBati &&  strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			if(_isCanSkill2 && !_isBati &&  _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL2);
-			}else if(_isCanOugis1  && !_isControled && isBaseDanger && !_isBati &&  strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			}else if(_isCanOugis1  && !_isControled && isBaseDanger && !_isBati &&  _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(OUGIS1);
 			}else if(_isCanOugis2 && !_isControled && _delegate->_isOugis2Game 
-				&& strcmp(_mainTarget->getRole()->getCString(),"Tower")==0
+				&& _mainTarget->role()==Role::Tower
 				&& !_isBati
 				){
 					this->changeSide(sp);
@@ -6284,7 +6284,7 @@ void Hero::AI_Karin(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -6302,7 +6302,7 @@ void Hero::AI_Karin(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -6413,11 +6413,11 @@ void Hero::AI_Karin(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill1 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 ){
+			if(_isCanSkill1 && _mainTarget->role()==Role::Flog ){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 
-			}else if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			}else if(_isCanSkill2 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
@@ -6480,7 +6480,7 @@ void Hero::AI_Lee(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -6498,7 +6498,7 @@ void Hero::AI_Lee(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -6582,7 +6582,7 @@ void Hero::AI_Lee(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 ){
+			if(_isCanSkill2 && _mainTarget->role()==Role::Flog ){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
@@ -6646,7 +6646,7 @@ void Hero::AI_RockLee(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -6664,7 +6664,7 @@ void Hero::AI_RockLee(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -6769,11 +6769,11 @@ void Hero::AI_RockLee(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 ){
+			if(_isCanSkill2 && _mainTarget->role()==Role::Flog ){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
-			}else if(_isCanSkill3 && bamen>=3 && isBaseDanger && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 ){
+			}else if(_isCanSkill3 && bamen>=3 && isBaseDanger && _mainTarget->role()==Role::Flog ){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 
@@ -6840,7 +6840,7 @@ void Hero::AI_Jugo(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -6858,7 +6858,7 @@ void Hero::AI_Jugo(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -6977,7 +6977,7 @@ void Hero::AI_Jugo(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill1 && !_skillChangeBuffValue){
+			if(_mainTarget->role()==Role::Flog && _isCanSkill1 && !_skillChangeBuffValue){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 			}else{
@@ -7037,7 +7037,7 @@ void Hero::AI_Kisame(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -7055,7 +7055,7 @@ void Hero::AI_Kisame(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -7183,11 +7183,11 @@ void Hero::AI_Kisame(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			if(_isCanSkill2 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
-			}else if(_isCanSkill1 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 ){
+			}else if(_isCanSkill1 && _mainTarget->role()==Role::Flog ){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 			}else{
@@ -7221,7 +7221,7 @@ void Hero::AI_Hidan(){
 		CCObject* pObject;
 		CCARRAY_FOREACH(getMonsterArray(),pObject){
 			Monster* mo=(Monster*) pObject;
-			if (strcmp(mo->getCharacter()->getCString(),"CircleMark")==0){
+			if (mo->isCharacter("CircleMark")){
 				_mainTarget=mo;
 				_isFound=true;
 				CCPoint moveDirection;
@@ -7242,11 +7242,11 @@ void Hero::AI_Hidan(){
 						CCObject* pObject;
 						CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 							ActionManager* tempHero=(ActionManager*) pObject;
-							if( strcmp(tempHero->getGroup()->getCString(),this->getGroup()->getCString())!=0
+							if( tempHero->group()!=this->group()
 								&& tempHero->getHP()<2000
 								&& tempHero->getActionState()!=ACTION_STATE_DEAD
-								&& (strcmp(tempHero->getRole()->getCString(),"Player")==0 ||
-								strcmp(tempHero->getRole()->getCString(),"Com")==0
+								&& (tempHero->role()==Role::Player ||
+								tempHero->role()==Role::Com
 								)
 								){
 									this->attack(NAttack);
@@ -7308,7 +7308,7 @@ void Hero::AI_Hidan(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled && !_isBati  && !_isFound){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -7326,7 +7326,7 @@ void Hero::AI_Hidan(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -7415,7 +7415,7 @@ void Hero::AI_Hidan(){
 		}
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Mon")!=0  && !_isBati ){
+	if(_mainTarget && _mainTarget->role()!=Role::Mon  && !_isBati ){
 
 		CCPoint moveDirection;
 		CCPoint sp;
@@ -7434,11 +7434,11 @@ void Hero::AI_Hidan(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill3 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger && !_isBati){
+			if(_isCanSkill3 && _mainTarget->role()==Role::Flog && isBaseDanger && !_isBati){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 
-			}else if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger && !_isBati){
+			}else if(_isCanSkill2 && _mainTarget->role()==Role::Flog && isBaseDanger && !_isBati){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
@@ -7501,7 +7501,7 @@ void Hero::AI_Tobi(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -7519,7 +7519,7 @@ void Hero::AI_Tobi(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -7636,11 +7636,11 @@ void Hero::AI_Tobi(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			if(_isCanSkill2 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
-			}else if(_isCanSkill1 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0){
+			}else if(_isCanSkill1 && _mainTarget->role()==Role::Flog){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 
@@ -7704,7 +7704,7 @@ void Hero::AI_Shino(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -7725,7 +7725,7 @@ void Hero::AI_Shino(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -7860,15 +7860,15 @@ void Hero::AI_Shino(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill3 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			if(_isCanSkill3 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 
-			}else if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			}else if(_isCanSkill2 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
-			}else if(_isCanSkill1 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 ){
+			}else if(_isCanSkill1 && _mainTarget->role()==Role::Flog ){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 
@@ -7930,7 +7930,7 @@ void Hero::AI_Hiruzen(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -7951,7 +7951,7 @@ void Hero::AI_Hiruzen(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -8081,11 +8081,11 @@ void Hero::AI_Hiruzen(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && _isCanSkill1 && !_isBati){
+			if(_mainTarget->role()==Role::Flog && _isCanSkill1 && !_isBati){
 				this->changeSide(sp);
 				this->attack(SKILL1);
 			}else if(_isCanSkill2  && _mainTarget->getGP()<5000 &&!_isBati
-				&& strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+				&& _mainTarget->role()==Role::Flog && isBaseDanger){
 					this->changeSide(sp);
 					this->attack(SKILL2);
 			}else{
@@ -8252,7 +8252,7 @@ void Hero::AI_Kiba(){
 
 			if(_isCanSkill1 && _isBati){
 				this->attack(SKILL1);
-			}else if(strcmp(_mainTarget->getRole()->getCString(),"Tower")==0  && _isCanSkill3 && !_powerUPBuffValue && !_isBati ){
+			}else if(_mainTarget->role()==Role::Tower  && _isCanSkill3 && !_powerUPBuffValue && !_isBati ){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 			}else{
@@ -8316,10 +8316,10 @@ void Hero::AI_Minato(){
 			if(this->getMonsterArray() && this->getMonsterArray()->count()>0){
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 					Monster* mo=(Monster*) pObject;
-					if(strcmp(mo->getCharacter()->getCString(),"HiraishinMark")==0){
-						if(strcmp(this->getGroup()->getCString(),"Konoha")==0 && mo->getPositionX()<this->getPositionX()){
+					if(mo->isCharacter("HiraishinMark")){
+						if(this->group()==Group::Konoha && mo->getPositionX()<this->getPositionX()){
 							isMark=true;
-						}else if(strcmp(this->getGroup()->getCString(),"Akatsuki")==0 && mo->getPositionX()>this->getPositionX()){
+						}else if(this->group()==Group::Akatsuki && mo->getPositionX()>this->getPositionX()){
 							isMark=true;
 						}
 					};
@@ -8354,7 +8354,7 @@ void Hero::AI_Minato(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -8372,7 +8372,7 @@ void Hero::AI_Minato(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -8388,7 +8388,7 @@ void Hero::AI_Minato(){
 			if(this->getMonsterArray() && this->getMonsterArray()->count()>0){
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 					Monster* mo=(Monster*) pObject;
-					if(strcmp(mo->getCharacter()->getCString(),"HiraishinMark")==0){
+					if(mo->isCharacter("HiraishinMark")){
 						isMark=true;
 					}
 				}
@@ -8497,7 +8497,7 @@ void Hero::AI_Minato(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill3 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 ){
+			if(_isCanSkill3 && _mainTarget->role()==Role::Flog ){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 
@@ -8522,11 +8522,11 @@ void Hero::AI_Minato(){
 			if(this->getMonsterArray() && this->getMonsterArray()->count()>0){
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 					Monster* mo=(Monster*) pObject;
-					if(strcmp(mo->getCharacter()->getCString(),"HiraishinMark")==0){
+					if(mo->isCharacter("HiraishinMark")){
 						
-						if(strcmp(this->getGroup()->getCString(),"Konoha")==0 && mo->getPositionX()>this->getPositionX()){
+						if(this->group()==Group::Konoha && mo->getPositionX()>this->getPositionX()){
 							isMark=true;
-						}else if(strcmp(this->getGroup()->getCString(),"Akatsuki")==0 && mo->getPositionX()<this->getPositionX()){
+						}else if(this->group()==Group::Akatsuki && mo->getPositionX()<this->getPositionX()){
 							isMark=true;
 						}
 						
@@ -8587,7 +8587,7 @@ void Hero::AI_Hinata(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -8608,7 +8608,7 @@ void Hero::AI_Hinata(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -8734,11 +8734,11 @@ void Hero::AI_Hinata(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			if(_isCanSkill2 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
-			}else if(_isCanSkill3 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			}else if(_isCanSkill3 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 
@@ -8802,7 +8802,7 @@ void Hero::AI_Neji(){
 	// 检测基地
 	if(isBaseDanger && this->checkBase() && !_isControled){
 		bool needBack=false;
-		if(strcmp("Akatsuki",this->getGroup()->getCString())==0){
+		if(this->group()==Group::Akatsuki){
 			if(this->getPositionX()<85*32){
 				needBack=true;
 			}
@@ -8820,7 +8820,7 @@ void Hero::AI_Neji(){
 
 	}
 
-	if(_mainTarget && strcmp(_mainTarget->getRole()->getCString(),"Flog")!=0 ){
+	if(_mainTarget && _mainTarget->role()!=Role::Flog ){
 		CCPoint moveDirection;
 		CCPoint sp;
 
@@ -8946,11 +8946,11 @@ void Hero::AI_Neji(){
 
 		if(_actionState==ACTION_STATE_IDLE || _actionState==ACTION_STATE_WALK || _actionState==ACTION_STATE_ATTACK){
 			//技能清兵
-			if(_isCanSkill2 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			if(_isCanSkill2 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL2);
 
-			}else if(_isCanSkill3 && strcmp(_mainTarget->getRole()->getCString(),"Flog")==0 && isBaseDanger){
+			}else if(_isCanSkill3 && _mainTarget->role()==Role::Flog && isBaseDanger){
 				this->changeSide(sp);
 				this->attack(SKILL3);
 

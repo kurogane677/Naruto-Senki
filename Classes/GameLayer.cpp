@@ -328,7 +328,7 @@ void GameLayer::initHeros(){
 				Com->setHPbar();
 				Com->setShadows();
 				Com->idle();
-				if(strcmp(Com->getGroup()->getCString(),"Akatsuki")==0){
+				if(Com->group()==Group::Akatsuki){
 					Com->_isFlipped=true;
 					Com->setFlippedX(true);
 				}
@@ -355,7 +355,7 @@ void GameLayer::initHeros(){
 
 	
 
-	/*if(strcmp(currentPlayer->getCharacter()->getCString(),"Asuma")==0){
+	/*if(currentPlayer->isCharacter("Asuma")){
 		this->schedule(schedule_selector(GameLayer::checkPost),10.0f);
 	}*/
 	
@@ -394,7 +394,7 @@ void GameLayer::onGameStart(float dt){
 	CCARRAY_FOREACH(this->_CharacterArray,pObject){
 		ActionManager* tempChar=(ActionManager*) pObject;
 		// guardians (also "Com") already started their AI in initGard
-		if(strcmp(tempChar->getRole()->getCString(),"Com")==0 && !tempChar->_isAI){
+		if(tempChar->role()==Role::Com && !tempChar->_isAI){
 			tempChar->doAI();
 		}
 		
@@ -703,7 +703,7 @@ void GameLayer::checkTower(){
 
 	CCARRAY_FOREACH(_TowerArray,pObject){
 		Tower* tower=(Tower*) pObject;
-		if(strcmp(tower->getGroup()->getCString(),"Konoha")==0){
+		if(tower->group()==Group::Konoha){
 			konohaTowerCount++;
 		}else{
 			akatsukiTowerCount++;
@@ -733,11 +733,11 @@ void GameLayer::checkTower(){
 	CCARRAY_FOREACH(_CharacterArray,pObject){
 		ActionManager* tmpHero=(ActionManager*) pObject;
 
-		if(strcmp(tmpHero->getRole()->getCString(),"Com")!=0){
+		if(tmpHero->role()!=Role::Com){
 			continue;
 		}
 
-		if(strcmp(tmpHero->getGroup()->getCString(),"Konoha")==0){
+		if(tmpHero->group()==Group::Konoha){
 			tmpHero->battleCondiction=konohaTowerCount-akatsukiTowerCount;
 			tmpHero->isBaseDanger=konohaTowerCount==1;
 	
@@ -922,8 +922,8 @@ void GameLayer::onLeft(){
 	CCARRAY_FOREACH(_CharacterArray,pObject){
 		ActionManager* player=(ActionManager*) pObject;
 
-		if(strcmp(player->getRole()->getCString(),"Clone")==0 ||
-			strcmp(player->getRole()->getCString(),"Summon")==0){
+		if(player->role()==Role::Clone ||
+			player->role()==Role::Summon){
 				continue;
 		}
 
@@ -932,34 +932,34 @@ void GameLayer::onLeft(){
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile(path);
 
 		//删除预加载音效
-		if(strcmp(player->getRole()->getCString(),"Com")==0 ||
-			strcmp(player->getRole()->getCString(),"Player")==0
+		if(player->role()==Role::Com ||
+			player->role()==Role::Player
 			){
 			tool->prepareFileOGG(player->getCharacter()->getCString(),1);
 		}
 		
 
 		//删除额外角色
-		if(strcmp(player->getCharacter()->getCString(),"Jiraiya")==0){
+		if(player->isCharacter("Jiraiya")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/SageJiraiya/SageJiraiya.plist");
 			tool->prepareFileOGG("SageJiraiya",1);
-		}else if(strcmp(player->getCharacter()->getCString(),"Kankuro")==0){
+		}else if(player->isCharacter("Kankuro")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Karasu/Karasu.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Sanshouuo/Sanshouuo.plist");
-		}else if(strcmp(player->getCharacter()->getCString(),"Kakuzu")==0){
+		}else if(player->isCharacter("Kakuzu")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskFudon/MaskFudon.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskRaidon/MaskRaidon.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskKadon/MaskKadon.plist");
-		}else if(strcmp(player->getCharacter()->getCString(),"Naruto")==0){
+		}else if(player->isCharacter("Naruto")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/SageNaruto/SageNaruto.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/RikudoNaruto/RikudoNaruto.plist");
 			tool->prepareFileOGG("SageNaruto",1);
 			tool->prepareFileOGG("RikudoNaruto",1);
-		}else if(strcmp(player->getCharacter()->getCString(),"RockLee")==0){
+		}else if(player->isCharacter("RockLee")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Lee/Lee.plist");
-		}else if(strcmp(player->getCharacter()->getCString(),"Lee")==0){
+		}else if(player->isCharacter("Lee")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/RockLee/RockLee.plist");
-		}else if(strcmp(player->getCharacter()->getCString(),"Sasuke")==0){
+		}else if(player->isCharacter("Sasuke")){
 			tool->prepareFileOGG("ImmortalSasuke",1);
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/ImmortalSasuke/ImmortalSasuke.plist");
 		}
