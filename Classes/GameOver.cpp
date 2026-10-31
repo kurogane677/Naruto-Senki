@@ -422,30 +422,21 @@ void GameOver::listResult(){
 		}
 
 		//记录 最速获胜时间
-                if (strcmp(_delegate->currentPlayer->getCharacter()->getCString(), "SageNaruto") == 0)
-                {
-                    resultChar = CCString::create("Naruto");
-                }
-                else if (strcmp(_delegate->currentPlayer->getCharacter()->getCString(), "RikudoNaruto") == 0)
-                {
-                    resultChar = CCString::create("Naruto");
-                }
-                else if (strcmp(_delegate->currentPlayer->getCharacter()->getCString(), "SageJiraiya") == 0)
-                {
-                    resultChar = CCString::create("Jiraiya");
-                }
-                else if (strcmp(_delegate->currentPlayer->getCharacter()->getCString(), "ImmortalSasuke") == 0)
-                {
-                    resultChar = CCString::create("Sasuke");
-                }
-                else if (strcmp(_delegate->currentPlayer->getCharacter()->getCString(), "RockLee") == 0)
-                {
-                    resultChar = CCString::create("Lee");
-                }
 
 		if(Cheats<=10){
 
 			resultChar=_delegate->currentPlayer->getCharacter();
+			// records are kept under the base hero, not its transformation
+			const char* playerChar=resultChar->getCString();
+			if(strcmp(playerChar,"SageNaruto")==0 || strcmp(playerChar,"RikudoNaruto")==0){
+				resultChar=CCString::create("Naruto");
+			}else if(strcmp(playerChar,"SageJiraiya")==0){
+				resultChar=CCString::create("Jiraiya");
+			}else if(strcmp(playerChar,"ImmortalSasuke")==0){
+				resultChar=CCString::create("Sasuke");
+			}else if(strcmp(playerChar,"RockLee")==0){
+				resultChar=CCString::create("Lee");
+			}
 
 
 			if(_isWin ){
