@@ -74,7 +74,7 @@ bool NetworkLayer::init(){
 			
 			
 			
-		char* bg_src="blue_bg.png";
+		char* bg_src=_isHardCoreMode ? "blue_bg.png" : "red_bg.png";
 		
 		CCSprite* bgSprite = CCSprite::create(bg_src);
 		bgSprite->setAnchorPoint(ccp(0,0));
@@ -326,7 +326,7 @@ bool NetworkLayer::init(){
 
 
 
-			if(adResult==1){
+			if(adResult==1 && _isHardCoreMode){
 				_teamSelector=CCLayer::create();
 
 				CCSprite* _teamBg=CCSprite::createWithSpriteFrameName("team_bg.png");
@@ -699,25 +699,28 @@ void NetworkLayer::setSelected(CCObject* sender){
 		_selectImg->setPosition(ccp(btn->getPositionX()-2,btn->getPositionY()-2));
 	 }
 	
-	if(adResult!=1 && _playerSelect){
+	// COM teammates can only be picked in HardCore (and only with adResult==1)
+	bool canPickCom=_isHardCoreMode && adResult==1;
+
+	if(!canPickCom && _playerSelect){
 		return;
 	}
-	 
+
 
 	_selectHero=btn->getCharName()->getCString();
 
 
-	if(_isHardCoreMode){
+	{
 
 		CCActionInterval*  fd=CCFadeOut::create(1.0f);
 		CCAction* seq=CCRepeatForever::create(CCSequence::create(fd,fd->reverse(),NULL));
 
 		if(!_playerSelect){
-			
+
 			if(btn->_clickTime>=2){
 					_playerSelect=_selectHero;
-					
-					if(adResult!=1){
+
+					if(!canPickCom){
 						_selectImg->removeFromParent();
 						_selectImg=NULL;
 					}else{
@@ -746,7 +749,7 @@ void NetworkLayer::setSelected(CCObject* sender){
 
 			
 
-		}else if(!_com1Select){
+		}else if(canPickCom && !_com1Select){
 			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
 			this->getComSelector1()->setSpriteFrame(frame);
 
@@ -762,7 +765,7 @@ void NetworkLayer::setSelected(CCObject* sender){
 
 			
 
-		}else if(!_com2Select){
+		}else if(canPickCom && !_com2Select){
 
 
 			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
@@ -1040,9 +1043,11 @@ void NetworkLayer::keyBackClicked(){
 }
 
 
-NetworkLayer* NetworkLayer::create(){
+// isHardCore=false is Training: full roster, map 1, no gear/guardians, no COM teammate picks.
+NetworkLayer* NetworkLayer::create(bool isHardCore){
 
 	NetworkLayer* sl=new NetworkLayer();
+	sl->_isHardCoreMode=isHardCore;
 	if (sl && sl->init())
 	{
 		sl->autorelease();

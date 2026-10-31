@@ -89,7 +89,7 @@ void SelectButton::click(){
 			SimpleAudioEngine::sharedEngine()->stopAllEffects();
 
 			if(_delegate2){
-				if(_delegate2->_playerSelect && adResult!=1){
+				if(_delegate2->_playerSelect && (adResult!=1 || !_delegate2->_isHardCoreMode)){
 
 					return;
 				}

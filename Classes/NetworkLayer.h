@@ -12,7 +12,7 @@ public:
 	~NetworkLayer(void);
 
 	virtual bool		init();
-	static NetworkLayer*	create();
+	static NetworkLayer*	create(bool isHardCore=true);
 	void    setSelected(CCObject* sender);
 
 	const char* _selectHero;

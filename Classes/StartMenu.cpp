@@ -155,24 +155,7 @@ void MenuButton::ccTouchEnded(CCTouch* touch,CCEvent* event){
 			break;
 		case Network:
 			SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
-			_delegate->onHardCoreCallBack();
-			break;;
-		case HardCore:
-			/*SimpleAudioEngine::sharedEngine()->playEffect(SELECT_SOUND);
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("menu05_text.png"); 
-			_delegate->menuText->setSpriteFrame(frame);
-
-			if( CCUserDefault::sharedUserDefault()->getBoolForKey("isHardCore")==true){		
-			CCUserDefault::sharedUserDefault()->setBoolForKey("isHardCore",false);
-			if(_delegate->hardCore_btn){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("menu02_2.png"); 
-			_delegate->hardCore_btn->setSpriteFrame(frame);
-			}
-			}else{
 			_delegate->onHardLayerCallBack();
-			}*/
-
-
 			break;
 		}
 	}else{
@@ -3277,6 +3260,8 @@ void StartMenu::onHardCoreOn(CCObject* sender){
 		hardCoreLayer->removeFromParent();
 		hardCoreLayer=NULL;
 	}
+
+	this->onHardCoreCallBack();
 }
 
 void StartMenu::onHardCoreOff(CCObject* sender){
@@ -3290,11 +3275,17 @@ void StartMenu::onHardCoreOff(CCObject* sender){
 
 }
 
+// Network button: the HardCore warning is shown until the player accepts it once, then it goes straight to hero select.
 void StartMenu::onHardLayerCallBack(){
 
+	if( CCUserDefault::sharedUserDefault()->getBoolForKey("isHardCore")==true){
+		this->onHardCoreCallBack();
+		return;
+	}
 
-
-
+	if( input_layer || profile_layer || group_layer ){
+		return;
+	}
 
 	if( CCUserDefault::sharedUserDefault()->getBoolForKey("isHardCore")==false){
 		if(!hardCoreLayer){
@@ -3304,10 +3295,13 @@ void StartMenu::onHardLayerCallBack(){
 		CCSprite* confirm_bg=CCSprite::createWithSpriteFrameName("confirm_bg.png");
 		confirm_bg->setPosition(ccp(winSize.width/2,winSize.height/2));
 
-		CCSprite* hardcore_title=CCSprite::createWithSpriteFrameName("hardcore_title.png");
+		// hardcore_title.png / hardcore_text.png were never shipped in Menu.plist; use the generic confirm title and a text label instead
+		CCSprite* hardcore_title=CCSprite::createWithSpriteFrameName("confirm_title.png");
 		hardcore_title->setPosition(ccp(winSize.width/2,winSize.height/2+38));
 
-		CCSprite* hardcore_text=CCSprite::createWithSpriteFrameName("hardcore_text.png");
+		CCDictionary *strings = CCDictionary::createWithContentsOfFile("Element/strings.xml");
+		const char *tips = ((CCString*)strings->objectForKey("HardCoreTips"))->getCString();
+		CCLabelTTF* hardcore_text=CCLabelTTF::create(tips,FONT_TYPE,12,CCSizeMake(confirm_bg->getContentSize().width-24,0),ax::TextHAlignment::CENTER);
 		hardcore_text->setPosition(ccp(winSize.width/2,winSize.height/2+8));
 
 		CCMenuItem* yes_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("yes_btn1.png"),CCSprite::createWithSpriteFrameName("yes_btn2.png"),this,menu_selector(StartMenu::onHardCoreOn));
@@ -3330,37 +3324,23 @@ void StartMenu::onHardLayerCallBack(){
 
 void StartMenu::onHardCoreCallBack(){
 
-	
-	/*if(MemberID){
+	if(input_layer || profile_layer || group_layer) {
+		return;
+	}
 
-		
-
-		//加载序列集
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");	
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis2.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
-
-	CCScene* selectScene=CCScene::create();
-	NetworkLayer* selectLayer=NetworkLayer::create();
-	KTools* tool= KTools::create();
-
-
-	selectScene->addChild(selectLayer);
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,selectScene));
-	}*/
-	CCTips *tip=CCTips::create("ServerMainten");
-	this->addChild(tip,5000);
-
+	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
+	this->openHeroSelect(true);
 }
 
 void StartMenu::onNormalCallBack(CCObject* sender){
 
+	this->openHeroSelect(false);
+}
+
+void StartMenu::openHeroSelect(bool isHardCore){
+
 	//加载序列集
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");	
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
@@ -3369,18 +3349,9 @@ void StartMenu::onNormalCallBack(CCObject* sender){
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
 
 	CCScene* selectScene=CCScene::create();
-	NetworkLayer* selectLayer=NetworkLayer::create();
-	KTools* tool= KTools::create();
-
-
+	NetworkLayer* selectLayer=NetworkLayer::create(isHardCore);
 	selectScene->addChild(selectLayer);
 	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,selectScene));
-
-
-	/*CCScene* selectScene=CCScene::create();
-	SelectLayer* selectLayer=SelectLayer::create();
-	selectScene->addChild(selectLayer);
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,selectScene));	*/
 }
 
 void StartMenu::onTrainingCallBack(){
@@ -3394,19 +3365,20 @@ void StartMenu::onTrainingCallBack(){
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");	
 
 
-	int i=1;
+	// 0 = hero select with the full roster, 1 = old fixed Tsunade 3v3, 2 = Carnival 4v4
+	int i=0;
 
 	if(adResult!=1){
 	Cheats=0;
 	}
-	
+
 	if(Cheats>10){
 		i=2;
 	}
-    this->onNormalCallBack(NULL);	
-	return;
 
-	if(i==1){
+	if(i==0){
+		this->onNormalCallBack(NULL);
+	}else if(i==1){
 	
 	//加载序列集
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");

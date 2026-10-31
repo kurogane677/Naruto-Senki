@@ -88,6 +88,7 @@ public:
 	void				onHardLayerCallBack();
 	void				onHardCoreCallBack();
 	void				onNormalCallBack(CCObject* sender);
+	void				openHeroSelect(bool isHardCore);
 	void				onCreditsCallBack();
 	void				onExitCallBack();
 	void				onNewsBtn(CCObject* sender);
