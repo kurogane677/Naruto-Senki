@@ -102,7 +102,7 @@ androidComponents {
             }
             doLast {
                 copy {
-                    from "${projectDir}/../../Content"
+                    from "${projectDir}/../../Resources"
                     into "${projectDir}/build/assets"
                     exclude "**/*.gz"
                 }

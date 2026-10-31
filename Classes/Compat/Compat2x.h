@@ -56,6 +56,13 @@
 #define CC_PLATFORM_MAC     AX_PLATFORM_MAC
 #define CC_PLATFORM_LINUX   AX_PLATFORM_LINUX
 
+// The game's Android blocks use the 2.x unqualified names.
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
+#include "platform/android/jni/JniHelper.h"
+using ax::JniHelper;
+using ax::JniMethodInfo;
+#endif
+
 /* ---------------------------------------------------------------------------
  * Property / memory macros (2.x semantics: members are *protected*)
  * ------------------------------------------------------------------------- */

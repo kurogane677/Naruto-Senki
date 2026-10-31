@@ -13,7 +13,7 @@ bool isPlayed=true;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)   
 #include <jni.h>   
-#include "../cocos2dx/platform/android/jni/JniHelper.h"   
+#include "platform/android/jni/JniHelper.h"   
 
 extern "C"  
 {  

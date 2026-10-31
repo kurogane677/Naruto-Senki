@@ -23,3 +23,5 @@
 #-dontwarn android.webkit.WebView
 #-dontwarn android.net.http.SslError
 #-dontwarn android.webkit.WebViewClient
+# Native code calls these through JNI (JniHelper); keep them from being stripped.
+-keep class net.zakume.game.** { *; }

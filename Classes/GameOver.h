@@ -2,7 +2,7 @@
 #include "Compat/Compat2x.h"
 #include "Defines.h"
 #if (CC_TARGET_PLATFORM==CC_PLATFORM_ANDROID) 
-#include "../cocos2dx/platform/android/jni/JniHelper.h"  
+#include "platform/android/jni/JniHelper.h"  
 #endif  
 USING_NS_CC;
 
