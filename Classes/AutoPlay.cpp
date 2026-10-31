@@ -104,6 +104,8 @@ void startMatch()
 
     SelectLayer* select = SelectLayer::create();
     select->_selectHero = chosen.c_str();
+    const char* hc = getenv("NS_AUTOPLAY_HARDCORE");
+    select->_isHardCoreMode = hc && *hc && strcmp(hc, "0") != 0;
     select->onGameStart(nullptr);
 }
 
@@ -125,6 +127,16 @@ void report(GameLayer* game, bool playerWon)
                                            unit->getCharacter()->getCString(), unit->getLV(), unit->getKillNum(),
                                            unit->_deadNum)
                     ->getCString();
+        if (game->_isHardCoreGame)
+        {
+            line += " gear[";
+            CCObject* g;
+            CCARRAY_FOREACH(unit->getGearArray(), g)
+            {
+                line += ((CCString*)g)->getCString();
+            }
+            line += "]";
+        }
     }
     CCLOG("[autoplay] %s", line.c_str());
     std::string path = CCFileUtils::sharedFileUtils()->getWritablePath() + "autoplay.log";
