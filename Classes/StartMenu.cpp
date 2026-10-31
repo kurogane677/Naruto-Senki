@@ -3348,10 +3348,19 @@ void StartMenu::openHeroSelect(bool isHardCore){
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
 
-	CCScene* selectScene=CCScene::create();
-	NetworkLayer* selectLayer=NetworkLayer::create(isHardCore);
-	selectScene->addChild(selectLayer);
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,selectScene));
+	if (isHardCore==true)
+        {
+		CCScene* selectScene=CCScene::create();
+		NetworkLayer* networkLayer=NetworkLayer::create(isHardCore);
+		selectScene->addChild(networkLayer);
+		CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,selectScene));
+	}
+	else {
+		CCScene* selectScene      = CCScene::create();
+        SelectLayer* selectLayer = SelectLayer::create();
+        selectScene->addChild(selectLayer);
+        CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f, selectScene));
+	}
 }
 
 void StartMenu::onTrainingCallBack(){
@@ -3360,306 +3369,20 @@ void StartMenu::onTrainingCallBack(){
 		return;
 	}
 
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis2.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
+        CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
+
 
 	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Select.plist");	
-
-
-	// 0 = hero select with the full roster, 1 = old fixed Tsunade 3v3, 2 = Carnival 4v4
-	int i=0;
-
-	if(adResult!=1){
-	Cheats=0;
-	}
-
-	if(Cheats>10){
-		i=2;
-	}
-
-	if(i==0){
-		this->onNormalCallBack(NULL);
-	}else if(i==1){
-	
-	//加载序列集
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis2.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
-
-
-	CCDictionary* dic=CCDictionary::create();
-
-
-	char* heroList[]={"Lee","Shino","Kakashi","Kakuzu",
-		"Asuma"};
-
-	srand((int)time(0));
-	CCString* tmpChar=CCString::create("Tsunade");
-	CCString* tmpRole=CCString::create("Player");
-	CCString* tmpGroup=CCString::create("Konoha");
-
-	dic->setObject(tmpChar,"character");
-	dic->setObject(tmpRole,"role");
-	dic->setObject(tmpGroup,"group");
-
-	CCArray* tempHeros=CCArray::createWithObject(dic);
-	
-	CCArray* realHero=CCArray::create();
-	int num= sizeof(heroList)/sizeof(char*);
-	for(int i=0;i<num;i++){
-		if(strcmp(tmpChar->getCString(),heroList[i])==0){
-			continue;
-		}
-		CCString* hero=CCString::create(heroList[i]);
-		realHero->addObject(hero);
-	}
-
-	//特殊组队
-	/*char* heroList2[]={"Naruto","Deidara","Konan"};
-
-	CCArray* enemyHero=CCArray::create();
-	int num2= sizeof(heroList2)/sizeof(char*);
-	for(int x=0;x<num2;x++){
-	if(strcmp(tmpChar->getCString(),heroList2[x])==0){
-	continue;
-	}
-	CCString* hero=CCString::create(heroList2[x]);
-	enemyHero->addObject(hero);
-	}*/
-	//--------------
-
-	for(int i=0;i<5;i++){
-
-		if(i<2){
-			int length=realHero->count();
-			srand((int)time(0));
-			int index=random(length);
-			if(index==(int)realHero->count()){
-				
-				index=realHero->count()-1;
-			}
-
-
-			CCObject* tempObject=realHero->objectAtIndex(index);
-			CCString* hero=(CCString*) tempObject;
-
-			dic=CCDictionary::create();
-			tmpChar=CCString::create(hero->getCString());
-			tmpRole=CCString::create("Com");
-			tmpGroup=CCString::create("Konoha");
-
-			dic->setObject(tmpChar,"character");
-			dic->setObject(tmpRole,"role");
-			dic->setObject(tmpGroup,"group");
-
-			tempHeros->addObject(dic);
-			realHero->removeObjectAtIndex(index);
-
-
-		}else{
-
-			int length=realHero->count();
-			srand((int)time(0));
-			int index=random(length);
-			if(index==(int)realHero->count()){
-				index=realHero->count()-1;
-			}
-
-			CCObject* tempObject=realHero->objectAtIndex(index);
-			CCString* hero=(CCString*) tempObject;
-
-			dic=CCDictionary::create();
-			tmpChar=CCString::create(hero->getCString());
-			tmpRole=CCString::create("Com");
-			tmpGroup=CCString::create("Akatsuki");
-
-			dic->setObject(tmpChar,"character");
-			dic->setObject(tmpRole,"role");
-			dic->setObject(tmpGroup,"group");
-
-			tempHeros->addObject(dic);
-			realHero->removeObjectAtIndex(index);
-
-
-			////特殊组队
-			//int length=enemyHero->count();
-			//srand((int)time(0));
-			//int index=random(length);
-			//if(index==(int)enemyHero->count()){
-			//	index=enemyHero->count()-1;
-			//}
-
-			//CCObject* tempObject=enemyHero->objectAtIndex(index);
-			//CCString* hero=(CCString*) tempObject;
-
-			//dic=CCDictionary::create();
-			//tmpChar=CCString::create(hero->getCString());
-			//tmpRole=CCString::create("Com");
-			//tmpGroup=CCString::create("Akatsuki");
-
-
-			//dic->setObject(tmpChar,"character");
-			//dic->setObject(tmpRole,"role");
-			//dic->setObject(tmpGroup,"group");
-
-			//tempHeros->addObject(dic);
-			//enemyHero->removeObjectAtIndex(index);
-
-			////---------
-
-		} 
-
-	}
-
-
-	CCScene* loadScene=CCScene::create();
-	LoadLayer* loadLayer=LoadLayer::create();
-	loadLayer->tempHeros=tempHeros;
-	loadLayer->_isHardCoreMode=true;
-	loadScene->addChild(loadLayer);
-	loadLayer->preloadAudio();
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,loadScene));
-
-	}else if(i==2){
-
-	//4v4
-
-	//加载序列集
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("UI.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Report.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Ougis2.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Map.plist");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Gears.plist");
-
-
-	CCDictionary* dic=CCDictionary::create();
-
-	
-	char* heroList1[]={"Konan","Sakura","Naruto","Sai","Deidara",
-		"Kakashi","Itachi","Tenten","Jiraiya","Suigetsu",
-		"Tsunade","Tobirama","Neji","Ino","Asuma","Gaara",
-		"Karin","Sasuke","Hidan","Choji","Kankuro",
-		"Shino","Minato","Tobi","Kakuzu","Hinata",
-		"Shikamaru","Chiyo","Kisame",
-		"Hiruzen","Kiba","Jugo","Lee"
-	};
-
-	srand((int)time(0));
-	int index2=random(sizeof(heroList1)/sizeof(char*));
-	CCString* tmpChar=CCString::create(heroList1[index2]);
-	CCString* tmpRole=CCString::create("Player");
-	CCString* tmpGroup=CCString::create("Konoha");
-
-	dic->setObject(tmpChar,"character");
-	dic->setObject(tmpRole,"role");
-	dic->setObject(tmpGroup,"group");
-
-	CCArray* tempHeros=CCArray::createWithObject(dic);
-	
-	CCArray* realHero=CCArray::create();
-	int num= sizeof(heroList1)/sizeof(char*);
-	for(int i=0;i<num;i++){
-		if(strcmp(tmpChar->getCString(),heroList1[i])==0){
-			continue;
-		}
-		CCString* hero=CCString::create(heroList1[i]);
-		realHero->addObject(hero);
-	}
-
-	//特殊组队
-	/*char* heroList2[]={"Naruto","Deidara","Konan"};
-
-	CCArray* enemyHero=CCArray::create();
-	int num2= sizeof(heroList2)/sizeof(char*);
-	for(int x=0;x<num2;x++){
-	if(strcmp(tmpChar->getCString(),heroList2[x])==0){
-	continue;
-	}
-	CCString* hero=CCString::create(heroList2[x]);
-	enemyHero->addObject(hero);
-	}*/
-	//--------------
-
-	for(int i=0;i<7;i++){
-
-		if(i<3){
-			int length=realHero->count();
-			srand((int)time(0));
-			int index=random(length);
-			if(index==(int)realHero->count()){
-				
-				index=realHero->count()-1;
-			}
-
-
-			CCObject* tempObject=realHero->objectAtIndex(index);
-			CCString* hero=(CCString*) tempObject;
-
-			dic=CCDictionary::create();
-			tmpChar=CCString::create(hero->getCString());
-			tmpRole=CCString::create("Com");
-			tmpGroup=CCString::create("Konoha");
-
-			dic->setObject(tmpChar,"character");
-			dic->setObject(tmpRole,"role");
-			dic->setObject(tmpGroup,"group");
-
-			tempHeros->addObject(dic);
-			realHero->removeObjectAtIndex(index);
-
-
-		}else{
-
-			int length=realHero->count();
-			srand((int)time(0));
-			int index=random(length);
-			if(index==(int)realHero->count()){
-				index=realHero->count()-1;
-			}
-
-			CCObject* tempObject=realHero->objectAtIndex(index);
-			CCString* hero=(CCString*) tempObject;
-
-			dic=CCDictionary::create();
-			tmpChar=CCString::create(hero->getCString());
-			tmpRole=CCString::create("Com");
-			tmpGroup=CCString::create("Akatsuki");
-
-			dic->setObject(tmpChar,"character");
-			dic->setObject(tmpRole,"role");
-			dic->setObject(tmpGroup,"group");
-
-			tempHeros->addObject(dic);
-			realHero->removeObjectAtIndex(index);
-
-		} 
-
-	}
-
-
-	CCScene* loadScene=CCScene::create();
-	LoadLayer* loadLayer=LoadLayer::create();
-	loadLayer->tempHeros=tempHeros;
-	loadScene->addChild(loadLayer);
-	loadLayer->preloadAudio();
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,loadScene));
-
-
-	}
-
-
-	
-
-
-
-
-
-
-
-
+        CCScene* selectScene     = CCScene::create();
+        SelectLayer* selectLayer = SelectLayer::create();
+        selectScene->addChild(selectLayer);
+        CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f, selectScene));
 }
 
 void StartMenu::onCreditsCallBack(){
@@ -3668,6 +3391,7 @@ void StartMenu::onCreditsCallBack(){
 
 		return;
 	}
+
 	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
 	CCScene* creditsScene=CCScene::create();
 	CreditsLayer* creditsLayer=CreditsLayer::create();

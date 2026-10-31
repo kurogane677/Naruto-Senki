@@ -201,6 +201,7 @@ bool NetworkLayer::init(){
 //				request->release();  
 //
 //			}
+
 			_selectList=CCArray::create();
 			selectArray=CCArray::create();
 			_pageLayer1=CCLayer::create();
@@ -324,9 +325,7 @@ bool NetworkLayer::init(){
 			CCActionInterval* blink=CCBlink::create(0.6f,1);
 			_selectImg->runAction(CCRepeatForever::create(blink));
 
-
-
-			if(adResult==1 && _isHardCoreMode){
+			if(_isHardCoreMode){
 				_teamSelector=CCLayer::create();
 
 				CCSprite* _teamBg=CCSprite::createWithSpriteFrameName("team_bg.png");
@@ -415,6 +414,9 @@ bool NetworkLayer::init(){
 	return bRet;
 
 }
+
+/* 
+* SKIP THIS CODE
 void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 
 
@@ -564,7 +566,7 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 
 
 
-		 if(adResult==1){
+		 //if(adResult==1){
 			 _teamSelector=CCLayer::create();
 
 			 CCSprite* _teamBg=CCSprite::createWithSpriteFrameName("team_bg.png");
@@ -597,7 +599,7 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 			 _teamSelector->addChild(_comLabel2);
 
 			 this->addChild(_teamSelector,50);
-		 }
+		 //}
 		
 		
 		//排行榜
@@ -629,9 +631,9 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 		menu2->setAnchorPoint(ccp(0,0));
 		menu2->setPosition(winSize.width-35,96);
 		this->addChild(menu2,5);
-	}else{
-		CCTips *tip=CCTips::create(buf.c_str());
-		this->addChild(tip,5000);
+	//}else{
+	//	CCTips *tip=CCTips::create(buf.c_str());
+	//	this->addChild(tip,5000);
 	}
 
 
@@ -642,6 +644,7 @@ void NetworkLayer::onListRequestCompleted(CCNode *sender ,void *data){
 	
 
 }
+*/
 
 
 
@@ -700,14 +703,14 @@ void NetworkLayer::setSelected(CCObject* sender){
 	 }
 	
 	// COM teammates can only be picked in HardCore (and only with adResult==1)
-	bool canPickCom=_isHardCoreMode && adResult==1;
+	bool canPickCom= _isHardCoreMode;
 
-	if(!canPickCom && _playerSelect){
+	if(_playerSelect){
 		return;
 	}
 
 
-	_selectHero=btn->getCharName()->getCString();
+	_selectHero= btn->getCharName()->getCString();
 
 
 	{
@@ -715,41 +718,7 @@ void NetworkLayer::setSelected(CCObject* sender){
 		CCActionInterval*  fd=CCFadeOut::create(1.0f);
 		CCAction* seq=CCRepeatForever::create(CCSequence::create(fd,fd->reverse(),NULL));
 
-		if(!_playerSelect){
-
-			if(btn->_clickTime>=2){
-					_playerSelect=_selectHero;
-
-					if(!canPickCom){
-						_selectImg->removeFromParent();
-						_selectImg=NULL;
-					}else{
-						this->getComLabel1()->runAction(seq);
-					}
-
-			}
-
-			_heroHalf->removeFromParent();
-			const char* charName=btn->getCharName()->getCString();
-
-
-			const char* path=CCString::createWithFormat("%s_half.png", charName)->getCString();
-			_heroHalf=CCSprite::createWithSpriteFrameName(path);
-
-			_heroHalf->setAnchorPoint(ccp(0,0));
-			_heroHalf->setPosition(ccp(10,10));
-			this->addChild(_heroHalf,1);
-
-			_heroName->removeFromParent();
-			const char* namePath=CCString::createWithFormat("%s_font.png",charName)->getCString();
-			_heroName=CCSprite::createWithSpriteFrameName(namePath);
-			_heroName->setAnchorPoint(ccp(0.5f,0));
-			_heroName->setPosition(ccp(100,20));
-			this->addChild(_heroName,5);
-
-			
-
-		}else if(canPickCom && !_com1Select){
+		if(canPickCom && !_com1Select){
 			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_small.png",_selectHero)->getCString()); 
 			this->getComSelector1()->setSpriteFrame(frame);
 
@@ -784,7 +753,38 @@ void NetworkLayer::setSelected(CCObject* sender){
 			}
 
 			
-		}
+		}else if (!_playerSelect){
+			if (btn->_clickTime >= 2)
+				{
+					_playerSelect = _selectHero;
+					if (!canPickCom)
+                        {
+                            _selectImg->removeFromParent();
+                            _selectImg = NULL;
+                        }
+                        else
+                        {
+                            this->getComLabel1()->runAction(seq);
+                        }
+                    }
+
+                    _heroHalf->removeFromParent();
+                    const char* charName = btn->getCharName()->getCString();
+
+                    const char* path = CCString::createWithFormat("%s_half.png", charName)->getCString();
+                    _heroHalf        = CCSprite::createWithSpriteFrameName(path);
+
+                    _heroHalf->setAnchorPoint(ccp(0, 0));
+                    _heroHalf->setPosition(ccp(10, 10));
+                    this->addChild(_heroHalf, 1);
+
+                    _heroName->removeFromParent();
+                    const char* namePath = CCString::createWithFormat("%s_font.png", charName)->getCString();
+                    _heroName            = CCSprite::createWithSpriteFrameName(namePath);
+                    _heroName->setAnchorPoint(ccp(0.5f, 0));
+                    _heroName->setPosition(ccp(100, 20));
+                    this->addChild(_heroName, 5);
+                }
 
 	}
 

@@ -110,7 +110,7 @@ bool SelectLayer::init(){
 		this->addChild(menu_bar_t,2);
 
 		
-		CCSprite* select_title=CCSprite::createWithSpriteFrameName("select_title.png");
+		CCSprite* select_title=CCSprite::createWithSpriteFrameName("hcmode_title.png");
 		
 		select_title->setAnchorPoint(ccp(0,0));
 		select_title->setPosition(ccp(2,winSize.height-select_title->getContentSize().height-2));

@@ -410,11 +410,11 @@ void GameOver::listResult(){
 			recordScore->setScale(0.35f);
 			this->addChild(recordScore,10);
 
-			upload_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("upload_btn.png"),CCSprite::createWithSpriteFrameName("upload_btn.png"),NULL,this,menu_selector(GameOver::onUPloadBtn));
-			CCMenu* upMenu=CCMenu::create(upload_btn,NULL);
-			upload_btn->setAnchorPoint(ccp(1.0,0));
-			upMenu->setPosition(ccp(winSize.width/2+result_bg->getContentSize().width/2-14,winSize.height/2+result_bg->getContentSize().height/2-62));
-			this->addChild(upMenu,7);
+			//upload_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("upload_btn.png"),CCSprite::createWithSpriteFrameName("upload_btn.png"),NULL,this,menu_selector(GameOver::onUPloadBtn));
+			//CCMenu* upMenu=CCMenu::create(upload_btn,NULL);
+			//upload_btn->setAnchorPoint(ccp(1.0,0));
+			//upMenu->setPosition(ccp(winSize.width/2+result_bg->getContentSize().width/2-14,winSize.height/2+result_bg->getContentSize().height/2-62));
+			//this->addChild(upMenu,7);
 
 
 			detailRecord=CCString::createWithFormat("%02d:%02d,%s,%d,%d",_minute,_delegate->_second,_delegate->currentPlayer->getKillNum()->getCString(),_delegate->currentPlayer->_deadNum,_delegate->currentPlayer->_flogNum)->getCString();
@@ -422,22 +422,30 @@ void GameOver::listResult(){
 		}
 
 		//记录 最速获胜时间
+                if (strcmp(_delegate->currentPlayer->getCharacter()->getCString(), "SageNaruto") == 0)
+                {
+                    resultChar = CCString::create("Naruto");
+                }
+                else if (strcmp(_delegate->currentPlayer->getCharacter()->getCString(), "RikudoNaruto") == 0)
+                {
+                    resultChar = CCString::create("Naruto");
+                }
+                else if (strcmp(_delegate->currentPlayer->getCharacter()->getCString(), "SageJiraiya") == 0)
+                {
+                    resultChar = CCString::create("Jiraiya");
+                }
+                else if (strcmp(_delegate->currentPlayer->getCharacter()->getCString(), "ImmortalSasuke") == 0)
+                {
+                    resultChar = CCString::create("Sasuke");
+                }
+                else if (strcmp(_delegate->currentPlayer->getCharacter()->getCString(), "RockLee") == 0)
+                {
+                    resultChar = CCString::create("Lee");
+                }
+
 		if(Cheats<=10){
 
 			resultChar=_delegate->currentPlayer->getCharacter();
-
-			//觉醒必备
-			if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"SageNaruto")==0){
-				resultChar=CCString::create("Naruto");
-			}else if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"RikudoNaruto")==0){
-				resultChar=CCString::create("Naruto");
-			}else if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"SageJiraiya")==0){
-				resultChar=CCString::create("Jiraiya");
-			}else if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"ImmortalSasuke")==0){
-				resultChar=CCString::create("Sasuke");
-			}else if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"RockLee")==0){
-				resultChar=CCString::create("Lee");
-			}
 
 
 			if(_isWin ){
