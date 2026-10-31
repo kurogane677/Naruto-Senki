@@ -89,11 +89,12 @@ void SelectButton::click(){
 			SimpleAudioEngine::sharedEngine()->stopAllEffects();
 
 			if(_delegate2){
-				if(_delegate2->_playerSelect && (adResult!=1 || !_delegate2->_isHardCoreMode)){
+				// HardCore picks COM1, COM2, then the player; the player pick is always the last one
+				if(_delegate2->_playerSelect){
 
 					return;
 				}
-				if(!_delegate2->_com2Select){
+				{
 
 					CCObject* pObject;
 					CCARRAY_FOREACH(_delegate2->selectArray,pObject){

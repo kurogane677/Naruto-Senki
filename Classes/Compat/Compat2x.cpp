@@ -77,6 +77,12 @@ void ccVisitForSnapshot(ax::Node* node)
     node->visit();
 }
 
+void ccEndSnapshot(ax::RenderTexture* rt)
+{
+    rt->end();
+    ax::Director::getInstance()->getRenderer()->render();
+}
+
 unsigned char* ccGetFileData(const char* path, const char* /*mode*/, unsigned long* size)
 {
     if (size)

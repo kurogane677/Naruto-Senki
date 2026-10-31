@@ -274,6 +274,12 @@ public:
  * ------------------------------------------------------------------------- */
 void ccVisitForSnapshot(ax::Node* node);
 
+/* Ends a snapshot and renders it right away. In 2.x end() drew immediately; in
+ * Axmol the queued commands only run at the end of the frame, and any node
+ * removed before then (effects, clones, the tower that ended the match)
+ * leaves a dangling command behind (Renderer assert / crash). */
+void ccEndSnapshot(ax::RenderTexture* rt);
+
 /* ---------------------------------------------------------------------------
  * File helper: replaces CCFileUtils::getFileData(path, mode, &size).
  * Returns a new[]-allocated buffer with a trailing '\0' (not counted in size),

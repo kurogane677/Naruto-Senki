@@ -358,6 +358,10 @@ bool NetworkLayer::init(){
 				_teamSelector->addChild(_comLabel2);
 
 				this->addChild(_teamSelector,50);
+
+				// COM1 is the first pick: blink its label until it is chosen
+				CCActionInterval* fd=CCFadeOut::create(1.0f);
+				_comLabel1->runAction(CCRepeatForever::create(CCSequence::create(fd,fd->reverse(),NULL)));
 			}
 
 
@@ -702,7 +706,7 @@ void NetworkLayer::setSelected(CCObject* sender){
 		_selectImg->setPosition(ccp(btn->getPositionX()-2,btn->getPositionY()-2));
 	 }
 	
-	// COM teammates can only be picked in HardCore (and only with adResult==1)
+	// HardCore: COM1, then COM2, then the player. Training: player only.
 	bool canPickCom= _isHardCoreMode;
 
 	if(_playerSelect){
@@ -745,27 +749,18 @@ void NetworkLayer::setSelected(CCObject* sender){
 
 				this->getComLabel2()->stopAllActions();
 				this->getComLabel2()->setOpacity(255);
-				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("com_label2.png"); 
+				CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("com_label2.png");
 				this->getComLabel2()->setSpriteFrame(frame);
-
-				_selectImg->removeFromParent();
-				_selectImg=NULL;
 			}
 
 			
 		}else if (!_playerSelect){
 			if (btn->_clickTime >= 2)
 				{
+					// last pick in both modes: drop the cursor
 					_playerSelect = _selectHero;
-					if (!canPickCom)
-                        {
-                            _selectImg->removeFromParent();
-                            _selectImg = NULL;
-                        }
-                        else
-                        {
-                            this->getComLabel1()->runAction(seq);
-                        }
+					_selectImg->removeFromParent();
+					_selectImg = NULL;
                     }
 
                     _heroHalf->removeFromParent();

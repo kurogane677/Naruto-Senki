@@ -837,7 +837,7 @@ void GameLayer::onPause(){
 	ccVisitForSnapshot(bg);
 
 	ccVisitForSnapshot(this);
-	snapshoot->end();
+	ccEndSnapshot(snapshoot);
 
 
 	CCScene* pscene =CCScene::create();
@@ -861,7 +861,7 @@ void GameLayer::onGear(){
 		ccVisitForSnapshot(bg);
 
 		ccVisitForSnapshot(this);
-		snapshoot->end();
+		ccEndSnapshot(snapshoot);
 
 		CCScene* pscene =CCScene::create();
 		GearLayer* layer=GearLayer::create(snapshoot);
@@ -887,7 +887,7 @@ void GameLayer::onGameOver(bool isWin){
 		snapshoot->begin();
 		ccVisitForSnapshot(bg);
 		ccVisitForSnapshot(this);
-		snapshoot->end();
+		ccEndSnapshot(snapshoot);
 
 		CCScene* pscene =CCScene::create();
 		GameOver* layer=GameOver::create(snapshoot);
