@@ -1,6 +1,7 @@
 #include "GameOver.h"
 #include "GameLayer.h"
 #include "Characters.h"
+#include "AI/BuildBook.h"
 
 USING_NS_CC_EXT;
 using namespace CocosDenshion;
@@ -435,6 +436,15 @@ void GameOver::listResult(){
 				resultChar=CCString::create("Lee");
 			}
 
+			// HardCore: remember the player's gear order so bots can copy what wins
+			if(_delegate->_isHardCoreGame){
+				std::vector<int> gears;
+				CCObject* gearObject;
+				CCARRAY_FOREACH(_delegate->currentPlayer->getGearArray(),gearObject){
+					gears.push_back(((CCString*)gearObject)->intValue());
+				}
+				ai::recordPlayerBuild(resultChar->getCString(),gears,_isWin);
+			}
 
 			if(_isWin ){
 				CCString* winNum=tool->readSQLite("CharRecord","name",resultChar->getCString(),"column1");

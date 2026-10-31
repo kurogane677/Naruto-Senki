@@ -3,6 +3,7 @@
 #include "BGLayer.h"
 #include "HudLayer.h"
 #include "StartMenu.h"
+#include "AutoPlay.h"
 
 
 using namespace CocosDenshion;
@@ -36,6 +37,11 @@ GameLayer::GameLayer(void)
 	_isRandomChar=false;
 	zhenying=1;
 	currentPlayer=NULL;
+	aiDifficulty=CCUserDefault::sharedUserDefault()->getIntegerForKey("aiDifficulty",1);
+	if(AutoPlay::enabled() && getenv("NS_AUTOPLAY_DIFFICULTY") && *getenv("NS_AUTOPLAY_DIFFICULTY")){
+		aiDifficulty=atoi(getenv("NS_AUTOPLAY_DIFFICULTY"));
+	}
+	aiDifficulty=MAX(0,MIN(2,aiDifficulty));
 	postTime=0;
 
 }
@@ -397,7 +403,12 @@ void GameLayer::onGameStart(float dt){
 		if(tempChar->role()==Role::Com && !tempChar->_isAI){
 			tempChar->doAI();
 		}
-		
+
+	}
+
+	if(AutoPlay::enabled()){
+		currentPlayer->doAI();
+		CCDirector::sharedDirector()->getScheduler()->setTimeScale(AutoPlay::speed());
 	}
 
 }
@@ -870,6 +881,24 @@ void GameLayer::onGear(){
 
 void GameLayer::onGameOver(bool isWin){
 
+	if(AutoPlay::enabled()){
+		// leave on the next tick: onGameOver runs inside a tower's death callback
+		if(!isScheduled("autoplay_next")){
+			AutoPlay::report(this,isWin);
+			this->scheduleOnce([this](float){
+				// the normal path leaves through the paused GameOver scene; freeze
+				// the match the same way so dying units do not touch cleared arrays
+				for(auto child:this->getChildren()){
+					child->pause();
+				}
+				this->pause();
+				_isExiting=true;
+				this->onLeft();
+			},1.0f,"autoplay_next");
+		}
+		return;
+	}
+
 
 	CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
 	CCScene* f = CCDirector::sharedDirector()->getRunningScene();
@@ -992,6 +1021,11 @@ void GameLayer::onLeft(){
 
 	CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("UI.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Map.plist");
+
+	if(AutoPlay::enabled()){
+		AutoPlay::startMatch();
+		return;
+	}
 
 	CCScene* menuScene =CCScene::create();
 	StartMenu* menuLayer=StartMenu::create();

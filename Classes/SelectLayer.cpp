@@ -1,5 +1,7 @@
 #include "SelectLayer.h"
 #include "StartMenu.h"
+#include "DifficultyLayer.h"
+#include "AutoPlay.h"
 USING_NS_CC_EXT;
 using namespace CocosDenshion;
 #include<time.h>
@@ -378,14 +380,11 @@ void SelectLayer::onGameStart(CCObject* sender){
 
 
 
-		CCScene* loadScene=CCScene::create();
-		LoadLayer* loadLayer=LoadLayer::create();
-		loadLayer->tempHeros=tempHeros;
-		loadScene->addChild(loadLayer);
-		
-		loadLayer->_isHardCoreMode=_isHardCoreMode;
-		loadLayer->preloadAudio();
-		CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,loadScene));
+		if(AutoPlay::enabled()){
+			DifficultyLayer::startLoad(tempHeros,_isHardCoreMode,false);
+		}else{
+			DifficultyLayer::show(tempHeros,_isHardCoreMode,false);
+		}
 	
 
 	}

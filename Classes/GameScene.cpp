@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include "AutoPlay.h"
 using namespace CocosDenshion;
 
 USING_NS_CC;
@@ -32,6 +33,12 @@ bool GameScene::init()
 			CCUserDefault::sharedUserDefault()->flush();
 		}
 
+
+		if(AutoPlay::enabled()){
+			this->scheduleOnce([](float){ AutoPlay::startMatch(); },0.1f,"autoplay_start");
+			bRet=true;
+			break;
+		}
 
 		introLayer=CCLayer::create();
 

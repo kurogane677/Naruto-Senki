@@ -487,6 +487,8 @@ protected:
 	
 	
 	
+public:
+	// AI helpers, also driven by Classes/AI
 	bool				findEnemy(const char* type,int searchRange,bool masterRange = false);
 	bool				findEnemy2(const char* type);
 	bool				findTargetEnemy(const char* type,bool isTowerDected);
@@ -498,6 +500,7 @@ protected:
 	void				stepOn();
 	void				changeSide(CCPoint sp);
 	void				reduceSkillCD(unsigned int seconds);
+protected:
 
 	
 

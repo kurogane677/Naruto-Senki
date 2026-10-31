@@ -1,0 +1,558 @@
+// AI profile per hero (see Classes/AI/AIProfile.h for the rule format).
+//
+// role:    fighter | assassin | tank | support | pusher | ranged | summoner
+//          picks targets, retreat timing, lane position and fallback builds.
+// builds:  gear ids in purchase order (HardCore). "default" came from the
+//          original AI; role builds "aggressive"/"sustain"/"push" fill the rest.
+// hero:    skill rules vs heroes, first match wins. range = [x, y] cast range;
+//          999 means "anywhere in sight". gate = rule only applies while the
+//          target is closer than that on x (the old "engaged" block; the team
+//          retreat check runs right before the first gated rule).
+// farm:    rules vs creeps ("flog"), towers ("tower") or both ("farm").
+// if:      conditions, all must hold: gp (target is not too strong),
+//          tNotBati/tNotDown/tNotSticking/tIdle (target state), selfBati/
+//          selfNotBati, buff/notBuff, skillUP, notPowerUP, hpBelow:x, hpAbove:x,
+//          tHpBelow:x, tHpAbsBelow:n, tNoGear06, lv:n, bamenBelow:n,
+//          bamenAtLeast:n, noMonster:Name, hasMonster:Name, noBuffTime,
+//          notHealing, invisible, notTaunt, baseDanger, losing, allyNear,
+//          summonable, nattackBelow:n, combo (target is down; Normal/Hard only)
+{
+  "heroes": {
+    "Naruto": {
+      "role": "fighter", "panicGear06": false, "nattack": [96, 32],
+      "builds": { "default": [3, 7, 2] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [999, 999], "approach": false, "if": ["selfNotBati"] },
+        { "slot": "SKILL2", "range": [999, 999], "approach": false, "if": ["selfNotBati"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [96, 32], "min": 32, "if": ["gp"] },
+        { "slot": "GEAR03", "gate": 128, "range": [96, 32] },
+        { "slot": "SKILL3", "gate": 128, "range": [96, 32], "min": 32, "if": ["gp"] },
+        { "slot": "SKILL1", "gate": 128, "range": [96, 32], "min": 32, "if": ["gp"] }
+      ],
+      "farm": [ { "slot": "SKILL2", "on": "farm" } ]
+    },
+    "SageNaruto": {
+      "role": "fighter", "panicGear06": false, "nattack": [96, 32],
+      "builds": { "default": [3, 7, 2] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [999, 999], "approach": false },
+        { "slot": "SKILL2", "range": [999, 999], "approach": false },
+        { "slot": "SKILL3", "range": [999, 999], "approach": false, "if": ["gp"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [96, 32] },
+        { "slot": "GEAR03", "gate": 128, "range": [96, 32] },
+        { "slot": "SKILL1", "gate": 128, "range": [96, 32], "min": 32 }
+      ],
+      "farm": [ { "slot": "SKILL2", "on": "farm" } ]
+    },
+    "RikudoNaruto": {
+      "role": "fighter", "panicGear06": false,
+      "builds": { "default": [3, 7, 2] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [999, 999], "approach": false },
+        { "slot": "SKILL2", "range": [999, 999], "approach": false },
+        { "slot": "SKILL3", "range": [999, 999], "approach": false },
+        { "slot": "SKILL1", "range": [999, 999], "approach": false },
+        { "slot": "GEAR03", "range": [999, 999], "approach": false },
+        { "slot": "OUGIS1", "gate": 128, "range": [32, 32] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" }, { "slot": "SKILL2", "on": "farm" } ]
+    },
+    "Asuma": {
+      "role": "fighter",
+      "builds": { "default": [6, 5, 2] },
+      "hero": [
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false, "if": ["gp"] },
+        { "slot": "SKILL3", "range": [96, 32], "if": ["gp"] },
+        { "slot": "SKILL2", "range": [96, 32], "if": ["gp"] },
+        { "slot": "OUGIS2", "gate": 128, "range": [96, 32], "if": ["gp", "tNotBati"] },
+        { "slot": "SKILL1", "gate": 128, "range": [96, 32], "if": ["gp"] }
+      ],
+      "farm": [ { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] }, { "slot": "SKILL1", "on": "flog" } ]
+    },
+    "Kakashi": {
+      "role": "assassin",
+      "builds": { "default": [6, 5, 2] },
+      "hero": [
+        { "slot": "SKILL3", "range": [999, 999], "approach": false },
+        { "slot": "SKILL2", "range": [999, 999], "approach": false, "if": ["gp"] },
+        { "slot": "OUGIS2", "gate": 128, "range": [64, 32], "if": ["gp", "tNotBati", "tNotDown", "tNotSticking"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [64, 32] },
+        { "slot": "SKILL1", "gate": 128, "range": [64, 32] }
+      ],
+      "farm": [ { "slot": "SKILL3", "on": "flog" }, { "slot": "SKILL1", "on": "flog" } ]
+    },
+    "Konan": {
+      "role": "ranged", "panicGear06": false, "nattack": [48, 32],
+      "builds": { "default": [3, 5, 2] },
+      "hero": [
+        { "slot": "SKILL1", "range": [999, 999], "approach": false },
+        { "slot": "OUGIS2", "range": [48, 16], "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "selfNotBati"] },
+        { "slot": "SKILL3", "range": [128, 16], "min": 96, "if": ["invisible", "gp", "tNotDown"] },
+        { "slot": "SKILL2", "range": [128, 16], "min": 96, "if": ["invisible", "gp", "tNotDown"] },
+        { "slot": "NAttack", "gate": 128, "range": [8, 8], "if": ["selfBati"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [48, 32], "min": 32 },
+        { "slot": "SKILL2", "gate": 128, "range": [48, 32], "min": 32 },
+        { "slot": "GEAR03", "gate": 128, "range": [48, 32] }
+      ],
+      "farm": [
+        { "slot": "GEAR03", "on": "farm" },
+        { "slot": "OUGIS1", "on": "flog", "if": ["baseDanger"] },
+        { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] }
+      ]
+    },
+    "Deidara": {
+      "role": "pusher", "subRoles": ["ranged"], "baseCheck": false, "panicGear06": false,
+      "builds": { "default": [0, 1, 5] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [48, 16], "gear00": true, "if": ["selfNotBati"] },
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false },
+        { "slot": "SKILL3", "range": [64, 16], "gear00": true },
+        { "slot": "SKILL2", "range": [999, 999], "approach": false },
+        { "slot": "SKILL1", "gate": 999, "range": [999, 999], "approach": false },
+        { "slot": "NAttack", "gate": 128, "range": [8, 8], "if": ["selfBati"] }
+      ],
+      "farm": [
+        { "slot": "OUGIS2", "on": "tower", "if": ["baseDanger"] },
+        { "slot": "SKILL1", "on": "tower" },
+        { "slot": "SKILL2", "on": "farm" }
+      ]
+    },
+    "Ino": {
+      "role": "support", "idleWhenBuff": true,
+      "builds": { "default": [6, 5, 1] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [96, 16] },
+        { "slot": "SKILL2", "range": [96, 16], "if": ["gp"] },
+        { "slot": "SKILL3", "range": [96, 16], "if": ["gp"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [32, 32], "if": ["gp"] },
+        { "slot": "SKILL1", "gate": 128, "range": [32, 32] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" } ]
+    },
+    "Sai": {
+      "role": "ranged",
+      "builds": { "default": [6, 5, 1] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [48, 16], "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "selfNotBati"] },
+        { "slot": "SKILL3", "range": [64, 16] },
+        { "slot": "SKILL2", "range": [999, 999], "approach": false },
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false },
+        { "slot": "SKILL1", "gate": 999, "range": [999, 999], "approach": false },
+        { "slot": "NAttack", "gate": 128, "range": [8, 8], "if": ["selfBati"] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" }, { "slot": "SKILL2", "on": "flog", "if": ["baseDanger", "gp"] } ]
+    },
+    "Sakura": {
+      "role": "support", "subRoles": ["healer", "pusher"], "baseCheck": false, "panicGear06": false,
+      "builds": { "default": [0, 4, 8], "push": [4, 8, 0], "sustain": [7, 8, 1] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [48, 16], "gear00": true, "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "notBuff"] },
+        { "slot": "OUGIS1", "range": [48, 16], "gear00": true, "if": ["notBuff"] },
+        { "slot": "SKILL1", "gate": 999, "range": [999, 999], "approach": false, "self": true, "if": ["hpBelow:0.9"] },
+        { "slot": "SKILL2", "gate": 128, "range": [64, 32], "if": ["notBuff", "gp"] },
+        { "slot": "SKILL3", "gate": 128, "range": [32, 32], "if": ["notBuff", "hpAbove:0.5"] }
+      ],
+      "farm": [
+        { "slot": "SKILL1", "on": "farm", "self": true, "if": ["hpBelow:0.9"] },
+        { "slot": "SKILL3", "on": "tower", "if": ["notBuff"] },
+        { "slot": "SKILL2", "on": "flog" }
+      ]
+    },
+    "Tenten": {
+      "role": "ranged", "panicGear06": false,
+      "builds": { "default": [0, 5, 2] },
+      "hero": [
+        { "slot": "SKILL1", "range": [999, 999], "approach": false },
+        { "slot": "OUGIS2", "range": [48, 16], "gear00": true, "if": ["notBuff", "gp"] },
+        { "slot": "OUGIS1", "range": [48, 16], "gear00": true, "if": ["tNotBati", "notBuff"] },
+        { "slot": "SKILL2", "gate": 128, "range": [96, 16], "if": ["gp"] },
+        { "slot": "SKILL3", "gate": 128, "range": [96, 16], "if": ["gp"] }
+      ],
+      "farm": [
+        { "slot": "SKILL1", "on": "flog" },
+        { "slot": "SKILL3", "on": "flog" },
+        { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] }
+      ]
+    },
+    "Itachi": {
+      "role": "assassin", "nattack": [56, 32],
+      "builds": { "default": [6, 2, 5] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [48, 32], "if": ["selfNotBati"] },
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false, "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "selfNotBati"] },
+        { "slot": "SKILL3", "gate": 128, "range": [56, 32], "if": ["selfNotBati", "gp"] },
+        { "slot": "SKILL2", "gate": 128, "range": [56, 32], "if": ["selfNotBati", "gp"] },
+        { "slot": "SKILL1", "gate": 128, "range": [56, 32], "if": ["selfNotBati", "gp"] }
+      ],
+      "farm": [
+        { "slot": "SKILL3", "on": "flog", "if": ["baseDanger"] },
+        { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] },
+        { "slot": "SKILL1", "on": "flog" }
+      ]
+    },
+    "Jiraiya": {
+      "role": "ranged",
+      "builds": { "default": [6, 1, 2] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [999, 999], "approach": false },
+        { "slot": "SKILL2", "range": [999, 999], "approach": false, "if": ["gp"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [32, 32] },
+        { "slot": "SKILL3", "gate": 128, "range": [32, 32] },
+        { "slot": "SKILL1", "gate": 128, "range": [32, 32] }
+      ],
+      "farm": [ { "slot": "SKILL3", "on": "flog", "if": ["baseDanger"] }, { "slot": "SKILL1", "on": "flog" } ]
+    },
+    "SageJiraiya": {
+      "role": "ranged",
+      "builds": { "default": [6, 1, 2] },
+      "hero": [
+        { "slot": "SKILL2", "range": [999, 999], "approach": false, "if": ["gp"] },
+        { "slot": "OUGIS2", "gate": 128, "range": [96, 32], "if": ["gp"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [32, 32] },
+        { "slot": "SKILL3", "gate": 128, "range": [32, 32] },
+        { "slot": "SKILL1", "gate": 128, "range": [32, 32] }
+      ],
+      "farm": [ { "slot": "SKILL3", "on": "flog", "if": ["baseDanger"] }, { "slot": "SKILL1", "on": "flog" } ]
+    },
+    "Suigetsu": {
+      "role": "fighter", "panicGear06": false,
+      "builds": { "default": [0, 5, 1] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [48, 16], "gear00": true, "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "selfNotBati"] },
+        { "slot": "OUGIS1", "range": [48, 16], "gear00": true, "if": ["selfNotBati"] },
+        { "slot": "SKILL3", "range": [999, 999], "approach": false, "if": ["gp", "selfNotBati", "notBuff"] },
+        { "slot": "SKILL2", "gate": 128, "range": [96, 32] },
+        { "slot": "SKILL1", "gate": 128, "range": [96, 32] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" }, { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] } ]
+    },
+    "Tsunade": {
+      "role": "tank", "subRoles": ["healer"], "panicGear06": false,
+      "builds": { "default": [3, 2, 4] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [64, 16], "if": ["gp", "selfNotBati"] },
+        { "slot": "SKILL3", "range": [999, 999], "approach": false, "if": ["gp", "selfNotBati"] },
+        { "slot": "GEAR03", "gate": 128, "range": [64, 32] },
+        { "slot": "OUGIS1", "gate": 128, "range": [64, 32] },
+        { "slot": "SKILL2", "gate": 128, "range": [64, 32] },
+        { "slot": "SKILL1", "gate": 128, "range": [64, 32] }
+      ],
+      "farm": [ { "slot": "GEAR03", "on": "farm" }, { "slot": "SKILL1", "on": "flog", "if": ["baseDanger"] } ]
+    },
+    "Sasuke": {
+      "role": "assassin",
+      "builds": { "default": [6, 1, 2] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [999, 999], "approach": false, "if": ["selfNotBati"] },
+        { "slot": "SKILL3", "gate": 999, "range": [999, 999], "approach": false, "if": ["notTaunt", "selfNotBati"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [96, 32] },
+        { "slot": "SKILL2", "gate": 128, "range": [96, 32] },
+        { "slot": "SKILL1", "gate": 128, "range": [96, 32] }
+      ],
+      "farm": [
+        { "slot": "SKILL1", "on": "flog" },
+        { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] },
+        { "slot": "SKILL3", "on": "flog" }
+      ]
+    },
+    "ImmortalSasuke": {
+      "role": "assassin",
+      "builds": { "default": [6, 1, 2] },
+      "hero": [
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false },
+        { "slot": "OUGIS2", "range": [48, 32] },
+        { "slot": "SKILL3", "gate": 999, "range": [999, 999], "approach": false, "if": ["notTaunt"] },
+        { "slot": "SKILL2", "gate": 128, "range": [96, 32] },
+        { "slot": "SKILL1", "gate": 128, "range": [96, 32] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" }, { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] } ]
+    },
+    "Kankuro": {
+      "role": "summoner", "retreatGap": 5000,
+      "builds": { "default": [6, 4, 8] },
+      "hero": [
+        { "slot": "SKILL3", "range": [999, 999], "approach": false },
+        { "slot": "SKILL1", "range": [999, 999], "approach": false, "self": true, "if": ["noMonster:Karasu"] },
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false, "self": true, "if": ["noMonster:Sanshouuo"] },
+        { "slot": "OUGIS2", "range": [999, 999], "approach": false, "self": true, "if": ["noMonster:Saso"] }
+      ],
+      "farm": [
+        { "slot": "OUGIS1", "on": "farm", "self": true, "if": ["noMonster:Sanshouuo"] },
+        { "slot": "OUGIS2", "on": "farm", "self": true, "if": ["noMonster:Saso"] },
+        { "slot": "SKILL1", "on": "farm", "self": true, "if": ["noMonster:Karasu"] }
+      ]
+    },
+    "Chiyo": {
+      "role": "support", "subRoles": ["summoner"], "retreatGap": 5000,
+      "builds": { "default": [6, 7, 4] },
+      "hero": [
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false, "self": true, "if": ["noBuffTime", "allyNear"] },
+        { "slot": "OUGIS2", "range": [96, 32], "min": 48, "if": ["gp", "tNotBati", "tNotDown", "tNotSticking"] },
+        { "slot": "SKILL1", "range": [999, 999], "approach": false, "self": true, "if": ["noMonster:Parents"] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "farm", "self": true, "if": ["noMonster:Parents"] } ]
+    },
+    "Kakuzu": {
+      "role": "tank", "retreatGap": 5000, "hook": "kakuzu", "panicGear06": false,
+      "builds": { "default": [3, 8, 4] },
+      "hero": [
+        { "slot": "SKILL3", "range": [999, 999], "approach": false },
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false, "self": true, "if": ["summonable"] },
+        { "slot": "SKILL2", "range": [96, 32] },
+        { "slot": "GEAR03", "range": [96, 32] }
+      ],
+      "farm": [ { "slot": "OUGIS1", "on": "farm", "self": true, "if": ["summonable"] } ]
+    },
+    "Shikamaru": {
+      "role": "support", "panicGear06": false,
+      "builds": { "default": [0, 7, 8] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [999, 999], "approach": false, "if": ["tNotBati", "tNotSticking"] },
+        { "slot": "SKILL2", "range": [999, 999], "approach": false, "if": ["gp"] },
+        { "slot": "OUGIS1", "range": [48, 32], "gear00": true },
+        { "slot": "SKILL1", "gate": 999, "range": [999, 999], "approach": false, "if": ["lv:2"] },
+        { "slot": "SKILL3", "gate": 999, "range": [156, 32], "min": 32, "gear00": true, "if": ["tNotBati", "tNotSticking"] }
+      ],
+      "farm": [ { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] } ]
+    },
+    "Gaara": {
+      "role": "tank", "subRoles": ["ranged"],
+      "builds": { "default": [6, 2, 5] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [999, 999], "approach": false, "if": ["selfNotBati", "gp"] },
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false, "if": ["selfNotBati", "gp"] },
+        { "slot": "SKILL3", "range": [999, 999], "approach": false, "if": ["selfNotBati", "gp"] },
+        { "slot": "SKILL2", "range": [999, 999], "approach": false, "if": ["selfNotBati", "gp"] },
+        { "slot": "SKILL1", "gate": 128, "range": [32, 32] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" } ]
+    },
+    "Tobirama": {
+      "role": "fighter", "nattack": [48, 32],
+      "builds": { "default": [6, 1, 7] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [999, 999], "approach": false, "if": ["gp"] },
+        { "slot": "SKILL1", "range": [999, 999], "approach": false, "if": ["tNotBati", "tIdle"] },
+        { "slot": "SKILL2", "range": [64, 16] },
+        { "slot": "OUGIS1", "gate": 128, "range": [48, 32] },
+        { "slot": "SKILL3", "gate": 128, "range": [48, 32] }
+      ],
+      "farm": [ { "slot": "SKILL3", "on": "flog", "if": ["baseDanger"] }, { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] } ]
+    },
+    "Choji": {
+      "role": "tank", "subRoles": ["pusher"],
+      "builds": { "default": [6, 1, 4], "sustain": [8, 6, 7] },
+      "hero": [
+        { "slot": "SKILL1", "range": [999, 999], "approach": false, "if": ["selfNotBati"] },
+        { "slot": "SKILL3", "range": [96, 16] },
+        { "slot": "OUGIS1", "gate": 128, "range": [32, 32] },
+        { "slot": "SKILL2", "gate": 128, "range": [32, 32], "if": ["skillUP"] },
+        { "slot": "OUGIS2", "gate": 128, "range": [32, 32] }
+      ],
+      "farm": [
+        { "slot": "SKILL2", "on": "flog" },
+        { "slot": "OUGIS1", "on": "flog", "if": ["baseDanger"] },
+        { "slot": "OUGIS2", "on": "tower" }
+      ]
+    },
+    "Karin": {
+      "role": "support", "subRoles": ["healer"],
+      "builds": { "default": [6, 1, 7] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [96, 16], "if": ["gp", "tNotBati", "tNotDown", "tNotSticking"] },
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false, "self": true, "if": ["hpBelow:0.9", "noBuffTime", "notHealing"] },
+        { "slot": "SKILL3", "range": [128, 16], "if": ["gp"] },
+        { "slot": "SKILL2", "gate": 128, "range": [96, 32] },
+        { "slot": "SKILL1", "gate": 128, "range": [96, 32] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" }, { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] } ]
+    },
+    "Lee": {
+      "role": "assassin", "nattack": [48, 32],
+      "builds": { "default": [6, 7, 2] },
+      "hero": [
+        { "slot": "SKILL1", "gate": 128, "range": [999, 999], "approach": false, "if": ["bamenBelow:5"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [48, 32], "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "bamenAtLeast:1"] },
+        { "slot": "SKILL2", "gate": 128, "range": [48, 32] }
+      ],
+      "farm": [ { "slot": "SKILL2", "on": "flog" } ]
+    },
+    "RockLee": {
+      "role": "assassin", "nattack": [46, 32],
+      "builds": { "default": [6, 7, 2] },
+      "hero": [
+        { "slot": "SKILL1", "range": [999, 999], "approach": false, "if": ["bamenBelow:5"] },
+        { "slot": "OUGIS2", "range": [999, 999], "approach": false, "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "bamenAtLeast:3"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [46, 32], "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "bamenAtLeast:1"] },
+        { "slot": "SKILL2", "gate": 128, "range": [46, 32] },
+        { "slot": "SKILL3", "gate": 128, "range": [46, 32], "if": ["bamenAtLeast:3"] }
+      ],
+      "farm": [ { "slot": "SKILL2", "on": "flog" }, { "slot": "SKILL3", "on": "flog", "if": ["baseDanger", "bamenAtLeast:3"] } ]
+    },
+    "Jugo": {
+      "role": "tank", "nattack": [48, 32],
+      "builds": { "default": [6, 1, 2] },
+      "hero": [
+        { "slot": "SKILL3", "range": [999, 999], "approach": false, "if": ["gp", "notBuff"] },
+        { "slot": "OUGIS2", "gate": 128, "range": [32, 32], "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "notBuff"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [32, 32], "if": ["notBuff"] },
+        { "slot": "SKILL2", "gate": 128, "range": [96, 32], "if": ["notBuff"] },
+        { "slot": "SKILL1", "gate": 128, "range": [96, 32], "if": ["notBuff"] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog", "if": ["notBuff"] } ]
+    },
+    "Kisame": {
+      "role": "tank", "panicGear06": false, "nattack": [64, 32],
+      "builds": { "default": [0, 1, 5], "sustain": [8, 1, 7] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [48, 32], "gear00": true, "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "notBuff"] },
+        { "slot": "OUGIS1", "range": [48, 32], "gear00": true, "if": ["notBuff"] },
+        { "slot": "SKILL3", "gate": 999, "range": [96, 32], "if": ["notBuff"] },
+        { "slot": "SKILL2", "gate": 999, "range": [96, 32], "if": ["gp", "notBuff"] },
+        { "slot": "SKILL1", "gate": 128, "range": [64, 32] }
+      ],
+      "farm": [ { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] }, { "slot": "SKILL1", "on": "flog" } ]
+    },
+    "Hidan": {
+      "role": "fighter", "hook": "hidan", "nattack": [48, 32],
+      "builds": { "default": [6, 1, 7] },
+      "hero": [
+        { "slot": "SKILL1", "range": [48, 32], "if": ["selfNotBati", "noMonster:CircleMark", "gp"] },
+        { "slot": "OUGIS2", "range": [48, 32], "if": ["selfNotBati"] },
+        { "slot": "SKILL2", "range": [56, 32], "if": ["gp", "selfNotBati"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [48, 32], "if": ["gp", "selfNotBati"] },
+        { "slot": "SKILL3", "gate": 128, "range": [48, 32], "if": ["selfNotBati"] }
+      ],
+      "farm": [ { "slot": "SKILL3", "on": "flog", "if": ["baseDanger"] }, { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] } ]
+    },
+    "Tobi": {
+      "role": "fighter", "panicGear06": false, "nattack": [64, 32],
+      "builds": { "default": [3, 2, 5] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [48, 16], "if": ["gp", "tNotBati", "tNotDown", "tNotSticking"] },
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false, "if": ["gp"] },
+        { "slot": "SKILL3", "range": [999, 999], "approach": false, "if": ["notBuff"] },
+        { "slot": "SKILL2", "gate": 128, "range": [64, 32], "min": 32, "if": ["gp", "tHpBelow:0.5"] },
+        { "slot": "SKILL2", "gate": 128, "range": [64, 32], "if": ["gp", "notBuff"] },
+        { "slot": "SKILL1", "gate": 128, "range": [64, 32], "if": ["gp"] },
+        { "slot": "GEAR03", "gate": 128, "range": [32, 32] }
+      ],
+      "farm": [
+        { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] },
+        { "slot": "SKILL1", "on": "flog" },
+        { "slot": "GEAR03", "on": "farm" }
+      ]
+    },
+    "Shino": {
+      "role": "ranged", "panicGear06": false,
+      "builds": { "default": [0, 1, 2] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [64, 16], "gear00": true, "if": ["gp", "tNotBati", "tNotDown", "tNotSticking"] },
+        { "slot": "OUGIS1", "range": [64, 16], "gear00": true },
+        { "slot": "SKILL2", "range": [999, 999], "approach": false, "if": ["gp"] },
+        { "slot": "SKILL3", "range": [64, 16], "gear00": true, "if": ["gp"] },
+        { "slot": "SKILL1", "gate": 999, "range": [999, 999], "approach": false }
+      ],
+      "farm": [
+        { "slot": "SKILL3", "on": "flog", "if": ["baseDanger"] },
+        { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] },
+        { "slot": "SKILL1", "on": "flog" }
+      ]
+    },
+    "Hiruzen": {
+      "role": "ranged", "panicGear06": false,
+      "builds": { "default": [0, 2, 8] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [96, 32], "min": 32, "gear00": true, "if": ["selfNotBati", "tHpAbsBelow:10000", "tNoGear06"] },
+        { "slot": "OUGIS1", "range": [48, 16], "gear00": true, "if": ["selfNotBati"] },
+        { "slot": "SKILL3", "range": [999, 999], "approach": false, "if": ["selfNotBati", "notBuff"] },
+        { "slot": "SKILL1", "gate": 128, "range": [32, 32] },
+        { "slot": "SKILL2", "gate": 128, "range": [96, 32], "min": 32 }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" }, { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] } ]
+    },
+    "Kiba": {
+      "role": "assassin", "baseCheck": false, "panicGear06": false,
+      "builds": { "default": [0, 4, 8] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [32, 32], "gear00": true, "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "notPowerUP"] },
+        { "slot": "OUGIS1", "range": [999, 999], "approach": false, "if": ["notPowerUP"] },
+        { "slot": "SKILL1", "range": [999, 999], "approach": false, "self": true, "if": ["selfBati"] },
+        { "slot": "SKILL3", "gate": 128, "range": [32, 32], "if": ["notPowerUP", "selfNotBati", "hpAbove:0.5"] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "farm", "self": true, "if": ["selfBati"] }, { "slot": "SKILL3", "on": "tower" } ]
+    },
+    "Minato": {
+      "role": "assassin", "hook": "minato",
+      "builds": { "default": [6, 5, 2] },
+      "hero": [
+        { "slot": "SKILL1", "range": [999, 999], "approach": false, "if": ["noMonster:HiraishinMark"] },
+        { "slot": "OUGIS2", "range": [64, 16], "if": ["gp"] },
+        { "slot": "OUGIS1", "range": [64, 16] },
+        { "slot": "SKILL2", "range": [999, 16] },
+        { "slot": "SKILL3", "gate": 999, "range": [999, 999], "approach": false }
+      ],
+      "farm": [ { "slot": "SKILL3", "on": "flog" } ]
+    },
+    "Hinata": {
+      "role": "fighter", "panicGear06": false,
+      "builds": { "default": [0, 1, 2] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [48, 32], "gear00": true, "if": ["gp", "tNotBati", "tNotDown", "tNotSticking"] },
+        { "slot": "OUGIS1", "range": [48, 32], "gear00": true },
+        { "slot": "SKILL1", "range": [999, 999], "approach": false },
+        { "slot": "SKILL2", "range": [48, 32], "gear00": true, "if": ["skillUP", "gp"] },
+        { "slot": "SKILL3", "range": [48, 32], "gear00": true, "if": ["skillUP", "gp"] }
+      ],
+      "farm": [ { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] }, { "slot": "SKILL3", "on": "flog", "if": ["baseDanger"] } ]
+    },
+    "Neji": {
+      "role": "fighter", "panicGear06": false,
+      "builds": { "default": [0, 1, 7] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [48, 32], "gear00": true, "if": ["gp", "tNotBati", "tNotDown", "tNotSticking"] },
+        { "slot": "OUGIS1", "range": [48, 32], "gear00": true },
+        { "slot": "SKILL1", "gate": 999, "range": [999, 999], "approach": false },
+        { "slot": "SKILL3", "gate": 999, "range": [48, 32], "gear00": true, "if": ["selfBati", "gp"] },
+        { "slot": "SKILL2", "gate": 128, "range": [32, 32], "if": ["gp"] }
+      ],
+      "farm": [ { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] }, { "slot": "SKILL3", "on": "flog", "if": ["baseDanger"] } ]
+    },
+    "Orochimaru": {
+      "role": "fighter",
+      "builds": { "default": [6, 5, 2] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [48, 32], "if": ["gp", "tNotBati"] },
+        { "slot": "OUGIS1", "range": [48, 32] },
+        { "slot": "SKILL3", "range": [64, 32], "if": ["gp"] },
+        { "slot": "SKILL2", "range": [64, 32], "if": ["gp"] },
+        { "slot": "SKILL1", "gate": 128, "range": [48, 32], "if": ["gp"] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" } ]
+    },
+    "Nagato": {
+      "role": "ranged",
+      "builds": { "default": [6, 1, 5] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [64, 32], "if": ["gp", "tNotBati"] },
+        { "slot": "OUGIS1", "range": [64, 32] },
+        { "slot": "SKILL3", "range": [96, 32], "if": ["gp"] },
+        { "slot": "SKILL2", "range": [96, 32], "if": ["gp"] },
+        { "slot": "SKILL1", "gate": 128, "range": [64, 32], "if": ["gp"] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" } ]
+    },
+    "Pain": {
+      "role": "fighter",
+      "builds": { "default": [6, 5, 2] },
+      "hero": [
+        { "slot": "OUGIS2", "range": [64, 32], "if": ["gp", "tNotBati"] },
+        { "slot": "OUGIS1", "range": [64, 32] },
+        { "slot": "SKILL3", "range": [96, 32], "if": ["gp"] },
+        { "slot": "SKILL2", "range": [96, 32], "if": ["gp"] },
+        { "slot": "SKILL1", "gate": 128, "range": [64, 32], "if": ["gp"] }
+      ],
+      "farm": [ { "slot": "SKILL1", "on": "flog" } ]
+    }
+  }
+}

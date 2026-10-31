@@ -3,6 +3,10 @@
 #include <map>
 #include "MyUtils/Util.h"
 
+// lane x where each side's base area ends (the old 11*32 / 85*32)
+constexpr float BASE_X_KONOHA = 11 * 32;
+constexpr float BASE_X_AKATSUKI = 85 * 32;
+
 
 //global parameter
 
