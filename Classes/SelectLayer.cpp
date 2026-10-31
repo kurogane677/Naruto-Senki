@@ -242,14 +242,6 @@ void SelectLayer::setSelected(CCObject* sender){
 }
 
 
-void SelectLayer::onError(CCObject* sender){
-
-	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-	CCDirector::sharedDirector()->end();
-	return;
-
-}
-
 
 void SelectLayer::onSkillMenu(CCObject* sender){
 

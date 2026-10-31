@@ -788,14 +788,6 @@ void NetworkLayer::setSelected(CCObject* sender){
 
 
 
-void NetworkLayer::onError(CCObject* sender){
-
-	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-	CCDirector::sharedDirector()->end();
-	return;
-
-}
-
 
 void NetworkLayer::onSkillMenu(CCObject* sender){
 	if(strcmp(_selectHero,"Pain")==0 || strcmp(_selectHero,"Orochimaru")==0 ){

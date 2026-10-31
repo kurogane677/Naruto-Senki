@@ -461,9 +461,7 @@ void GameOver::listResult(){
 				}
 				
 				CCString* realWin=CCString::createWithFormat("%d",tempWin);
-				if(CError!=1){
-					tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column1",(char*) realWin->getCString(),false);
-				}
+				tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column1",(char*) realWin->getCString(),false);
 				//
 				if(_delegate->_isRandomChar && resultScore>=120 ){
 					CCObject* pObject;
@@ -504,9 +502,7 @@ void GameOver::listResult(){
 							}
 
 							CCString* realWin=CCString::createWithFormat("%d",tempWin);
-							if(CError!=1){
-								tool->saveSQLite("CharRecord","name",hero->getCharacter()->getCString(),"column1",(char*) realWin->getCString(),false);
-							}
+							tool->saveSQLite("CharRecord","name",hero->getCharacter()->getCString(),"column1",(char*) realWin->getCString(),false);
 
 						}
 
@@ -518,9 +514,7 @@ void GameOver::listResult(){
 				//最速记录
 				CCString* recordTime=tool->readSQLite("CharRecord","name",resultChar->getCString(),"column3");
 				if(recordTime->length()==0){
-					if(CError!=1){
-						tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",(char*) tempTime->getCString(),false);
-					}
+					tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",(char*) tempTime->getCString(),false);
 				}else{
 					std::string bestTime=(std::string) recordTime->getCString();
 					std::string recordHour=bestTime.substr(0,2);
@@ -549,9 +543,7 @@ void GameOver::listResult(){
 					}
 
 					if(isNewRecord){
-						if(CError!=1){
-							tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",(char*) tempTime->getCString(),false);
-						}
+						tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",(char*) tempTime->getCString(),false);
 					}
 
 
@@ -564,9 +556,7 @@ void GameOver::listResult(){
 			 CCString* loseNum=tool->readSQLite("Achievement","name",resultChar->getCString(),"column2"); 
 			 int tempLose=atoi(loseNum->getCString())+1;
 			 CCString* realLose=CCString::createWithFormat("%d",tempLose);
-			 if(CError!=1){
 			 tool->saveSQLite("Achievement","name",resultChar->getCString(),"column2",(char*) realLose->getCString(),false);
-			 }
 			 }	*/
 
 

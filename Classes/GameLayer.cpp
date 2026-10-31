@@ -4,7 +4,6 @@
 #include "HudLayer.h"
 #include "StartMenu.h"
 
-int CError=0;
 
 using namespace CocosDenshion;
 
@@ -879,23 +878,21 @@ void GameLayer::onGear(){
 void GameLayer::onGameOver(bool isWin){
 
 
-	if(CError!=1){
-		CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
-		CCScene* f = CCDirector::sharedDirector()->getRunningScene();
-		CCObject* pObject= f->getChildren().at(0);
-		BGLayer* bg=(BGLayer*) pObject;
-		snapshoot->begin();
-		ccVisitForSnapshot(bg);
-		ccVisitForSnapshot(this);
-		ccEndSnapshot(snapshoot);
+	CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
+	CCScene* f = CCDirector::sharedDirector()->getRunningScene();
+	CCObject* pObject= f->getChildren().at(0);
+	BGLayer* bg=(BGLayer*) pObject;
+	snapshoot->begin();
+	ccVisitForSnapshot(bg);
+	ccVisitForSnapshot(this);
+	ccEndSnapshot(snapshoot);
 
-		CCScene* pscene =CCScene::create();
-		GameOver* layer=GameOver::create(snapshoot);
-		layer->setWin(isWin);
-		layer->setDelegate(this);	
-		pscene->addChild(layer);
-		CCDirector::sharedDirector()->pushScene(pscene);
-	}
+	CCScene* pscene =CCScene::create();
+	GameOver* layer=GameOver::create(snapshoot);
+	layer->setWin(isWin);
+	layer->setDelegate(this);	
+	pscene->addChild(layer);
+	CCDirector::sharedDirector()->pushScene(pscene);
 
 
 };

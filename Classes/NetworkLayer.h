@@ -68,7 +68,6 @@ private:
 	void	onQuestBtn(CCObject* sender);
 	void	onGameStart(CCObject* sender);
 	void    onSkillMenu(CCObject* sender);
-	void	onError(CCObject* sender);
 	void	onBackToMenu(CCObject* sender);
 	void	onListRequestCompleted(CCNode *sender ,void *data);
 	

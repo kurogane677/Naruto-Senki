@@ -852,18 +852,9 @@ void HeroElement::reborn(float dt){
 			rebornSprite=NULL;
 		}
 		if(strcmp(this->getRole()->getCString(),"Player")!=0){	
-			bool ksan=true;
-			bool asan=true;
-			if(CError==1){
-				if(_delegate->zhenying>0) {
-					ksan=false;
-				}else{
-					asan=false;
-				}
-			}
-			if(strcmp(this->getGroup()->getCString(),"Konoha")==0 && ksan){
+			if(strcmp(this->getGroup()->getCString(),"Konoha")==0){
 				this->doAI();
-			}else if(strcmp(this->getGroup()->getCString(),"Akatsuki")==0  && asan){
+			}else if(strcmp(this->getGroup()->getCString(),"Akatsuki")==0){
 				this->doAI();
 			}
 			

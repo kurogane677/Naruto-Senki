@@ -18,7 +18,6 @@
 
 
 extern int Cheats;
-extern int CError;
 extern int adResult;
 extern int MemberID;
 extern int GroupID;
