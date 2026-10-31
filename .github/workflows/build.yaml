@@ -61,6 +61,19 @@ jobs:
             ~/.gradle/caches
           key: axmol-android-${{ env.AXMOL_VERSION }}
 
+      # setup.ps1 mengambil NDK r23d lewat endpoint androidbuildinternal yang sekarang
+      # membalas 501. Unduh dari link raw ci.android.com ke cache Axmol; 1kiss memakai
+      # file yang sudah ada di cache dan tidak mengunduh ulang.
+      - name: Download NDK r23d
+        shell: pwsh
+        run: |
+          $zip = "$env:AX_ROOT/cache/android-ndk-12186248-windows-x86_64.zip"
+          if (!(Test-Path $zip)) {
+            New-Item -ItemType Directory -Force "$env:AX_ROOT/cache" | Out-Null
+            curl.exe -fsSL --retry 5 -o $zip "https://ci.android.com/builds/submitted/12186248/win64/latest/raw/android-ndk-12186248-windows-x86_64.zip"
+            if ($LASTEXITCODE -ne 0) { throw "NDK download failed" }
+          }
+
       - name: Decode keystore
         shell: pwsh
         run: |
