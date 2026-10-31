@@ -28,14 +28,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
     ax::RenderView* pRenderView = pDirector->getRenderView();
     if (!pRenderView) {
 #if (AX_TARGET_PLATFORM != AX_PLATFORM_ANDROID) && (AX_TARGET_PLATFORM != AX_PLATFORM_IOS)
-        // 2x the 480x320 design resolution so the window is usable on modern screens
-        pRenderView = ax::RenderViewImpl::createWithRect("NarutoSenki", ax::Rect(0, 0, 960, 640));
+        // 16:9 window (720p) for the 568x320 design resolution
+        pRenderView = ax::RenderViewImpl::createWithRect("NarutoSenki", ax::Rect(0, 0, 1280, 720));
 #else
         pRenderView = ax::RenderViewImpl::create("NarutoSenki");
 #endif
         pDirector->setRenderView(pRenderView);
     }
-	pRenderView->setDesignResolutionSize(480,320,ResolutionPolicy::FIXED_HEIGHT);
+	// 16:9 design (the menu backgrounds are 570x320). SHOW_ALL keeps it 16:9 on every
+	// device, with bars on wider/narrower screens: walk speed and AI ranges scale
+	// with winSize.width, so letting the width follow the screen would change gameplay.
+	pRenderView->setDesignResolutionSize(568,320,ResolutionPolicy::SHOW_ALL);
 
     // turn on display FPS
     pDirector->setStatsDisplay(false);
