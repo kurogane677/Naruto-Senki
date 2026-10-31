@@ -889,6 +889,9 @@ void HudLayer::setBuffDisplay(const char* buffName, float buffStayTime){
 	CCAction* seq=CCSequence::create(seqArray);
 	buffSprite->runAction(seq);
 	buffSprite->setTag(0);
+	// kept alive on purpose: bcdLabel1/2 live inside the sprite and the HUD
+	// countdown timers keep using them after the sprite is removed
+	buffSprite->retain();
 
 	this->addChild(buffSprite,500);
 	_buffCount++;
