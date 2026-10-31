@@ -41,7 +41,7 @@ public:
 	
 
 	CCString*  readSQLite(const char* table,const char* column,const char* value,const char* targetColumn);
-	void saveSQLite(const char* table,const char* relatedColumn,const char* value,const char* targetColumn,char* targetValue,bool isPlus);
+	void saveSQLite(const char* table,const char* relatedColumn,const char* value,const char* targetColumn,const char* targetValue);
 
 
 	CC_SYNTHESIZE(SelectLayer*,_delegate,Delegate);

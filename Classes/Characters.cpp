@@ -5150,7 +5150,7 @@ void Hero::AI_Chiyo(){
 						&& strcmp(tempHero->getCharacter()->getCString(),"Chiyo")!=0
 						){
 							CCPoint	sp=ccpSub(tempHero->getPosition(),this->getPosition());
-							if(sp.x<=winSize.width/2){
+							if(abs(sp.x)<=winSize.width/2){
 								countNum++;
 							}
 

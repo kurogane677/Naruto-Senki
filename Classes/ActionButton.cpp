@@ -105,9 +105,7 @@ bool ActionButton::isCanClick(){
 	//recorde current time sec format;
 	
 
-	cc_timeval timeVal;
-	CCTime::gettimeofdayCocos2d(&timeVal, 0);
-	float curTime = timeVal.tv_sec * 1000 + timeVal.tv_usec / 1000;
+	float curTime = nowMs();
 	
 	 if(this->_abType!=NAttack ){
 
@@ -180,9 +178,7 @@ bool ActionButton::isCanClick(){
 
 void ActionButton::beganAnimation(bool isLock){
 	//record the click time
-	cc_timeval timeVal;
-	CCTime::gettimeofdayCocos2d(&timeVal, 0);
-	_clickTime = timeVal.tv_sec * 1000 + timeVal.tv_usec / 1000;
+	_clickTime = nowMs();
 
 	if(markSprite && this->getABType()!=OUGIS1 && this->getABType()!=OUGIS2){
 		if(!_freezeAction || _isColdChanged){

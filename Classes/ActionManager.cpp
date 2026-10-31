@@ -213,6 +213,7 @@ void ActionManager::readDate(CCArray* tmpDate,CCString* &attackType,CCString* &a
 			break;
 		case 4:
 			coldDown=tmpDict->valueForKey("coldDown")->intValue();
+			break;
 		case 5:
 			combatPoint=tmpDict->valueForKey("combatPoint")->intValue();
 		};
@@ -1427,7 +1428,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 						Monster* mo=(Monster*) pObject;
 						if(strcmp(mo->getCharacter()->getCString(),"Parents")==0 && !mo->_skillChangeBuffValue && mo->getActionState()!=ACTION_STATE_SATTACK){
 							CCPoint	sp=ccpSub(mo->getPosition(),this->getPosition());
-							if(sp.x<=48){
+							if(abs(sp.x)<=48){
 								jianshang+=0.25;
 							}
 						}
@@ -1447,7 +1448,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		
 	}
 
-	if (atoi(_hp->getCString())-realValue<0){
+	if (atoi(_hp->getCString())<(int)realValue){
 		this->setHP(CCString::createWithFormat("%d",0));
 	}else{
 		this->setHP(CCString::createWithFormat("%d",atoi(this->getHP()->getCString())-realValue));
@@ -1967,9 +1968,7 @@ bool ActionManager::setGear(gearType type){
 			
 			this->isGearCD=true;
 			
-			this->_sattackcoldDown1-=5;
-			this->_sattackcoldDown2-=5;
-			this->_sattackcoldDown3-=5;
+			reduceSkillCD(5);
 
 			if(strcmp(this->getRole()->getCString(),"Player")==0){
 				this->_delegate->getHudLayer()->skill1Button->setCD(CCString::createWithFormat("%d",this->_sattackcoldDown1*1000));
@@ -1987,8 +1986,10 @@ bool ActionManager::setGear(gearType type){
 			break;
 		case gear07:
 			gearRecoverValue=3000;
-			this->_delegate->getHudLayer()->item1Button->setCD(CCString::createWithFormat("%d",3000));
-			this->_delegate->getHudLayer()->item1Button->_isColdChanged=true;
+			if(strcmp(this->getRole()->getCString(),"Player")==0){
+				this->_delegate->getHudLayer()->item1Button->setCD(CCString::createWithFormat("%d",3000));
+				this->_delegate->getHudLayer()->item1Button->_isColdChanged=true;
+			}
 			break;
 		case gear08:
 			int tempMaxHP=atoi(this->getMaxHP()->getCString());
@@ -2935,7 +2936,7 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 					&& tempHero->_actionState!=ACTION_STATE_DEAD
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-						if(distanceX<winSize.width/2){
+						if(abs(distanceX)<winSize.width/2){
 							//取消隐身
 							if(!tempHero->_isVisable){
 								if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
@@ -3192,9 +3193,7 @@ void ActionManager::disableDebuff(float dt){
 }
 
 void ActionManager::healBuff(float dt){
-	cc_timeval timeVal;
-	CCTime::gettimeofdayCocos2d(&timeVal, 0);
-	float curTime = timeVal.tv_sec * 1000 + timeVal.tv_usec / 1000;
+	float curTime = nowMs();
 
 	if(!_buffStartTime){
 		_buffStartTime=curTime;	
@@ -3410,9 +3409,7 @@ void ActionManager::healBuff(float dt){
 }
 
 void ActionManager::dehealBuff(float dt){
-	cc_timeval timeVal;
-	CCTime::gettimeofdayCocos2d(&timeVal, 0);
-	float curTime = timeVal.tv_sec * 1000 + timeVal.tv_usec / 1000;
+	float curTime = nowMs();
 
 	if(!_debuffStartTime)_debuffStartTime=curTime;	
 	
@@ -3722,7 +3719,7 @@ void ActionManager::changeAction(){
 					&& tempHero->_actionState!=ACTION_STATE_DEAD
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-						if(distanceX<winSize.width/2){
+						if(abs(distanceX)<winSize.width/2){
 							//取消隐身
 							if(!tempHero->_isVisable){
 								if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
@@ -3802,7 +3799,7 @@ void ActionManager::changeAction(){
 					&& tempHero->_actionState!=ACTION_STATE_DEAD
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-						if(distanceX<winSize.width/2){
+						if(abs(distanceX)<winSize.width/2){
 							//取消隐身
 							if(!tempHero->_isVisable){
 								if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
@@ -3876,7 +3873,7 @@ void ActionManager::changeAction(){
 				&& tempHero->_actionState!=ACTION_STATE_DEAD
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-					if(distanceX<winSize.width/2){
+					if(abs(distanceX)<winSize.width/2){
 						//取消隐身
 						if(!tempHero->_isVisable){
 							if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
@@ -3975,7 +3972,7 @@ void ActionManager::changeAction(){
 				&& tempHero->_actionState!=ACTION_STATE_DEAD
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-					if(distanceX<winSize.width/2){
+					if(abs(distanceX)<winSize.width/2){
 						//取消隐身
 						if(!tempHero->_isVisable){
 							if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
@@ -6239,7 +6236,7 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 				&& tempHero->_actionState!=ACTION_STATE_DEAD
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-					if(distanceX<winSize.width/2){
+					if(abs(distanceX)<winSize.width/2){
 						//取消隐身
 						if(!tempHero->_isVisable){
 							if(strcmp(tempHero->getCharacter()->getCString(),"Konan")==0 ||
@@ -6537,9 +6534,7 @@ void ActionManager::setTransform(){
 	}
 	
 	if(isGearCD){
-		this->_sattackcoldDown1-=5;
-		this->_sattackcoldDown2-=5;
-		this->_sattackcoldDown3-=5;
+		reduceSkillCD(5);
 	}
 
 	if(_role && strcmp(_role->getCString(),"Player")==0){
@@ -6977,7 +6972,7 @@ bool ActionManager::hurt(){
 				Monster* mo=(Monster*) pObject;
 				if(strcmp(mo->getCharacter()->getCString(),"Parents")==0 && !mo->_skillChangeBuffValue && mo->getActionState()!=ACTION_STATE_SATTACK  && mo->getActionState()!=ACTION_STATE_DEAD){
 					CCPoint	sp=ccpSub(mo->getPosition(),this->getPosition());
-					if(sp.x<=48){
+					if(abs(sp.x)<=48){
 					
 						return false;
 					}
@@ -7051,7 +7046,7 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 					Monster* mo=(Monster*) pObject;
 					if(strcmp(mo->getCharacter()->getCString(),"Parents")==0 && !mo->_skillChangeBuffValue && mo->getActionState()!=ACTION_STATE_SATTACK  && mo->getActionState()!=ACTION_STATE_DEAD){
 						CCPoint	sp=ccpSub(mo->getPosition(),this->getPosition());
-						if(sp.x<=48){
+						if(abs(sp.x)<=48){
 							if(mo->_isCanSkill3){						
 								mo->attack(SKILL3);
 							}
@@ -7112,7 +7107,7 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 
 			}
 
-			CCAction* delay=CCDelayTime::create(delayTime/1000);
+			CCAction* delay=CCDelayTime::create(delayTime/1000.0f);
 			list->addObject(delay);
 
 
@@ -7236,7 +7231,7 @@ void ActionManager::floatUP(float floatHeight, bool isCancelSkill){
 					Monster* mo=(Monster*) pObject;
 					if(strcmp(mo->getCharacter()->getCString(),"Parents")==0 && !mo->_skillChangeBuffValue && mo->getActionState()!=ACTION_STATE_SATTACK  && mo->getActionState()!=ACTION_STATE_DEAD){
 						CCPoint	sp=ccpSub(mo->getPosition(),this->getPosition());
-						if(sp.x<=48){
+						if(abs(sp.x)<=48){
 							if(mo->_isCanSkill3){						
 								mo->attack(SKILL3);
 							}
@@ -7604,12 +7599,12 @@ bool ActionManager::findEnemy(const char* type,int searchRange,bool masterRange)
 			this->getActionState()==ACTION_STATE_O2ATTACK) ||
 			(this->getMaster() && (
 			this->getMaster()->getActionState()==ACTION_STATE_OATTACK ||
-			this->getActionState()==ACTION_STATE_O2ATTACK
+			this->getMaster()->getActionState()==ACTION_STATE_O2ATTACK
 			))
 			){
 				if(strcmp(target->_role->getCString(),"Clone")==0||
 					strcmp(target->_role->getCString(),"Summon")==0||
-					strcmp(target->_role->getCString(),"Monster")==0){
+					strcmp(target->_role->getCString(),"Mon")==0){
 						continue;
 				}
 		}
@@ -7699,13 +7694,13 @@ bool ActionManager::findEnemy2(const char* type){
 					int baseSkillCombatPoint=0;
 
 					if(target->_isCanSkill1){
-						baseSkillCombatPoint+=_sattackCombatPoint1;
+						baseSkillCombatPoint+=target->_sattackCombatPoint1;
 					}
 					if(target->_isCanSkill2){
-						baseSkillCombatPoint+=_sattackCombatPoint2;
+						baseSkillCombatPoint+=target->_sattackCombatPoint2;
 					}
-					if(target->_isCanSkill2){
-						baseSkillCombatPoint+=_sattackCombatPoint3;
+					if(target->_isCanSkill3){
+						baseSkillCombatPoint+=target->_sattackCombatPoint3;
 					}
 
 					if(strcmp(this->_group->getCString(),target->_group->getCString())==0){
@@ -7994,8 +7989,7 @@ bool ActionManager::stepBack2(){
 	}
 	CCPoint moveDirection;
 	
-	srand((int)time(0));
-	int randomDirection=random(10);
+	int randomDirection=randInt(10);
 
 	if(!_backY){
 		
@@ -8059,6 +8053,14 @@ bool ActionManager::stepBack2(){
 
 }
 
+
+// Cooldowns are unsigned seconds: clamp instead of wrapping around.
+void ActionManager::reduceSkillCD(unsigned int seconds){
+	unsigned int* cds[]={&_sattackcoldDown1,&_sattackcoldDown2,&_sattackcoldDown3};
+	for(unsigned int* cd:cds){
+		*cd=*cd>seconds+1?*cd-seconds:1;
+	}
+}
 
 void ActionManager::changeSide(CCPoint sp){
 	if(sp.x>0){

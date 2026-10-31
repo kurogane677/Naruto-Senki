@@ -107,8 +107,7 @@ void GameLayer::initTileMap(){
 	
 
 	if(_isHardCoreGame){
-		srand((int)time(0));
-		randomMap=random(4)+1;
+		randomMap=randInt(4)+1;
 	}else {
 		randomMap=0;
 	}
@@ -138,8 +137,7 @@ void GameLayer::initGard(){
 
 
 	int index=0;
-	srand((int)time(0));
-	index=random(2);
+	index=randInt(2);
 	Hero* Guardian=Hero::create();
 	Guardian->setDelegate(this);
 
@@ -643,7 +641,7 @@ void GameLayer::updateViewPoint(float dt){
 	}
 
 	int x=MAX(playerPoint.x,winSize.width/2);
-	int y=MAX(playerPoint.y,winSize.width/2);
+	int y=MAX(playerPoint.y,winSize.height/2);
 	x=MIN(x,(currentMap->getMapSize().width*currentMap->getTileSize().width)-winSize.width/2);
 	y=MIN(y,(currentMap->getMapSize().height*currentMap->getTileSize().height)-winSize.height/2);
 
@@ -742,18 +740,13 @@ void GameLayer::checkTower(){
 
 		if(strcmp(tmpHero->getGroup()->getCString(),"Konoha")==0){
 			tmpHero->battleCondiction=konohaTowerCount-akatsukiTowerCount;
-			if(konohaTowerCount==1){
-				tmpHero->isBaseDanger=true;
-			}	
+			tmpHero->isBaseDanger=konohaTowerCount==1;
+	
 
 		}else{
 			
 			tmpHero->battleCondiction=akatsukiTowerCount-konohaTowerCount;
-			if(_isHardCoreGame){
-				if(akatsukiTowerCount==1){
-					tmpHero->isBaseDanger=true;
-				}
-			}
+			tmpHero->isBaseDanger=akatsukiTowerCount==1;
 		}
 
 

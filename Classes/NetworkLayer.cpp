@@ -866,14 +866,12 @@ void NetworkLayer::onGameStart(CCObject* sender){
 		if(_playerSelect){
 			tmpChar=CCString::create(_playerSelect);
 		}else{	
-			srand((int)time(0));
 			int num2=this->getSelectList()->count();
-			int index=random(num2);
+			int index=randInt(num2);
 			tmpChar=(CCString*)_selectList->objectAtIndex(index);
 			do{
-				srand((int)time(0));
 				int num=this->getSelectList()->count();
-				int index=random(num);
+				int index=randInt(num);
 				tmpChar=(CCString*)_selectList->objectAtIndex(index);
 			}
 			while(strcmp(tmpChar->getCString(),"Pain")==0 ||
@@ -887,9 +885,8 @@ void NetworkLayer::onGameStart(CCObject* sender){
 		}
 			
 		
-		srand((int)time(0));
 		int zhenying=1;
-		zhenying=random(2);
+		zhenying=randInt(2);
 
 		const char* groupName;
 		if(zhenying>0){
@@ -946,8 +943,7 @@ void NetworkLayer::onGameStart(CCObject* sender){
 					hero=CCString::create(_com2Select);
 				}else{
 					int length=realHero->count();
-					srand((int)time(0));
-					int index=random(length);
+					int index=randInt(length);
 					if(index==(int)realHero->count()){
 						index=realHero->count()-1;
 					}
@@ -974,8 +970,7 @@ void NetworkLayer::onGameStart(CCObject* sender){
 
 			}else{
 				int length=realHero->count();
-				srand((int)time(0));
-				int index=random(length);
+				int index=randInt(length);
 				if(index==(int)realHero->count()){
 					index=realHero->count()-1;
 				}

@@ -1,12 +1,13 @@
 #pragma once
 #include "Compat/Compat2x.h"
 #include <map>
+#include "MyUtils/Util.h"
 
 
 //global parameter
 
 #define winSize  CCDirector::sharedDirector()->getWinSize()
-#define random(x) (rand()%x)
+
 
 
 #define  FONT_TYPE "微软雅黑"

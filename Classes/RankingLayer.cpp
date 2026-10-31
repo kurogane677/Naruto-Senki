@@ -293,7 +293,7 @@ bool RakingLayer::init(){
 		//	
 		//}else{
 		//	side_menu1->setPosition(ccp(ranking_bg->getPositionX()-ranking_bg->getContentSize().width/2-40,ranking_bg->getPositionY()+ranking_bg->getContentSize().height/2-35));
-		//	side1_btn->selected();
+		//	if(side1_btn) side1_btn->selected();
 		//}
 		//
 		//ranking_layer->addChild(side_menu1,6);
@@ -379,9 +379,9 @@ void RakingLayer::produceRanking(int type){
 		if(side0_btn){
 			side0_btn->selected();
 		}
-		side1_btn->unselected();
+		if(side1_btn) side1_btn->unselected();
 		side2_btn->unselected();
-		side3_btn->unselected();
+		if(side3_btn) side3_btn->unselected();
 
 		isMemberSelect=true;
 		isGroupSelect=false;
@@ -408,9 +408,9 @@ void RakingLayer::produceRanking(int type){
 		if(side0_btn){
 			side0_btn->unselected();
 		}
-		side1_btn->selected();
+		if(side1_btn) side1_btn->selected();
 		side2_btn->unselected();
-		side3_btn->unselected();
+		if(side3_btn) side3_btn->unselected();
 
 		isMemberSelect=false;
 		isGroupSelect=false;
@@ -464,8 +464,8 @@ void RakingLayer::produceRanking(int type){
 		if(side0_btn){
 			side0_btn->unselected();
 		}
-		side3_btn->selected();
-		side1_btn->unselected();
+		if(side3_btn) side3_btn->selected();
+		if(side1_btn) side1_btn->unselected();
 		side2_btn->unselected();
 		if(ranking_title){
 			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("ranking_title3.png"); 
@@ -508,7 +508,11 @@ void RakingLayer::postRequest(int code,CCString* useChar/* =NULL */){
 		data=(const char*)ccGetFileData("rank2.json", "r",&size);
 	}
 
-	std::string clearData(data);
+	if(!data){
+		return;
+	}
+	std::string clearData(data,size);
+	delete[] data;
 	size_t pos = clearData.rfind("]");
 	clearData = clearData.substr(0, pos+1);
 

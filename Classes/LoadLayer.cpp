@@ -251,7 +251,6 @@ void LoadLayer::preloadIMG(){
 
 	
 	try{
-		srand((int)time(0));
 		int num=rand()%3+1;	
 		CCSprite* tips=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("tip%d.png",num)->getCString());	
 		tips->setPosition(ccp(winSize.width/2,winSize.height/2));

@@ -482,6 +482,7 @@ protected:
 	bool				checkRetri();
 	void				stepOn();
 	void				changeSide(CCPoint sp);
+	void				reduceSkillCD(unsigned int seconds);
 
 	
 

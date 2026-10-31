@@ -20,18 +20,18 @@ public:
 
 	CREATE_FUNC(RakingLayer);
 
-	CCMenuItem* day_btn;
-	CCMenuItem* week_btn;
-	CCMenuItem* month_btn;
+	CCMenuItem* day_btn=nullptr;
+	CCMenuItem* week_btn=nullptr;
+	CCMenuItem* month_btn=nullptr;
 
 
-	CCMenuItem* battlePoint_btn;
-	CCMenuItem* JifenPoint_btn;
+	CCMenuItem* battlePoint_btn=nullptr;
+	CCMenuItem* JifenPoint_btn=nullptr;
 
-	CCMenuItem* side0_btn;
-	CCMenuItem* side1_btn;
-	CCMenuItem* side2_btn;
-	CCMenuItem* side3_btn;
+	CCMenuItem* side0_btn=nullptr;
+	CCMenuItem* side1_btn=nullptr;
+	CCMenuItem* side2_btn=nullptr;
+	CCMenuItem* side3_btn=nullptr;
 
 	CCMenu* order_menu;
 	CCSprite* ranking_title;
