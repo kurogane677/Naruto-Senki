@@ -230,7 +230,7 @@ Ukuran total yang diunduh: ±1,5 GB (NDK ±790 MB, cmdline-tools 143 MB, JDK 187
 | Package / applicationId | `com.yusrilcode.game` | `.axproj` (`package_name`) |
 | Nama aplikasi | `Naruto Senki` | `proj.android/app/res/values/strings.xml` |
 | ABI | `arm64-v8a` | `proj.android/gradle.properties` (`__1K_ARCHS`), atau opsi `-a` |
-| Icon | `proj.android/app/res/mipmap-*/ic_launcher.png` | ganti dengan icon game |
+| Icon | `icon.png` (root repo, 114×114) | di-resize ke `proj.android/app/res/mipmap-*/ic_launcher.png` (48/72/96/144 px) |
 | Orientasi | `sensorLandscape` | `proj.android/app/AndroidManifest.xml` |
 | Resolusi | 568×320 (16:9), `SHOW_ALL` | `Classes/AppDelegate.cpp`. Di HP 19.5:9/20:9 ada strip hitam tipis kiri-kanan, karena kecepatan jalan dan jangkauan AI dihitung dari lebar layar |
 
@@ -330,7 +330,7 @@ Lalu buka folder `proj.android` di Android Studio, set *Gradle JDK* ke JDK 17, p
 | Training: pilih hero, loading, match 3v3 | ✅ |
 | Semua hero yang bisa dipilih + transformasi (SageNaruto, dll.) sampai GameOver | ✅ (M6) |
 | Joystick, attack, skill 1–3 + cooldown, item potion | ✅ |
-| Ougis LV2 / LV4 (cut-in, buff) | ✅ |
+| Ougis LV2 / LV4 (cut-in, buff); terkunci sampai level & chakra cukup | ✅ |
 | Creep, tower, level-up, respawn, kill feed, minimap | ✅ |
 | Pause: resume, surrender, toggle BGM/voice | ✅ |
 | GameOver (RESULT) → kembali ke menu → main lagi | ✅ |
@@ -421,7 +421,6 @@ Perilaku berikut **bawaan kode asli**, bukan akibat migrasi. Sesuai aturan roadm
 
 | Masalah | Keterangan |
 |---|---|
-| Ougis LV2/LV4 bisa dipakai sejak level 1 | Cek chakra/lock di `ActionButton` dikomentari di kode asli |
 | Ikon buff tidak tampil untuk sebagian hero | `UI.plist` hanya punya ikon untuk Sakura & Chiyo; buff tetap berjalan |
 | HP bisa minus, stun 500 ms jadi 0 s, cek jarak tanpa `abs()` | Lihat daftar bug di memory/report proyek |
 | Hero Orochimaru, Nagato, Pain diam jika dikendalikan AI | AI-nya kosong di kode asli |
@@ -429,7 +428,6 @@ Perilaku berikut **bawaan kode asli**, bukan akibat migrasi. Sesuai aturan roadm
 | Memory leak kecil di beberapa tempat (`retain` tanpa `release`) | Tidak memengaruhi MVP |
 | Format save `UserDefault` berubah (`.bin`) | Pengaturan dari build 2.x tidak terbaca |
 | Banyak frame sprite yang dirujuk kode tidak ada di resource (`select_title.png`, `hardcore_title.png`, UI grup/profil online, dll.) | Di build Debug langsung assert. Yang ada di jalur Training/HardCore sudah diganti; sisanya ada di fitur online yang mati |
-| Rekor menang hero transformasi tercatat dengan nama transformasinya (mis. `SageNaruto`, bukan `Naruto`) | Akibat perubahan urutan di `GameOver::listResult` (commit `107e8b1`); mapping-nya tertimpa oleh `resultChar=...getCharacter()` |
 
 ---
 
