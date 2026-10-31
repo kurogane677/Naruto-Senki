@@ -1176,24 +1176,6 @@ CCAction* ActionManager::createAnimation(CCArray* ationArray,float fps,bool isRe
 					callValue->setObject(CCString::create(keyValue), 1);
 					CCFiniteTimeAction *call = CCCallFuncND::create(this,callfuncND_selector(ActionManager::setMon),(void*)callValue);
 					seqArray->addObject(call);
-				}else if(strcmp(key,"setFont")==0){
-					callValue = CCDictionary::create(); 
-					callValue->retain();
-					const char * split = ",";
-					char * p; 
-					char* str = new char[20];
-					strcpy(str,keyValue);
-					p = strtok (str,split); 
-					int i=1;
-					while(p!=NULL) { 
-						callValue->setObject(CCString::create(p), i);
-						i++;
-						p = strtok(NULL,split); 
-					} 
-
-					//CCFiniteTimeAction *call = CCCallFuncND::create(this,callfuncND_selector(ActionManager::setFontEffect),(void*)callValue);
-					//seqArray->addObject(call);
-
 				}else if(strcmp(key,"setBuff")==0){
 					int buffValue=dic->valueForKey(key)->intValue();
 					CCFiniteTimeAction *call = CCCallFuncND::create(this,callfuncND_selector(ActionManager::setBuff),(void*)buffValue);

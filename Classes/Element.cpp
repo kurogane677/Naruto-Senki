@@ -23,7 +23,7 @@ HeroElement::~HeroElement(void)
 	CC_SAFE_RELEASE(_spcattackType3);
 	CC_SAFE_RELEASE(_damageArray);
 	CC_SAFE_RELEASE(_monsterArray);
-	CC_SAFE_DELETE(skillSPC1Array);
+	CC_SAFE_RELEASE(skillSPC1Array);
 	CC_SAFE_RELEASE(skillSPC2Array);
 	CC_SAFE_RELEASE(skillSPC3Array);
 	CC_SAFE_RELEASE(skillSPC4Array);

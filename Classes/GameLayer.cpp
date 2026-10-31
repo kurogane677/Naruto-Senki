@@ -537,6 +537,7 @@ void GameLayer::initTower(){
 	CCArray* metaArray= ccArrayFromValueVector(metaGroup->getObjects());
 
 	_TowerArray=CCArray::create();
+	_TowerArray->retain();
 
 	CCObject *pObject;
 	int i=0;
@@ -586,7 +587,6 @@ void GameLayer::initTower(){
 		this->addChild(tower,-tower->getPositionY());
 
 		_TowerArray->addObject(tower);
-		_TowerArray->retain();
 
 		i++;
 	}

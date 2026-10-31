@@ -384,25 +384,25 @@ public:
 	bool				_isCanOugis1;
 	bool				_isCanOugis2;
 
-	CCArray*			idleArray;
-	CCArray*			walkArray;
-	CCArray*			hurtArray;
-	CCArray*			airHurtArray;
-	CCArray*			knockDownArray;
-	CCArray*			floatArray;
-	CCArray*			deadArray;
-	CCArray*			nattackArray;
-	CCArray*			skill1Array;
-	CCArray*			skill2Array;
-	CCArray*			skill3Array;
-	CCArray*			skill4Array;
-	CCArray*			skill5Array;
+	CCArray*			idleArray=nullptr;
+	CCArray*			walkArray=nullptr;
+	CCArray*			hurtArray=nullptr;
+	CCArray*			airHurtArray=nullptr;
+	CCArray*			knockDownArray=nullptr;
+	CCArray*			floatArray=nullptr;
+	CCArray*			deadArray=nullptr;
+	CCArray*			nattackArray=nullptr;
+	CCArray*			skill1Array=nullptr;
+	CCArray*			skill2Array=nullptr;
+	CCArray*			skill3Array=nullptr;
+	CCArray*			skill4Array=nullptr;
+	CCArray*			skill5Array=nullptr;
 
-	CCArray*			skillSPC1Array;
-	CCArray*			skillSPC2Array;
-	CCArray*			skillSPC3Array;
-	CCArray*			skillSPC4Array;
-	CCArray*			skillSPC5Array;
+	CCArray*			skillSPC1Array=nullptr;
+	CCArray*			skillSPC2Array=nullptr;
+	CCArray*			skillSPC3Array=nullptr;
+	CCArray*			skillSPC4Array=nullptr;
+	CCArray*			skillSPC5Array=nullptr;
 
 
 	virtual void	    dealloc();
@@ -429,7 +429,7 @@ protected:
 
 	CCAction*			createAnimation(CCArray* ationArray,float fps,bool isRepeat,bool isReturn);
 
-	CCDictionary*		callValue;
+	CCDictionary*		callValue=nullptr;
 	
 	void				setSound(CCNode* sender,void* date);
 	void				setDSound(CCNode* sender,void* date);
