@@ -145,7 +145,7 @@ void GameOver::listResult(){
 
 	float _totalSecond=_delegate->_minute*60+_delegate->_second;
 	float resultScore=0;
-	int killDead=atoi(_delegate->currentPlayer->getKillNum()->getCString())-_delegate->currentPlayer->_deadNum;
+	int killDead=_delegate->currentPlayer->getKillNum()-_delegate->currentPlayer->_deadNum;
 	
 	
 	
@@ -208,7 +208,7 @@ void GameOver::listResult(){
 
 
 
-		int realKillNum=atoi(hero->getKillNum()->getCString());
+		int realKillNum=hero->getKillNum();
 
 		if(strcmp(hero->getGroup()->getCString(),"Konoha")==0){
 			konohaKill+=realKillNum;
@@ -289,7 +289,7 @@ void GameOver::listResult(){
 	if(Cheats<=10){
 
 
-	int realKillNum=atoi(_delegate->currentPlayer->getKillNum()->getCString());
+	int realKillNum=_delegate->currentPlayer->getKillNum();
 	
 	std::string tempReward="";
 	if(_delegate->_isHardCoreGame){
@@ -414,7 +414,7 @@ void GameOver::listResult(){
 			//this->addChild(upMenu,7);
 
 
-			detailRecord=CCString::createWithFormat("%02d:%02d,%s,%d,%d",_minute,_delegate->_second,_delegate->currentPlayer->getKillNum()->getCString(),_delegate->currentPlayer->_deadNum,_delegate->currentPlayer->_flogNum)->getCString();
+			detailRecord=CCString::createWithFormat("%02d:%02d,%d,%d,%d",_minute,_delegate->_second,_delegate->currentPlayer->getKillNum(),_delegate->currentPlayer->_deadNum,_delegate->currentPlayer->_flogNum)->getCString();
 
 		}
 

@@ -1377,7 +1377,7 @@ void Hero::AI_Naruto(){
 	this->findEnemy2("Hero");
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear03);
 		}else if(this->getGearArray()->count()==1){
@@ -1543,7 +1543,7 @@ void Hero::AI_SageNaruto(){
 	this->findEnemy2("Hero");
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear03);
 		}else if(this->getGearArray()->count()==1){
@@ -1711,7 +1711,7 @@ void Hero::AI_RikudoNaruto(){
 	this->findEnemy2("Hero");
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear03);
 		}else if(this->getGearArray()->count()==1){
@@ -1892,7 +1892,7 @@ void Hero::AI_Asuma(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -2081,7 +2081,7 @@ void Hero::AI_Kakashi(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -2248,7 +2248,7 @@ void Hero::AI_Konan(){
 
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear03);
 		}else if(this->getGearArray()->count()==1){
@@ -2465,7 +2465,7 @@ void Hero::AI_Deidara(){
 	this->findEnemy2("Hero");
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){
@@ -2681,7 +2681,7 @@ void Hero::AI_Ino(){
 	}
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -2726,8 +2726,8 @@ void Hero::AI_Ino(){
 
 	}
 
-	if(atoi(this->getMaxHP()->getCString())- atoi(this->getHP()->getCString())>=3000 && 
-		atoi(this->getCoin()->getCString())>=50 && !_isHealling && _isCanItem1 && _isBati){
+	if(this->getMaxHP()- this->getHP()>=3000 && 
+		this->getCoin()>=50 && !_isHealling && _isCanItem1 && _isBati){
 			this->setItem(Item1);
 
 	}
@@ -2873,7 +2873,7 @@ void Hero::AI_Sai(){
 	}
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -3073,7 +3073,7 @@ void Hero::AI_Sakura(){
 
 	
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){
@@ -3338,7 +3338,7 @@ void Hero::AI_Tenten(){
 	this->findEnemy2("Hero");
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){
@@ -3549,7 +3549,7 @@ void Hero::AI_Itachi(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -3749,7 +3749,7 @@ void Hero::AI_Jiraiya(){
 	}
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -3924,7 +3924,7 @@ void Hero::AI_SageJiraiya(){
 	}
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -4104,7 +4104,7 @@ void Hero::AI_Suigetsu(){
 
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){
@@ -4303,7 +4303,7 @@ void Hero::AI_Tsunade(){
 	this->findEnemy2("Hero");
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear03);
 		}else if(this->getGearArray()->count()==1){
@@ -4497,7 +4497,7 @@ void Hero::AI_Sasuke(){
 	}
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -4686,7 +4686,7 @@ void Hero::AI_ImmortalSasuke(){
 	}
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -4880,7 +4880,7 @@ void Hero::AI_Kankuro(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -5072,7 +5072,7 @@ void Hero::AI_Chiyo(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -5326,7 +5326,7 @@ void Hero::AI_Kakuzu(){
 
 	
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear03);
 		}else if(this->getGearArray()->count()==1){
@@ -5498,7 +5498,7 @@ void Hero::AI_Shikamaru(){
 
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){
@@ -5709,7 +5709,7 @@ void Hero::AI_Gaara(){
 	}
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -5872,7 +5872,7 @@ void Hero::AI_Tobirama(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -6062,7 +6062,7 @@ void Hero::AI_Choji(){
 	}
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -6258,7 +6258,7 @@ void Hero::AI_Karin(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -6454,7 +6454,7 @@ void Hero::AI_Lee(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -6620,7 +6620,7 @@ void Hero::AI_RockLee(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -6814,7 +6814,7 @@ void Hero::AI_Jugo(){
 	}
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -7007,7 +7007,7 @@ void Hero::AI_Kisame(){
 
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){
@@ -7243,7 +7243,7 @@ void Hero::AI_Hidan(){
 						CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 							ActionManager* tempHero=(ActionManager*) pObject;
 							if( strcmp(tempHero->getGroup()->getCString(),this->getGroup()->getCString())!=0
-								&& atoi(tempHero->getHP()->getCString())<2000
+								&& tempHero->getHP()<2000
 								&& tempHero->getActionState()!=ACTION_STATE_DEAD
 								&& (strcmp(tempHero->getRole()->getCString(),"Player")==0 ||
 								strcmp(tempHero->getRole()->getCString(),"Com")==0
@@ -7282,7 +7282,7 @@ void Hero::AI_Hidan(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -7474,7 +7474,7 @@ void Hero::AI_Tobi(){
 
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear03);
 		}else if(this->getGearArray()->count()==1){
@@ -7674,7 +7674,7 @@ void Hero::AI_Shino(){
 	this->findEnemy2("Hero");
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){
@@ -7814,8 +7814,8 @@ void Hero::AI_Shino(){
 				this->attack(SKILL1);
 				return;
 			}else if(abs(sp.x)<128){ 
-				if(atoi(this->getMaxHP()->getCString())- atoi(this->getHP()->getCString())>=3000 && 
-					atoi(this->getCoin()->getCString())>=50 && !_isHealling && _isCanItem1){
+				if(this->getMaxHP()- this->getHP()>=3000 && 
+					this->getCoin()>=50 && !_isHealling && _isCanItem1){
 						this->setItem(Item1);					
 				}
 
@@ -7901,7 +7901,7 @@ void Hero::AI_Hiruzen(){
 
 	
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){
@@ -7965,7 +7965,7 @@ void Hero::AI_Hiruzen(){
 
 			if(_isCanOugis2 && !_isControled && _delegate->_isOugis2Game 
 				&&!_isBati 
-				&& atoi(_mainTarget->getHP()->getCString())<10000
+				&& _mainTarget->getHP()<10000
 				&& !_mainTarget->_isCanGear06
 				){
 					if(abs(sp.x)<32){
@@ -8115,7 +8115,7 @@ void Hero::AI_Kiba(){
 
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){
@@ -8298,7 +8298,7 @@ void Hero::AI_Minato(){
 		}
 	}
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear06);
 		}else if(this->getGearArray()->count()==1){
@@ -8456,7 +8456,7 @@ void Hero::AI_Minato(){
 					this->walk(moveDirection);
 					return;
 
-				}else if((abs(sp.x)> 32 || abs(sp.y)>32 ) && atoi(this->getnAttackValue()->getCString())<260){
+				}else if((abs(sp.x)> 32 || abs(sp.y)>32 ) && this->getnAttackValue()<260){
 
 					moveDirection =ccpNormalize(sp);
 					this->walk(moveDirection);
@@ -8556,7 +8556,7 @@ void Hero::AI_Hinata(){
 	
 
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){
@@ -8772,7 +8772,7 @@ void Hero::AI_Neji(){
 
 	
 	//忍具购买
-	if(atoi(this->getCoin()->getCString())>=500 && !_isControled && _delegate->_isHardCoreGame){
+	if(this->getCoin()>=500 && !_isControled && _delegate->_isHardCoreGame){
 		if(this->getGearArray()->count()==0){
 			this->setGear(gear00);
 		}else if(this->getGearArray()->count()==1){

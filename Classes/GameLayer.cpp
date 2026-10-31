@@ -574,11 +574,11 @@ void GameLayer::initTower(){
 		if(i==1 || i==4 ){
 			//4v4
 			if(Cheats>10){
-				tower->setMaxHP(CCString::createWithFormat("%d",80000));
+				tower->setMaxHP(80000);
 			}else{
-				tower->setMaxHP(CCString::createWithFormat("%d",50000));
+				tower->setMaxHP(50000);
 			}	
-			tower->setHP(CCString::create(tower->getMaxHP()->getCString()));
+			tower->setHP(tower->getMaxHP());
 		}
 		tower->setHPbar();
 		tower->_hpBar->setVisible(false);
@@ -662,7 +662,7 @@ void GameLayer::setCKRLose(bool isCRK2){
 
 
 
-void GameLayer::setReport(const char* name1, const char* name2,CCString* killNum){
+void GameLayer::setReport(const char* name1, const char* name2,int killNum){
 	this->_hudLayer->setReport(name1,name2,killNum);
 }
 

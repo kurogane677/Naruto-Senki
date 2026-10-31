@@ -92,8 +92,8 @@ ActionManager::ActionManager(void)
 	_role=NULL;
 	_group=NULL;
 	_character=NULL;
-	_killNum=NULL;
-	_coin=NULL;
+	_killNum=0;
+	_coin=0;
 
 	_master=NULL;
 	_controler=NULL;
@@ -116,16 +116,16 @@ ActionManager::ActionManager(void)
 
 	_originY=0;
 	
-	_nattackValue=NULL;
-	_sattackValue1=NULL;
-	_sattackValue2=NULL;
-	_sattackValue3=NULL;
-	_sattackValue4=NULL;
-	_sattackValue5=NULL;
-	_spcattackValue1=NULL;
-	_spcattackValue2=NULL;
-	_spcattackValue3=NULL;
-	_tempAttackValue1=NULL;
+	_nattackValue=0;
+	_sattackValue1=0;
+	_sattackValue2=0;
+	_sattackValue3=0;
+	_sattackValue4=0;
+	_sattackValue5=0;
+	_spcattackValue1=0;
+	_spcattackValue2=0;
+	_spcattackValue3=0;
+	_tempAttackValue1=0;
 	
 
 	_healBuffEffect=NULL;
@@ -147,10 +147,10 @@ ActionManager::ActionManager(void)
 	_dehealBuffValue=0;
 	_powerUPBuffValue=0;
 	_hpBar=NULL;
-	_maxHP=NULL;
-	_hp=NULL;
-	_ckr=NULL;
-	_ckr2=NULL;
+	_maxHP=0;
+	_hp=0;
+	_ckr=0;
+	_ckr2=0;
 
 
 	_gardValue=0;
@@ -191,7 +191,7 @@ void ActionManager::setShadows(){}
 void ActionManager::changeHPbar(){}
 
 
-void ActionManager::readDate(CCArray* tmpDate,CCString* &attackType,CCString* &attackValue,int &attackRangeX,int &attackRangeY,unsigned int &coldDown,int &combatPoint){
+void ActionManager::readDate(CCArray* tmpDate,CCString* &attackType,int &attackValue,int &attackRangeX,int &attackRangeY,unsigned int &coldDown,int &combatPoint){
 	
 	CCDictionary* tmpDict;
 	
@@ -202,7 +202,7 @@ void ActionManager::readDate(CCArray* tmpDate,CCString* &attackType,CCString* &a
 			attackType=CCString::create(tmpDict->valueForKey("attackType")->getCString());
 			break;
 		case 1:
-			attackValue=CCString::create(tmpDict->valueForKey("attackValue")->getCString());
+			attackValue=tmpDict->valueForKey("attackValue")->intValue();
 				//tmpDict->valueForKey("attackValue")->intValue();
 			break;
 		case 2:
@@ -1448,10 +1448,10 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		
 	}
 
-	if (atoi(_hp->getCString())<(int)realValue){
-		this->setHP(CCString::createWithFormat("%d",0));
+	if (_hp<(int)realValue){
+		this->setHP(0);
 	}else{
-		this->setHP(CCString::createWithFormat("%d",atoi(this->getHP()->getCString())-realValue));
+		this->setHP(this->getHP()-realValue);
 	}
 	
 	if(strcmp(this->getRole()->getCString(),"Clone")==0){
@@ -1482,14 +1482,14 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		if(_master){
 
 			if(_master->getLV()>=2 && !_master->_isControled){
-				if(45000-atof(_master->getCKR()->getCString())>=boundValue){
-					float newValue=atof(_master->getCKR()->getCString())+boundValue;
-					_master->setCKR(CCString::createWithFormat("%f",newValue));
+				if(45000-_master->getCKR()>=boundValue){
+					float newValue=_master->getCKR()+boundValue;
+					_master->setCKR(newValue);
 				}else{
-					_master->setCKR(CCString::create("45000"));
+					_master->setCKR(45000);
 				}	
 
-				if(atof(_master->getCKR()->getCString())>=15000){
+				if(_master->getCKR()>=15000){
 					_master->_isCanOugis1=true;
 					
 				}
@@ -1501,15 +1501,15 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 
 			if(_master->getLV()>=4 && !_master->_isControled){
 
-					if(50000-atof(_master->getCKR2()->getCString())>=boundValue){
-						float newValue=atof(_master->getCKR2()->getCString())+boundValue;
-						_master->setCKR2(CCString::createWithFormat("%f",newValue));
+					if(50000-_master->getCKR2()>=boundValue){
+						float newValue=_master->getCKR2()+boundValue;
+						_master->setCKR2(newValue);
 					}else{
 						
-						_master->setCKR2(CCString::create("50000"));
+						_master->setCKR2(50000);
 					}	
 
-					if(atof(_master->getCKR2()->getCString())>=25000){
+					if(_master->getCKR2()>=25000){
 						_master->_isCanOugis2=true;
 						
 					}
@@ -1559,15 +1559,15 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		}
 
 		if(_level>=2 && !_isControled && isGainable){
-				if(45000-atof(this->getCKR()->getCString())>=boundValue){
-					float newValue=atof(this->getCKR()->getCString())+boundValue;
-					this->setCKR(CCString::createWithFormat("%f",newValue));
+				if(45000-this->getCKR()>=boundValue){
+					float newValue=this->getCKR()+boundValue;
+					this->setCKR(newValue);
 				}else{
-					this->setCKR(CCString::create("45000"));
+					this->setCKR(45000);
 			
 				}	
 
-				if(atof(this->getCKR()->getCString())>=15000){
+				if(this->getCKR()>=15000){
 					_isCanOugis1=true;
 				
 				}
@@ -1584,17 +1584,17 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 
 		if(_level>=4 && !_isControled && isGainable){
 
-				if(50000-atof(this->getCKR2()->getCString())>=boundValue){
-					float newValue=atof(this->getCKR2()->getCString())+boundValue;
-					this->setCKR2(CCString::createWithFormat("%f",newValue));
+				if(50000-this->getCKR2()>=boundValue){
+					float newValue=this->getCKR2()+boundValue;
+					this->setCKR2(newValue);
 
 				}else{
-					this->setCKR2(CCString::create("50000"));
+					this->setCKR2(50000);
 					
 					
 				}	
 
-				if(atof(this->getCKR2()->getCString())>=25000){
+				if(this->getCKR2()>=25000){
 					_isCanOugis2=true;
 					
 				}
@@ -1628,15 +1628,15 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 			
 				if(currentAttacker->_level>=2 && !currentAttacker->_isControled){
 
-					if(45000-atof(currentAttacker->getCKR()->getCString())>=gainValue){
-						float newValue=atof(currentAttacker->getCKR()->getCString())+gainValue;
-						currentAttacker->setCKR(CCString::createWithFormat("%f",newValue));
+					if(45000-currentAttacker->getCKR()>=gainValue){
+						float newValue=currentAttacker->getCKR()+gainValue;
+						currentAttacker->setCKR(newValue);
 
 					}else{
-						currentAttacker->setCKR(CCString::create("45000"));
+						currentAttacker->setCKR(45000);
 					}	
 
-					if(atof(currentAttacker->getCKR()->getCString())>=15000){
+					if(currentAttacker->getCKR()>=15000){
 						currentAttacker->_isCanOugis1=true;
 
 					}
@@ -1648,16 +1648,16 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 
 				if(currentAttacker->_level>=4 && !currentAttacker->_isControled){
 
-					if(50000-atof(currentAttacker->getCKR2()->getCString())>=gainValue){
-						float newValue=atof(currentAttacker->getCKR2()->getCString())+gainValue;
-						currentAttacker->setCKR2(CCString::createWithFormat("%f",newValue));
+					if(50000-currentAttacker->getCKR2()>=gainValue){
+						float newValue=currentAttacker->getCKR2()+gainValue;
+						currentAttacker->setCKR2(newValue);
 
 					}else{
-						currentAttacker->setCKR2(CCString::create("50000"));
+						currentAttacker->setCKR2(50000);
 
 					}	
 
-					if(atof(currentAttacker->getCKR2()->getCString())>=25000){
+					if(currentAttacker->getCKR2()>=25000){
 						currentAttacker->_isCanOugis2=true;
 
 					}
@@ -1898,14 +1898,14 @@ void ActionManager::setItem(abType type){
 	if(_hpBar){
 		
 		int hpRestore=3000+gearRecoverValue;
-		if(atoi(_maxHP->getCString())-atoi(_hp->getCString())<=hpRestore){
-			this->setHP(CCString::create(this->getMaxHP()->getCString()));
+		if(_maxHP-_hp<=hpRestore){
+			this->setHP(this->getMaxHP());
 			if(_hpBar){
 				_hpBar->loseHP(this->getHpPercent());
 			}
 			
 		}else{
-			this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())+hpRestore)) ;
+			this->setHP(_hp+hpRestore) ;
 			if(_hpBar){
 			_hpBar->loseHP(this->getHpPercent());
 			}
@@ -1931,7 +1931,7 @@ bool ActionManager::setGear(gearType type){
 		gearCost=1000;
 	}
 	
-	if( this->getGearArray()->count()<=2 && atoi(this->getCoin()->getCString())>=gearCost){
+	if( this->getGearArray()->count()<=2 && this->getCoin()>=gearCost){
 		CCString* gearItem=CCString::createWithFormat("%d",gearType(type));
 		this->getGearArray()->addObject(gearItem);
 		
@@ -1957,9 +1957,9 @@ bool ActionManager::setGear(gearType type){
 		case gear04:
 
 			if(this->gettempAttackValue1()){
-				this->settempAttackValue1(CCString::createWithFormat("%d",atoi(this->gettempAttackValue1()->getCString())+160));
+				this->settempAttackValue1(this->gettempAttackValue1()+160);
 			}
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+160));
+			this->setnAttackValue(this->getnAttackValue()+160);
 			this->isPofang=true;
 
 			break;
@@ -1992,9 +1992,9 @@ bool ActionManager::setGear(gearType type){
 			}
 			break;
 		case gear08:
-			int tempMaxHP=atoi(this->getMaxHP()->getCString());
+			int tempMaxHP=this->getMaxHP();
 			tempMaxHP+=6000;
-			this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
+			this->setMaxHP(tempMaxHP);
 			if(_hpBar){
 				_hpBar->loseHP(this->getHpPercent());
 			}
@@ -2193,14 +2193,14 @@ void ActionManager::enableGear06(float dt){
 
 
 void ActionManager::addCoin(int num){
-	this->setCoin(CCString::createWithFormat("%d",atoi(this->getCoin()->getCString())+num));
+	this->setCoin(this->getCoin()+num);
 }
 
 void ActionManager::minusCoin(int num){
-	if( atoi(this->getCoin()->getCString()) > num){
-		this->setCoin(CCString::createWithFormat("%d",atoi(this->getCoin()->getCString())-num));
+	if( this->getCoin() > num){
+		this->setCoin(this->getCoin()-num);
 	}else{
-		this->setCoin(CCString::createWithFormat("%d",0));
+		this->setCoin(0);
 	}
 	
 }
@@ -2209,11 +2209,11 @@ void ActionManager::setRestore(float dt){
 	if(_hpBar){
 
 		
-		if(atoi(_maxHP->getCString())-atoi(_hp->getCString())<=800){
-			this->setHP(CCString::create(this->getMaxHP()->getCString()));
+		if(_maxHP-_hp<=800){
+			this->setHP(this->getMaxHP());
 			_hpBar->loseHP(this->getHpPercent());
 		}else{
-			this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())+800));
+			this->setHP(_hp+800);
 			_hpBar->loseHP(this->getHpPercent());
 		}
 
@@ -2231,35 +2231,35 @@ void ActionManager::setRestore2(float dt){
 	if(_hpBar ){
 		//八门耗血
 		if(bamen>=8){
-			if(atoi(_hp->getCString())-1000>0){
-				this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())-1000));
+			if(_hp-1000>0){
+				this->setHP(_hp-1000);
 				_hpBar->loseHP(this->getHpPercent());
 			}else{
-				this->setHP(CCString::createWithFormat("%d",100));
+				this->setHP(100);
 				_hpBar->loseHP(this->getHpPercent());
 			}
 		}else if(bamen>=5){
-			if(atoi(_hp->getCString())-200>0){
-				this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())-200));
+			if(_hp-200>0){
+				this->setHP(_hp-200);
 				_hpBar->loseHP(this->getHpPercent());
 			}else{
-				this->setHP(CCString::createWithFormat("%d",100));
+				this->setHP(100);
 				_hpBar->loseHP(this->getHpPercent());
 			}
 		}else if(bamen>=4){
-			if(atoi(_hp->getCString())-150>0){
-				this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())-150));
+			if(_hp-150>0){
+				this->setHP(_hp-150);
 				_hpBar->loseHP(this->getHpPercent());
 			}else{
-				this->setHP(CCString::createWithFormat("%d",100));
+				this->setHP(100);
 				_hpBar->loseHP(this->getHpPercent());
 			}
 		}else if(bamen>=3){
-			if(atoi(_hp->getCString())-100>0){
-				this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())-100));
+			if(_hp-100>0){
+				this->setHP(_hp-100);
 				_hpBar->loseHP(this->getHpPercent());
 			}else{
-				this->setHP(CCString::createWithFormat("%d",100));
+				this->setHP(100);
 				_hpBar->loseHP(this->getHpPercent());
 			}
 		}
@@ -2273,11 +2273,11 @@ void ActionManager::setRestore2(float dt){
 		}
 		if(isZone){
 
-			if(atoi(_hp->getCString())-1000>0){
-				this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())-1000));
+			if(_hp-1000>0){
+				this->setHP(_hp-1000);
 				_hpBar->loseHP(this->getHpPercent());
 			}else{
-				this->setHP(CCString::createWithFormat("%d",100));
+				this->setHP(100);
 				_hpBar->loseHP(this->getHpPercent());
 			}
 
@@ -2285,11 +2285,11 @@ void ActionManager::setRestore2(float dt){
 
 
 		if(this->getActionState()==ACTION_STATE_IDLE && this->getHpPercent()<1){
-			if(atoi(_maxHP->getCString())-atoi(_hp->getCString())<=300){
-				this->setHP(CCString::create(this->getMaxHP()->getCString()));
+			if(_maxHP-_hp<=300){
+				this->setHP(this->getMaxHP());
 				_hpBar->loseHP(this->getHpPercent());
 			}else{
-				this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())+300));
+				this->setHP(_hp+300);
 				_hpBar->loseHP(this->getHpPercent());
 			}
 
@@ -2378,11 +2378,11 @@ void ActionManager::setAttackBox(CCNode* sender,void* date){
 			strcmp(this->getCharacter()->getCString(),"ImmortalSasuke")==0 || 
 			strcmp(this->getCharacter()->getCString(),"DevaPath")==0 ){
 
-				if(atoi(_maxHP->getCString())-atoi(_hp->getCString())<=260){
-					this->setHP(CCString::create(this->getMaxHP()->getCString()));
+				if(_maxHP-_hp<=260){
+					this->setHP(this->getMaxHP());
 					_hpBar->loseHP(this->getHpPercent());
 				}else{
-					this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())+260));
+					this->setHP(_hp+260);
 					_hpBar->loseHP(this->getHpPercent());
 				}
 
@@ -2391,7 +2391,7 @@ void ActionManager::setAttackBox(CCNode* sender,void* date){
 				}
 
 				_attackType=_spcattackType1;
-				_attackValue=atoi(_spcattackValue1->getCString());
+				_attackValue=_spcattackValue1;
 				_attackRangeX=_spcattackRangeX1;
 				_attackRangeY=_spcattackRangeY1;
 
@@ -2558,7 +2558,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 
 	if(strcmp(commandType->getCString(),"addHP")==0){
 		if(_hpBar){
-			this->setHP(CCString::create(this->getMaxHP()->getCString()));
+			this->setHP(this->getMaxHP());
 			_hpBar->loseHP(this->getHpPercent());
 			_hpBar->setPositionY(this->getHeight());
 		}
@@ -2567,15 +2567,15 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 	}else if(strcmp(commandType->getCString(),"setGainCKR")==0){
 		int boundValue=1500;
 		if(_level>=2){
-			if(45000-atof(this->getCKR()->getCString())>=boundValue){
-				float newValue=atof(this->getCKR()->getCString())+boundValue;
-				this->setCKR(CCString::createWithFormat("%f",newValue));
+			if(45000-this->getCKR()>=boundValue){
+				float newValue=this->getCKR()+boundValue;
+				this->setCKR(newValue);
 			}else{
-				this->setCKR(CCString::create("45000"));
+				this->setCKR(45000);
 
 			}	
 
-			if(atof(this->getCKR()->getCString())>=15000){
+			if(this->getCKR()>=15000){
 				_isCanOugis1=true;
 
 			}
@@ -2589,17 +2589,17 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 
 		if(_level>=4 && !_isControled ){
 
-			if(50000-atof(this->getCKR2()->getCString())>=boundValue){
-				float newValue=atof(this->getCKR2()->getCString())+boundValue;
-				this->setCKR2(CCString::createWithFormat("%f",newValue));
+			if(50000-this->getCKR2()>=boundValue){
+				float newValue=this->getCKR2()+boundValue;
+				this->setCKR2(newValue);
 
 			}else{
-				this->setCKR2(CCString::create("50000"));
+				this->setCKR2(50000);
 
 
 			}	
 
-			if(atof(this->getCKR2()->getCString())>=25000){
+			if(this->getCKR2()>=25000){
 				_isCanOugis2=true;
 
 			}
@@ -2765,10 +2765,10 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 						tempHero->hearts-=1;
 						if(strcmp(this->_group->getCString(),tempHero->_group->getCString())!=0){
 						
-							int tempMaxHP=atoi(this->getMaxHP()->getCString());
+							int tempMaxHP=this->getMaxHP();
 							tempMaxHP+=100;
-							this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())+5));
-							this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
+							this->setnAttackValue(this->_nattackValue+5);
+							this->setMaxHP(tempMaxHP);
 
 							if(_hpBar){
 								_hpBar->loseHP(this->getHpPercent());
@@ -2857,8 +2857,8 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 						if(tempHero->_hpBar){
 
 							tempHero->_slayer=this;
-							if(atoi(tempHero->_hp->getCString())<=2000){		
-								tempHero->setDamage(CCString::create("c_hit"),atoi(tempHero->_hp->getCString()),false);
+							if(tempHero->_hp<=2000){		
+								tempHero->setDamage(CCString::create("c_hit"),tempHero->_hp,false);
 
 							}else{
 								tempHero->setDamage(CCString::create("c_hit"),2000,false);
@@ -2879,8 +2879,8 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 		}else{
 			if(this->_hpBar){
 				_slayer=this;
-				if(atoi(this->_hp->getCString())<=2000){		
-					this->setDamage(CCString::create("c_hit"),atoi(this->_hp->getCString()),false);
+				if(this->_hp<=2000){		
+					this->setDamage(CCString::create("c_hit"),this->_hp,false);
 				}else{
 					this->setDamage(CCString::create("c_hit"),2000,false);
 				};
@@ -2921,9 +2921,9 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 		this->scheduleOnce(schedule_selector(ActionManager::disableBuff),buffStayTime);
 		this->setBuffEffect(_attackType->getCString());
 		
-		this->setsAttackValue1(CCString::createWithFormat("%d",atoi(this->_sattackValue1->getCString())+_skillUPBuffValue));
-		this->setsAttackValue2(CCString::createWithFormat("%d",atoi(this->_sattackValue2->getCString())+_skillUPBuffValue));
-		this->setsAttackValue3(CCString::createWithFormat("%d",atoi(this->_sattackValue3->getCString())+_skillUPBuffValue));
+		this->setsAttackValue1(this->_sattackValue1+_skillUPBuffValue);
+		this->setsAttackValue2(this->_sattackValue2+_skillUPBuffValue);
+		this->setsAttackValue3(this->_sattackValue3+_skillUPBuffValue);
 		
 
 		if(strcmp(_attackType->getCString(),"hsBuff")==0 ){
@@ -3147,9 +3147,9 @@ void ActionManager::removeBuffEffect(const char* type){
 
 void ActionManager::disableBuff(float dt){
 	if(_skillUPBuffValue){
-		this->setsAttackValue1(CCString::createWithFormat("%d",atoi(this->_sattackValue1->getCString())-_skillUPBuffValue));
-		this->setsAttackValue2(CCString::createWithFormat("%d",atoi(this->_sattackValue2->getCString())-_skillUPBuffValue));
-		this->setsAttackValue3(CCString::createWithFormat("%d",atoi(this->_sattackValue3->getCString())-_skillUPBuffValue));
+		this->setsAttackValue1(this->_sattackValue1-_skillUPBuffValue);
+		this->setsAttackValue2(this->_sattackValue2-_skillUPBuffValue);
+		this->setsAttackValue3(this->_sattackValue3-_skillUPBuffValue);
 		_skillUPBuffValue=0;
 
 		if(strcmp(this->getCharacter()->getCString(),"Neji")==0){
@@ -3225,14 +3225,14 @@ void ActionManager::healBuff(float dt){
 					if(abs(distanceX)<=tempRange1 &&
 						abs(tempHero->getPositionY()-this->getPositionY())<=128){
 
-							if(atoi(tempHero->getMaxHP()->getCString())-atoi(tempHero->getHP()->getCString())<=_healBuffValue){
-								tempHero->setHP(CCString::create(tempHero->getMaxHP()->getCString()));
+							if(tempHero->getMaxHP()-tempHero->getHP()<=_healBuffValue){
+								tempHero->setHP(tempHero->getMaxHP());
 								if(tempHero->_hpBar){
 									tempHero->_hpBar->loseHP(tempHero->getHpPercent());
 								}
 
 							}else{
-								tempHero->setHP(CCString::createWithFormat("%d",atoi(tempHero->getHP()->getCString())+int(_healBuffValue)));
+								tempHero->setHP(tempHero->getHP()+int(_healBuffValue));
 								if(tempHero->_hpBar){
 									tempHero->_hpBar->loseHP(tempHero->getHpPercent());
 								}
@@ -3277,15 +3277,15 @@ void ActionManager::healBuff(float dt){
 
 
 						if(tempHero->_level>=2){
-							if(45000-atof(tempHero->getCKR()->getCString())>=_healBuffValue){
-								float newValue=atof(tempHero->getCKR()->getCString())+_healBuffValue;
-								tempHero->setCKR(CCString::createWithFormat("%f",newValue));
+							if(45000-tempHero->getCKR()>=_healBuffValue){
+								float newValue=tempHero->getCKR()+_healBuffValue;
+								tempHero->setCKR(newValue);
 							}else{
-								tempHero->setCKR(CCString::create("45000"));
+								tempHero->setCKR(45000);
 
 							}	
 
-							if(atof(tempHero->getCKR()->getCString())>=15000){
+							if(tempHero->getCKR()>=15000){
 								tempHero->_isCanOugis1=true;
 
 							}
@@ -3299,16 +3299,16 @@ void ActionManager::healBuff(float dt){
 
 						if(tempHero->_level>=4 ){
 
-							if(50000-atof(tempHero->getCKR2()->getCString())>=_healBuffValue){
-								float newValue=atof(tempHero->getCKR2()->getCString())+_healBuffValue;
-								tempHero->setCKR2(CCString::createWithFormat("%f",newValue));
+							if(50000-tempHero->getCKR2()>=_healBuffValue){
+								float newValue=tempHero->getCKR2()+_healBuffValue;
+								tempHero->setCKR2(newValue);
 
 							}else{
-								tempHero->setCKR2(CCString::create("50000"));
+								tempHero->setCKR2(50000);
 
 							}	
 
-							if(atof(tempHero->getCKR2()->getCString())>=25000){
+							if(tempHero->getCKR2()>=25000){
 								tempHero->_isCanOugis2=true;
 
 							}
@@ -3357,14 +3357,14 @@ void ActionManager::healBuff(float dt){
 					if(abs(distanceX)<=tempRange1 &&
 						abs(tempHero->getPositionY()-this->getPositionY())<=128){
 
-							if(atoi(tempHero->getMaxHP()->getCString())-atoi(tempHero->getHP()->getCString())<=_healBuffValue){
-								tempHero->setHP(CCString::create(tempHero->getMaxHP()->getCString()));
+							if(tempHero->getMaxHP()-tempHero->getHP()<=_healBuffValue){
+								tempHero->setHP(tempHero->getMaxHP());
 								if(tempHero->_hpBar){
 									tempHero->_hpBar->loseHP(tempHero->getHpPercent());
 								}
 
 							}else{
-								tempHero->setHP(CCString::createWithFormat("%d",atoi(tempHero->getHP()->getCString())+int(_healBuffValue)));
+								tempHero->setHP(tempHero->getHP()+int(_healBuffValue));
 								if(tempHero->_hpBar){
 									tempHero->_hpBar->loseHP(tempHero->getHpPercent());
 								}
@@ -3384,15 +3384,15 @@ void ActionManager::healBuff(float dt){
 		){
 
 		//小樱单补
-		if(atoi(_maxHP->getCString())-atoi(_hp->getCString())<=_healBuffValue){
-			this->setHP(CCString::create(_maxHP->getCString()));
+		if(_maxHP-_hp<=_healBuffValue){
+			this->setHP(_maxHP);
 			if(_hpBar){
 				_hpBar->loseHP(this->getHpPercent());
 			}
 
 
 		}else{
-			this->setHP(CCString::createWithFormat("%d",atoi(_hp->getCString())+int(_healBuffValue)));
+			this->setHP(_hp+int(_healBuffValue));
 			if(_hpBar){
 				_hpBar->loseHP(this->getHpPercent());
 			}
@@ -3433,7 +3433,7 @@ void ActionManager::dehealBuff(float dt){
 			_slayer=tempHero;
 		}
 	};
-	if(atoi(_hp->getCString())<=_dehealBuffValue){		
+	if(_hp<=_dehealBuffValue){		
 		this->setDamage(CCString::create("c_hit"),_dehealBuffValue,false);
 		
 	}else{
@@ -3460,7 +3460,7 @@ void ActionManager::lostBlood(float dt){
 		}
 	}
 
-	if(atoi(_hp->getCString())<=lostBloodValue){		
+	if(_hp<=lostBloodValue){		
 		this->setDamage(CCString::create("c_hit"),lostBloodValue,false);
 
 	}else{
@@ -3499,7 +3499,7 @@ void ActionManager::changeAction(){
 			_tempAttackType=_nattackType;
 			_nattackType=_spcattackType3;
 			
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())+460));
+			this->setnAttackValue(this->_nattackValue+460);
 			_nattackRangeX=32;
 			_nattackRangeY=48;
 			this->_isOnlySkillLocked=true;
@@ -3521,7 +3521,7 @@ void ActionManager::changeAction(){
 	}else if(strcmp(this->_character->getCString(),"Sakura")==0 ){
 
 		this->setNAttackAction(createAnimation(skillSPC1Array,10.0f,false,true));
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())+400));
+		this->setnAttackValue(this->_nattackValue+400);
 
 	}else if(strcmp(this->_character->getCString(),"Kakuzu")==0 ){	
 
@@ -3576,8 +3576,8 @@ void ActionManager::changeAction(){
 		
 		this->_isOnlySkillLocked=true;
 
-		this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_nattackValue->getCString())));	
-		this->setnAttackValue(CCString::createWithFormat("%d",960));
+		this->settempAttackValue1(_nattackValue);	
+		this->setnAttackValue(960);
 		
 	
 		_nattackRangeX=_spcattackRangeX3;
@@ -3614,8 +3614,8 @@ void ActionManager::changeAction(){
 		
 			
 		if(strcmp(this->_character->getCString(),"RikudoNaruto")==0){
-			this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_nattackValue->getCString())));	
-			this->setnAttackValue(CCString::createWithFormat("%d",560));
+			this->settempAttackValue1(_nattackValue);	
+			this->setnAttackValue(560);
 		}
 		
 		this->setWalkSpeed(320);
@@ -3635,7 +3635,7 @@ void ActionManager::changeAction(){
 		this->_isBati=true;
 
 		_attackType=_spcattackType2;
-		_attackValue=atoi(_spcattackValue2->getCString());
+		_attackValue=_spcattackValue2;
 		_attackRangeX=_spcattackRangeX2;
 		_attackRangeY=_spcattackRangeY2;
 
@@ -3687,14 +3687,14 @@ void ActionManager::changeAction(){
 			};
 
 			this->_powerUPBuffValue=360;
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())+_powerUPBuffValue));
+			this->setnAttackValue(this->_nattackValue+_powerUPBuffValue);
 			this->setNAttackAction(createAnimation(skillSPC4Array,10.0f,false,true));
 
 		}
 
 	}else if(strcmp(this->_character->getCString(),"Akamaru")==0){
 		this->_powerUPBuffValue=360;
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())+_powerUPBuffValue));
+		this->setnAttackValue(this->_nattackValue+_powerUPBuffValue);
 		this->setIdleAction(createAnimation(skillSPC1Array,5.0f,true,false));
 		this->setWalkAction(createAnimation(skillSPC2Array,10.0f,true,false));
 		this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
@@ -3760,8 +3760,8 @@ void ActionManager::changeAction(){
 
 
 			this->_isOnlySkillLocked=true;
-			this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_nattackValue->getCString())));	
-			this->setnAttackValue(CCString::createWithFormat("%d",560));
+			this->settempAttackValue1(_nattackValue);	
+			this->setnAttackValue(560);
 			
 
 			_nattackRangeX=_spcattackRangeX3;
@@ -3834,8 +3834,8 @@ void ActionManager::changeAction(){
 			this->setWalkSpeed(112);
 			this->_originSpeed=112;
 			
-			this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_nattackValue->getCString())));	
-			this->setnAttackValue(CCString::createWithFormat("%d",1160));
+			this->settempAttackValue1(_nattackValue);	
+			this->setnAttackValue(1160);
 		
 			_nattackRangeX=156;
 			_nattackRangeY=64;
@@ -3936,8 +3936,8 @@ void ActionManager::changeAction(){
 
 		this->_isOnlySkillLocked=true;
 
-		this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_nattackValue->getCString())));	
-		this->setnAttackValue(CCString::createWithFormat("%d",560));
+		this->settempAttackValue1(_nattackValue);	
+		this->setnAttackValue(560);
 
 		_nattackRangeX=128;
 		_nattackRangeY=64;
@@ -3960,7 +3960,7 @@ void ActionManager::changeAction(){
 		this->setSkill1Action(createAnimation(skillSPC1Array,10.0f,false,true));
 		this->setSkill2Action(createAnimation(skillSPC2Array,10.0f,false,true));
 		this->setIdleAction(createAnimation(skillSPC3Array,5.0f,true,false));
-		this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_sattackValue1->getCString())));
+		this->settempAttackValue1(_sattackValue1);
 		this->setsAttackValue1(_spcattackValue1);
 		
 		CCObject* pObject;
@@ -4013,8 +4013,8 @@ void ActionManager::changeAction(){
 			_isBati=true;
 			_nattackRangeX=16;
 			_nattackRangeY=48;
-			this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_nattackValue->getCString())));	
-			this->setnAttackValue(CCString::createWithFormat("%d",560));
+			this->settempAttackValue1(_nattackValue);	
+			this->setnAttackValue(560);
 			
 			this->_isOnlySkillLocked=true;
 
@@ -4035,8 +4035,8 @@ void ActionManager::changeAction(){
 
 	}else if(strcmp(this->_character->getCString(),"Suigetsu")==0 ){
 
-		this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_nattackValue->getCString())));	
-		this->setnAttackValue(CCString::createWithFormat("%d",1960));
+		this->settempAttackValue1(_nattackValue);	
+		this->setnAttackValue(1960);
 
 		this->_isOnlySkillLocked=true;
 
@@ -4061,8 +4061,8 @@ void ActionManager::changeAction(){
 
 	}else if(strcmp(this->_character->getCString(),"Kisame")==0){
 
-		this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_nattackValue->getCString())));	
-		this->setnAttackValue(CCString::createWithFormat("%d",660));
+		this->settempAttackValue1(_nattackValue);	
+		this->setnAttackValue(660);
 
 		this->_isOnlySkillLocked=true;
 
@@ -4091,8 +4091,8 @@ void ActionManager::changeAction(){
 
 	}else if(strcmp(this->_character->getCString(),"Jugo")==0){
 
-		this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_nattackValue->getCString())));	
-		this->setnAttackValue(CCString::createWithFormat("%d",1960));
+		this->settempAttackValue1(_nattackValue);	
+		this->setnAttackValue(1960);
 
 		this->_isOnlySkillLocked=true;
 
@@ -4121,8 +4121,8 @@ void ActionManager::changeAction(){
 
 	}else if(strcmp(this->_character->getCString(),"Parents")==0){
 
-		this->settempAttackValue1(CCString::createWithFormat("%d",atoi(_nattackValue->getCString())));	
-		this->setnAttackValue(CCString::createWithFormat("%d",2460));
+		this->settempAttackValue1(_nattackValue);	
+		this->setnAttackValue(2460);
 
 		this->_isOnlySkillLocked=true;
 
@@ -4175,7 +4175,7 @@ void ActionManager::changeAction(){
 
 		}else if(_skillChangeBuffValue==18){
 
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())+200));
+			this->setnAttackValue(this->_nattackValue+200);
 
 			_nattackRangeX=16;
 			_nattackRangeY=48;
@@ -4201,14 +4201,14 @@ void ActionManager::changeAction(){
 		}
 		
 		if(bamen ==1){
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())+30));
+			this->setnAttackValue(this->_nattackValue+30);
 			if(strcmp(this->getRole()->getCString(),"Player")==0){
 				if(_delegate->getHudLayer()->skill4Button){
 					_delegate->getHudLayer()->skill4Button->unLock();
 				}
 			}
 		}else if(bamen ==2){
-			this->setsAttackValue2(CCString::createWithFormat("%d",atoi(this->_sattackValue2->getCString())+100));
+			this->setsAttackValue2(this->_sattackValue2+100);
 		}else if(bamen==3){
 			if(!_skillBuffEffect){
 				this->setBuffEffect("bmBuff");
@@ -4226,20 +4226,20 @@ void ActionManager::changeAction(){
 				}
 			}
 		}else if(bamen==4){
-			this->setsAttackValue2(CCString::createWithFormat("%d",atoi(this->_sattackValue2->getCString())+100));
-			this->setsAttackValue3(CCString::createWithFormat("%d",atoi(this->_sattackValue3->getCString())+100));
+			this->setsAttackValue2(this->_sattackValue2+100);
+			this->setsAttackValue3(this->_sattackValue3+100);
 		}else if(bamen==5){
 			this->setWalkAction(createAnimation(skillSPC1Array,10.0f,true,false));
 			this->setWalkSpeed(320);
 			_originSpeed=320;
-			this->setsAttackValue2(CCString::createWithFormat("%d",atoi(this->_sattackValue2->getCString())+100));
-			this->setsAttackValue3(CCString::createWithFormat("%d",atoi(this->_sattackValue3->getCString())+100));
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())+60));
+			this->setsAttackValue2(this->_sattackValue2+100);
+			this->setsAttackValue3(this->_sattackValue3+100);
+			this->setnAttackValue(this->_nattackValue+60);
 		}
 
 
 	}else if(strcmp(this->_character->getCString(),"Tsunade")==0){
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())+250));
+		this->setnAttackValue(this->_nattackValue+250);
 		this->_isOnlySkillLocked=true;
 		_nattackRangeX=32;
 		_nattackRangeY=48;
@@ -4266,7 +4266,7 @@ void ActionManager::changeAction(){
 	}else if(strcmp(this->_character->getCString(),"Roshi")==0 ||
 		strcmp(this->_character->getCString(),"Han")==0 
 		){
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())+700));
+		this->setnAttackValue(this->_nattackValue+700);
 		_nattackRangeX=0;
 		_nattackRangeY=48;
 		_tempAttackType=_nattackType;
@@ -4306,7 +4306,7 @@ void ActionManager::changeAction2(){
 
 	if(strcmp(this->_character->getCString(),"Minato")==0){
 
-		_attackValue=atoi(_spcattackValue2->getCString());
+		_attackValue=_spcattackValue2;
 		this->setAttackType(this->getspcAttack2Type());
 		_attackRangeX=_spcattackRangeX2;
 		_attackRangeY=_spcattackRangeY2;
@@ -4336,7 +4336,7 @@ void ActionManager::resumeAction(float dt){
 	}else if(strcmp(this->_character->getCString(),"Choji")==0 ){
 
 	
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-460));
+			this->setnAttackValue(this->_nattackValue-460);
 			_nattackRangeX=16;
 			_nattackRangeY=48;
 			_nattackType=_tempAttackType;
@@ -4372,7 +4372,7 @@ void ActionManager::resumeAction(float dt){
 
 	}else if(strcmp(this->_character->getCString(),"Sakura")==0){
 		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-400));
+		this->setnAttackValue(this->_nattackValue-400);
 
 	}else if(strcmp(this->_character->getCString(),"Sai")==0 ||
 		strcmp(this->_character->getCString(),"Deidara")==0
@@ -4494,8 +4494,8 @@ void ActionManager::resumeAction(float dt){
 		
 		_originSpeed=224;
 		if(_tempAttackValue1){
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-				_tempAttackValue1=NULL;
+				this->setnAttackValue(this->_tempAttackValue1);
+				_tempAttackValue1=0;
 		}
 		isPofang=false;
 	
@@ -4555,8 +4555,8 @@ void ActionManager::resumeAction(float dt){
 		}
 		
 		if(_tempAttackValue1){
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-			_tempAttackValue1=NULL;
+			this->setnAttackValue(this->_tempAttackValue1);
+			_tempAttackValue1=0;
 		}
 
 
@@ -4565,7 +4565,7 @@ void ActionManager::resumeAction(float dt){
 		this->setSkill1Action(createAnimation(skill1Array,10.0f,false,true));
 		this->setSkill2Action(createAnimation(skill2Array,10.0f,false,true));
 		
-		this->setsAttackValue1(CCString::createWithFormat("%d",atoi(_tempAttackValue1->getCString())));
+		this->setsAttackValue1(_tempAttackValue1);
 
 
 		if(strcmp(this->_role->getCString(),"Player")==0){
@@ -4600,8 +4600,8 @@ void ActionManager::resumeAction(float dt){
 		
 		_originSpeed=224;
 		if(_tempAttackValue1){
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-		_tempAttackValue1=NULL;
+		this->setnAttackValue(this->_tempAttackValue1);
+		_tempAttackValue1=0;
 		}
 		_nattackRangeX=16;
 		_nattackRangeY=48;
@@ -4629,7 +4629,7 @@ void ActionManager::resumeAction(float dt){
 	}else if(strcmp(this->_character->getCString(),"Kiba")==0){
 
 			if(_powerUPBuffValue){
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-_powerUPBuffValue));
+				this->setnAttackValue(this->_nattackValue-_powerUPBuffValue);
 				this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
 				_powerUPBuffValue=0;
 			}
@@ -4645,7 +4645,7 @@ void ActionManager::resumeAction(float dt){
 	}else if(strcmp(this->_character->getCString(),"Akamaru")==0){
 	
 		if(_powerUPBuffValue){
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-_powerUPBuffValue));
+			this->setnAttackValue(this->_nattackValue-_powerUPBuffValue);
 			this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 			this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
 			this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
@@ -4663,7 +4663,7 @@ void ActionManager::resumeAction(float dt){
 	}else if(strcmp(this->_character->getCString(),"Minato")==0){
 
 	
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-200));
+		this->setnAttackValue(this->_nattackValue-200);
 		_nattackRangeX=16;
 		_nattackRangeY=48;
 		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
@@ -4699,8 +4699,8 @@ void ActionManager::resumeAction(float dt){
 		
 		_originSpeed=224;
 		if(_tempAttackValue1){
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-		_tempAttackValue1=NULL;
+		this->setnAttackValue(this->_tempAttackValue1);
+		_tempAttackValue1=0;
 		}
 		_nattackRangeX=16;
 		_nattackRangeY=48;
@@ -4739,8 +4739,8 @@ void ActionManager::resumeAction(float dt){
 		
 		_originSpeed=224;
 		if(_tempAttackValue1){
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-		_tempAttackValue1=NULL;
+		this->setnAttackValue(this->_tempAttackValue1);
+		_tempAttackValue1=0;
 		}
 		_gardValue-=5000;
 		_isBati=false;
@@ -4784,7 +4784,7 @@ void ActionManager::resumeAction(float dt){
 			}
 
 	}else if(strcmp(this->_character->getCString(),"Tsunade")==0){
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-250));
+		this->setnAttackValue(this->_nattackValue-250);
 		_nattackRangeX=16;
 		_nattackRangeY=48;
 		_nattackType=_tempAttackType;
@@ -4894,8 +4894,8 @@ void ActionManager::setActionResume(){
 
 			this->_isBati=false;
 			if(_tempAttackValue1){
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-			_tempAttackValue1=NULL;
+			this->setnAttackValue(this->_tempAttackValue1);
+			_tempAttackValue1=0;
 			}
 			_isOnlySkillLocked=false;
 			if(strcmp(this->getRole()->getCString(),"Player")==0){
@@ -4927,8 +4927,8 @@ void ActionManager::setActionResume(){
 
 			
 			if(_tempAttackValue1){
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-				_tempAttackValue1=NULL;
+				this->setnAttackValue(this->_tempAttackValue1);
+				_tempAttackValue1=0;
 			}
 			_isOnlySkillLocked=false;
 			if(strcmp(this->getRole()->getCString(),"Player")==0){
@@ -4965,8 +4965,8 @@ void ActionManager::setActionResume(){
 
 
 			if(_tempAttackValue1){
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-				_tempAttackValue1=NULL;
+				this->setnAttackValue(this->_tempAttackValue1);
+				_tempAttackValue1=0;
 			}
 			_isOnlySkillLocked=false;
 			if(strcmp(this->getRole()->getCString(),"Player")==0){
@@ -5003,8 +5003,8 @@ void ActionManager::setActionResume(){
 
 
 			if(_tempAttackValue1){
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-				_tempAttackValue1=NULL;
+				this->setnAttackValue(this->_tempAttackValue1);
+				_tempAttackValue1=0;
 			}
 			_isOnlySkillLocked=false;
 			
@@ -5058,7 +5058,7 @@ void ActionManager::setActionResume(){
 
 		if(_powerUPBuffValue){
 			this->unschedule(schedule_selector(ActionManager::resumeAction));
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-_powerUPBuffValue));
+			this->setnAttackValue(this->_nattackValue-_powerUPBuffValue);
 			_powerUPBuffValue=0;
 		}
 		_isBati=true;		
@@ -5091,8 +5091,8 @@ void ActionManager::setActionResume(){
 		_isBati=false;
 		_isOnlySkillLocked=false;
 		if(_tempAttackValue1){
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-			_tempAttackValue1=NULL;
+			this->setnAttackValue(this->_tempAttackValue1);
+			_tempAttackValue1=0;
 		}
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
@@ -5161,8 +5161,8 @@ void ActionManager::setActionResume(){
 			
 			_originSpeed=224;
 			if(_tempAttackValue1){
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));
-				_tempAttackValue1=NULL;
+				this->setnAttackValue(this->_tempAttackValue1);
+				_tempAttackValue1=0;
 			
 			}	
 		_gardValue-=5000;
@@ -5200,8 +5200,8 @@ void ActionManager::setActionResume(){
 			
 			_originSpeed=224;
 			if(_tempAttackValue1){
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_tempAttackValue1->getCString())));		
-			_tempAttackValue1=NULL;
+			this->setnAttackValue(this->_tempAttackValue1);		
+			_tempAttackValue1=0;
 			}
 			_nattackRangeX=16;
 			_nattackRangeY=48;
@@ -5217,7 +5217,7 @@ void ActionManager::setActionResume(){
 
 		this->unschedule(schedule_selector(ActionManager::resumeAction));
 
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-460));
+		this->setnAttackValue(this->_nattackValue-460);
 		_nattackRangeX=16;
 		_nattackRangeY=48;
 		_nattackType=_tempAttackType;
@@ -5484,7 +5484,7 @@ void ActionManager::setBullet(CCNode* sender,void* date){
 		bullet->setPosition(ccp(this->getPositionX()+(this->_isFlipped?-rangeX:rangeX),
 			this->getPositionY()+this->getHeight()/2));
 		if(this->_skillUPBuffValue){
-			bullet->setnAttackValue(CCString::createWithFormat("%d",atoi(bullet->_nattackValue->getCString())+this->_skillUPBuffValue));
+			bullet->setnAttackValue(bullet->_nattackValue+this->_skillUPBuffValue);
 
 		}
 
@@ -5565,7 +5565,7 @@ void ActionManager::setBulletGroup(float dt){
 		_delegate->addChild(bullet,currentSkillTag);
 		bullet->idle();
 		if(this->_skillUPBuffValue){
-			bullet->setnAttackValue(CCString::createWithFormat("%d",atoi(bullet->_nattackValue->getCString())+this->_skillUPBuffValue));
+			bullet->setnAttackValue(bullet->_nattackValue+this->_skillUPBuffValue);
 		}
 
 		bullet->scheduleOnce(schedule_selector(Bullet::setAttack),0.5f);
@@ -5766,15 +5766,15 @@ void ActionManager::setClone(CCNode* sender,void* date){
 		strcmp(this->getCharacter()->getCString(),"Naruto")==0||
 		(strcmp(this->getCharacter()->getCString(),"RikudoNaruto")==0 && cloneTime==10)
 		){
-		clone->setHP(CCString::create(this->getHP()->getCString()));
+		clone->setHP(this->getHP());
 		
 	}else{	
-		clone->setHP(CCString::create(this->getMaxHP()->getCString()));
+		clone->setHP(this->getMaxHP());
 	}
 
-	clone->setMaxHP(CCString::create(this->getMaxHP()->getCString()));
+	clone->setMaxHP(this->getMaxHP());
 	clone->_exp=this->_exp;
-	clone->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())));
+	clone->setnAttackValue(this->getnAttackValue());
 	clone->_gardValue=this->_gardValue;
 	clone->_level=this->_level;
 	clone->setHPbar();
@@ -5784,9 +5784,9 @@ void ActionManager::setClone(CCNode* sender,void* date){
 		if(clone->_hpBar){
 			clone->_hpBar->setPositionY(120);
 		}
-		clone->setnAttackValue(CCString::createWithFormat("1060"));
+		clone->setnAttackValue(1060);
 	}else if(strcmp(this->getCharacter()->getCString(),"Kakashi")==0){
-		clone->setnAttackValue(CCString::createWithFormat("1060"));
+		clone->setnAttackValue(1060);
 	}
 
 	if(this->isPofang){
@@ -6500,10 +6500,10 @@ void ActionManager::setTransform(){
 	}
 	
 
-	int tempMaxHP=atoi(this->getMaxHP()->getCString());
+	int tempMaxHP=this->getMaxHP();
 	
-	int tempHP=atoi(this->getHP()->getCString());
-	CCString* tempAttackValue=CCString::createWithFormat("%s",this->getnAttackValue()->getCString());
+	int tempHP=this->getHP();
+	int tempAttackValue=this->getnAttackValue();
 	const char* charName;
 	if(strcmp(_character->getCString(),"Naruto")==0){
 		this->setID(CCString::create("SageNaruto"),_role,_group);
@@ -6526,8 +6526,8 @@ void ActionManager::setTransform(){
 	}
 
 	//还原
-	this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
-	this->setHP(CCString::createWithFormat("%d",tempHP));
+	this->setMaxHP(tempMaxHP);
+	this->setHP(tempHP);
 	if(_hpBar){
 	_hpBar->setPositionY(this->getHeight());
 	_hpBar->loseHP(this->getHpPercent());
@@ -6593,7 +6593,7 @@ void ActionManager::setTransform(){
 
 float ActionManager::getHpPercent(){
 
-	float p=float(atoi(_hp->getCString()))/float(atoi(_maxHP->getCString()));
+	float p=float(_hp)/float(_maxHP);
 	return  p;
 }
 
@@ -6609,7 +6609,7 @@ void ActionManager::attack(abType type){
 
 	switch(type){
 	case NAttack:
-		_attackValue=atoi(this->getnAttackValue()->getCString());
+		_attackValue=this->getnAttackValue();
 		_attackType=_nattackType;
 		_attackRangeX=_nattackRangeX;
 		_attackRangeY=_nattackRangeY;
@@ -6622,7 +6622,7 @@ void ActionManager::attack(abType type){
 			if(_isControled)
 				_delegate->getHudLayer()->skill1Button->click();	
 		}
-		_attackValue=atoi(_sattackValue1->getCString());
+		_attackValue=_sattackValue1;
 		_attackType=_sattackType1;
 		_attackRangeX=_sattackRangeX1;
 		_attackRangeY=_sattackRangeY1;
@@ -6636,7 +6636,7 @@ void ActionManager::attack(abType type){
 			if(_isControled)
 			_delegate->getHudLayer()->skill2Button->click();	
 		}
-		_attackValue=atoi(_sattackValue2->getCString());
+		_attackValue=_sattackValue2;
 		_attackType=_sattackType2;
 		_attackRangeX=_sattackRangeX2;
 		_attackRangeY=_sattackRangeY2;
@@ -6649,7 +6649,7 @@ void ActionManager::attack(abType type){
 			if(_isControled)
 				_delegate->getHudLayer()->skill3Button->click();	
 		}
-		_attackValue=atoi(_sattackValue3->getCString());
+		_attackValue=_sattackValue3;
 		_attackType=_sattackType3;
 		_attackRangeX=_sattackRangeX3;
 		_attackRangeY=_sattackRangeY3;
@@ -6659,14 +6659,14 @@ void ActionManager::attack(abType type){
 
 	case OUGIS1:
 		if(strcmp(_role->getCString(),"Player")!=0 || this->_isAI){
-			float newValue=atof(this->getCKR()->getCString())-15000;;
-			this->setCKR(CCString::createWithFormat("%f",newValue));
-			if(atof(this->getCKR()->getCString()) <15000){
+			float newValue=this->getCKR()-15000;;
+			this->setCKR(newValue);
+			if(this->getCKR() <15000){
 				_isCanOugis1=false;
 			}	
 		}
 
-		_attackValue=atoi(_sattackValue4->getCString());
+		_attackValue=_sattackValue4;
 		_attackType=_sattackType4;
 		_attackRangeX=_sattackRangeX4;
 		_attackRangeY=_sattackRangeY4;
@@ -6676,14 +6676,14 @@ void ActionManager::attack(abType type){
 	case OUGIS2:
 
 		if(strcmp(_role->getCString(),"Player")!=0 || this->_isAI){
-			float newValue=atof(this->getCKR2()->getCString())-25000;
-			this->setCKR2(CCString::createWithFormat("%f",newValue));
-			if(atof(this->getCKR2()->getCString()) <25000){
+			float newValue=this->getCKR2()-25000;
+			this->setCKR2(newValue);
+			if(this->getCKR2() <25000){
 				_isCanOugis2=false;
 			}	
 		}
 
-		_attackValue=atoi(_sattackValue5->getCString());
+		_attackValue=_sattackValue5;
 		_attackType=_sattackType5;
 		_attackRangeX=_sattackRangeX5;
 		_attackRangeY=_sattackRangeY5;
@@ -7431,12 +7431,12 @@ void ActionManager::dead(){
 				this->setWalkSpeed(224);
 				_originSpeed=224;
 				this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
-				this->setsAttackValue3(CCString::createWithFormat("%d",atoi(this->_sattackValue3->getCString())-100));
-				this->setsAttackValue2(CCString::createWithFormat("%d",atoi(this->_sattackValue2->getCString())-100));
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-60));
+				this->setsAttackValue3(this->_sattackValue3-100);
+				this->setsAttackValue2(this->_sattackValue2-100);
+				this->setnAttackValue(this->_nattackValue-60);
 			}else if(bamen==4){
-				this->setsAttackValue3(CCString::createWithFormat("%d",atoi(this->_sattackValue3->getCString())-100));
-				this->setsAttackValue2(CCString::createWithFormat("%d",atoi(this->_sattackValue2->getCString())-100));
+				this->setsAttackValue3(this->_sattackValue3-100);
+				this->setsAttackValue2(this->_sattackValue2-100);
 			}else if(bamen==3){
 				this->setTransform();
 
@@ -7452,14 +7452,14 @@ void ActionManager::dead(){
 				}
 
 			}else if(bamen==2){
-				this->setsAttackValue2(CCString::createWithFormat("%d",atoi(this->_sattackValue2->getCString())-100));
+				this->setsAttackValue2(this->_sattackValue2-100);
 			}else if(bamen==1){
 				if(strcmp(this->getRole()->getCString(),"Player")==0){
 					if(_delegate->getHudLayer()->skill4Button){
 						_delegate->getHudLayer()->skill4Button->setLock();
 					}
 				}
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->_nattackValue->getCString())-30));
+				this->setnAttackValue(this->_nattackValue-30);
 			}
 			bamen-=1;
 			if(bamen==0){
@@ -7709,8 +7709,8 @@ bool ActionManager::findEnemy2(const char* type){
 							if(strcmp(target->_character->getCString(),"Roshi")!=0
 								&& strcmp(target->_character->getCString(),"Han")!=0){
 
-									friendCombatPoint+=baseSkillCombatPoint+ atoi(target->getHP()->getCString())+
-										(atof(target->getCKR()->getCString())/15000)*target->_sattackCombatPoint4+ (atof(target->getCKR2()->getCString())/25000)*target->_sattackCombatPoint5;
+									friendCombatPoint+=baseSkillCombatPoint+ target->getHP()+
+										(target->getCKR()/15000)*target->_sattackCombatPoint4+ (target->getCKR2()/25000)*target->_sattackCombatPoint5;
 
 							}
 
@@ -7721,8 +7721,8 @@ bool ActionManager::findEnemy2(const char* type){
 
 						if(strcmp(target->_character->getCString(),"Roshi")!=0
 							&& strcmp(target->_character->getCString(),"Han")!=0){
-						enemyCombatPoint+=baseSkillCombatPoint+atoi(target->getHP()->getCString())
-							+(atof(target->getCKR()->getCString())/15000)*target->_sattackCombatPoint4+ (atof(target->getCKR2()->getCString())/25000)*target->_sattackCombatPoint5;				
+						enemyCombatPoint+=baseSkillCombatPoint+target->getHP()
+							+(target->getCKR()/15000)*target->_sattackCombatPoint4+ (target->getCKR2()/25000)*target->_sattackCombatPoint5;				
 						}
 
 						if(!target->_isWudi && (target->getPositionX()>=_delegate->currentMap->getTileSize().width*3 &&target->getPositionX()<=(_delegate->currentMap->getMapSize().width-3)*_delegate->currentMap->getTileSize().width) ){
@@ -7910,30 +7910,30 @@ void ActionManager::stepOn(){
 
 }
 bool ActionManager::checkRetri(){
-	if(_isCanItem1 &&atoi(this->getCoin()->getCString())>=50){
+	if(_isCanItem1 &&this->getCoin()>=50){
 		if(_delegate->_isHardCoreGame){
 			if(battleCondiction>=0){
 				if(!_isHealling){
-					if(atoi(this->getMaxHP()->getCString())- atoi(this->getHP()->getCString())>=3000+gearRecoverValue  && this->getGearArray()->count()>1){
+					if(this->getMaxHP()- this->getHP()>=3000+gearRecoverValue  && this->getGearArray()->count()>1){
 						this->setItem(Item1);					
-					}else if(atoi(this->getHP()->getCString())<5000 && this->getGearArray()->count()>0){
+					}else if(this->getHP()<5000 && this->getGearArray()->count()>0){
 						this->setItem(Item1);					
-					}else if(atoi(this->getHP()->getCString())<1500){
+					}else if(this->getHP()<1500){
 						this->setItem(Item1);
 					}
 				}
 			}else{	
-				if(atoi(this->getMaxHP()->getCString())- atoi(this->getHP()->getCString())>=3000+gearRecoverValue && !_isHealling && this->getGearArray()->count()>0){
+				if(this->getMaxHP()- this->getHP()>=3000+gearRecoverValue && !_isHealling && this->getGearArray()->count()>0){
 					this->setItem(Item1);					
-				}else if(atoi(this->getHP()->getCString())<3000){
+				}else if(this->getHP()<3000){
 					this->setItem(Item1);	
 				}
 			}
 		}else{
-			if(atoi(this->getHP()->getCString())<1500 && strcmp(this->getGroup()->getCString(),"Konoha")==0){
+			if(this->getHP()<1500 && strcmp(this->getGroup()->getCString(),"Konoha")==0){
 				this->setItem(Item1);
 			}
-			if(atoi(this->getHP()->getCString())<500 && strcmp(this->getGroup()->getCString(),"Akatsuki")==0){
+			if(this->getHP()<500 && strcmp(this->getGroup()->getCString(),"Akatsuki")==0){
 				this->setItem(Item1);
 			}
 
@@ -7954,7 +7954,7 @@ bool ActionManager::checkRetri(){
 		}
 	}
 	
-	if(atoi(this->getHP()->getCString())<1500 && !_isControled ){
+	if(this->getHP()<1500 && !_isControled ){
 		return true;
 	}
 	return false;

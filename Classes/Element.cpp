@@ -115,27 +115,27 @@ void HeroElement::setID(CCString* character,CCString* role,CCString* group){
 
 	
 	CCString* tmpName;
-	CCString* tmpHpMax;
+	int tmpHpMax;
 	int tmpWidth;
 	int tmpHeight;
 	unsigned int tmpSpeed;
 	int tmpCombatPoint;
 	this->readDate(tmpDate,tmpName,tmpHpMax,tmpWidth,tmpHeight,tmpSpeed,tmpCombatPoint);
-	this->setMaxHP(CCString::createWithFormat("%d",atoi(tmpHpMax->getCString())));
-	this->setHP(CCString::create(this->getMaxHP()->getCString()));
+	this->setMaxHP(tmpHpMax);
+	this->setHP(this->getMaxHP());
 	
 	this->setHeight(tmpHeight);
 	this->setWalkSpeed(tmpSpeed);
 	_originSpeed=tmpSpeed;
 
 	//觉醒必备
-	if(this->getKillNum()==NULL){
-		this->setKillNum(CCString::createWithFormat("%d",0));
+	if(this->getKillNum()==0){
+		this->setKillNum(0);
 	}
 	
 	if(!this->getCKR() && !this->getCKR2()){
-		this->setCKR(CCString::create("0"));
-		this->setCKR2(CCString::create("0"));
+		this->setCKR(0);
+		this->setCKR2(0);
 	}
 
 	
@@ -213,7 +213,7 @@ void HeroElement::setID(CCString* character,CCString* role,CCString* group){
 	//init nAttack date & Frame Array
 	tmpAction=(CCArray*)(animationArray->objectAtIndex(7));
 	tmpDate=(CCArray *)(tmpAction->objectAtIndex(0));
-	CCString* tmpValue;
+	int tmpValue;
 	unsigned int tmpCD;
 	this->readDate(tmpDate,_nattackType,tmpValue,_nattackRangeX,_nattackRangeY,tmpCD,tmpCombatPoint);
 	this->setnAttackValue(tmpValue);
@@ -420,7 +420,7 @@ void HeroElement::setID(CCString* character,CCString* role,CCString* group){
 
 	if(this->getLV()==1 && !this->getCoin()){
 		this->setGearArray(CCArray::create());
-		this->setCoin(CCString::create("50"));
+		this->setCoin(50);
 	}
 
 	
@@ -492,8 +492,8 @@ void HeroElement::changeHPbar(){
 		
 		if(_exp>=500 && _level==1){
 			_level=2;
-			float newValue=atof(this->getCKR()->getCString())+15001;
-			this->setCKR(CCString::createWithFormat("%f",newValue));
+			float newValue=this->getCKR()+15001;
+			this->setCKR(newValue);
 			_isCanOugis1=true;
 			if(strcmp(this->getRole()->getCString(),"Player")==0){
 				
@@ -515,22 +515,22 @@ void HeroElement::changeHPbar(){
 				}
 
 			}
-			int tempMaxHP=atoi(this->getMaxHP()->getCString());
+			int tempMaxHP=this->getMaxHP();
 			tempMaxHP+=500;
-			this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+9));
+			this->setMaxHP(tempMaxHP);
+			this->setnAttackValue(this->getnAttackValue()+9);
 			_rebornTime+=1;
 		}else if(_exp>=1000 && _level==2){
 			_level=3;
-			int tempMaxHP=atoi(this->getMaxHP()->getCString());
+			int tempMaxHP=this->getMaxHP();
 			tempMaxHP+=1000;
-			this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+18));
+			this->setMaxHP(tempMaxHP);
+				this->setnAttackValue(this->getnAttackValue()+18);
 			_rebornTime+=2;
 		}else if(_exp>=1500 && _level==3){
 			_level=4;
-			float newValue=atof(this->getCKR2()->getCString())+25001;
-			this->setCKR2(CCString::createWithFormat("%f",newValue));
+			float newValue=this->getCKR2()+25001;
+			this->setCKR2(newValue);
 			_isCanOugis2=true;
 			if(strcmp(this->getRole()->getCString(),"Player")==0){
 				
@@ -551,25 +551,25 @@ void HeroElement::changeHPbar(){
 					}
 				}
 			}
-			int tempMaxHP=atoi(this->getMaxHP()->getCString());
+			int tempMaxHP=this->getMaxHP();
 			tempMaxHP+=2000;
-			this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+27));
+			this->setMaxHP(tempMaxHP);
+				this->setnAttackValue(this->getnAttackValue()+27);
 			_rebornTime+=3;
 
 		}else if(_exp>=2000 && _level==4){
 			_level=5;
-			int tempMaxHP=atoi(this->getMaxHP()->getCString());
+			int tempMaxHP=this->getMaxHP();
 			tempMaxHP+=2500;
-			this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));	
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+36));;
+			this->setMaxHP(tempMaxHP);	
+				this->setnAttackValue(this->getnAttackValue()+36);;
 			_rebornTime+=4;
 		}else if(_exp>=2500 && _level==5){
 			_level=6;
-			int tempMaxHP=atoi(this->getMaxHP()->getCString());
+			int tempMaxHP=this->getMaxHP();
 			tempMaxHP+=3000;
-			this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));	
-				this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+45));
+			this->setMaxHP(tempMaxHP);	
+				this->setnAttackValue(this->getnAttackValue()+45);
 			_rebornTime+=5;
 		}
 
@@ -823,7 +823,7 @@ void HeroElement::reborn(float dt){
 	{
 		CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(ActionManager::acceptAttack), "acceptAttack", NULL);
 		this->setOpacity(255);
-		this->setHP(CCString::create(this->getMaxHP()->getCString()));
+		this->setHP(this->getMaxHP());
 		this->setHPbar();
 		this->_actionState=ACTION_STATE_HURT;
 	
@@ -932,25 +932,25 @@ void Flog::setID(CCString* character,CCString* role,CCString* group){
 	idleArray=(CCArray*)(tmpAction->objectAtIndex(1));
 
 	CCString* tmpName;
-	CCString* tmpHpMax;
+	int tmpHpMax;
 	int tmpWidth;
 	int tmpHeight;
 	unsigned int tmpSpeed;
 	int tmpCombatPoint;
 
 	this->readDate(tmpDate,tmpName,tmpHpMax,tmpWidth,tmpHeight,tmpSpeed,tmpCombatPoint);
-	this->setMaxHP(CCString::createWithFormat("%d",atoi(tmpHpMax->getCString())));
-	this->setHP(CCString::create(this->getMaxHP()->getCString()));
+	this->setMaxHP(tmpHpMax);
+	this->setHP(this->getMaxHP());
 	this->setHeight(tmpHeight);
 	this->setWalkSpeed(tmpSpeed);
 	
-	this->setKillNum(CCString::createWithFormat("%d",0));
+	this->setKillNum(0);
 	
 
 
 	if(!this->getCKR() && !this->getCKR2()){
-		this->setCKR(CCString::create("0"));
-		this->setCKR2(CCString::create("0"));
+		this->setCKR(0);
+		this->setCKR2(0);
 	}
 
 	//init WalkFrame
@@ -983,7 +983,7 @@ void Flog::setID(CCString* character,CCString* role,CCString* group){
 	tmpAction=(CCArray*)(animationArray->objectAtIndex(7));
 	tmpDate=(CCArray *)(tmpAction->objectAtIndex(0));
 	unsigned int tmpCD;
-	CCString* tmpValue;
+	int tmpValue;
 	this->readDate(tmpDate,_nattackType,tmpValue,_nattackRangeX,_nattackRangeY,tmpCD,tmpCombatPoint);
 	this->setnAttackValue(tmpValue);
 	_nattackType->retain();
@@ -993,7 +993,7 @@ void Flog::setID(CCString* character,CCString* role,CCString* group){
 	_damageArray=CCArray::create();
 	_damageArray->retain();
 
-	this->setCoin(CCString::create("50"));
+	this->setCoin(50);
 
 
 	this->initAction();
@@ -1197,30 +1197,30 @@ void Tower::setID(CCString* character,CCString* role,CCString* group){
 	idleArray=(CCArray*)(tmpAction->objectAtIndex(1));
 
 	CCString* tmpName;
-	CCString* tmpHpMax;
+	int tmpHpMax;
 	int tmpWidth;
 	int tmpHeight;
 	unsigned int tmpSpeed;
 	int tmpCombatPoint;
 
 	this->readDate(tmpDate,tmpName,tmpHpMax,tmpWidth,tmpHeight,tmpSpeed, tmpCombatPoint);
-	this->setMaxHP(CCString::createWithFormat("%d",atoi(tmpHpMax->getCString())));
-	this->setHP(CCString::create(this->getMaxHP()->getCString()));
+	this->setMaxHP(tmpHpMax);
+	this->setHP(this->getMaxHP());
 
 	this->setHeight(tmpHeight);
 	this->setWalkSpeed(tmpSpeed);
 
 
 	if(!this->getCKR() && !this->getCKR2()){
-		this->setCKR(CCString::create("0"));
-		this->setCKR2(CCString::create("0"));
+		this->setCKR(0);
+		this->setCKR2(0);
 	}
 
 	//init DeadFrame
 	tmpAction=(CCArray*)(animationArray->objectAtIndex(6));
 	deadArray=(CCArray*)(tmpAction->objectAtIndex(1));
 
-	this->setCoin(CCString::create("50"));
+	this->setCoin(50);
 
 	this->initAction();
 
@@ -1341,15 +1341,15 @@ void Monster::setID(CCString* character,CCString* role,CCString* group){
 	idleArray=(CCArray*)(tmpAction->objectAtIndex(1));
 
 	CCString* tmpName;
-	CCString* tmpHpMax;
+	int tmpHpMax;
 	int tmpWidth;
 	int tmpHeight;
 	unsigned int tmpSpeed;
 	int  tmpCombatPoint;
 
 	this->readDate(tmpDate,tmpName,tmpHpMax,tmpWidth,tmpHeight,tmpSpeed, tmpCombatPoint);
-	this->setMaxHP(CCString::createWithFormat("%d",atoi(tmpHpMax->getCString())));
-	this->setHP(CCString::create(this->getMaxHP()->getCString()));
+	this->setMaxHP(tmpHpMax);
+	this->setHP(this->getMaxHP());
 
 	this->setHeight(tmpHeight);
 	this->setWalkSpeed(tmpSpeed);
@@ -1357,8 +1357,8 @@ void Monster::setID(CCString* character,CCString* role,CCString* group){
 
 
 	if(!this->getCKR() && !this->getCKR2()){
-		this->setCKR(CCString::create("0"));
-		this->setCKR2(CCString::create("0"));
+		this->setCKR(0);
+		this->setCKR2(0);
 	}
 
 	//init WalkFrame
@@ -1375,13 +1375,13 @@ void Monster::setID(CCString* character,CCString* role,CCString* group){
 	tmpAction=(CCArray*)(animationArray->objectAtIndex(7));
 	tmpDate=(CCArray *)(tmpAction->objectAtIndex(0));
 	unsigned int tmpCD;
-	CCString* tmpValue;
+	int tmpValue;
 	this->readDate(tmpDate,_nattackType,tmpValue,_nattackRangeX,_nattackRangeY,tmpCD,tmpCombatPoint);
 	this->setnAttackValue(tmpValue);
 	_nattackType->retain();
 	nattackArray=(CCArray *)(tmpAction->objectAtIndex(1));
 
-	this->setCoin(CCString::create("50"));
+	this->setCoin(50);
 
 	this->initAction();
 
@@ -1427,37 +1427,37 @@ void Monster::changeHPbar(){
 
 	if(_exp>=500 && _level==1){
 		_level=2;
-		int tempMaxHP=atoi(this->getMaxHP()->getCString());
+		int tempMaxHP=this->getMaxHP();
 		tempMaxHP+=1000;
-		this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
-			this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+9));
+		this->setMaxHP(tempMaxHP);
+			this->setnAttackValue(this->getnAttackValue()+9);
 	}else if(_exp>=1000 && _level==2){
 		_level=3;
-		int tempMaxHP=atoi(this->getMaxHP()->getCString());
+		int tempMaxHP=this->getMaxHP();
 		tempMaxHP+=1500;
-		this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+18));
+		this->setMaxHP(tempMaxHP);
+		this->setnAttackValue(this->getnAttackValue()+18);
 
 	}else if(_exp>=1500 && _level==3){
 		_level=4;
-		int tempMaxHP=atoi(this->getMaxHP()->getCString());
+		int tempMaxHP=this->getMaxHP();
 		tempMaxHP+=2000;
-		this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+27));
+		this->setMaxHP(tempMaxHP);
+		this->setnAttackValue(this->getnAttackValue()+27);
 
 	}else if(_exp>=2000 && _level==4){
 		_level=5;
-		int tempMaxHP=atoi(this->getMaxHP()->getCString());
+		int tempMaxHP=this->getMaxHP();
 		tempMaxHP+=2500;
-		this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+36));
+		this->setMaxHP(tempMaxHP);
+		this->setnAttackValue(this->getnAttackValue()+36);
 
 	}else if(_exp>=2500 && _level==5){
 		_level=6;
-		int tempMaxHP=atoi(this->getMaxHP()->getCString());
+		int tempMaxHP=this->getMaxHP();
 		tempMaxHP+=3000;
-		this->setMaxHP(CCString::createWithFormat("%d",tempMaxHP));
-		this->setnAttackValue(CCString::createWithFormat("%d",atoi(this->getnAttackValue()->getCString())+48));
+		this->setMaxHP(tempMaxHP);
+		this->setnAttackValue(this->getnAttackValue()+48);
 	}
 
 	if(_hpBar){	
@@ -1854,7 +1854,7 @@ void Bullet::setID(CCString* character,CCString* role,CCString* group){
 	tmpDate=(CCArray *)(tmpAction->objectAtIndex(0));
 	unsigned int tmpCD;
 	int tmpCombatPoint;
-	CCString* tmpValue;
+	int tmpValue;
 
 	this->readDate(tmpDate,_nattackType,tmpValue,_nattackRangeX,_nattackRangeY,tmpCD,tmpCombatPoint);
 	this->setnAttackValue(tmpValue);
@@ -1867,7 +1867,7 @@ void Bullet::setID(CCString* character,CCString* role,CCString* group){
 		deadArray=(CCArray*)(tmpAction->objectAtIndex(1));
 	}
 
-	this->setCoin(CCString::create("50"));
+	this->setCoin(50);
 
 	this->initAction();
 

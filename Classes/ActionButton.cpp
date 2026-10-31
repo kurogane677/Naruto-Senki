@@ -358,8 +358,8 @@ void ActionButton::setProgressMark(){
 }
 
 void ActionButton::updateProgressMark(){
-	float ckr=atof(_delegate->_delegate->currentPlayer->getCKR()->getCString());
-	float ckr2=atof(_delegate->_delegate->currentPlayer->getCKR2()->getCString());
+	float ckr=_delegate->_delegate->currentPlayer->getCKR();
+	float ckr2=_delegate->_delegate->currentPlayer->getCKR2();
 	if (this->getABType()== OUGIS1){
 		if(ckr<15000){
 			if(proressblinkSprite){
@@ -489,8 +489,8 @@ void ActionButton::unLock(){
 		markSprite->setPercentage(0);
 	}
 
-	float ckr=atof(_delegate->_delegate->currentPlayer->getCKR()->getCString());
-	float ckr2=atof(_delegate->_delegate->currentPlayer->getCKR2()->getCString());
+	float ckr=_delegate->_delegate->currentPlayer->getCKR();
+	float ckr2=_delegate->_delegate->currentPlayer->getCKR2();
 
 	if (this->getABType()== OUGIS1){
 		if(ckr>=15000){

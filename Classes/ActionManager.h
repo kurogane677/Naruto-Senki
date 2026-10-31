@@ -39,12 +39,12 @@ public:
 	virtual	void		setShadows();
 	unsigned int		_deadNum;
 	unsigned int		_flogNum;
-	CC_SYNTHESIZE_RETAIN(CCString*, _killNum,KillNum);
+	CC_SYNTHESIZE(int, _killNum,KillNum);
 	
 
 
 
-	CC_SYNTHESIZE_RETAIN(CCString*, _coin,Coin);
+	CC_SYNTHESIZE(int, _coin,Coin);
 
 
 	CCObject*			_slayer;
@@ -142,11 +142,11 @@ public:
 	//CC_SYNTHESIZE(float,_maxHP,MaxHP);
 	//CC_SYNTHESIZE(float,_hp,HP);
 
-	CC_SYNTHESIZE_RETAIN(CCString*,_maxHP,MaxHP);
-	CC_SYNTHESIZE_RETAIN(CCString*,_hp,HP);
+	CC_SYNTHESIZE(int, _maxHP,MaxHP);
+	CC_SYNTHESIZE(int, _hp,HP);
 
-	CC_SYNTHESIZE_RETAIN(CCString*,_ckr,CKR);
-	CC_SYNTHESIZE_RETAIN(CCString*,_ckr2,CKR2);
+	CC_SYNTHESIZE(float, _ckr,CKR);
+	CC_SYNTHESIZE(float, _ckr2,CKR2);
 	CC_SYNTHESIZE(float,_gardValue,GP);
 	CC_SYNTHESIZE(float,_exp,EXP);
 	CC_SYNTHESIZE(unsigned int,_level,LV);
@@ -161,7 +161,7 @@ public:
 	CC_SYNTHESIZE(ActionManager*,_controler,Controler);
 	CC_SYNTHESIZE(ActionManager*,_secmaster,SecMaster);
 
-	CC_SYNTHESIZE_RETAIN(CCString*,_nattackValue,nAttackValue);
+	CC_SYNTHESIZE(int, _nattackValue,nAttackValue);
 	//unsigned int   _nattackValue ;
 	CC_SYNTHESIZE(CCString*, _nattackType,nAttackType);
 	int				_nattackRangeX;
@@ -169,7 +169,7 @@ public:
 
 	
 
-	CC_SYNTHESIZE_RETAIN(CCString*, _sattackValue1,sAttackValue1);
+	CC_SYNTHESIZE(int, _sattackValue1,sAttackValue1);
 	//unsigned int    _sattackValue1;
 	CC_SYNTHESIZE(CCString*, _sattackType1,sAttack1Type);
 	int				_sattackRangeX1;
@@ -184,7 +184,7 @@ public:
 	int				_attackRangeX;
 	int				_attackRangeY;
 
-	CC_SYNTHESIZE_RETAIN(CCString*, _sattackValue2,sAttackValue2);
+	CC_SYNTHESIZE(int, _sattackValue2,sAttackValue2);
 	//unsigned int    _sattackValue2;
 	CC_SYNTHESIZE(CCString*, _sattackType2,sAttack2Type);
 	int				_sattackRangeX2;
@@ -193,7 +193,7 @@ public:
 	bool			_sattack2isDouble;
 	int				_sattackCombatPoint2;
 
-	CC_SYNTHESIZE_RETAIN(CCString*, _sattackValue3,sAttackValue3);
+	CC_SYNTHESIZE(int, _sattackValue3,sAttackValue3);
 	//unsigned int    _sattackValue3;
 	CC_SYNTHESIZE(CCString*, _sattackType3,sAttack3Type);
 	int				_sattackRangeX3;
@@ -202,7 +202,7 @@ public:
 	bool			_sattack3isDouble;
 	int				_sattackCombatPoint3;
 
-	CC_SYNTHESIZE_RETAIN(CCString*, _sattackValue4,sAttackValue4);
+	CC_SYNTHESIZE(int, _sattackValue4,sAttackValue4);
 	//unsigned int    _sattackValue4;
 	CC_SYNTHESIZE(CCString*, _sattackType4,sAttack4Type);
 	int				_sattackRangeX4;
@@ -211,7 +211,7 @@ public:
 	bool			_sattack4isDouble;
 	int				_sattackCombatPoint4;
 
-	CC_SYNTHESIZE_RETAIN(CCString*, _sattackValue5,sAttackValue5);
+	CC_SYNTHESIZE(int, _sattackValue5,sAttackValue5);
 	//unsigned int    _sattackValue5;
 	CC_SYNTHESIZE(CCString*, _sattackType5,sAttack5Type);
 	int				_sattackRangeX5;
@@ -223,7 +223,7 @@ public:
 	int enemyCombatPoint;
 	int friendCombatPoint;
 
-	CC_SYNTHESIZE_RETAIN(CCString*, _spcattackValue1,spcAttackValue1);
+	CC_SYNTHESIZE(int, _spcattackValue1,spcAttackValue1);
 	//unsigned int    _spcattackValue1;
 	CC_SYNTHESIZE(CCString*, _spcattackType1,spcAttack1Type);
 	int				_spcattackRangeX1;
@@ -232,14 +232,14 @@ public:
 
 
 
-	CC_SYNTHESIZE_RETAIN(CCString*, _spcattackValue2,spcAttackValue2);
+	CC_SYNTHESIZE(int, _spcattackValue2,spcAttackValue2);
 	//unsigned int    _spcattackValue2;
 	CC_SYNTHESIZE(CCString*, _spcattackType2,spcAttack2Type);
 	int				_spcattackRangeX2;
 	int				_spcattackRangeY2;
 	unsigned int				_spcattackcoldDown2;
 
-	CC_SYNTHESIZE_RETAIN(CCString*, _spcattackValue3,spcAttackValue3);
+	CC_SYNTHESIZE(int, _spcattackValue3,spcAttackValue3);
 	//unsigned int    _spcattackValue3;
 	CC_SYNTHESIZE(CCString*, _spcattackType3,spcAttack3Type);
 	int				_spcattackRangeX3;
@@ -247,7 +247,7 @@ public:
 	unsigned int				_spcattackcoldDown3;
 
 
-	CC_SYNTHESIZE_RETAIN(CCString*, _tempAttackValue1,tempAttackValue1);
+	CC_SYNTHESIZE(int, _tempAttackValue1,tempAttackValue1);
 	int            _tempcoldDown1;
 	
 
@@ -408,7 +408,7 @@ protected:
 
 	
 	
-	void				readDate(CCArray* tmpDate,CCString* &attackType,CCString* &attackValue,int &attackRangeX,int &attackRangeY,unsigned int &coldDown,int &combatPoint);
+	void				readDate(CCArray* tmpDate,CCString* &attackType,int &attackValue,int &attackRangeX,int &attackRangeY,unsigned int &coldDown,int &combatPoint);
 
 	CCAction*			createAnimation(CCArray* ationArray,float fps,bool isRepeat,bool isReturn);
 

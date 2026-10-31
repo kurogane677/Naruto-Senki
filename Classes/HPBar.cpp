@@ -146,11 +146,11 @@ void HPBar::loseHP(float percent){
 			
 			if(strcmp(currentSlayer->getRole()->getCString(),"Player")==0 
 				){
-					if(_delegate->getMaxHP()->intValue()==10000){
+					if(_delegate->getMaxHP()==10000){
 						_delegate->setCoinDisplay(30);
 						_delegate->getDelegate()->setCoin("30");
 						_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
-					}else if(_delegate->getMaxHP()->intValue()==5000){
+					}else if(_delegate->getMaxHP()==5000){
 						_delegate->setCoinDisplay(20);
 						_delegate->getDelegate()->setCoin("20");
 						_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
@@ -166,9 +166,9 @@ void HPBar::loseHP(float percent){
 
 
 		currentSlayer->_flogNum+=1;
-		if(_delegate->getMaxHP()->intValue()==10000){
+		if(_delegate->getMaxHP()==10000){
 			currentSlayer->addCoin(30);
-		}else if(_delegate->getMaxHP()->intValue()==5000){
+		}else if(_delegate->getMaxHP()==5000){
 			currentSlayer->addCoin(20);
 		}else{
 			currentSlayer->addCoin(10);
@@ -224,7 +224,7 @@ void HPBar::loseHP(float percent){
 				
 				if(strcmp(currentSlayer->getRole()->getCString(),"Player")==0){
 					 if(_delegate->getDelegate()->_isHardCoreGame){
-						 if(atoi(this->_delegate->getMaxHP()->getCString()) >40000){
+						 if(this->_delegate->getMaxHP() >40000){
 							 _delegate->getDelegate()->setCoin("1000");
 							 _delegate->setCoinDisplay(1000);
 						 }else{
@@ -241,7 +241,7 @@ void HPBar::loseHP(float percent){
 				}
 
 				if(_delegate->getDelegate()->_isHardCoreGame){
-					if(atoi(this->_delegate->getMaxHP()->getCString()) >40000){
+					if(this->_delegate->getMaxHP() >40000){
 						currentSlayer->addCoin(1000);
 					}else{
 						currentSlayer->addCoin(500);
@@ -273,7 +273,7 @@ void HPBar::loseHP(float percent){
 						if (strcmp(otherSlayer->getRole()->getCString(),"Player")==0){
 
 							if(_delegate->getDelegate()->_isHardCoreGame){
-								if(atoi(this->_delegate->getMaxHP()->getCString()) >40000){
+								if(this->_delegate->getMaxHP() >40000){
 									_delegate->getDelegate()->setCoin("850");
 									_delegate->setCoinDisplay(850);
 								}else{
@@ -292,7 +292,7 @@ void HPBar::loseHP(float percent){
 
 
 						if(_delegate->getDelegate()->_isHardCoreGame){
-							if(atoi(this->_delegate->getMaxHP()->getCString()) >40000){
+							if(this->_delegate->getMaxHP() >40000){
 								  otherSlayer->addCoin(850);
 							}else{
 								  otherSlayer->addCoin(350);
@@ -318,7 +318,7 @@ void HPBar::loseHP(float percent){
 			if(strcmp(_delegate->getCharacter()->getCString(),"Kakuzu")==0 && _delegate->getDelegate()->_isOugis2Game){
 				
 				bool reieveAble=false;
-				if(atof(_delegate->getCKR2()->getCString())>=25000 && _delegate->hearts>0){
+				if(_delegate->getCKR2()>=25000 && _delegate->hearts>0){
 					if(strcmp(_delegate->getRole()->getCString(),"Player")==0){
 						if(_delegate->getDelegate()->getHudLayer()->skill5Button){
 							reieveAble=true;
@@ -439,8 +439,8 @@ void HPBar::loseHP(float percent){
 
 				if(strcmp(currentSlayer->getRole()->getCString(),"Flog")!=0){
 
-					int realKillNum=atoi(currentSlayer->getKillNum()->getCString())+1;
-					currentSlayer->setKillNum(CCString::createWithFormat("%d",realKillNum));
+					int realKillNum=currentSlayer->getKillNum()+1;
+					currentSlayer->setKillNum(realKillNum);
 					_delegate->getDelegate()->setReport(currentSlayer->getCharacter()->getCString(),_delegate->getCharacter()->getCString(),currentSlayer->getKillNum());
 				
 					

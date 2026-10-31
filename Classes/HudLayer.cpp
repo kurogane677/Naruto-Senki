@@ -333,7 +333,7 @@ void HudLayer::initHeroInterface(){
 
 	this->initGearButton();
 	
-	hpLabel=CCLabelBMFont::create(this->_delegate->currentPlayer->getHP()->getCString(),"Fonts/1.fnt");
+	hpLabel=CCLabelBMFont::create(CCString::createWithFormat("%d",this->_delegate->currentPlayer->getHP())->getCString(),"Fonts/1.fnt");
 	hpLabel->setScale(0.35f);
 	hpLabel->setPosition(ccp(0,winSize.height-54));
 	hpLabel->setAnchorPoint(ccp(0,0));
@@ -688,7 +688,7 @@ void HudLayer::setHPLose(float percent){
 	CCRotateTo* ra=CCRotateTo::create(0.2f,-((1-percent)*180),-((1-percent)*180));
 	status_hpbar->runAction(ra);
 
-	int hp=atoi(_delegate->currentPlayer->getHP()->getCString());
+	int hp=_delegate->currentPlayer->getHP();
 	hpLabel->setString(CCString::createWithFormat("%d",int(hp))->getCString());
 
 }
@@ -804,7 +804,7 @@ bool HudLayer::offCoin(const char* value){
 }
 
 
-void HudLayer::setReport(const char* name1, const char* name2,CCString* killNum){
+void HudLayer::setReport(const char* name1, const char* name2,int killNum){
 	float length;
 
 	if(!_reportListArray){
@@ -815,7 +815,7 @@ void HudLayer::setReport(const char* name1, const char* name2,CCString* killNum)
 		dic->setObject(CCString::create(name1),"name1");
 		dic->setObject(CCString::create(name2),"name2");
 		dic->setObject(CCString::createWithFormat("%d",1),"num");
-		dic->setObject(killNum,"kills");
+		dic->setObject(CCString::createWithFormat("%d",killNum),"kills");
 		_reportListArray->addObject(dic);
 		return;
 	}
@@ -836,7 +836,7 @@ void HudLayer::setReport(const char* name1, const char* name2,CCString* killNum)
 	dic->setObject(CCString::create(name1),"name1");
 	dic->setObject(CCString::create(name2),"name2");
 	dic->setObject(CCString::createWithFormat("%d",1),"num");
-	dic->setObject(killNum,"kills");
+	dic->setObject(CCString::createWithFormat("%d",killNum),"kills");
 	dic->setObject(CCString::create("True"),"isDisplay");
 	_reportListArray->addObject(dic);
 	
@@ -1250,7 +1250,7 @@ bool HudLayer::getSkillFinish(){
 
 bool HudLayer::getOugisEnable(bool isCKR2){
 	if(!isCKR2){
-		float ckr=atof(_delegate->currentPlayer->getCKR()->getCString());
+		float ckr=_delegate->currentPlayer->getCKR();
 		if (ckr>=15000){
 			return true;
 		}else{
@@ -1258,7 +1258,7 @@ bool HudLayer::getOugisEnable(bool isCKR2){
 		}
 	}else{
 
-		float ckr=atof(_delegate->currentPlayer->getCKR2()->getCString());
+		float ckr=_delegate->currentPlayer->getCKR2();
 		if (ckr>=25000){
 			return true;
 		}else{
@@ -1271,7 +1271,7 @@ bool HudLayer::getOugisEnable(bool isCKR2){
 };
 void HudLayer::costCKR(int value,bool isCKR2){
 	if(!isCKR2){
-		float ckr=atof(_delegate->currentPlayer->getCKR()->getCString());
+		float ckr=_delegate->currentPlayer->getCKR();
 
 		if(ckr-value>0){
 			ckr-=value;	
@@ -1279,12 +1279,12 @@ void HudLayer::costCKR(int value,bool isCKR2){
 			ckr=0;
 		}
 	
-		_delegate->currentPlayer->setCKR(CCString::createWithFormat("%f",ckr));
+		_delegate->currentPlayer->setCKR(ckr);
 		this->setCKRLose(false);
 
 	}else{
 
-		float  ckr=atof(_delegate->currentPlayer->getCKR2()->getCString());
+		float  ckr=_delegate->currentPlayer->getCKR2();
 
 		if(ckr-value>0){
 			ckr-=value;	
@@ -1292,7 +1292,7 @@ void HudLayer::costCKR(int value,bool isCKR2){
 			ckr=0;
 		}
 
-		_delegate->currentPlayer->setCKR2(CCString::createWithFormat("%f",ckr));
+		_delegate->currentPlayer->setCKR2(ckr);
 		this->setCKRLose(true);
 
 	}
