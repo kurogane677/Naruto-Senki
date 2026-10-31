@@ -1,0 +1,96 @@
+name: Build
+
+# Sementara (testing): setiap push tag v* langsung build + release, tanpa cek main/PR.
+on:
+  push:
+    tags: [ 'v*' ]
+
+env:
+  AXMOL_VERSION: v2.11.5 # Latest version from 31 Oct 2026
+  AX_ROOT: ${{ github.workspace }}/axmol
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Clone Axmol
+        run: git clone --depth 1 --branch $env:AXMOL_VERSION https://github.com/axmolengine/axmol.git $env:AX_ROOT
+
+      - name: Cache Axmol tools
+        uses: actions/cache@v6
+        with:
+          path: |
+            axmol/tools/external
+            axmol/cache
+          key: axmol-win-${{ env.AXMOL_VERSION }}
+
+      - name: Build Win64
+        shell: pwsh
+        run: |
+          & "$env:AX_ROOT/setup.ps1"
+          & "$env:AX_ROOT/tools/cmdline/axmol.ps1" build -p win32 -a x64 -O2
+
+      # -O2 = Release: exe + DLL + folder Content ada di build_x64/bin/NarutoSenki/Release
+      - name: Package Win64
+        shell: pwsh
+        run: |
+          Compress-Archive -Path build_x64/bin/NarutoSenki/Release/* `
+            -DestinationPath "NarutoSenki-${{ github.ref_name }}-win64.zip"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: NarutoSenki-win64
+          path: NarutoSenki-${{ github.ref_name }}-win64.zip
+
+  android:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Clone Axmol
+        run: git clone --depth 1 --branch $env:AXMOL_VERSION https://github.com/axmolengine/axmol.git $env:AX_ROOT
+
+      - name: Cache Android SDK/NDK + Axmol tools
+        uses: actions/cache@v6
+        with:
+          path: |
+            axmol/tools/external
+            axmol/cache
+            ~/.gradle/caches
+          key: axmol-android-${{ env.AXMOL_VERSION }}
+
+      - name: Decode keystore
+        shell: pwsh
+        run: |
+          [IO.File]::WriteAllBytes("$env:RUNNER_TEMP/release.jks",
+            [Convert]::FromBase64String("${{ secrets.KEYSTORE_BASE64 }}"))
+
+      - name: Build APK (release, signed)
+        shell: pwsh
+        run: |
+          & "$env:AX_ROOT/setup.ps1"
+          & "$env:AX_ROOT/tools/cmdline/axmol.ps1" build -p android -a arm64 `
+            -xc "-PKEY_STORE_FILE=$env:RUNNER_TEMP/release.jks,-PKEY_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }},-PKEY_ALIAS=${{ secrets.KEY_ALIAS }},-PKEY_PASSWORD=${{ secrets.KEY_PASSWORD }}"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: NarutoSenki-android
+          path: proj.android/app/build/outputs/apk/**/*.apk
+
+  release:
+    needs: [ windows, android ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+
+      - name: Create release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            NarutoSenki-android/**/*.apk
+            NarutoSenki-win64/*.zip
