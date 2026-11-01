@@ -30,13 +30,17 @@ jobs:
         shell: pwsh
         run: |
           & "$env:AX_ROOT/setup.ps1"
-          & "$env:AX_ROOT/tools/cmdline/axmol.ps1" build -p win32 -a x64 -O2
+          # -t: tanpa ini axmol menebak target dari nama folder checkout ("Naruto-Senki")
+          & "$env:AX_ROOT/tools/cmdline/axmol.ps1" build -p win32 -a x64 -O3 -t NarutoSenki
 
-      # -O2 = Release: exe + DLL + folder Content ada di build_x64/bin/NarutoSenki/Release
+      # -O3 = Release (-O2 = RelWithDebInfo). axmol memakai folder build/ di root repo:
+      # exe + DLL + folder Content ada di build/bin/NarutoSenki/Release
       - name: Package Win64
         shell: pwsh
         run: |
-          Compress-Archive -Path build_x64/bin/NarutoSenki/Release/* `
+          $exe = Get-ChildItem build -Recurse -Filter NarutoSenki.exe | Where-Object { $_.FullName -match '\\Release\\' } | Select-Object -First 1
+          if (!$exe) { throw "NarutoSenki.exe (Release) tidak ditemukan di build/" }
+          Compress-Archive -Path "$($exe.DirectoryName)/*" `
             -DestinationPath "NarutoSenki-${{ github.ref_name }}-win64.zip"
 
       - uses: actions/upload-artifact@v7
@@ -46,6 +50,8 @@ jobs:
 
   android:
     runs-on: windows-latest
+    # KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS / KEY_PASSWORD live in the "release" environment
+    environment: release
     steps:
       - uses: actions/checkout@v7
 
