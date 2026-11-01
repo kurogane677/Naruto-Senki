@@ -20,8 +20,6 @@ public:
 	const char* _com1Select;
 	const char* _com2Select;
 
-	bool isPosting;
-	CCSprite* refreshBtn;
 	
 	
 	CCLayer* _teamSelector;
@@ -69,7 +67,6 @@ private:
 	void	onGameStart(CCObject* sender);
 	void    onSkillMenu(CCObject* sender);
 	void	onBackToMenu(CCObject* sender);
-	void	onListRequestCompleted(CCNode *sender ,void *data);
 	
 };
 

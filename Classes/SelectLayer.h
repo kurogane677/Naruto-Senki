@@ -32,11 +32,10 @@ public:
 	CC_SYNTHESIZE_RETAIN(CCSprite*,_selectImg,SelectImg);
 
 	virtual void keyBackClicked();
+	void	onGameStart(CCObject* sender);
 
 private:
-	void	onGameStart(CCObject* sender);
 	void    onSkillMenu(CCObject* sender);
-	void	onBackToMenu(CCObject* sender);
 };
 
 

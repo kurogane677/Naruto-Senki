@@ -168,7 +168,7 @@ Cara memilih di layar HardCore: **double-click** = kunci pilihan. Urutannya **CO
 
 | File | Isi |
 |---|---|
-| `sql.db` | Coin & record per hero (SQLite, nilai di-obfuscate) |
+| `sql.db` | Coin & record per hero (SQLite, nilai di-obfuscate); tabel `PlayerBuild` menyimpan urutan gear Anda per hero di HardCore |
 | `CheckMD5_113.xml` | Sisa dari versi lama (hash `sql.db`). Tidak lagi dibuat maupun dicek, aman dihapus |
 | `UserDefault.bin` | Pengaturan BGM/voice (format Axmol; save dari versi 2.x tidak ikut terbawa) |
 
@@ -354,7 +354,9 @@ Naruto Senki/
 ├─ Classes/                  # kode game (cocos2d-x 2.x style, UTF-8)
 │  ├─ Compat/                # ★ lapisan kompatibilitas 2.x → Axmol (Compat2x.h/.cpp)
 │  ├─ ActionManager.*        # base class semua unit (state machine, damage, buff, AI helper)
-│  ├─ Characters.*           # Hero + AI per karakter
+│  ├─ Characters.*           # Hero + AI summon/clone/guardian
+│  ├─ AI/                    # AI bot: AIController, TeamBrain, profil, build gear (lihat bagian AI bot)
+│  ├─ AutoPlay.*             # mode uji AI-vs-AI (NS_AUTOPLAY=1)
 │  ├─ Element.*              # HeroElement, Flog (creep), Tower, Monster, Bullet
 │  ├─ GameLayer.*            # dunia game, spawn, kamera, kondisi menang
 │  ├─ HudLayer.*, ActionButton.*, JoyStick.*   # HUD & input
@@ -362,6 +364,7 @@ Naruto Senki/
 │  ├─ GameOver.*, PauseLayer.*, GearLayer.*, SkillLayer.*, RankingLayer.*
 │  └─ MyUtils/               # KTools (SQLite/XML), MD5, sqlite3, tinyxml2, util UI
 ├─ Resources/                # aset (sprite plist/pvr, audio mp3/ogg, peta .tmx, data XML)
+│  └─ AI/profiles.json       # profil AI per hero: role, build gear, aturan skill
 ├─ proj.win32/               # entry point Windows + CrashHandler
 ├─ proj.android/             # proyek Gradle Android dari template Axmol (lihat Build APK Android)
 │  └─ app/src/net/zakume/game/DialogUtils.java   # dialog Exit yang dipanggil lewat JNI
@@ -406,6 +409,36 @@ Kode game sengaja **tidak ditulis ulang**. Kode tetap memakai API cocos2d-x 2.x,
 
 ---
 
+## AI bot
+
+AI hero ditulis ulang menjadi **data-driven** (`Classes/AI/`). Sebelumnya ada sekitar 60 fungsi `Hero::AI_<Nama>()` hasil copy-paste (sekitar 7.500 baris); kode lamanya bisa dilihat di riwayat git.
+
+| Bagian | Isi |
+|---|---|
+| `Resources/AI/profiles.json` | Profil per hero: **role**, **build gear**, dan **aturan skill** (urutan prioritas, jarak cast, syarat). Format lengkap ada di komentar file |
+| `AIController` | Otak tiap bot: memilih target → bertahan (substitution, potion, mundur sampai pulih) → menghindar ougis → membela base/tower → bertarung → farm creep/tower → maju |
+| `TeamBrain` | Info satu tim: target fokus (HP terendah), musuh yang memukul tower kita, momen push saat ≥2 hero musuh mati, kalah jumlah |
+| `AITuning.h` | Satu set parameter untuk semua bot, kawan dan lawan (dulu level "Hard"): jeda reaksi, peluang memakai skill, ambang potion/mundur, peluang menghindar, combo, fokus target |
+| `HeroHooks` | Mekanik yang tidak muat di data: ritual Hidan, teleport Hiraishin Minato, ambil jantung Kakuzu |
+| `BuildBook` | Pemilihan build gear (HardCore) dan tabel `PlayerBuild` |
+
+**Role** menentukan gaya main:
+- **fighter**: Naruto, Asuma, Hinata, dll.
+- **assassin**: mengincar hero dengan HP terendah (Kakashi, Itachi, Lee, Minato, dll.).
+- **tank**: mundur paling akhir dan melindungi tower (Choji, Tsunade, Gaara, Kakuzu, dll.).
+- **support**: berdiri di belakang garis depan dan mundur lebih awal (Sakura, Ino, Shikamaru, Karin, Chiyo).
+- **pusher**: memprioritaskan tower (Deidara; Sakura dan Choji sebagai sub-role).
+- **ranged**: menjaga jarak (Jiraiya, Shino, Tenten, dll.).
+- **summoner**: Kankuro.
+
+**Build gear (HardCore)**: tiap hero punya build `default` (dari AI asli), ditambah build `aggressive`/`sustain`/`push` sesuai role. Saat pertama membeli, bot memilih build menurut jalannya match: tim tertinggal memakai `sustain`, tim unggul memakai `aggressive`/`push`. Setelah match HardCore, urutan gear Anda direkam ke tabel `PlayerBuild`. Jika build Anda untuk hero itu sudah dipakai minimal 3 kali, bot menirunya dengan peluang 60%.
+
+**Uji AI-vs-AI**: set environment variable `NS_AUTOPLAY=1` sebelum menjalankan exe. Game melewati menu dan memainkan match Training terus-menerus, dengan hero Anda ikut dikendalikan AI. Hasil tiap match ditulis ke `%LOCALAPPDATA%\NarutoSenki\autoplay.log`, dan stack crash (jika ada) ke `autoplay_crash.log`. Opsi tambahan:
+- `NS_AUTOPLAY_HERO=Naruto`: hero player.
+- `NS_AUTOPLAY_SPEED=4`: kecepatan game.
+
+---
+
 ## Debugging & crash
 
 - **`crash.log`**: saat crash (termasuk assert/abort), `proj.win32/CrashHandler.cpp` menulis **stack trace lengkap dengan nama fungsi + file + baris** ke `crash.log` dan minidump ke `crash.dmp` **di folder exe yang dijalankan** (`...\Debug\` atau `...\RelWithDebInfo\`). Lampirkan isinya saat melapor bug.
@@ -422,10 +455,9 @@ Perilaku berikut **bawaan kode asli**, bukan akibat migrasi. Sesuai aturan roadm
 | Masalah | Keterangan |
 |---|---|
 | Ikon buff tidak tampil untuk sebagian hero | `UI.plist` hanya punya ikon untuk Sakura & Chiyo; buff tetap berjalan |
-| HP bisa minus, stun 500 ms jadi 0 s, cek jarak tanpa `abs()` | Lihat daftar bug di memory/report proyek |
-| Hero Orochimaru, Nagato, Pain diam jika dikendalikan AI | AI-nya kosong di kode asli |
-| Fitur online mati | Server asli tidak ada; endpoint di-stub |
-| Memory leak kecil di beberapa tempat (`retain` tanpa `release`) | Tidak memengaruhi MVP |
+| Fitur online mati | Server asli tidak ada; kodenya sudah dihapus |
+| Memory leak kecil di beberapa tempat (`retain` tanpa `release` di animasi dan unit) | Belum dibereskan seluruhnya; tidak terasa dalam satu sesi main |
+| Build Debug: assert `Scheduler: element's paused should be paused` saat buff dipasang ke unit yang sedang di-pause | Hanya di Debug (assert engine); Release tidak terpengaruh |
 | Format save `UserDefault` berubah (`.bin`) | Pengaturan dari build 2.x tidak terbaca |
 | Banyak frame sprite yang dirujuk kode tidak ada di resource (`select_title.png`, `hardcore_title.png`, UI grup/profil online, dll.) | Di build Debug langsung assert. Yang ada di jalur Training/HardCore sudah diganti; sisanya ada di fitur online yang mati |
 
@@ -456,7 +488,8 @@ Detail lengkap dan checklist ada di [`MIGRATION_ROADMAP.md`](MIGRATION_ROADMAP.m
 | M5 | MVP berjalan (Training end-to-end) | ✅ |
 | M6.1 | Semua hero + transformasi, mode HardCore | ✅ (perlu uji menyeluruh peta 2–5 & gear) |
 | M6.2 | Gear, guardian, ranking/skill/credits | ⏳ |
-| M6.3 | Perbaikan bug asli (lihat [Known issues](#known-issues)) | ⏳ |
+| M6.3 | Perbaikan bug asli, hapus kode online mati, stat numerik, enum role/group | ✅ |
+| M7 | AI data-driven: role, taktik tim, build gear + build player | ✅ |
 | M6.4 | Hapus shim → API Axmol native | ⏳ |
 | M6.5 | Android: port JNI → APK teruji | ✅ |
 

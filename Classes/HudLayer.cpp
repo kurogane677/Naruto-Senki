@@ -333,7 +333,7 @@ void HudLayer::initHeroInterface(){
 
 	this->initGearButton();
 	
-	hpLabel=CCLabelBMFont::create(this->_delegate->currentPlayer->getHP()->getCString(),"Fonts/1.fnt");
+	hpLabel=CCLabelBMFont::create(CCString::createWithFormat("%d",this->_delegate->currentPlayer->getHP())->getCString(),"Fonts/1.fnt");
 	hpLabel->setScale(0.35f);
 	hpLabel->setPosition(ccp(0,winSize.height-54));
 	hpLabel->setAnchorPoint(ccp(0,0));
@@ -343,7 +343,7 @@ void HudLayer::initHeroInterface(){
 	
 	
 	expLabel=CCLabelBMFont::create(CCString::createWithFormat("%d%%",
-		this->_delegate->currentPlayer->getEXP()-((this->_delegate->currentPlayer->getLV() -1 )*500)/500)->getCString(),"Fonts/1.fnt");
+		(int)((this->_delegate->currentPlayer->getEXP()-(this->_delegate->currentPlayer->getLV()-1)*500)/5))->getCString(),"Fonts/1.fnt");
 	expLabel->setScale(0.35f);
 	expLabel->setPosition(ccp(94,winSize.height-54));
 	expLabel->setAnchorPoint(ccp(0.5f,0));
@@ -399,9 +399,9 @@ void HudLayer::initHeroInterface(){
 		skill2Button->setDoubleSkill(true);
 	};
 	skill2Button->setMarkSprite("skill_freeze.png");
-	if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kankuro")== 0 || 
-		strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Chiyo")==0 ||
-		strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kiba")== 0 
+	if(_delegate->currentPlayer->isCharacter("Kankuro") || 
+		_delegate->currentPlayer->isCharacter("Chiyo") ||
+		_delegate->currentPlayer->isCharacter("Kiba") 
 		){
 		skill2Button->setLock();
 	}
@@ -418,9 +418,9 @@ void HudLayer::initHeroInterface(){
 		skill3Button->setDoubleSkill(true);
 
 	};
-	if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kiba")==0||
-		strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Chiyo")==0 ||
-		strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Lee")== 0 
+	if(_delegate->currentPlayer->isCharacter("Kiba")||
+		_delegate->currentPlayer->isCharacter("Chiyo") ||
+		_delegate->currentPlayer->isCharacter("Lee") 
 		){
 		skill3Button->setLock();
 	}
@@ -520,7 +520,7 @@ void HudLayer::initHeroInterface(){
 		const char* path="";
 		MiniIcon* mi;
 
-		if(strcmp(player->getGroup()->getCString(),_delegate->currentPlayer->getGroup()->getCString())==0){
+		if(player->group()==_delegate->currentPlayer->group()){
 			path="tower_icon1.png";
 		}else{
 			path="tower_icon2.png";
@@ -544,19 +544,19 @@ void HudLayer::initHeroInterface(){
 	
 	CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 		ActionManager* player=(ActionManager*) pObject;
-		if(strcmp(player->getRole()->getCString(),"Player")==0 ||
-			strcmp(player->getRole()->getCString(),"Com")==0
+		if(player->role()==Role::Player ||
+			player->role()==Role::Com
 			){
 				MiniIcon* mi;
 				const char* path="";
-				if(strcmp(player->getRole()->getCString(),"Player")==0){
+				if(player->role()==Role::Player){
 					path="player_icon.png";
-				}else if(strcmp(player->getRole()->getCString(),"Com")==0){
-					if(strcmp(player->getCharacter()->getCString(),"Han")==0 ||
-						strcmp(player->getCharacter()->getCString(),"Roshi")==0){
+				}else if(player->role()==Role::Com){
+					if(player->isCharacter("Han") ||
+						player->isCharacter("Roshi")){
 							path="guardian_icon.png";	
 					}else{
-						if(strcmp(player->getGroup()->getCString(),_delegate->currentPlayer->getGroup()->getCString())==0){
+						if(player->group()==_delegate->currentPlayer->group()){
 							path="com_icon.png";
 
 						}else{
@@ -587,8 +587,8 @@ void HudLayer::addMapIcon(){
 	CCObject* pObject;
 	CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 		ActionManager* player=(ActionManager*) pObject;
-		if(strcmp(player->getCharacter()->getCString(),"Han")==0 ||
-			strcmp(player->getCharacter()->getCString(),"Roshi")==0){
+		if(player->isCharacter("Han") ||
+			player->isCharacter("Roshi")){
 				MiniIcon* mi;
 				const char* path="guardian_icon.png";	
 				mi=MiniIcon::create(path,true);
@@ -688,7 +688,7 @@ void HudLayer::setHPLose(float percent){
 	CCRotateTo* ra=CCRotateTo::create(0.2f,-((1-percent)*180),-((1-percent)*180));
 	status_hpbar->runAction(ra);
 
-	int hp=atoi(_delegate->currentPlayer->getHP()->getCString());
+	int hp=_delegate->currentPlayer->getHP();
 	hpLabel->setString(CCString::createWithFormat("%d",int(hp))->getCString());
 
 }
@@ -804,7 +804,7 @@ bool HudLayer::offCoin(const char* value){
 }
 
 
-void HudLayer::setReport(const char* name1, const char* name2,CCString* killNum){
+void HudLayer::setReport(const char* name1, const char* name2,int killNum){
 	float length;
 
 	if(!_reportListArray){
@@ -815,7 +815,7 @@ void HudLayer::setReport(const char* name1, const char* name2,CCString* killNum)
 		dic->setObject(CCString::create(name1),"name1");
 		dic->setObject(CCString::create(name2),"name2");
 		dic->setObject(CCString::createWithFormat("%d",1),"num");
-		dic->setObject(killNum,"kills");
+		dic->setObject(CCString::createWithFormat("%d",killNum),"kills");
 		_reportListArray->addObject(dic);
 		return;
 	}
@@ -836,7 +836,7 @@ void HudLayer::setReport(const char* name1, const char* name2,CCString* killNum)
 	dic->setObject(CCString::create(name1),"name1");
 	dic->setObject(CCString::create(name2),"name2");
 	dic->setObject(CCString::createWithFormat("%d",1),"num");
-	dic->setObject(killNum,"kills");
+	dic->setObject(CCString::createWithFormat("%d",killNum),"kills");
 	dic->setObject(CCString::create("True"),"isDisplay");
 	_reportListArray->addObject(dic);
 	
@@ -889,8 +889,10 @@ void HudLayer::setBuffDisplay(const char* buffName, float buffStayTime){
 	CCAction* seq=CCSequence::create(seqArray);
 	buffSprite->runAction(seq);
 	buffSprite->setTag(0);
-
+	// kept alive on purpose: bcdLabel1/2 live inside the sprite and the HUD
+	// countdown timers keep using them after the sprite is removed
 	buffSprite->retain();
+
 	this->addChild(buffSprite,500);
 	_buffCount++;
 
@@ -1250,7 +1252,7 @@ bool HudLayer::getSkillFinish(){
 
 bool HudLayer::getOugisEnable(bool isCKR2){
 	if(!isCKR2){
-		float ckr=atof(_delegate->currentPlayer->getCKR()->getCString());
+		float ckr=_delegate->currentPlayer->getCKR();
 		if (ckr>=15000){
 			return true;
 		}else{
@@ -1258,7 +1260,7 @@ bool HudLayer::getOugisEnable(bool isCKR2){
 		}
 	}else{
 
-		float ckr=atof(_delegate->currentPlayer->getCKR2()->getCString());
+		float ckr=_delegate->currentPlayer->getCKR2();
 		if (ckr>=25000){
 			return true;
 		}else{
@@ -1271,7 +1273,7 @@ bool HudLayer::getOugisEnable(bool isCKR2){
 };
 void HudLayer::costCKR(int value,bool isCKR2){
 	if(!isCKR2){
-		float ckr=atof(_delegate->currentPlayer->getCKR()->getCString());
+		float ckr=_delegate->currentPlayer->getCKR();
 
 		if(ckr-value>0){
 			ckr-=value;	
@@ -1279,12 +1281,12 @@ void HudLayer::costCKR(int value,bool isCKR2){
 			ckr=0;
 		}
 	
-		_delegate->currentPlayer->setCKR(CCString::createWithFormat("%f",ckr));
+		_delegate->currentPlayer->setCKR(ckr);
 		this->setCKRLose(false);
 
 	}else{
 
-		float  ckr=atof(_delegate->currentPlayer->getCKR2()->getCString());
+		float  ckr=_delegate->currentPlayer->getCKR2();
 
 		if(ckr-value>0){
 			ckr-=value;	
@@ -1292,7 +1294,7 @@ void HudLayer::costCKR(int value,bool isCKR2){
 			ckr=0;
 		}
 
-		_delegate->currentPlayer->setCKR2(CCString::createWithFormat("%f",ckr));
+		_delegate->currentPlayer->setCKR2(ckr);
 		this->setCKRLose(true);
 
 	}

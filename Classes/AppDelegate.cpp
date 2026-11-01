@@ -23,6 +23,9 @@ void AppDelegate::initGfxContextAttrs()
 
 
 bool AppDelegate::applicationDidFinishLaunching() {
+    // seed rand() once (critical hits, effects, save keys)
+    srand((unsigned)time(nullptr));
+
     // initialize director
     CCDirector* pDirector = CCDirector::sharedDirector();
     ax::RenderView* pRenderView = pDirector->getRenderView();

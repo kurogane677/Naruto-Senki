@@ -291,7 +291,6 @@ void SelectLayer::onGameStart(CCObject* sender){
 		
 		tmpChar=CCString::create(_selectHero);
 		
-		srand((int)time(0));
 		int zhenying=1;
 		
 
@@ -328,8 +327,7 @@ void SelectLayer::onGameStart(CCObject* sender){
 
 				
 				int length=realHero->count();
-				srand((int)time(0));
-				int index=random(length);
+				int index=randInt(length);
 				if(index==(int)realHero->count()){
 					index=realHero->count()-1;
 				}
@@ -353,8 +351,7 @@ void SelectLayer::onGameStart(CCObject* sender){
 
 			}else{
 				int length=realHero->count();
-				srand((int)time(0));
-				int index=random(length);
+				int index=randInt(length);
 				if(index==(int)realHero->count()){
 					index=realHero->count()-1;
 				}
@@ -381,14 +378,7 @@ void SelectLayer::onGameStart(CCObject* sender){
 
 
 
-		CCScene* loadScene=CCScene::create();
-		LoadLayer* loadLayer=LoadLayer::create();
-		loadLayer->tempHeros=tempHeros;
-		loadScene->addChild(loadLayer);
-		
-		loadLayer->_isHardCoreMode=_isHardCoreMode;
-		loadLayer->preloadAudio();
-		CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,loadScene));
+		LoadLayer::start(tempHeros,_isHardCoreMode,false);
 	
 
 	}

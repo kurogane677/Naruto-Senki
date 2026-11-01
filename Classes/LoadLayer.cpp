@@ -22,8 +22,6 @@ LoadLayer::LoadLayer(void)
 	_hudLayer=NULL;
 	_isHardCoreMode=false;
 	_isRandomChar=false;
-	isPosting=false;
-	DLCArray=NULL;
 }
 
 
@@ -120,25 +118,6 @@ void LoadLayer::preloadIMG(){
 
 	
 
-		/*	if(strcmp(player->getCString(),"Chiyo")==0 ||
-		strcmp(player->getCString(),"Shikamaru")==0 ||
-		strcmp(player->getCString(),"Kisame")==0
-		){
-
-		std::string filePath=CCFileUtils::sharedFileUtils()->getWritablePath()+CCString::createWithFormat("/DLC/%s.xml",player->getCString())->getCString();
-		bool isExisted=CCFileUtils::sharedFileUtils()->isFileExist(filePath);
-
-		if(!isExisted){
-		if(!DLCArray){
-		DLCArray=CCArray::create();
-		DLCArray->retain();
-		}
-		CCDictionary* dic=CCDictionary::create();
-		dic->setObject(player,"character");
-		DLCArray->addObject(dic);
-		}
-
-		}*/
 
 		path=CCString::createWithFormat("Element/%s/%s.plist",player->getCString(),player->getCString())->getCString();
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(path);
@@ -251,7 +230,6 @@ void LoadLayer::preloadIMG(){
 
 	
 	try{
-		srand((int)time(0));
 		int num=rand()%3+1;	
 		CCSprite* tips=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("tip%d.png",num)->getCString());	
 		tips->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -275,31 +253,7 @@ void LoadLayer::preloadIMG(){
 
 
 
-	if(!DLCArray){
-		this->scheduleOnce(schedule_selector(LoadLayer::onLoadFinish),3.0f);
-	}else{
-		CCObject* tmpObject;
-		int i=0;
-		CCARRAY_FOREACH(DLCArray,tmpObject){
-			CCDictionary* tempdict=(CCDictionary *) tmpObject;
-			CCString* heroString=CCString::create(tempdict->valueForKey("character")->getCString());
-			isPosting=true;
-			CCHttpRequest* request = new  CCHttpRequest(); 
-			std::string codeFinal;
-			std::string code1=CCString::createWithFormat("code=300&id=%d",MemberID)->getCString();
-			std::string code2=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
-			std::string code3=CCString::createWithFormat("&char=%s",heroString->getCString())->getCString();
-			std::string url=SERVER"nsk/list.php?"+code1+code2+"&pw="+PWord+code3;
-
-			request->setUrl(url.c_str());  
-			request->setRequestType(CCHttpRequest::kHttpGet);  
-			request->setResponseCallback(this, callfuncND_selector(LoadLayer::onHttpRequestCompleted));  
-			request->setTag(heroString->getCString());  
-			CCHttpClient::getInstance()->send(request);  
-			request->release();  
-			i++;
-		}
-	}
+	this->scheduleOnce(schedule_selector(LoadLayer::onLoadFinish),3.0f);
 	
 
 
@@ -310,84 +264,16 @@ void LoadLayer::playBGM(float dt){
 }
 
 
-void LoadLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {  
-	/*AllocConsole();  
-	freopen("CONIN$", "r", stdin);  
-	freopen("CONOUT$", "w", stdout);  
-	freopen("CONOUT$", "w", stderr);*/
-	isPosting=false;
-	
-	CCHttpResponse *response = (CCHttpResponse*)data;    
-	if (!response)    
-	{  
-		return;    
-	}   
-	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
-	{  
-		CCLog("%s completed", response->getHttpRequest()->getTag());  
-	}  
-	int statusCode = response->getResponseCode();  
-	char statusString[64] = {};  
-	
-	if (!response->isSucceed())  
-	{  
-		CCLog("response failed");  
-		CCLog("error buffer:%s" ,"");
-		CCTips *tip=CCTips::create("ServerError");
-		this->addChild(tip,5000);
-		return;
-	}  
-
-	
-
-
-	auto* buffer = response->getResponseData();  
-	std::string buf(buffer->begin(),buffer->end()); 
-	
-	/*for (unsigned int i = 0; i < buffer->size(); i ++)  
-	{  
-	printf("%c" ,(*buffer)[i]);
-	}  */
-	
-	std::string foldName=CCFileUtils::sharedFileUtils()->getWritablePath()+"DLC";
-
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-	mkdir(foldName.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
-#else
-	_mkdir(foldName.c_str());
-#endif
-
-
-	std::string fileName = CCString::createWithFormat("%s.xml",response->getHttpRequest()->getTag())->getCString();
-	//std::string filePath = CCFileUtils::sharedFileUtils()->getWritablePath()+"DLC" + fileName;
-	
-	const char* filePath;
-	
-	filePath =CCString::createWithFormat("%s/DLC/%s.xml",CCFileUtils::sharedFileUtils()->getWritablePath().c_str(),response->getHttpRequest()->getTag())->getCString();
-	
-	std::ofstream fos(filePath);//创建打开文件
-	if(!fos)cerr<<"error";//校验文件
-	fos<<buf;//输出
-	fos.close();
-	//std::remove(filePath.c_str());
-	
-
-	CCObject* tmpObject;
-	int i=0;
-	CCARRAY_FOREACH(DLCArray,tmpObject){
-		CCDictionary* tempdict=(CCDictionary *) tmpObject;
-		CCString* heroString=CCString::create(tempdict->valueForKey("character")->getCString());
-		if(strcmp(heroString->getCString(),response->getHttpRequest()->getTag().data())==0){
-			DLCArray->removeObject(tmpObject);
-		}
-		
-	}
-	
-	if(DLCArray->count()<=0){
-		this->scheduleOnce(schedule_selector(LoadLayer::onLoadFinish),3.0f);
-	}
-
-}  
+void LoadLayer::start(CCArray* heroes,bool hardCore,bool randomChar){
+	CCScene* loadScene=CCScene::create();
+	LoadLayer* loadLayer=LoadLayer::create();
+	loadLayer->tempHeros=heroes;
+	loadScene->addChild(loadLayer);
+	loadLayer->_isHardCoreMode=hardCore;
+	loadLayer->_isRandomChar=randomChar;
+	loadLayer->preloadAudio();
+	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,loadScene));
+}
 
 void LoadLayer::preloadAudio(){
 	

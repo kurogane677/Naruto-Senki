@@ -1,9 +1,11 @@
 name: Build
 
-# Sementara (testing): setiap push tag v* langsung build + release, tanpa cek main/PR.
+# push tag v*      -> build + GitHub Release
+# workflow_dispatch -> build only (APK + zip as run artifacts), from any branch
 on:
   push:
     tags: [ 'v*' ]
+  workflow_dispatch:
 
 env:
   AXMOL_VERSION: v2.11.5 # Latest version from 31 Oct 2026
@@ -30,22 +32,30 @@ jobs:
         shell: pwsh
         run: |
           & "$env:AX_ROOT/setup.ps1"
-          & "$env:AX_ROOT/tools/cmdline/axmol.ps1" build -p win32 -a x64 -O2
+          # -t: tanpa ini axmol menebak target dari nama folder checkout ("Naruto-Senki")
+          & "$env:AX_ROOT/tools/cmdline/axmol.ps1" build -p win32 -a x64 -O3 -t NarutoSenki
 
-      # -O2 = Release: exe + DLL + folder Content ada di build_x64/bin/NarutoSenki/Release
+      # -O3 = Release (-O2 = RelWithDebInfo). axmol memakai folder build/ di root repo:
+      # exe + DLL + folder Content ada di build/bin/NarutoSenki/Release
       - name: Package Win64
         shell: pwsh
         run: |
-          Compress-Archive -Path build_x64/bin/NarutoSenki/Release/* `
-            -DestinationPath "NarutoSenki-${{ github.ref_name }}-win64.zip"
+          $exe = Get-ChildItem build -Recurse -Filter NarutoSenki.exe | Where-Object { $_.FullName -match '\\Release\\' } | Select-Object -First 1
+          if (!$exe) { throw "NarutoSenki.exe (Release) tidak ditemukan di build/" }
+          # branch names like chore/x contain '/', which is not valid in a file name
+          $name = "${{ github.ref_name }}" -replace '[\/]', '-'
+          Compress-Archive -Path "$($exe.DirectoryName)/*" `
+            -DestinationPath "NarutoSenki-$name-win64.zip"
 
       - uses: actions/upload-artifact@v7
         with:
           name: NarutoSenki-win64
-          path: NarutoSenki-${{ github.ref_name }}-win64.zip
+          path: NarutoSenki-*-win64.zip
 
   android:
     runs-on: windows-latest
+    # KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS / KEY_PASSWORD live in the "release" environment
+    environment: release
     steps:
       - uses: actions/checkout@v7
 
@@ -93,6 +103,7 @@ jobs:
           path: proj.android/app/build/outputs/apk/**/*.apk
 
   release:
+    if: startsWith(github.ref, 'refs/tags/')
     needs: [ windows, android ]
     runs-on: ubuntu-latest
     permissions:

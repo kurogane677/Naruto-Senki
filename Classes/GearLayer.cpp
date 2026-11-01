@@ -399,7 +399,7 @@ void GearLayer::updatePlayerGear(){
 	}
 
 	
-	coinLabel->setString(CCString::createWithFormat("%d",atoi(_delegate->currentPlayer->getCoin()->getCString()))->getCString());
+	coinLabel->setString(CCString::createWithFormat("%d",_delegate->currentPlayer->getCoin())->getCString());
 	this->updateGearList();
 
 };

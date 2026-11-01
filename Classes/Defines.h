@@ -1,12 +1,17 @@
 #pragma once
 #include "Compat/Compat2x.h"
 #include <map>
+#include "MyUtils/Util.h"
+
+// lane x where each side's base area ends (the old 11*32 / 85*32)
+constexpr float BASE_X_KONOHA = 11 * 32;
+constexpr float BASE_X_AKATSUKI = 85 * 32;
 
 
 //global parameter
 
 #define winSize  CCDirector::sharedDirector()->getWinSize()
-#define random(x) (rand()%x)
+
 
 
 #define  FONT_TYPE "微软雅黑"
@@ -19,15 +24,9 @@
 
 extern int Cheats;
 extern int adResult;
-extern int MemberID;
-extern int GroupID;
 extern std::string CValue;
-extern std::string PWord;
-extern bool isPlayed;
 
 
-#define SERVER "http://localhost/" 
-#define CURRENT_VERSION 12200
 
 //menu sound
 

@@ -1,6 +1,7 @@
 #include "GameOver.h"
 #include "GameLayer.h"
 #include "Characters.h"
+#include "AI/BuildBook.h"
 
 USING_NS_CC_EXT;
 using namespace CocosDenshion;
@@ -10,8 +11,6 @@ GameOver::GameOver(void)
 {
 	exitLayer=NULL;
 	cheatLayer=NULL;
-	isPosting=false;
-	refreshBtn=NULL;
 }
 
 
@@ -81,7 +80,6 @@ bool GameOver::init(CCRenderTexture* snapshoot){
 
 void GameOver::listResult(){
 	
-	isPlayed=true;
 	if(_delegate->_isHardCoreGame){
 		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/battle_over1.ogg");
 
@@ -92,22 +90,22 @@ void GameOver::listResult(){
 	CCString* path=CCString::createWithFormat("%s_half.png",_delegate->currentPlayer->getCharacter()->getCString());
 	CCSprite* half=CCSprite::createWithSpriteFrameName(path->getCString());
 
-	if(strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Konan")==0||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Karin")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Suigetsu")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Hidan")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Tobirama")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Tsunade")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kankuro")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"SageJiraiya")==0||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Minato")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Tobi")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Lee")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"RockLee")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Hinata")==0||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Asuma")==0 ||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Chiyo")==0||
-	strcmp(_delegate->currentPlayer->getCharacter()->getCString(),"Kisame")==0
+	if(_delegate->currentPlayer->isCharacter("Konan")||
+	_delegate->currentPlayer->isCharacter("Karin") ||
+	_delegate->currentPlayer->isCharacter("Suigetsu") ||
+	_delegate->currentPlayer->isCharacter("Hidan") ||
+	_delegate->currentPlayer->isCharacter("Tobirama") ||
+	_delegate->currentPlayer->isCharacter("Tsunade") ||
+	_delegate->currentPlayer->isCharacter("Kankuro") ||
+	_delegate->currentPlayer->isCharacter("SageJiraiya")||
+	_delegate->currentPlayer->isCharacter("Minato") ||
+	_delegate->currentPlayer->isCharacter("Tobi") ||
+	_delegate->currentPlayer->isCharacter("Lee") ||
+	_delegate->currentPlayer->isCharacter("RockLee") ||
+	_delegate->currentPlayer->isCharacter("Hinata")||
+	_delegate->currentPlayer->isCharacter("Asuma") ||
+	_delegate->currentPlayer->isCharacter("Chiyo")||
+	_delegate->currentPlayer->isCharacter("Kisame")
 		){
 		half->setFlippedX(true);
 	}
@@ -148,7 +146,7 @@ void GameOver::listResult(){
 
 	float _totalSecond=_delegate->_minute*60+_delegate->_second;
 	float resultScore=0;
-	int killDead=atoi(_delegate->currentPlayer->getKillNum()->getCString())-_delegate->currentPlayer->_deadNum;
+	int killDead=_delegate->currentPlayer->getKillNum()-_delegate->currentPlayer->_deadNum;
 	
 	
 	
@@ -184,18 +182,18 @@ void GameOver::listResult(){
 
 		
 		Hero* hero=(Hero*)pObject;
-		if(strcmp(hero->getRole()->getCString(),"Clone")==0 || 
-			strcmp(hero->getRole()->getCString(),"Summon")==0|| 
-			strcmp(hero->getRole()->getCString(),"Kuilei")==0 || 
-			strcmp(hero->getCharacter()->getCString(),"Han")==0 ||
-			strcmp(hero->getCharacter()->getCString(),"Roshi")==0 
+		if(hero->role()==Role::Clone || 
+			hero->role()==Role::Summon|| 
+			hero->role()==Role::Kuilei || 
+			hero->isCharacter("Han") ||
+			hero->isCharacter("Roshi") 
 			){
 				continue;
 		}
 
 		//4v4
 		if(Cheats>10){
-			if(strcmp(hero->getRole()->getCString(),"Player")!=0){
+			if(hero->role()!=Role::Player){
 				continue;
 			}
 		}
@@ -211,9 +209,9 @@ void GameOver::listResult(){
 
 
 
-		int realKillNum=atoi(hero->getKillNum()->getCString());
+		int realKillNum=hero->getKillNum();
 
-		if(strcmp(hero->getGroup()->getCString(),"Konoha")==0){
+		if(hero->group()==Group::Konoha){
 			konohaKill+=realKillNum;
 		}else{
 			akatsukiKill+=realKillNum;
@@ -235,7 +233,7 @@ void GameOver::listResult(){
 
 		float posX=winSize.width/2-result_bg->getContentSize().width/2+2;
 
-		if(strcmp(hero->getGroup()->getCString(),"Konoha")==0){
+		if(hero->group()==Group::Konoha){
 			avator_small->setPosition(ccp(posX,result_bg->getPositionY()-result_bg->getContentSize().height/2+152-(i*25)));
 			killNum->setPosition(ccp(posX+44,avator_small->getPositionY()+avator_small->getContentSize().height/2));
 			deadNum->setPosition(ccp(posX+68,avator_small->getPositionY()+avator_small->getContentSize().height/2));
@@ -276,7 +274,7 @@ void GameOver::listResult(){
 
 	bool isTKO=false;
 	if(_totalSecond>900 && _delegate->_isSurrender){
-		if(strcmp(_delegate->currentPlayer->getGroup()->getCString(),"Konoha")==0){
+		if(_delegate->currentPlayer->group()==Group::Konoha){
 			if(konohaKill>akatsukiKill){
 			 _isWin=true;
 			  isTKO=true;
@@ -292,7 +290,7 @@ void GameOver::listResult(){
 	if(Cheats<=10){
 
 
-	int realKillNum=atoi(_delegate->currentPlayer->getKillNum()->getCString());
+	int realKillNum=_delegate->currentPlayer->getKillNum();
 	
 	std::string tempReward="";
 	if(_delegate->_isHardCoreGame){
@@ -417,7 +415,7 @@ void GameOver::listResult(){
 			//this->addChild(upMenu,7);
 
 
-			detailRecord=CCString::createWithFormat("%02d:%02d,%s,%d,%d",_minute,_delegate->_second,_delegate->currentPlayer->getKillNum()->getCString(),_delegate->currentPlayer->_deadNum,_delegate->currentPlayer->_flogNum)->getCString();
+			detailRecord=CCString::createWithFormat("%02d:%02d,%d,%d,%d",_minute,_delegate->_second,_delegate->currentPlayer->getKillNum(),_delegate->currentPlayer->_deadNum,_delegate->currentPlayer->_flogNum)->getCString();
 
 		}
 
@@ -438,6 +436,15 @@ void GameOver::listResult(){
 				resultChar=CCString::create("Lee");
 			}
 
+			// HardCore: remember the player's gear order so bots can copy what wins
+			if(_delegate->_isHardCoreGame){
+				std::vector<int> gears;
+				CCObject* gearObject;
+				CCARRAY_FOREACH(_delegate->currentPlayer->getGearArray(),gearObject){
+					gears.push_back(((CCString*)gearObject)->intValue());
+				}
+				ai::recordPlayerBuild(resultChar->getCString(),gears,_isWin);
+			}
 
 			if(_isWin ){
 				CCString* winNum=tool->readSQLite("CharRecord","name",resultChar->getCString(),"column1");
@@ -452,7 +459,7 @@ void GameOver::listResult(){
 				}
 				
 				CCString* realWin=CCString::createWithFormat("%d",tempWin);
-				tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column1",(char*) realWin->getCString(),false);
+				tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column1",realWin->getCString());
 				//
 				if(_delegate->_isRandomChar && resultScore>=120 ){
 					CCObject* pObject;
@@ -466,12 +473,12 @@ void GameOver::listResult(){
 					CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 
 						Hero* hero=(Hero*)pObject;
-						if(strcmp(hero->getRole()->getCString(),"Clone")==0 || 
-							strcmp(hero->getRole()->getCString(),"Player")==0 ||
-							strcmp(hero->getRole()->getCString(),"Summon")==0|| 
-							strcmp(hero->getRole()->getCString(),"Kuilei")==0 || 
-							strcmp(hero->getCharacter()->getCString(),"Han")==0 ||
-							strcmp(hero->getCharacter()->getCString(),"Roshi")==0 
+						if(hero->role()==Role::Clone || 
+							hero->role()==Role::Player ||
+							hero->role()==Role::Summon|| 
+							hero->role()==Role::Kuilei || 
+							hero->isCharacter("Han") ||
+							hero->isCharacter("Roshi") 
 							){
 								continue;
 						}
@@ -482,7 +489,7 @@ void GameOver::listResult(){
 						}
 
 						
-						if(strcmp(hero->getGroup()->getCString(),_delegate->currentPlayer->getGroup()->getCString())==0){
+						if(hero->group()==_delegate->currentPlayer->group()){
 
 							CCString* winNum=tool->readSQLite("CharRecord","name",hero->getCharacter()->getCString(),"column1");
 							int tempWin=0;
@@ -493,7 +500,7 @@ void GameOver::listResult(){
 							}
 
 							CCString* realWin=CCString::createWithFormat("%d",tempWin);
-							tool->saveSQLite("CharRecord","name",hero->getCharacter()->getCString(),"column1",(char*) realWin->getCString(),false);
+							tool->saveSQLite("CharRecord","name",hero->getCharacter()->getCString(),"column1",realWin->getCString());
 
 						}
 
@@ -505,7 +512,7 @@ void GameOver::listResult(){
 				//最速记录
 				CCString* recordTime=tool->readSQLite("CharRecord","name",resultChar->getCString(),"column3");
 				if(recordTime->length()==0){
-					tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",(char*) tempTime->getCString(),false);
+					tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",tempTime->getCString());
 				}else{
 					std::string bestTime=(std::string) recordTime->getCString();
 					std::string recordHour=bestTime.substr(0,2);
@@ -534,7 +541,7 @@ void GameOver::listResult(){
 					}
 
 					if(isNewRecord){
-						tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",(char*) tempTime->getCString(),false);
+						tool->saveSQLite("CharRecord","name",resultChar->getCString(),"column3",tempTime->getCString());
 					}
 
 
@@ -547,7 +554,7 @@ void GameOver::listResult(){
 			 CCString* loseNum=tool->readSQLite("Achievement","name",resultChar->getCString(),"column2"); 
 			 int tempLose=atoi(loseNum->getCString())+1;
 			 CCString* realLose=CCString::createWithFormat("%d",tempLose);
-			 tool->saveSQLite("Achievement","name",resultChar->getCString(),"column2",(char*) realLose->getCString(),false);
+			 tool->saveSQLite("Achievement","name",resultChar->getCString(),"column2",realLose->getCString());
 			 }	*/
 
 
@@ -582,109 +589,6 @@ void GameOver::listResult(){
 	_delegate->_isSurrender=false;
 
 }
-void GameOver::onUPloadBtn(CCObject* sender){
-
-	CCTips *tip=CCTips::create("ServerMainten");
-	this->addChild(tip,5000);
-
-	return;
-	if(!isPosting && strcmp(PWord.c_str(),"")!=0){
-		isPosting=true;
-		//刷新按钮
-		if(!refreshBtn){
-			refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
-			refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
-			CCActionInterval* rt=CCRotateBy::create(0.3f,180,180);
-			refreshBtn->runAction(CCRepeatForever::create(rt));
-			this->addChild(refreshBtn,1000);
-
-		}
-		KTools* tool=KTools::create();
-
-		tool->prepareFileSHA();
-		std::string filePath=CCFileUtils::sharedFileUtils()->getWritablePath()+"SHA.xml";
-		std::string strFileMD5 =CMD5Checksum::GetMD5(filePath);
-		remove(filePath.c_str());
-		
-
-		CCHttpRequest* request = new CCHttpRequest();  
-		
-		std::string code="code=1000";
-		std::string mem=tool->encodeData(CCString::createWithFormat("%d",MemberID)->getCString());
-		std::string code2=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
-		std::string code3=CCString::createWithFormat("&score=%0.2f",finnalScore)->getCString();
-		std::string code4=CCString::createWithFormat("&use_char=%s",this->_delegate->currentPlayer->getCharacter()->getCString())->getCString();
-		std::string code5=CCString::createWithFormat("%s%s",strFileMD5.substr(16,5).c_str(),strFileMD5.substr(6,5).c_str())->getCString();
-
-		
-		std::string codeFinal=code+"&member_id="+mem+"&pw="+PWord+code2+code3+code4+"&detail="+detailRecord+"&path="+code5;
-		std::string url=SERVER"nsk/record.php?"+codeFinal;
-		request->setUrl(url.c_str());  
-		request->setRequestType(CCHttpRequest::kHttpGet);  
-		request->setResponseCallback(this, callfuncND_selector(GameOver::onHttpRequestCompleted));  
-		request->setTag("Post_My_Data");  
-		CCHttpClient::getInstance()->send(request);  
-		request->release(); 
-
-	}
-
-}
-
-void GameOver::onHttpRequestCompleted(CCNode *sender ,void *data) {  
-
-	isPosting=false;
-	//刷新按钮
-	if(refreshBtn){
-		refreshBtn->stopAllActions();
-		refreshBtn->removeFromParent();
-		refreshBtn=NULL;
-	}
-	CCHttpResponse *response = (CCHttpResponse*)data;    
-	if (!response)    
-	{  
-		return;    
-	}   
-	if (0 != strlen(response->getHttpRequest()->getTag().data()))   
-	{  
-	CCLog("%s completed", response->getHttpRequest()->getTag());  
-	}  
-	int statusCode = response->getResponseCode();  
-	char statusString[64] = {};  
-	sprintf(statusString ,"Http status code:%d ,tag = %s" ,statusCode ,response->getHttpRequest()->getTag());  
-	CCLog("response code:%d" ,statusCode);  
-	if (!response->isSucceed())  
-	{  
-	CCLog("response failed");  
-	CCLog("error buffer:%s" ,""); 
-	CCTips *tip=CCTips::create("ServerError");
-	this->addChild(tip,5000);
-	return;
-	}  
-	auto* buffer = response->getResponseData();  
-	printf("Http response,dump data:");  
-	
-	std::string buf(buffer->begin(),buffer->end()); 
-	
-	if(strcmp(buf.c_str(),"true")==0){
-		if(upload_btn){
-			upload_btn->removeFromParent();
-			upload_btn=NULL;
-		}
-
-		CCTips *tip=CCTips::create("UploadSuccess");
-		this->addChild(tip,5000);
-		
-	}else{
-		CCTips *tip=CCTips::create(buf.c_str());
-		this->addChild(tip,5000);
-			
-	}
-
-		
-	
-}  
-
-
 void GameOver::onBackToMenu(CCObject* sender){
 
 	if(!exitLayer){

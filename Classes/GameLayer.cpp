@@ -3,6 +3,7 @@
 #include "BGLayer.h"
 #include "HudLayer.h"
 #include "StartMenu.h"
+#include "AutoPlay.h"
 
 
 using namespace CocosDenshion;
@@ -36,7 +37,6 @@ GameLayer::GameLayer(void)
 	_isRandomChar=false;
 	zhenying=1;
 	currentPlayer=NULL;
-	isPosting=false;
 	postTime=0;
 
 }
@@ -107,8 +107,7 @@ void GameLayer::initTileMap(){
 	
 
 	if(_isHardCoreGame){
-		srand((int)time(0));
-		randomMap=random(4)+1;
+		randomMap=randInt(4)+1;
 	}else {
 		randomMap=0;
 	}
@@ -138,8 +137,7 @@ void GameLayer::initGard(){
 
 
 	int index=0;
-	srand((int)time(0));
-	index=random(2);
+	index=randInt(2);
 	Hero* Guardian=Hero::create();
 	Guardian->setDelegate(this);
 
@@ -331,7 +329,7 @@ void GameLayer::initHeros(){
 				Com->setHPbar();
 				Com->setShadows();
 				Com->idle();
-				if(strcmp(Com->getGroup()->getCString(),"Akatsuki")==0){
+				if(Com->group()==Group::Akatsuki){
 					Com->_isFlipped=true;
 					Com->setFlippedX(true);
 				}
@@ -358,7 +356,7 @@ void GameLayer::initHeros(){
 
 	
 
-	/*if(strcmp(currentPlayer->getCharacter()->getCString(),"Asuma")==0){
+	/*if(currentPlayer->isCharacter("Asuma")){
 		this->schedule(schedule_selector(GameLayer::checkPost),10.0f);
 	}*/
 	
@@ -397,10 +395,15 @@ void GameLayer::onGameStart(float dt){
 	CCARRAY_FOREACH(this->_CharacterArray,pObject){
 		ActionManager* tempChar=(ActionManager*) pObject;
 		// guardians (also "Com") already started their AI in initGard
-		if(strcmp(tempChar->getRole()->getCString(),"Com")==0 && !tempChar->_isAI){
+		if(tempChar->role()==Role::Com && !tempChar->_isAI){
 			tempChar->doAI();
 		}
-		
+
+	}
+
+	if(AutoPlay::enabled()){
+		currentPlayer->doAI();
+		CCDirector::sharedDirector()->getScheduler()->setTimeScale(AutoPlay::speed());
 	}
 
 }
@@ -540,6 +543,7 @@ void GameLayer::initTower(){
 	CCArray* metaArray= ccArrayFromValueVector(metaGroup->getObjects());
 
 	_TowerArray=CCArray::create();
+	_TowerArray->retain();
 
 	CCObject *pObject;
 	int i=0;
@@ -577,11 +581,11 @@ void GameLayer::initTower(){
 		if(i==1 || i==4 ){
 			//4v4
 			if(Cheats>10){
-				tower->setMaxHP(CCString::createWithFormat("%d",80000));
+				tower->setMaxHP(80000);
 			}else{
-				tower->setMaxHP(CCString::createWithFormat("%d",50000));
+				tower->setMaxHP(50000);
 			}	
-			tower->setHP(CCString::create(tower->getMaxHP()->getCString()));
+			tower->setHP(tower->getMaxHP());
 		}
 		tower->setHPbar();
 		tower->_hpBar->setVisible(false);
@@ -589,7 +593,6 @@ void GameLayer::initTower(){
 		this->addChild(tower,-tower->getPositionY());
 
 		_TowerArray->addObject(tower);
-		_TowerArray->retain();
 
 		i++;
 	}
@@ -643,7 +646,7 @@ void GameLayer::updateViewPoint(float dt){
 	}
 
 	int x=MAX(playerPoint.x,winSize.width/2);
-	int y=MAX(playerPoint.y,winSize.width/2);
+	int y=MAX(playerPoint.y,winSize.height/2);
 	x=MIN(x,(currentMap->getMapSize().width*currentMap->getTileSize().width)-winSize.width/2);
 	y=MIN(y,(currentMap->getMapSize().height*currentMap->getTileSize().height)-winSize.height/2);
 
@@ -665,7 +668,7 @@ void GameLayer::setCKRLose(bool isCRK2){
 
 
 
-void GameLayer::setReport(const char* name1, const char* name2,CCString* killNum){
+void GameLayer::setReport(const char* name1, const char* name2,int killNum){
 	this->_hudLayer->setReport(name1,name2,killNum);
 }
 
@@ -706,7 +709,7 @@ void GameLayer::checkTower(){
 
 	CCARRAY_FOREACH(_TowerArray,pObject){
 		Tower* tower=(Tower*) pObject;
-		if(strcmp(tower->getGroup()->getCString(),"Konoha")==0){
+		if(tower->group()==Group::Konoha){
 			konohaTowerCount++;
 		}else{
 			akatsukiTowerCount++;
@@ -736,24 +739,19 @@ void GameLayer::checkTower(){
 	CCARRAY_FOREACH(_CharacterArray,pObject){
 		ActionManager* tmpHero=(ActionManager*) pObject;
 
-		if(strcmp(tmpHero->getRole()->getCString(),"Com")!=0){
+		if(tmpHero->role()!=Role::Com){
 			continue;
 		}
 
-		if(strcmp(tmpHero->getGroup()->getCString(),"Konoha")==0){
+		if(tmpHero->group()==Group::Konoha){
 			tmpHero->battleCondiction=konohaTowerCount-akatsukiTowerCount;
-			if(konohaTowerCount==1){
-				tmpHero->isBaseDanger=true;
-			}	
+			tmpHero->isBaseDanger=konohaTowerCount==1;
+	
 
 		}else{
 			
 			tmpHero->battleCondiction=akatsukiTowerCount-konohaTowerCount;
-			if(_isHardCoreGame){
-				if(akatsukiTowerCount==1){
-					tmpHero->isBaseDanger=true;
-				}
-			}
+			tmpHero->isBaseDanger=akatsukiTowerCount==1;
 		}
 
 
@@ -878,6 +876,24 @@ void GameLayer::onGear(){
 
 void GameLayer::onGameOver(bool isWin){
 
+	if(AutoPlay::enabled()){
+		// leave on the next tick: onGameOver runs inside a tower's death callback
+		if(!isScheduled("autoplay_next")){
+			AutoPlay::report(this,isWin);
+			this->scheduleOnce([this](float){
+				// the normal path leaves through the paused GameOver scene; freeze
+				// the match the same way so dying units do not touch cleared arrays
+				for(auto child:this->getChildren()){
+					child->pause();
+				}
+				this->pause();
+				_isExiting=true;
+				this->onLeft();
+			},1.0f,"autoplay_next");
+		}
+		return;
+	}
+
 
 	CCRenderTexture* snapshoot=CCRenderTexture::create(winSize.width,winSize.height);
 	CCScene* f = CCDirector::sharedDirector()->getRunningScene();
@@ -930,8 +946,8 @@ void GameLayer::onLeft(){
 	CCARRAY_FOREACH(_CharacterArray,pObject){
 		ActionManager* player=(ActionManager*) pObject;
 
-		if(strcmp(player->getRole()->getCString(),"Clone")==0 ||
-			strcmp(player->getRole()->getCString(),"Summon")==0){
+		if(player->role()==Role::Clone ||
+			player->role()==Role::Summon){
 				continue;
 		}
 
@@ -940,34 +956,34 @@ void GameLayer::onLeft(){
 		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile(path);
 
 		//删除预加载音效
-		if(strcmp(player->getRole()->getCString(),"Com")==0 ||
-			strcmp(player->getRole()->getCString(),"Player")==0
+		if(player->role()==Role::Com ||
+			player->role()==Role::Player
 			){
 			tool->prepareFileOGG(player->getCharacter()->getCString(),1);
 		}
 		
 
 		//删除额外角色
-		if(strcmp(player->getCharacter()->getCString(),"Jiraiya")==0){
+		if(player->isCharacter("Jiraiya")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/SageJiraiya/SageJiraiya.plist");
 			tool->prepareFileOGG("SageJiraiya",1);
-		}else if(strcmp(player->getCharacter()->getCString(),"Kankuro")==0){
+		}else if(player->isCharacter("Kankuro")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Karasu/Karasu.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Sanshouuo/Sanshouuo.plist");
-		}else if(strcmp(player->getCharacter()->getCString(),"Kakuzu")==0){
+		}else if(player->isCharacter("Kakuzu")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskFudon/MaskFudon.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskRaidon/MaskRaidon.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskKadon/MaskKadon.plist");
-		}else if(strcmp(player->getCharacter()->getCString(),"Naruto")==0){
+		}else if(player->isCharacter("Naruto")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/SageNaruto/SageNaruto.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/RikudoNaruto/RikudoNaruto.plist");
 			tool->prepareFileOGG("SageNaruto",1);
 			tool->prepareFileOGG("RikudoNaruto",1);
-		}else if(strcmp(player->getCharacter()->getCString(),"RockLee")==0){
+		}else if(player->isCharacter("RockLee")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Lee/Lee.plist");
-		}else if(strcmp(player->getCharacter()->getCString(),"Lee")==0){
+		}else if(player->isCharacter("Lee")){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/RockLee/RockLee.plist");
-		}else if(strcmp(player->getCharacter()->getCString(),"Sasuke")==0){
+		}else if(player->isCharacter("Sasuke")){
 			tool->prepareFileOGG("ImmortalSasuke",1);
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/ImmortalSasuke/ImmortalSasuke.plist");
 		}
@@ -1001,6 +1017,11 @@ void GameLayer::onLeft(){
 	CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("UI.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Map.plist");
 
+	if(AutoPlay::enabled()){
+		AutoPlay::startMatch();
+		return;
+	}
+
 	CCScene* menuScene =CCScene::create();
 	StartMenu* menuLayer=StartMenu::create();
 
@@ -1010,68 +1031,6 @@ void GameLayer::onLeft(){
 
 
 }
-
-void GameLayer::checkPost(float dt){
-
-	if(!isPosting && postTime<10){
-		
-		isPosting=true;
-		postTime++;
-		CCHttpRequest* request = new  CCHttpRequest(); 
-		std::string codeFinal;
-		
-		
-		std::string code2="&pw="+PWord;
-		std::string code1=CCString::createWithFormat("code=50&id=%d",MemberID)->getCString();
-		std::string code3=CCString::createWithFormat("&version=%d",CURRENT_VERSION)->getCString();
-		std::string url=SERVER"nsk/list.php?"+code1+code2+code3;
-		request->setUrl(url.c_str());  
-		request->setRequestType( CCHttpRequest::kHttpGet);  
-		
-		request->setResponseCallback(this, callfuncND_selector(GameLayer::onHttpRequestCompleted));  
-		
-
-		request->setTag("Post_My_Data");  
-		CCHttpClient::getInstance()->send(request);  
-		request->release();  
-
-	}else{
-		SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-		CCDirector::sharedDirector()->end();
-		return;
-	}
-
-}
-
-void GameLayer::onHttpRequestCompleted(CCNode *sender ,void *data) {  
-
-	isPosting=false;
-	
-	CCHttpResponse *response = (CCHttpResponse*)data;    
-	if (!response)    
-	{  
-		return;    
-	}   
-	
-	int statusCode = response->getResponseCode();  
-	char statusString[64] = {};  
-	
-	if (!response->isSucceed())  
-	{  	
-		return;
-	}  
-	auto* buffer = response->getResponseData();  
-	
-	Document doc;
-	
-	std::string buf(buffer->begin(),buffer->end()); 
-
-	if(strcmp(buf.c_str(),"postOK")==0){
-		this->unschedule(schedule_selector(GameLayer::checkPost));
-	}
-}  
-
-
 
 void GameLayer::checkBackgroundMusic(float dt){
 	if(CCUserDefault::sharedUserDefault()->getBoolForKey("isBGM")!=false){

@@ -64,7 +64,6 @@ public:
 	CCSpriteBatchNode* bulletBatch;
 	CCSpriteBatchNode* shadowBatch;
 
-	bool isPosting;
 	int postTime;
 
 	
@@ -82,7 +81,6 @@ public:
 	void updateGameTime(float dt);
 
 	void addFlog(float dt);
-	void onStart();
 	
 	void attackButtonClick(abType type);
 	void gearButtonClick(gearType type);	
@@ -93,7 +91,6 @@ public:
 	void JoyStickUpdate(CCPoint direction);
 
 	CC_SYNTHESIZE(bool,_isSkillFinish,SkillFinish);
-	void checkPost(float dt);
 	void checkTower();
 	void checkBackgroundMusic();
 
@@ -106,7 +103,7 @@ public:
 	void setHPLose(float percent);
 	void setCKRLose(bool isCRK2);
 
-	void setReport(const char* name1, const char* name2,CCString* killNum);
+	void setReport(const char* name1, const char* name2,int killNum);
 	void clearDoubleClick();
 	void resetStatusBar();
 	void setCoin(const char* value);
@@ -134,7 +131,6 @@ public:
 
 	CREATE_FUNC(GameLayer);
 protected:
-	void onHttpRequestCompleted(CCNode *sender ,void *data);
 	virtual void	onEnter();
 	virtual void	onExit();
 
