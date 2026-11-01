@@ -264,6 +264,17 @@ void LoadLayer::playBGM(float dt){
 }
 
 
+void LoadLayer::start(CCArray* heroes,bool hardCore,bool randomChar){
+	CCScene* loadScene=CCScene::create();
+	LoadLayer* loadLayer=LoadLayer::create();
+	loadLayer->tempHeros=heroes;
+	loadScene->addChild(loadLayer);
+	loadLayer->_isHardCoreMode=hardCore;
+	loadLayer->_isRandomChar=randomChar;
+	loadLayer->preloadAudio();
+	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1.5f,loadScene));
+}
+
 void LoadLayer::preloadAudio(){
 	
 	char* bg_src;

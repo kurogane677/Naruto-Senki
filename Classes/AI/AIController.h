@@ -1,5 +1,5 @@
 #pragma once
-#include "AI/AIDifficulty.h"
+#include "AI/AITuning.h"
 #include "AI/AIProfile.h"
 #include <map>
 
@@ -59,8 +59,7 @@ private:
     Hero* _hero;
     const Profile* _profile;
     GameLayer* _game;
-    Difficulty _difficulty;
-    const DifficultyParams* _params;
+    const Tuning* _params;
 
     float _time = 0;
     float _nextThink = 0;

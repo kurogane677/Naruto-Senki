@@ -1,6 +1,5 @@
 #include "NetworkLayer.h"
 #include "StartMenu.h"
-#include "DifficultyLayer.h"
 USING_NS_CC_EXT;
 using namespace CocosDenshion;
 #include<time.h>
@@ -710,7 +709,7 @@ void NetworkLayer::onGameStart(CCObject* sender){
 
 
 
-		DifficultyLayer::show(tempHeros,_isHardCoreMode,_isRandomChar);
+		LoadLayer::start(tempHeros,_isHardCoreMode,_isRandomChar);
 	
 
 	}

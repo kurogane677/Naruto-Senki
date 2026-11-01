@@ -37,11 +37,6 @@ GameLayer::GameLayer(void)
 	_isRandomChar=false;
 	zhenying=1;
 	currentPlayer=NULL;
-	aiDifficulty=CCUserDefault::sharedUserDefault()->getIntegerForKey("aiDifficulty",1);
-	if(AutoPlay::enabled() && getenv("NS_AUTOPLAY_DIFFICULTY") && *getenv("NS_AUTOPLAY_DIFFICULTY")){
-		aiDifficulty=atoi(getenv("NS_AUTOPLAY_DIFFICULTY"));
-	}
-	aiDifficulty=MAX(0,MIN(2,aiDifficulty));
 	postTime=0;
 
 }

@@ -127,7 +127,6 @@ public:
 
 
 	int zhenying;
-	int aiDifficulty;	// ai::Difficulty for every bot this match
 	bool _isExiting;
 
 	CREATE_FUNC(GameLayer);

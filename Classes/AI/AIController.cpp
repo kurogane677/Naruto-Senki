@@ -76,8 +76,7 @@ AIController* AIController::create(Hero* hero)
 AIController::AIController(Hero* hero, const Profile* profile)
     : _hero(hero), _profile(profile), _game(hero->getDelegate())
 {
-    _difficulty = (Difficulty)_game->aiDifficulty;
-    _params = &params(_difficulty);
+    _params = &tuning();
     _nextThink = randFloat(0, _params->thinkMax);  // desync the squad
 }
 

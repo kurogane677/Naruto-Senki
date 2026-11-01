@@ -58,7 +58,7 @@ std::vector<int> chooseBuild(AIController& ai)
     const Profile& p = *ai.profile();
     Hero* h = ai.hero();
 
-    float copyChance = params((Difficulty)h->getDelegate()->aiDifficulty).playerBuildChance;
+    float copyChance = tuning().playerBuildChance;
     if (copyChance > 0 && randChance(copyChance))
     {
         std::vector<int> mine = bestPlayerBuild(p.name);

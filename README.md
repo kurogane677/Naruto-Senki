@@ -158,16 +158,8 @@ build_x64\bin\NarutoSenki\<Config>\NarutoSenki.exe
 
 | Menu | Alur | Isi pertandingan |
 |---|---|---|
-| **TRAINING** | Pilih hero (`SelectLayer`) → Start → pilih tingkat AI | Peta 1, tanpa gear dan guardian |
-| **NETWORK** | Dialog konfirmasi HardCore (hanya sekali) → pilih tim (`NetworkLayer`) → Start → pilih tingkat AI | **HardCore**: peta acak 2–5, guardian Roshi/Han, gear shop, musik battle berbeda |
-
-Setelah Start muncul layar **AI DIFFICULTY** (`DifficultyLayer`). Tingkat yang dipilih berlaku untuk **semua bot**, kawan maupun lawan, dan diingat untuk match berikutnya (`UserDefault` key `aiDifficulty`).
-
-| Tingkat | Perilaku bot |
-|---|---|
-| **Easy** | Reaksi lambat, ragu memakai skill, jarang menghindar |
-| **Normal** | Main sebagai tim: fokus target, combo, menghindar ougis sesekali |
-| **Hard** | Reaksi cepat, sering menghindar, combo setiap ada celah, sering meniru build gear terbaik Anda |
+| **TRAINING** | Pilih hero (`SelectLayer`) → Start | Peta 1, tanpa gear dan guardian |
+| **NETWORK** | Dialog konfirmasi HardCore (hanya sekali) → pilih tim (`NetworkLayer`) → Start | **HardCore**: peta acak 2–5, guardian Roshi/Han, gear shop, musik battle berbeda |
 
 Cara memilih di layar HardCore: **double-click** = kunci pilihan. Urutannya **COM1 → COM2 → hero Anda**; label yang berkedip menunjukkan slot yang sedang dipilih. Jika Start ditekan sebelum hero Anda dikunci, hero dipilih acak (bonus skor *random char*). Pain dan Orochimaru terkunci ("LimitedChar"), sama seperti game asli.
 
@@ -364,7 +356,6 @@ Naruto Senki/
 │  ├─ ActionManager.*        # base class semua unit (state machine, damage, buff, AI helper)
 │  ├─ Characters.*           # Hero + AI summon/clone/guardian
 │  ├─ AI/                    # AI bot: AIController, TeamBrain, profil, build gear (lihat bagian AI bot)
-│  ├─ DifficultyLayer.*      # layar pilih tingkat AI
 │  ├─ AutoPlay.*             # mode uji AI-vs-AI (NS_AUTOPLAY=1)
 │  ├─ Element.*              # HeroElement, Flog (creep), Tower, Monster, Bullet
 │  ├─ GameLayer.*            # dunia game, spawn, kamera, kondisi menang
@@ -427,6 +418,7 @@ AI hero ditulis ulang menjadi **data-driven** (`Classes/AI/`). Sebelumnya ada se
 | `Resources/AI/profiles.json` | Profil per hero: **role**, **build gear**, dan **aturan skill** (urutan prioritas, jarak cast, syarat). Format lengkap ada di komentar file |
 | `AIController` | Otak tiap bot: memilih target → bertahan (substitution, potion, mundur sampai pulih) → menghindar ougis → membela base/tower → bertarung → farm creep/tower → maju |
 | `TeamBrain` | Info satu tim: target fokus (HP terendah), musuh yang memukul tower kita, momen push saat ≥2 hero musuh mati, kalah jumlah |
+| `AITuning.h` | Satu set parameter untuk semua bot, kawan dan lawan (dulu level "Hard"): jeda reaksi, peluang memakai skill, ambang potion/mundur, peluang menghindar, combo, fokus target |
 | `HeroHooks` | Mekanik yang tidak muat di data: ritual Hidan, teleport Hiraishin Minato, ambil jantung Kakuzu |
 | `BuildBook` | Pemilihan build gear (HardCore) dan tabel `PlayerBuild` |
 
@@ -439,12 +431,11 @@ AI hero ditulis ulang menjadi **data-driven** (`Classes/AI/`). Sebelumnya ada se
 - **ranged**: menjaga jarak (Jiraiya, Shino, Tenten, dll.).
 - **summoner**: Kankuro.
 
-**Build gear (HardCore)**: tiap hero punya build `default` (dari AI asli), ditambah build `aggressive`/`sustain`/`push` sesuai role. Saat pertama membeli, bot memilih build menurut jalannya match: tim tertinggal memakai `sustain`, tim unggul memakai `aggressive`/`push`. Setelah match HardCore, urutan gear Anda direkam ke tabel `PlayerBuild`. Jika build Anda untuk hero itu sudah dipakai minimal 3 kali, bot bisa menirunya (peluang 30% di Normal, 60% di Hard).
+**Build gear (HardCore)**: tiap hero punya build `default` (dari AI asli), ditambah build `aggressive`/`sustain`/`push` sesuai role. Saat pertama membeli, bot memilih build menurut jalannya match: tim tertinggal memakai `sustain`, tim unggul memakai `aggressive`/`push`. Setelah match HardCore, urutan gear Anda direkam ke tabel `PlayerBuild`. Jika build Anda untuk hero itu sudah dipakai minimal 3 kali, bot menirunya dengan peluang 60%.
 
 **Uji AI-vs-AI**: set environment variable `NS_AUTOPLAY=1` sebelum menjalankan exe. Game melewati menu dan memainkan match Training terus-menerus, dengan hero Anda ikut dikendalikan AI. Hasil tiap match ditulis ke `%LOCALAPPDATA%\NarutoSenki\autoplay.log`, dan stack crash (jika ada) ke `autoplay_crash.log`. Opsi tambahan:
 - `NS_AUTOPLAY_HERO=Naruto`: hero player.
 - `NS_AUTOPLAY_SPEED=4`: kecepatan game.
-- `NS_AUTOPLAY_DIFFICULTY=0|1|2`: tingkat AI.
 
 ---
 
@@ -498,7 +489,7 @@ Detail lengkap dan checklist ada di [`MIGRATION_ROADMAP.md`](MIGRATION_ROADMAP.m
 | M6.1 | Semua hero + transformasi, mode HardCore | ✅ (perlu uji menyeluruh peta 2–5 & gear) |
 | M6.2 | Gear, guardian, ranking/skill/credits | ⏳ |
 | M6.3 | Perbaikan bug asli, hapus kode online mati, stat numerik, enum role/group | ✅ |
-| M7 | AI data-driven: role, difficulty, taktik tim, build gear + build player | ✅ |
+| M7 | AI data-driven: role, taktik tim, build gear + build player | ✅ |
 | M6.4 | Hapus shim → API Axmol native | ⏳ |
 | M6.5 | Android: port JNI → APK teruji | ✅ |
 

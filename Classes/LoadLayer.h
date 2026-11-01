@@ -38,6 +38,8 @@ public:
 	int loadNum;
 
 	CREATE_FUNC(LoadLayer);
+	// replaces the running scene with the loading screen for this lineup
+	static void start(CCArray* heroes,bool hardCore,bool randomChar);
 
 	CC_SYNTHESIZE_RETAIN(GameLayer*,_gameLayer,GameLayer);
 	CC_SYNTHESIZE_RETAIN(BGLayer*,_bgLayer,BGLayer);

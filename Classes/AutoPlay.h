@@ -7,7 +7,6 @@ class GameLayer;
 // appending one line per match to <writable>/autoplay.log.
 //   NS_AUTOPLAY_HERO=Naruto   player hero (default: random)
 //   NS_AUTOPLAY_SPEED=4       game speed multiplier (default 3)
-//   NS_AUTOPLAY_DIFFICULTY=2  bot level 0-2 (default: the saved choice)
 //   NS_AUTOPLAY_HARDCORE=1    HardCore rules (random map, gear shop, guardians)
 namespace AutoPlay
 {

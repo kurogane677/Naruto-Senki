@@ -15,7 +15,7 @@
 //          tHpBelow:x, tHpAbsBelow:n, tNoGear06, lv:n, bamenBelow:n,
 //          bamenAtLeast:n, noMonster:Name, hasMonster:Name, noBuffTime,
 //          notHealing, invisible, notTaunt, baseDanger, losing, allyNear,
-//          summonable, nattackBelow:n, combo (target is down; Normal/Hard only)
+//          summonable, nattackBelow:n, combo (target is down)
 {
   "heroes": {
     "Naruto": {
