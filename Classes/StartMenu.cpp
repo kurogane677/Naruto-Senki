@@ -4,22 +4,6 @@ USING_NS_CC_EXT;
 
 
 int Cheats=0;
-std::string CValue="999999";
-bool isFirst=false;
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)   
-#include <jni.h>   
-#include "platform/android/jni/JniHelper.h"   
-
-extern "C"  
-{  
-	void Java_net_zakume_game_NarutoSenki_onBannerInit( JNIEnv *env,jobject thiz,jint points)
-	{
-		adResult=points;
-		
-	}
-}  
-#endif  
 
 
 /*----------------------
@@ -99,7 +83,6 @@ bool MenuButton::ccTouchBegan(CCTouch* touch,CCEvent* event){
 	if (!this->containsTouchLocation(touch))
 		return false;
 
-	//click();
  
 	prePosY=0;
 
@@ -172,9 +155,6 @@ void MenuButton::playSound(){
 	switch(_btnType){
 	case Training:
 		SimpleAudioEngine::sharedEngine()->playEffect(TRAINING_SOUND);
-		/*if(this->getBtnType()==Training){
-		_delegate->hardCore_btn->setVisible(true);
-		}*/
 		break;
 	case Network:
 		SimpleAudioEngine::sharedEngine()->playEffect(NETWORK_SOUND);
@@ -236,14 +216,6 @@ bool StartMenu::init()
 
 		SimpleAudioEngine::sharedEngine()->setEffectsVolume(0.5);
 
-		//CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
-
-
-		//CCSprite* bgSprite = CCSprite::create("red_bg.png");
-		////pSprite->setPosition(ccp(winSize.width/2 + origin.x, winSize.height/2 + origin.y));
-		//bgSprite->setAnchorPoint(ccp(0,0));
-		//bgSprite->setPosition(ccp(0,0));
-		//this->addChild(bgSprite, -5);
 
 
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Menu.plist");
@@ -331,23 +303,6 @@ bool StartMenu::init()
 		training_btn->setPositionY(_pos02);
 		_menu_array->addObject(training_btn);
 
-		/*if(!CCUserDefault::sharedUserDefault()->getBoolForKey("isHardCore")){
-			CCUserDefault::sharedUserDefault()->setBoolForKey("isHardCore", false);
-			CCUserDefault::sharedUserDefault()->flush();
-		}
-		
-
-		if(CCUserDefault::sharedUserDefault()->getBoolForKey("isHardCore")==true){
-			hardCore_btn=MenuButton::create("menu02_1.png");
-		}else{
-			hardCore_btn=MenuButton::create("menu02_2.png");
-		}
-
-		hardCore_btn->setDelegate(this);
-		hardCore_btn->setBtnType(HardCore);
-		hardCore_btn->setPosition(ccp(146,_pos02-18));
-		hardCore_btn->_isTop=true;
-		this->addChild(hardCore_btn,10);*/
 
 
 
@@ -452,7 +407,6 @@ void StartMenu::update(float dt){
 	}
 
 	float currentX = noticeLabel->getPositionX();
-	//float contentX = getContentSize().width;
 	float lableX = noticeLabel->getContentSize().width;
 
 
@@ -659,9 +613,6 @@ void StartMenu::scrollMenu(int posY){
 					this->reorderChild(menu,3);
 					menu->_isTop=true;
 				
-					/*if(menu->getBtnType()!=Training){
-						hardCore_btn->setVisible(false);
-					}*/
 
 					CCFiniteTimeAction *call = CCCallFunc::create(menu,callfunc_selector(MenuButton::playSound));
 					CCArray* seqArray=CCArray::create();
@@ -704,9 +655,6 @@ void StartMenu::scrollMenu(int posY){
 						);
 					this->reorderChild(menu,3);
 					menu->_isTop=true;
-				/*	if(menu->getBtnType()!=Training){
-						hardCore_btn->setVisible(false);
-					}*/
 				
 					CCFiniteTimeAction *call = CCCallFunc::create(menu,callfunc_selector(MenuButton::playSound));
 					CCArray* seqArray=CCArray::create();

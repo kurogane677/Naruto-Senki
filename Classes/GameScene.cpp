@@ -5,7 +5,6 @@ using namespace CocosDenshion;
 USING_NS_CC;
 
 
-int adResult=0;
 
 
 GameScene::GameScene(void)
@@ -56,15 +55,6 @@ bool GameScene::init()
 		//内部测试↓
 
 
-		/*KTools* tool= KTools::create();
-		tool->initTableInDB();
-
-
-		tool->initColumeInDB();
-
-
-		CCLayer* menuLayer=StartMenu::create();
-		this->addChild(menuLayer);*/
 
 	
 		bRet=true;

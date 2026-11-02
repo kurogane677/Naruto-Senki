@@ -1,13 +1,11 @@
 #pragma once
 #include "MyUtils/tinyxml2/tinyxml2.h"
 #include "Compat/Compat2x.h"
-#include "MyUtils/CMD5Checksum.h"
 #include "MyUtils/sqlite3.h"
 
 
 USING_NS_CC;
 
-class CMD5Checksum;
 class SelectLayer;
 class NetworkLayer;
 class KTools : public CCObject{
@@ -18,7 +16,6 @@ public:
 	bool init();
 	CREATE_FUNC(KTools);
 
-	void prepareFileSHA();
 
 	bool readXMLToArray(const char* filePath,CCArray* &array);
 	void	initTableInDB();
@@ -48,7 +45,6 @@ public:
 	CC_SYNTHESIZE(NetworkLayer*,_delegate2,Delegate2);
 
 
-	std::string encodeData(std::string data);
 };
 
 class CCTips : public CCSprite{

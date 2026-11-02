@@ -223,7 +223,6 @@ bool RakingLayer::init(){
 		CCMenuItem* start_bt=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("return_btn.png"),NULL,NULL,this,menu_selector(RakingLayer::onCancel));
 		CCMenu* menu =CCMenu::create(start_bt,NULL);
 		menu->setPosition(winSize.width-38,86);
-		//menu->setPosition(winSize.width/2+skillSprite->getContentSize().width/2-10,winSize.height/2+skillSprite->getContentSize().height/2-12);
 		this->addChild(menu,5);
 
 
@@ -273,18 +272,6 @@ bool RakingLayer::init(){
 
 
 
-		//side1_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("sidebar1_off.png"),CCSprite::createWithSpriteFrameName("sidebar1_on.png"),this,menu_selector(RakingLayer::onSideBar1));
-		//side1_btn->setAnchorPoint(ccp(0,0));
-		//CCMenu* side_menu1 = CCMenu::create(side1_btn,NULL);
-		//if(side0_btn){
-		//	side_menu1->setPosition(ccp(ranking_bg->getPositionX()-ranking_bg->getContentSize().width/2-40,side_menu0->getPositionY()-35));
-		//	
-		//}else{
-		//	side_menu1->setPosition(ccp(ranking_bg->getPositionX()-ranking_bg->getContentSize().width/2-40,ranking_bg->getPositionY()+ranking_bg->getContentSize().height/2-35));
-		//	if(side1_btn) side1_btn->selected();
-		//}
-		//
-		//ranking_layer->addChild(side_menu1,6);
 		
 
 		side2_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("sidebar2_off.png"),CCSprite::createWithSpriteFrameName("sidebar2_on.png"),this,menu_selector(RakingLayer::onSideBar2));
@@ -294,12 +281,6 @@ bool RakingLayer::init(){
 		ranking_layer->addChild(side_menu2,5);
 
 
-		/*side3_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("sidebar3_off.png"),CCSprite::createWithSpriteFrameName("sidebar3_on.png"),this,menu_selector(RakingLayer::onSideBar3));
-		side3_btn->setAnchorPoint(ccp(0,0));
-		CCMenu* side_menu3 = CCMenu::create(side3_btn,NULL);
-		side_menu3->setPosition(ccp(ranking_bg->getPositionX()-ranking_bg->getContentSize().width/2-40,side_menu2->getPositionY()-35));
-		ranking_layer->addChild(side_menu3,4);
-*/
 
 
 		this->addChild(ranking_layer,100);
@@ -372,7 +353,6 @@ void RakingLayer::produceRanking(int type){
 		order_menu = CCMenu::create(day_btn,week_btn,month_btn,NULL);
 		order_menu->alignItemsHorizontallyWithPadding(20);
 		order_menu->setPosition(ccp(ranking_bg->getPositionX()+100,ranking_bg->getPositionY()-ranking_bg->getContentSize().height/2+14));
-		/* order_menu->setTouchPriority(-1); (no touch priority on Axmol menus) */
 		ranking_layer->addChild(order_menu,10);
 		day_btn->selected();
 
@@ -401,7 +381,6 @@ void RakingLayer::produceRanking(int type){
 		order_menu = CCMenu::create(day_btn,week_btn,month_btn,NULL);
 		order_menu->alignItemsHorizontallyWithPadding(20);
 		order_menu->setPosition(ccp(ranking_bg->getPositionX()+100,ranking_bg->getPositionY()-ranking_bg->getContentSize().height/2+14));
-		/* order_menu->setTouchPriority(-1); (no touch priority on Axmol menus) */
 		ranking_layer->addChild(order_menu,10);
 		day_btn->selected();
 
@@ -415,8 +394,6 @@ void RakingLayer::produceRanking(int type){
 			side0_btn->unselected();
 		}
 		side2_btn->selected();
-		//side1_btn->unselected();
-		//side3_btn->unselected();
 
 		if(ranking_title){
 			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("ranking_title2.png"); 
@@ -434,7 +411,6 @@ void RakingLayer::produceRanking(int type){
 		order_menu->setPosition(ccp(ranking_bg->getPositionX()+100,ranking_bg->getPositionY()-ranking_bg->getContentSize().height/2+14));
 		ranking_layer->addChild(order_menu,10);
 		JifenPoint_btn->selected();
-		/* order_menu->setTouchPriority(-1); (no touch priority on Axmol menus) */
 		
 		this->postRequest(400);
 
@@ -737,7 +713,6 @@ void RakingLayer::postRequest(int code,CCString* useChar/* =NULL */){
 					pMenu ->setPosition(ccp(304,5));
 					item ->setAnchorPoint(ccp(0.5f,0));
 					item->setTag(groupID);
-					/* pMenu->setTouchPriority(1); (no touch priority on Axmol menus) */
 					screwItem->addChild(pMenu);
 					screwItem->setTag(groupID); 
 
@@ -766,17 +741,6 @@ void RakingLayer::postRequest(int code,CCString* useChar/* =NULL */){
 	}
 
 
-	//if(!isPosting){
-
-	//	isPosting=true;
-	//	postingCode=code;
-	//	//刷新按钮
-	//	if(!refreshBtn){
-	//		refreshBtn=CCSprite::createWithSpriteFrameName("refresh_btn.png");
-	//		refreshBtn->setPosition(ccp(winSize.width/2,winSize.height/2));
-	//		CCActionInterval* rt=CCRotateBy::create(0.3f,180,180);
-	//		refreshBtn->runAction(CCRepeatForever::create(rt));
-	//		this->addChild(refreshBtn,1000);
 
 
 

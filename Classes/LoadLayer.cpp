@@ -310,7 +310,6 @@ void LoadLayer::onLoadFinish(float dt){
 
 	_hudLayer=HudLayer::create();
 	_hudLayer->setDelegate(_gameLayer);
-	//_hudLayer->initHeroInterface();
 
 	_gameLayer->setHudLayer(_hudLayer);
 	_gameLayer->setTotalKills(CCString::create("0"));

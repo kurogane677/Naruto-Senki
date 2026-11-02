@@ -321,17 +321,8 @@ void GameOver::listResult(){
 	adExtra->setPosition(ccp(coinBG->getPositionX()+70,coinBG->getPositionY()+22));
 	this->addChild(adExtra,7);
 
-	CCString* extraCoin;
-	int tempCoin;
-	if(adResult==1 && _isWin ){
-		std::string tempEtra="idd4";
-		tool->decode(tempEtra);
-		tempCoin=rewardNum+atoi(cl->getCString())+atoi(tempEtra.c_str());
-		extraCoin=CCString::createWithFormat("+%d",500);
-	}else{	
-		tempCoin=rewardNum+atoi(cl->getCString());
-		extraCoin=CCString::createWithFormat("+%d",0);	
-	}
+	int tempCoin=rewardNum+atoi(cl->getCString());
+	CCString* extraCoin=CCString::createWithFormat("+%d",0);
 
 	CCString* realCoin=CCString::createWithFormat("%d",tempCoin);
 	tool->saveToSQLite("GameRecord","coin",realCoin->getCString(),false);
@@ -356,7 +347,7 @@ void GameOver::listResult(){
 	char* imgSrc="";
 
 	
-	if(_isWin && adResult==1){
+	if(_isWin){
 		if(resultScore>=140 && _delegate->_isHardCoreGame && _delegate->_isRandomChar){
 			imgSrc="result_SSSR.png";
 		}else if(resultScore>=120 && _delegate->_isHardCoreGame && _delegate->_isRandomChar){
@@ -385,19 +376,8 @@ void GameOver::listResult(){
 		recordSprite->setAnchorPoint(ccp(0,0));
 		recordSprite->setPosition(ccp(winSize.width/2+result_bg->getContentSize().width/2-recordSprite->getContentSize().width-12,result_bg->getPositionY()-result_bg->getContentSize().height/2+88));
 		this->addChild(recordSprite,7);
-		/*CCSprite* koSprite=NULL;
-		if(isTKO && resultScore<120){
-			koSprite=CCSprite::createWithSpriteFrameName("twin.png");
-		}else if(_isWin && resultScore<120){
-			koSprite=CCSprite::createWithSpriteFrameName("dwin.png");
-		}
-		if(koSprite){
-			koSprite->setAnchorPoint(ccp(0.5f,0.5f));
-			koSprite->setPosition(ccp(recordSprite->getPositionX()+recordSprite->getContentSize().width/2,recordSprite->getPositionY()+8));
-			this->addChild(koSprite,8);
-		}*/
 
-		if(_isWin && adResult==1 &&_delegate->_isHardCoreGame){
+		if(_isWin && _delegate->_isHardCoreGame){
 
 			finnalScore=resultScore+float(_delegate->currentPlayer->_flogNum)/100;
 			CCString* recordString=CCString::createWithFormat("%0.2fPts",finnalScore);
@@ -408,11 +388,6 @@ void GameOver::listResult(){
 			recordScore->setScale(0.35f);
 			this->addChild(recordScore,10);
 
-			//upload_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("upload_btn.png"),CCSprite::createWithSpriteFrameName("upload_btn.png"),NULL,this,menu_selector(GameOver::onUPloadBtn));
-			//CCMenu* upMenu=CCMenu::create(upload_btn,NULL);
-			//upload_btn->setAnchorPoint(ccp(1.0,0));
-			//upMenu->setPosition(ccp(winSize.width/2+result_bg->getContentSize().width/2-14,winSize.height/2+result_bg->getContentSize().height/2-62));
-			//this->addChild(upMenu,7);
 
 
 			detailRecord=CCString::createWithFormat("%02d:%02d,%d,%d,%d",_minute,_delegate->_second,_delegate->currentPlayer->getKillNum(),_delegate->currentPlayer->_deadNum,_delegate->currentPlayer->_flogNum)->getCString();

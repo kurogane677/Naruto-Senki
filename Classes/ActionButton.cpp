@@ -102,7 +102,6 @@ void ActionButton::click(){
 
 
 bool ActionButton::isCanClick(){
-	//recorde current time sec format;
 	
 
 	float curTime = nowMs();
@@ -153,13 +152,13 @@ bool ActionButton::isCanClick(){
 			 //ougis click solution
 			 else if(this->_abType==OUGIS1){
 				 if(_delegate->getSkillFinish() && _delegate->getOugisEnable(false) && !_isLock && !_delegate->ougisLayer ){
-					 _delegate->costCKR(15000,false);	
+					 _delegate->costCKR(CKR_OUGIS,false);	
 					 return true;
 				 }
 			 }else if(this->_abType==OUGIS2){
 
 				 if(_delegate->getSkillFinish() && _delegate->getOugisEnable(true) && !_isLock && !_delegate->ougisLayer){
-					 _delegate->costCKR(25000,true);	
+					 _delegate->costCKR(CKR2_OUGIS,true);	
 					 return true;
 				 }
 				
@@ -361,23 +360,23 @@ void ActionButton::updateProgressMark(){
 	float ckr=_delegate->_delegate->currentPlayer->getCKR();
 	float ckr2=_delegate->_delegate->currentPlayer->getCKR2();
 	if (this->getABType()== OUGIS1){
-		if(ckr<15000){
+		if(ckr<CKR_OUGIS){
 			if(proressblinkSprite){
 				proressblinkSprite->setRotation(0);
 			}
 			if(proressmarkSprite){
-			proressmarkSprite->setRotation(-1*((ckr/15000)*50));
+			proressmarkSprite->setRotation(-1*((ckr/CKR_OUGIS)*50));
 			}
 			if(proressblinkMask){
 				proressblinkMask->setVisible(false);
 			}
 			
-		}else if(ckr<30000){
+		}else if(ckr<2*CKR_OUGIS){
 			if(proressblinkSprite){
 			proressblinkSprite->setRotation(-50);
 			}
 			if(proressmarkSprite){
-			proressmarkSprite->setRotation(-1*(((ckr-15000)/15000)*70+50));
+			proressmarkSprite->setRotation(-1*(((ckr-CKR_OUGIS)/CKR_OUGIS)*70+50));
 			}
 			if(proressblinkMask && !_isLock){
 			
@@ -400,12 +399,12 @@ void ActionButton::updateProgressMark(){
 			
 
 
-		}else if(ckr<45000) {
+		}else if(ckr<CKR_MAX) {
 			if(proressblinkSprite){
 			proressblinkSprite->setRotation(-120);
 			}
 			if(proressmarkSprite){
-			proressmarkSprite->setRotation(-1*(((ckr-30000)/15000)*60+120));
+			proressmarkSprite->setRotation(-1*(((ckr-2*CKR_OUGIS)/CKR_OUGIS)*60+120));
 			}
 		}else{
 			if(proressblinkSprite){
@@ -417,22 +416,22 @@ void ActionButton::updateProgressMark(){
 			
 		}
 	}else{
-		if(ckr2<25000){
+		if(ckr2<CKR2_OUGIS){
 			if(proressblinkSprite){
 			proressblinkSprite->setRotation(0);
 			}
 			if(proressmarkSprite){
-				proressmarkSprite->setRotation(-1*((ckr2/25000)*85));
+				proressmarkSprite->setRotation(-1*((ckr2/CKR2_OUGIS)*85));
 			}
 			if(proressblinkMask){
 				proressblinkMask->setVisible(false);
 			}
-		}else if(ckr2<50000){
+		}else if(ckr2<CKR2_MAX){
 			if(proressblinkSprite){
 			proressblinkSprite->setRotation(-85);
 			}
 			if(proressmarkSprite){
-				proressmarkSprite->setRotation(-1*(((ckr2-25000)/25000)*90+90));
+				proressmarkSprite->setRotation(-1*(((ckr2-CKR2_OUGIS)/CKR2_OUGIS)*90+90));
 			}
 			
 			if(proressblinkMask && !_isLock){
@@ -493,13 +492,13 @@ void ActionButton::unLock(){
 	float ckr2=_delegate->_delegate->currentPlayer->getCKR2();
 
 	if (this->getABType()== OUGIS1){
-		if(ckr>=15000){
+		if(ckr>=CKR_OUGIS){
 			if(proressblinkMask){
 				proressblinkMask->setVisible(true);
 			}
 		}
 	}else if(this->getABType()== OUGIS2) {
-		if(ckr2>=25000){
+		if(ckr2>=CKR2_OUGIS){
 			if(proressblinkMask){
 			proressblinkMask->setVisible(false);
 			}

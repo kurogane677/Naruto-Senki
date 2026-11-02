@@ -44,7 +44,6 @@ GameLayer::GameLayer(void)
 
 GameLayer::~GameLayer(void)
 {
-	//CC_SAFE_RELEASE(totalKills);
 	CC_SAFE_RELEASE(totalTM);
 	
 }
@@ -53,7 +52,6 @@ bool GameLayer::init(){
 	bool bRet=false;
 	do{
 		CC_BREAK_IF(!CCLayer::init());
-		//CCTexture2D::setDefaultAlphaPixelFormat(kCCTexture2DPixelFormat_RGBA4444);  
 
 		this->setTouchEnabled(true);
 
@@ -356,9 +354,6 @@ void GameLayer::initHeros(){
 
 	
 
-	/*if(currentPlayer->isCharacter("Asuma")){
-		this->schedule(schedule_selector(GameLayer::checkPost),10.0f);
-	}*/
 	
 
 	
@@ -655,7 +650,6 @@ void GameLayer::updateViewPoint(float dt){
 	CCPoint viewPoint=ccpSub(centerPoint,actualPoint);
 
 	this->setPosition(viewPoint);
-	//CCDirector::sharedDirector()->getScheduler()->setTimeScale(1.0f);  
 
 };
 
@@ -798,7 +792,6 @@ void GameLayer::JoyStickRelease(){
 
 void GameLayer::JoyStickUpdate(CCPoint direction){
 	if(!ougisChar){
-		//CCLOG("x:%f,y:%f",direction.x,direction.y);
 		currentPlayer->walk(direction);
 	}
 }

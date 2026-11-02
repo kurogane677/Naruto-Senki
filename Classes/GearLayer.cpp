@@ -223,8 +223,6 @@ void ScrewLayer::ccTouchMoved(CCTouch* touch,CCEvent* event){
 
 void ScrewLayer::ccTouchEnded(CCTouch* touch,CCEvent* event){
 	prePosY=0;
-	//CCLOG("%f",this->getPositionY());
-	//CCLOG("Height:%f",this->getContentSize().height);
 
 	if(this->getPositionY()>totalRow*74-74){
 		this->setPositionY(totalRow*65);

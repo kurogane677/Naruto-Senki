@@ -54,7 +54,6 @@ bool Effect::init(const char *szImage,CCObject* Attacker){
 			strcmp(szImage,"sl_hit")==0
 			){
 				this->initWithSpriteFrameName("blue_damge_01.png");
-				//this->setAnchorPoint(ccp(0.5f,0));
 				this->setScale(0.6f);
 				int randomInt=rand()%30+10;
 				this->setRotation(randomInt);

@@ -156,8 +156,6 @@ public:
 
 	CC_SYNTHESIZE(int, _walkSpeed, WalkSpeed);
 	int _originSpeed;
-	//CC_SYNTHESIZE(float,_maxHP,MaxHP);
-	//CC_SYNTHESIZE(float,_hp,HP);
 
 	CC_SYNTHESIZE(int, _maxHP,MaxHP);
 	CC_SYNTHESIZE(int, _hp,HP);
@@ -179,7 +177,6 @@ public:
 	CC_SYNTHESIZE(ActionManager*,_secmaster,SecMaster);
 
 	CC_SYNTHESIZE(int, _nattackValue,nAttackValue);
-	//unsigned int   _nattackValue ;
 	CC_SYNTHESIZE(CCString*, _nattackType,nAttackType);
 	int				_nattackRangeX;
 	int				_nattackRangeY;
@@ -187,7 +184,6 @@ public:
 	
 
 	CC_SYNTHESIZE(int, _sattackValue1,sAttackValue1);
-	//unsigned int    _sattackValue1;
 	CC_SYNTHESIZE(CCString*, _sattackType1,sAttack1Type);
 	int				_sattackRangeX1;
 	int				_sattackRangeY1;
@@ -202,7 +198,6 @@ public:
 	int				_attackRangeY;
 
 	CC_SYNTHESIZE(int, _sattackValue2,sAttackValue2);
-	//unsigned int    _sattackValue2;
 	CC_SYNTHESIZE(CCString*, _sattackType2,sAttack2Type);
 	int				_sattackRangeX2;
 	int				_sattackRangeY2;
@@ -211,7 +206,6 @@ public:
 	int				_sattackCombatPoint2;
 
 	CC_SYNTHESIZE(int, _sattackValue3,sAttackValue3);
-	//unsigned int    _sattackValue3;
 	CC_SYNTHESIZE(CCString*, _sattackType3,sAttack3Type);
 	int				_sattackRangeX3;
 	int				_sattackRangeY3;
@@ -220,7 +214,6 @@ public:
 	int				_sattackCombatPoint3;
 
 	CC_SYNTHESIZE(int, _sattackValue4,sAttackValue4);
-	//unsigned int    _sattackValue4;
 	CC_SYNTHESIZE(CCString*, _sattackType4,sAttack4Type);
 	int				_sattackRangeX4;
 	int				_sattackRangeY4;
@@ -229,19 +222,16 @@ public:
 	int				_sattackCombatPoint4;
 
 	CC_SYNTHESIZE(int, _sattackValue5,sAttackValue5);
-	//unsigned int    _sattackValue5;
 	CC_SYNTHESIZE(CCString*, _sattackType5,sAttack5Type);
 	int				_sattackRangeX5;
 	int				_sattackRangeY5;
 	unsigned int	_sattackcoldDown5;
 	int				_sattackCombatPoint5;
 
-	//int totalCombatPoint;
 	int enemyCombatPoint;
 	int friendCombatPoint;
 
 	CC_SYNTHESIZE(int, _spcattackValue1,spcAttackValue1);
-	//unsigned int    _spcattackValue1;
 	CC_SYNTHESIZE(CCString*, _spcattackType1,spcAttack1Type);
 	int				_spcattackRangeX1;
 	int				_spcattackRangeY1;
@@ -250,14 +240,12 @@ public:
 
 
 	CC_SYNTHESIZE(int, _spcattackValue2,spcAttackValue2);
-	//unsigned int    _spcattackValue2;
 	CC_SYNTHESIZE(CCString*, _spcattackType2,spcAttack2Type);
 	int				_spcattackRangeX2;
 	int				_spcattackRangeY2;
 	unsigned int				_spcattackcoldDown2;
 
 	CC_SYNTHESIZE(int, _spcattackValue3,spcAttackValue3);
-	//unsigned int    _spcattackValue3;
 	CC_SYNTHESIZE(CCString*, _spcattackType3,spcAttack3Type);
 	int				_spcattackRangeX3;
 	int				_spcattackRangeY3;
