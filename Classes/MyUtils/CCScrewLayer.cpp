@@ -67,7 +67,6 @@ void CCScrewLayer::ccTouchMoved(CCTouch* touch,CCEvent* event){
 void CCScrewLayer::ccTouchEnded(CCTouch* touch,CCEvent* event){
 	prePosY=0;
 
-	//CCLOG("y:%f",this->getPositionY());
 	if(this->getPositionY()>totalRow*line_height-line_height){
 		this->setPositionY(totalRow*line_height);
 	}

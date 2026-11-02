@@ -102,7 +102,6 @@ void ActionButton::click(){
 
 
 bool ActionButton::isCanClick(){
-	//recorde current time sec format;
 	
 
 	float curTime = nowMs();

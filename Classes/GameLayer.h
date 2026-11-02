@@ -76,7 +76,6 @@ public:
 	void initGard();
 	void initEffects();
 
-	//void update(float dt);
 	void updateViewPoint(float dt);
 	void updateGameTime(float dt);
 

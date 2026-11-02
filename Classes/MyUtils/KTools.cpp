@@ -39,209 +39,6 @@ bool KTools::init(){
 
 
 
-void  KTools::prepareFileSHA(){
-
-	char* fileList[]={
-		"Element/Bullet/Amaterasu.xml",
-		"Element/Bullet/FlyKnife.xml",
-		"Element/Bullet/HiraishinKunai.xml",
-		"Element/Bullet/HugeSRK.xml",
-		"Element/Bullet/Kusuri.xml",
-		"Element/Bullet/PaperSpear.xml",
-		"Element/Bullet/PaperSrk.xml",
-		"Element/Bullet/Shintenshin.xml",
-		"Element/Bullet/TentenSRK.xml",
-
-		"Element/Monster/Bikyu.xml",
-		"Element/Monster/Bug.xml",
-		"Element/Monster/BugPillar.xml",
-		"Element/Monster/BugTomado.xml",
-		"Element/Monster/ChuiDi.xml",
-		"Element/Monster/CircleMark.xml",
-		"Element/Monster/ClayBird.xml",
-		"Element/Monster/Crash.xml",
-		"Element/Monster/Crash2.xml",
-		"Element/Monster/DeidaraBom.xml",
-		"Element/Monster/Dogs.xml",
-		"Element/Monster/FakeDeidara.xml",
-		"Element/Monster/FakeItachi.xml",
-		"Element/Monster/FakeMinato.xml",
-		"Element/Monster/FakeShino.xml",
-		"Element/Monster/FakeTobirama.xml",
-		"Element/Monster/FireRain.xml",
-		"Element/Monster/FudonSRK.xml",
-		"Element/Monster/FudonSRK2.xml",
-		"Element/Monster/Hasan.xml",
-		"Element/Monster/HiraishinMark.xml",
-		"Element/Monster/InkBird.xml",
-		"Element/Monster/InkDragon.xml",
-		"Element/Monster/ItachiSusano.xml",
-		"Element/Monster/Kage.xml",
-		"Element/Monster/KageBom.xml",
-		"Element/Monster/KageFeng.xml",
-		"Element/Monster/KageHand.xml",
-		"Element/Monster/KageHands.xml",
-		"Element/Monster/Kaiten.xml",
-		"Element/Monster/Kubi.xml",
-		"Element/Monster/Kuroari.xml",
-		"Element/Monster/LeeBom.xml",
-		"Element/Monster/Mine.xml",
-		"Element/Monster/Mouse.xml",
-		"Element/Monster/Paku.xml",
-		"Element/Monster/PaperRain.xml",
-		"Element/Monster/Qilin.xml",
-		"Element/Monster/QuanRen.xml",
-		"Element/Monster/Sabaku.xml",
-		"Element/Monster/SakuraBom.xml",
-		"Element/Monster/Sanbao.xml",
-		"Element/Monster/SandBall.xml",
-		"Element/Monster/SandHand.xml",
-		"Element/Monster/SandWave.xml",
-		"Element/Monster/SasukeSusano.xml",
-		"Element/Monster/Shark.xml",
-		"Element/Monster/Shark2.xml",
-		"Element/Monster/Shenwei.xml",
-		"Element/Monster/Shenwei2.xml",
-		"Element/Monster/Shoryu.xml",
-		"Element/Monster/SmallSlug.xml",
-		"Element/Monster/Snake.xml",
-		"Element/Monster/Spider.xml",
-		"Element/Monster/Steam.xml",
-		"Element/Monster/Suiji.xml",
-		"Element/Monster/Suijin.xml",
-		"Element/Monster/SuiRyuDan.xml",
-		"Element/Monster/TamaBomb.xml",
-		"Element/Monster/Tenmu.xml",
-		"Element/Monster/ThunderWave.xml",
-		"Element/Monster/Tiger.xml",
-		"Element/Monster/TodonPillar.xml",
-		"Element/Monster/Traps.xml",
-		"Element/Monster/Tsukuyomi.xml",
-		"Element/Monster/Tuji.xml",
-		"Element/Monster/Tuji2.xml",
-		"Element/Monster/WaterBom.xml",
-		"Element/Monster/WaterBullet.xml",
-		"Element/Monster/Wave.xml",
-		"Element/Monster/Yataikuzu.xml",
-		"Element/Monster/Yominuma.xml",
-
-		"Element/Flog/ObitoFlog.xml",
-		"Element/Flog/FemalePainFlog.xml",
-		"Element/Flog/IzumoFlog.xml",
-		"Element/Flog/KakashiFlog.xml",
-		"Element/Flog/KotetsuFlog.xml",
-		"Element/Flog/PainFlog.xml",
-		"Element/Tower/CenterDate.xml",
-		"Element/Tower/TowerDate.xml",
-
-		"Element/Akamaru/Akamaru.xml",
-		"Element/Asuma/Asuma.xml",
-		"Element/Centipede/Centipede.xml",
-		"Element/Chiyo/Chiyo.xml",
-		"Element/Choji/Choji.xml",
-		"Element/Deidara/Deidara.xml",
-		"Element/DogWall/DogWall.xml",
-		"Element/Gaara/Gaara.xml",
-		"Element/Han/Han.xml",
-		"Element/Hidan/Hidan.xml",
-		"Element/Hinata/Hinata.xml",
-		"Element/Hiruzen/Hiruzen.xml",
-		"Element/ImmortalSasuke/ImmortalSasuke.xml",
-		"Element/Ino/Ino.xml",
-		"Element/Itachi/Itachi.xml",
-		"Element/Jiraiya/Jiraiya.xml",
-		"Element/Jugo/Jugo.xml",
-		"Element/Kakashi/Kakashi.xml",
-		"Element/Kakuzu/Kakuzu.xml",
-		"Element/Kankuro/Kankuro.xml",
-		"Element/Karasu/Karasu.xml",
-		"Element/Karin/Karin.xml",
-		"Element/Kiba/Kiba.xml",
-		"Element/Kisame/Kisame.xml",
-		"Element/Konan/Konan.xml",
-		"Element/Kurama/Kurama.xml",
-		"Element/Lee/Lee.xml",
-		"Element/MaskFudon/MaskFudon.xml",
-		"Element/MaskKadon/MaskKadon.xml",
-		"Element/MaskRaidon/MaskRaidon.xml",
-		"Element/Minato/Minato.xml",
-		"Element/Naruto/Naruto.xml",
-		"Element/Neji/Neji.xml",
-		"Element/Parents/Parents.xml",
-		"Element/RikudoNaruto/RikudoNaruto.xml",
-		"Element/RockLee/RockLee.xml",
-		"Element/Roshi/Roshi.xml",
-		"Element/SageJiraiya/SageJiraiya.xml",
-		"Element/SageNaruto/SageNaruto.xml",
-		"Element/Sai/Sai.xml",
-		"Element/Sakura/Sakura.xml",
-		"Element/Sanshouuo/Sanshouuo.xml",
-		"Element/Saso/Saso.xml",
-		"Element/Sasuke/Sasuke.xml",
-		"Element/Shikamaru/Shikamaru.xml",
-		"Element/Shino/Shino.xml",
-		"Element/Slug/Slug.xml",
-		"Element/Suigetsu/Suigetsu.xml",
-		"Element/Tenten/Tenten.xml",
-		"Element/Tobi/Tobi.xml",
-		"Element/Tobirama/Tobirama.xml",
-		"Element/Tsunade/Tsunade.xml"
-	};
-
-	std::string filePath = CCFileUtils::sharedFileUtils()->getWritablePath() + "SHA.xml";
-	//xml文档
-	tinyxml2::XMLDocument* pDoc = new tinyxml2::XMLDocument();  
-	if (NULL==pDoc) {
-		return ;
-	}
-	//xml声明
-	XMLDeclaration *pDel = pDoc->NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
-	if (NULL==pDel) {
-		return ;
-	}
-
-	pDoc->LinkEndChild(pDel);
-	//节点file
-	XMLElement *fileElement = pDoc->NewElement("file");
-	fileElement->SetAttribute("version", "1.18");//给节点设置属性
-	pDoc->LinkEndChild(fileElement);
-
-
-
-
-	//节点path
-	int num= sizeof(fileList)/sizeof(char*);
-	for(int i=0;i<num;i++){
-		XMLElement *pathElement = pDoc->NewElement("path");
-		pathElement->SetAttribute("src", fileList[i]);
-		std::string fileSrc=fileList[i];
-		std::string strFileMD5 =CMD5Checksum::GetMD5(fileSrc);
-		pathElement->LinkEndChild(pDoc->NewText(strFileMD5.c_str()));
-		
-
-		fileElement->LinkEndChild(pathElement);
-	}
-
-
-	pDoc->SaveFile(filePath.c_str());//保存文件 参数：路径
-	delete pDoc;
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 bool KTools::readXMLToArray(const char* filePath,CCArray* &array)
 {
 
@@ -259,14 +56,12 @@ bool KTools::readXMLToArray(const char* filePath,CCArray* &array)
 	
 	while (actionEle){
 		const char* actionName=actionEle->FirstAttribute()->Value();
-		//CCLog("[%s]",actionName);
 
 		XMLElement *actionNodeEle=actionEle->FirstChildElement();
         CCArray* actionArray=CCArray::create();
 		CCArray* actionDate=CCArray::create();
 		CCArray* actionFrame=CCArray::create();
 		while(actionNodeEle){
-			//CCLog("+[%s]",actionNodeEle->Name());
 			if(strcmp(actionNodeEle->Name(),"frame")){
 			    XMLElement *dateEle=actionNodeEle->FirstChildElement();
 
@@ -275,7 +70,6 @@ bool KTools::readXMLToArray(const char* filePath,CCArray* &array)
 					const char* nodeKey=dateEle->FirstAttribute()->Value();
 					CCString* nodeValue=CCString::create(dateEle->GetText());
 
-					//CCLog("%s:%s",nodeKey,nodeValue->getCString());
 					CCDictionary* dateDic=CCDictionary::create();
 					dateDic->setObject(nodeValue,nodeKey);
 
@@ -298,7 +92,6 @@ bool KTools::readXMLToArray(const char* filePath,CCArray* &array)
 					
 					CCString* nodeValue=CCString::create(frameEle->GetText());
 
-					//CCLog("%s:%s",nodeKey,nodeValue->getCString());
 					CCDictionary* frameDic=CCDictionary::create();
 					frameDic->setObject(nodeValue,nodeKey);
 					actionFrame->addObject(frameDic);
@@ -708,30 +501,9 @@ void KTools::saveSQLite(const char* table,const char* relatedColumn,const char* 
 
 
 
-std::string KTools::encodeData(std::string data){
-
-	//SHA1 *sha1;  
-	//unsigned char *digest;  
-	std::string dataMD5 =CMD5Checksum::GetMD5OfString(data);
-
-	//sha1=new SHA1;  
-	//sha1->addBytes(dataMD5.c_str(),strlen(dataMD5.c_str()));//输入数据  
-	////sha1->addBytes( "goldlion" ,strlen( "goldlion" ));//输入数据  
-	//digest=sha1->getDigest();//获取校验码  
-	//std::string result=(char*) digest;
-	//delete sha1;  
-	//free(digest);  
-	return dataMD5;
-}
-
-
-
-
 CCTips::CCTips(void)
 {
-
 }
-
 
 CCTips::~CCTips(void)
 {

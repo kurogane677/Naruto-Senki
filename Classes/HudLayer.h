@@ -58,9 +58,6 @@ public:
 		CC_SYNTHESIZE_RETAIN(ActionButton*,item2Button,Item2Button );
 		CC_SYNTHESIZE_RETAIN(ActionButton*,item3Button,Item3Button );
 		CC_SYNTHESIZE_RETAIN(ActionButton*,item4Button,Item4Button );
-		/*ActionButton*		item2Button;
-		ActionButton*		item3Button;
-		ActionButton*		item4Button;*/
 	ActionButton*		gear1Button;
 	ActionButton*		gear2Button;
 	ActionButton*		gear3Button;

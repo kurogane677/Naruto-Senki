@@ -34,7 +34,6 @@ public:
 	CCArray* tempHeros;
 	bool init();
 
-	//void dfsFolder(std::string folderPath, int depth);
 	int loadNum;
 
 	CREATE_FUNC(LoadLayer);

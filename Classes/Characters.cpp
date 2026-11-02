@@ -10,7 +10,6 @@ bool Hero::init(){
 		CC_BREAK_IF(!HeroElement::init());
 		this->setAnchorPoint(ccp(0.5,0));		
 		
-		//this->schedule(schedule_selector(Hero::neicun),0.5f);
 		bRet=true;
 	}while(0);
 

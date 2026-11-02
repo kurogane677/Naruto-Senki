@@ -193,7 +193,6 @@ void HudLayer::initGearButton(){
 	gear_button->setAnchorPoint(ccp(0,0));
 	gearMenu=CCMenu::create(gear_button,NULL);	
 	gearMenu->setPosition(ccp(0,winSize.height-gear_button->getContentSize().height));
-	/* gearMenu->setTouchPriority(10); (no touch priority on Axmol menus) */
 	this->addChild(gearMenu,100);
 }
 
@@ -750,8 +749,6 @@ void HudLayer::setEXPLose(float percent){
 	if (Percent>100){
 		Percent=100;
 	}
-	//CCRotateTo* ra=CCRotateTo::create(0.2f,((1-Percent/100)*90),((1-Percent/100)*90));
-	//status_expbar->runAction(ra);
 	status_expbar->setPercentage((1+Percent/100)*50);
 	
 

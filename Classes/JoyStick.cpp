@@ -17,7 +17,6 @@ bool JoyStick::init(){
 	bool bRet = false;
 	do{
 		CC_BREAK_IF(!CCSprite::init());
-		//CC_BREAK_IF(!CCSprite:initWithSpriteFrameName("JoyStickBg.png"));
 		this->initWithSpriteFrameName("JoyStickBg.png");
 		this->setAnchorPoint(ccp(0,0));
 		

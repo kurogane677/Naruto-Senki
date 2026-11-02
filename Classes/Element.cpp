@@ -47,7 +47,6 @@ bool HeroElement::init(){
 		CC_BREAK_IF(!ActionManager::init());
 		this->setAnchorPoint(ccp(0.5,0));		
 		this->scheduleUpdate();
-		//this->schedule(schedule_selector(HeroElement::neicun),0.5f);
 		bRet=true;
 	}while(0);
 
@@ -586,7 +585,6 @@ void HeroElement::setAI(float dt){
 
 
 void HeroElement::neicun(float dt){
-	//CCLOG("%d",callValue->retainCount());
 }
 
 
@@ -1812,7 +1810,6 @@ bool Bullet::init(){
 	bool bRet = false;
 	do {
 
-		//CC_BREAK_IF(!ActionManager::initWithSpriteFrameName("coin.png"));
 		CC_BREAK_IF(!ActionManager::init());
 		this->scheduleUpdate();
 		bRet=true;

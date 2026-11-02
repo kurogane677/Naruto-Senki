@@ -10,7 +10,6 @@ public:
 	HeroElement(void);
 	~HeroElement(void);
 
-	//CREATE_FUNC(HeroElement);
 	bool	init();
 	void	initAction();
 	void	setHPbar();

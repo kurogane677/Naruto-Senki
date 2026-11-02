@@ -59,7 +59,6 @@ public:
 	void			setGearType(int tmpGearType);
 
 	CC_SYNTHESIZE_RETAIN(CCAction*,_freezeAction,FreezeAction);
-	//CC_SYNTHESIZE_RETAIN(CCProgressTimer*,markSprite,MarkSprite);
 	CC_SYNTHESIZE(HudLayer*,_delegate,Delegate);
 	virtual void	beganAnimation(bool isLock = false);
 

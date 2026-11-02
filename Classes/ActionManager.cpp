@@ -78,7 +78,6 @@ ActionManager::ActionManager(void)
 
 
 	enemyCombatPoint=0;
-	//totalCombatPoint=0;
 	friendCombatPoint=0;
 
 	isBaseDanger=false;
@@ -205,7 +204,6 @@ void ActionManager::readDate(CCArray* tmpDate,CCString* &attackType,int &attackV
 			break;
 		case 1:
 			attackValue=tmpDict->valueForKey("attackValue")->intValue();
-				//tmpDict->valueForKey("attackValue")->intValue();
 			break;
 		case 2:
 			attackRangeX=tmpDict->valueForKey("attackRangeX")->intValue();
@@ -252,20 +250,8 @@ void ActionManager::update(float dt){
 		_heartEffect->setPositionX(this->getContentSize().width/2+(_isFlipped?22:-22));
 	}
 
-	/*if(_healItemEffect){
-	_healItemEffect->setPosition(ccp(_isFlipped?this->getContentSize().width/2+16:this->getContentSize().width/2-16,
-	this->_height));
-	}
-
-	if(_speedItemEffect){
-	_speedItemEffect->setPosition(ccp(_isFlipped?this->getContentSize().width/2+16:this->getContentSize().width/2-16,
-	this->_height));
-	}*/
 
 	
-	/*if(_kaguraEffect){
-		_kaguraEffect->setPosition(ccp(this->getPositionX(),this->getPositionY()+this->getContentSize().height/2));
-	}*/
 
 	if(_dehealBuffEffect){		
 		_dehealBuffEffect->setPositionX(this->getContentSize().width/2);
@@ -1900,7 +1886,6 @@ void ActionManager::setItem(abType type){
 			_healItemEffect->setPosition(ccp(_isFlipped?this->getContentSize().width/2+16:this->getContentSize().width/2-16,
 				this->_height));
 			this->addChild(_healItemEffect);
-			//_isHealling=true;
 		}
 	}
 
@@ -2318,7 +2303,6 @@ void ActionManager::setSound(CCNode* sender,void* date){
 		if(_isPlayable){
 				CCDictionary* file=(CCDictionary*) date;
 				CCString* str = (CCString*)(file->objectForKey(1));
-				//SimpleAudioEngine::sharedEngine()->preloadEffect(str->getCString());
 				SimpleAudioEngine::sharedEngine()->playEffect(str->getCString());
 		}
 	}
@@ -2342,7 +2326,6 @@ void ActionManager::setDSound(CCNode* sender,void* date){
 		if(_isPlayable && this->_isHitOne){
 			CCDictionary* file=(CCDictionary*) date;
 			CCString* str = (CCString*)(file->objectForKey(1));
-			//SimpleAudioEngine::sharedEngine()->preloadEffect(str->getCString());
 			SimpleAudioEngine::sharedEngine()->playEffect(str->getCString());
 		}
 	}
@@ -5872,7 +5855,6 @@ void ActionManager::setMon(CCNode* sender,void* date){
 			monster->attack(NAttack);
 
 	}else if(	strcmp(monsterType->getCString(),"LeeBom")==0 ){
-		//monster->setAnchorPoint(ccp(0.5,0.5f));
 		monster->setPosition(ccp(this->getPositionX(),this->getPositionY()));
 		_monsterArray->addObject(monster);
 		monster->attack(NAttack);
@@ -6425,7 +6407,6 @@ void ActionManager::setMonAttack(CCNode* sender,void* date){
 
 						if (mo->isCharacter("Karasu")){
 							if (skillNum==1){
-								//mo->attack(SKILL1);
 							}else if(skillNum==2){				
 								mo->attack(SKILL2);
 							}

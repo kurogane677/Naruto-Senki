@@ -27,7 +27,6 @@ public:
 
 	CCMenuItem* upload_btn;
 
-	//CC_SYNTHESIZE_RETAIN(CCString*,detailRecord,DetialRecord);
 	 std::string detailRecord;
 	float finnalScore;
 	CC_SYNTHESIZE_RETAIN(CCString*,resultChar,ResultChar);
