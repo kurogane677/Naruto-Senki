@@ -90,17 +90,31 @@ jobs:
           [IO.File]::WriteAllBytes("$env:RUNNER_TEMP/release.jks",
             [Convert]::FromBase64String("${{ secrets.KEYSTORE_BASE64 }}"))
 
-      - name: Build APK (release, signed)
+      # Two signed APKs from the same build:
+      #   *-android.apk        targetSdk 36 (default)
+      #   *-android-sdk29.apk  targetSdk 29: phone APK editors can repack it, because
+      #                        Android only demands an uncompressed resources.arsc from 30+
+      - name: Build APKs (release, signed)
         shell: pwsh
         run: |
           & "$env:AX_ROOT/setup.ps1"
-          & "$env:AX_ROOT/tools/cmdline/axmol.ps1" build -p android -a arm64 `
-            -xc "-PKEY_STORE_FILE=$env:RUNNER_TEMP/release.jks,-PKEY_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }},-PKEY_ALIAS=${{ secrets.KEY_ALIAS }},-PKEY_PASSWORD=${{ secrets.KEY_PASSWORD }}"
+          $sign = "-PKEY_STORE_FILE=$env:RUNNER_TEMP/release.jks,-PKEY_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }},-PKEY_ALIAS=${{ secrets.KEY_ALIAS }},-PKEY_PASSWORD=${{ secrets.KEY_PASSWORD }}"
+          $name = "${{ github.ref_name }}" -replace '[\/]', '-'
+          $apk = "proj.android/app/build/outputs/apk/release/NarutoSenki-release.apk"
+          New-Item -ItemType Directory -Force dist | Out-Null
+
+          & "$env:AX_ROOT/tools/cmdline/axmol.ps1" build -p android -a arm64 -xc $sign
+          if (!(Test-Path $apk)) { throw "APK (targetSdk 36) tidak terbentuk" }
+          Move-Item $apk "dist/NarutoSenki-$name-android.apk"
+
+          & "$env:AX_ROOT/tools/cmdline/axmol.ps1" build -p android -a arm64 -xc "$sign,-PNS_TARGET_SDK=29"
+          if (!(Test-Path $apk)) { throw "APK (targetSdk 29) tidak terbentuk" }
+          Move-Item $apk "dist/NarutoSenki-$name-android-sdk29.apk"
 
       - uses: actions/upload-artifact@v7
         with:
           name: NarutoSenki-android
-          path: proj.android/app/build/outputs/apk/**/*.apk
+          path: dist/*.apk
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
@@ -116,5 +130,5 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            NarutoSenki-android/**/*.apk
+            NarutoSenki-android/*.apk
             NarutoSenki-win64/*.zip

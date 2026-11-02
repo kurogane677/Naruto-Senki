@@ -10,6 +10,9 @@ android {
     def cmakeOptions = Eval.me(buildProfiles['cmakeOptions'])
     def minSdk = buildProfiles['minSdk']
     def targetSdk = buildProfiles['targetSdk']
+    // -PNS_TARGET_SDK=29 builds the modding-friendly APK: below targetSdk 30 Android does
+    // not require resources.arsc to stay uncompressed, so phone APK editors can repack it.
+    def apkTargetSdk = project.findProperty('NS_TARGET_SDK') ?: targetSdk
 
     // Apply build profiles
     namespace = packageName
@@ -22,7 +25,7 @@ android {
     defaultConfig {
         applicationId packageName
         minSdkVersion minSdk
-        targetSdkVersion targetSdk
+        targetSdkVersion apkTargetSdk
         versionCode 1
         versionName "1.0"
 
@@ -90,6 +93,11 @@ android {
 
     buildFeatures {
         aidl = true
+    }
+
+    lint {
+        // the targetSdk 29 build is on purpose (sideloaded, never published to Play)
+        disable.add('ExpiredTargetSdkVersion')
     }
 }
 
