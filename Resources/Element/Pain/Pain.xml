@@ -188,8 +188,8 @@
    <action value="skill04">
      <date>
        <dateName type="attackType">oAttack</dateName>
-       <dateName type="attackValue">900</dateName>
-       <dateName type="attackRangeX">128</dateName>
+       <dateName type="attackValue">250</dateName>
+       <dateName type="attackRangeX">48</dateName>
        <dateName type="attackRangeY">48</dateName>
        <coldName type="coldDown">1</coldName>
      </date>
@@ -199,10 +199,9 @@
         <eventName type="setFont">dbtx.png</eventName>
         <eventName type="setDelay">20</eventName>
         <eventName type="setSound">Audio/Pain/pain_skill4.ogg</eventName>
-        <eventName type="setAttackBox">ab_hit</eventName>
+        <eventName type="setMon">Jibaku</eventName>
         <eventName type="setDelay">30</eventName>
         <frameName>Pain_Skill04_02.png</frameName>
-        <eventName type="setAttackBox">c_hit</eventName>
         <eventName type="setFont">ka.png</eventName>
         <eventName type="setDelay">10</eventName>
         <frameName>Pain_Skill04_03.png</frameName>
