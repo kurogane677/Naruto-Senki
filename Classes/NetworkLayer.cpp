@@ -499,7 +499,7 @@ void NetworkLayer::setSelected(CCObject* sender){
 
 
 void NetworkLayer::onSkillMenu(CCObject* sender){
-	if(strcmp(_selectHero,"Pain")==0 || strcmp(_selectHero,"Orochimaru")==0 ){
+	if(strcmp(_selectHero,"Pain")==0){
 		return;
 
 	}
@@ -584,7 +584,6 @@ void NetworkLayer::onGameStart(CCObject* sender){
 				tmpChar=(CCString*)_selectList->objectAtIndex(index);
 			}
 			while(strcmp(tmpChar->getCString(),"Pain")==0 ||
-				strcmp(tmpChar->getCString(),"Orochimaru")==0 ||
 				strcmp(tmpChar->getCString(),"None")==0
 				);
 				
