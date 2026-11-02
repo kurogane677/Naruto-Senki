@@ -22,6 +22,10 @@ ActionButton::ActionButton(void)
 	progressPointSprite=NULL;
 	proressblinkMask=NULL;
 	gearSign =NULL;
+	ougismarkSprite=NULL;
+	lockLabel1=NULL;
+	lockLabel2=NULL;
+	clipper=NULL;
 }
 
 
