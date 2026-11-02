@@ -359,6 +359,7 @@ public:
 	void				disableGear3(float dt);
 
 	bool				setGear(gearType type);
+	static int			gearCost(gearType type);
 	void				useGear(gearType type);
 
 	void				setCoinDisplay(int num);

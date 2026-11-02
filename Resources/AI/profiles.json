@@ -417,7 +417,7 @@
       "role": "fighter", "hook": "hidan", "nattack": [48, 32],
       "builds": { "default": [6, 1, 7] },
       "hero": [
-        { "slot": "SKILL1", "range": [48, 32], "if": ["selfNotBati", "noMonster:CircleMark", "gp"] },
+        { "slot": "SKILL1", "range": [48, 32], "if": ["selfNotBati", "noMonster:CircleMark", "ougis2Ready"] },
         { "slot": "OUGIS2", "range": [48, 32], "if": ["selfNotBati"] },
         { "slot": "SKILL2", "range": [56, 32], "if": ["gp", "selfNotBati"] },
         { "slot": "OUGIS1", "gate": 128, "range": [48, 32], "if": ["gp", "selfNotBati"] },

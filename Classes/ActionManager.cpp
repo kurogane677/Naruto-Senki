@@ -1891,23 +1891,22 @@ void ActionManager::setItem(abType type){
 
 }
 
+int ActionManager::gearCost(gearType type){
+	return (type==gear00 || type==gear03 || type==gear06) ? 500 : 1000;
+}
+
 bool ActionManager::setGear(gearType type){
 
-	int gearCost=0;
-	if(type==gear00 || type==gear03 || type==gear06){
-		gearCost=500;
-	}else{
-		gearCost=1000;
-	}
+	int cost=gearCost(type);
 	
-	if( this->getGearArray()->count()<=2 && this->getCoin()>=gearCost){
+	if( this->getGearArray()->count()<=2 && this->getCoin()>=cost){
 		CCString* gearItem=CCString::createWithFormat("%d",gearType(type));
 		this->getGearArray()->addObject(gearItem);
 		
 		if(this->role()==Role::Player){
-			_delegate->getHudLayer()->offCoin(CCString::createWithFormat("%d",gearCost)->getCString());
+			_delegate->getHudLayer()->offCoin(CCString::createWithFormat("%d",cost)->getCString());
 		}else{
-			this->minusCoin(gearCost);
+			this->minusCoin(cost);
 		}
 
 		switch (type){

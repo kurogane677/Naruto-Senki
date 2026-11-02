@@ -54,6 +54,7 @@ private:
     bool condsHold(const SkillRule& rule, ActionManager* target);
     bool slotReady(Slot slot) const;
     bool retreatFromFight(const CCPoint& sp);
+    int gearReserve();
     void markUsed(Slot slot);
 
     Hero* _hero;

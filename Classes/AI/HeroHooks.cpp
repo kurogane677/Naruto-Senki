@@ -24,14 +24,15 @@ ActionManager* findMonster(ActionManager* owner, const char* name)
     return nullptr;
 }
 
-// Hidan: after Skill1 drops his ritual circle he walks onto it and, once in
-// the ritual (bati), stands there; he only swings when an enemy hero is low.
+// Hidan: Skill1 drops his ritual circle only to set up Ougis2 (the profile
+// casts it while Ougis2 is ready). He walks onto it and, once in the ritual
+// (bati), stands there; he only swings when an enemy hero is low.
 bool hidan(AIController& ai)
 {
     Hero* h = ai.hero();
     ActionManager* mark = findMonster(h, "CircleMark");
-    if (!mark)
-        return false;
+    if (!mark || (!h->_isBati && !h->_isCanOugis2))
+        return false;  // a circle left without Ougis2 does not tie him down
     h->_mainTarget = mark;
     if (ai.walkTo(ai.deltaTo(mark), 8, 8))
         return true;

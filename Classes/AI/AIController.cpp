@@ -238,7 +238,8 @@ bool AIController::survive()
         h->useGear(gear06);
 
     float potionAt = _params->potionHp + (role() == HeroRole::Support ? 0.05f : 0.0f);
-    if (h->_isCanItem1 && h->getCoin() >= 50 && !h->_isHealling &&
+    int keep = hp < _params->retreatHp ? 0 : gearReserve();
+    if (h->_isCanItem1 && h->getCoin() >= 50 + keep && !h->_isHealling &&
         (hp < potionAt || h->getMaxHP() - h->getHP() >= 3000 + h->gearRecoverValue + 2000))
         h->setItem(Item1);
 
@@ -404,6 +405,7 @@ bool AIController::condsHold(const SkillRule& rule, ActionManager* t)
         else if (n == "combo") ok = _params->combos && t && (isDown(t) || t->getActionState() == ACTION_STATE_HURT);
         else if (n == "selfBati") ok = h->_isBati;
         else if (n == "selfNotBati") ok = !h->_isBati;
+        else if (n == "ougis2Ready") ok = slotReady(Slot::Ougis2);
         else if (n == "buff") ok = h->_skillChangeBuffValue != 0;
         else if (n == "notBuff") ok = h->_skillChangeBuffValue == 0;
         else if (n == "skillUP") ok = h->_skillUPBuffValue != 0;
@@ -595,6 +597,23 @@ void AIController::advance()
 
 // ---------------------------------------------------------------------------
 // gear (HardCore only)
+
+// HardCore: coin saved for the next gear of the build, so potions do not eat
+// it (like the original AI, which only drank freely once it owned gear)
+int AIController::gearReserve()
+{
+    if (!_game->_isHardCoreGame)
+        return 0;
+    if (!_buildChosen)
+    {
+        _build = chooseBuild(*this);
+        _buildChosen = true;
+    }
+    int owned = _hero->getGearArray()->count();
+    if (owned >= 3 || owned >= (int)_build.size())
+        return 0;
+    return ActionManager::gearCost((gearType)_build[owned]);
+}
 
 void AIController::buyGear()
 {
