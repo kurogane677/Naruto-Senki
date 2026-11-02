@@ -1,7 +1,8 @@
 name: Build
 
 # push tag v*      -> build + GitHub Release
-# workflow_dispatch -> build only (APK + zip as run artifacts), from any branch
+# workflow_dispatch -> build only (APKs as run artifacts), from any branch
+# Android only for now; the Win64 job was removed (see git history to restore it)
 on:
   push:
     tags: [ 'v*' ]
@@ -12,46 +13,6 @@ env:
   AX_ROOT: ${{ github.workspace }}/axmol
 
 jobs:
-  windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Clone Axmol
-        run: git clone --depth 1 --branch $env:AXMOL_VERSION https://github.com/axmolengine/axmol.git $env:AX_ROOT
-
-      - name: Cache Axmol tools
-        uses: actions/cache@v6
-        with:
-          path: |
-            axmol/tools/external
-            axmol/cache
-          key: axmol-win-${{ env.AXMOL_VERSION }}
-
-      - name: Build Win64
-        shell: pwsh
-        run: |
-          & "$env:AX_ROOT/setup.ps1"
-          # -t: tanpa ini axmol menebak target dari nama folder checkout ("Naruto-Senki")
-          & "$env:AX_ROOT/tools/cmdline/axmol.ps1" build -p win32 -a x64 -O3 -t NarutoSenki
-
-      # -O3 = Release (-O2 = RelWithDebInfo). axmol memakai folder build/ di root repo:
-      # exe + DLL + folder Content ada di build/bin/NarutoSenki/Release
-      - name: Package Win64
-        shell: pwsh
-        run: |
-          $exe = Get-ChildItem build -Recurse -Filter NarutoSenki.exe | Where-Object { $_.FullName -match '\\Release\\' } | Select-Object -First 1
-          if (!$exe) { throw "NarutoSenki.exe (Release) tidak ditemukan di build/" }
-          # branch names like chore/x contain '/', which is not valid in a file name
-          $name = "${{ github.ref_name }}" -replace '[\/]', '-'
-          Compress-Archive -Path "$($exe.DirectoryName)/*" `
-            -DestinationPath "NarutoSenki-$name-win64.zip"
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: NarutoSenki-win64
-          path: NarutoSenki-*-win64.zip
-
   android:
     runs-on: windows-latest
     # KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS / KEY_PASSWORD live in the "release" environment
@@ -118,7 +79,7 @@ jobs:
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [ windows, android ]
+    needs: [ android ]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -131,4 +92,3 @@ jobs:
         with:
           files: |
             NarutoSenki-android/*.apk
-            NarutoSenki-win64/*.zip

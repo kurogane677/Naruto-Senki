@@ -499,10 +499,6 @@ void NetworkLayer::setSelected(CCObject* sender){
 
 
 void NetworkLayer::onSkillMenu(CCObject* sender){
-	if(strcmp(_selectHero,"Pain")==0){
-		return;
-
-	}
 
 	CCScene* pscene =CCScene::create();
 	SkillLayer* skillLayer=SkillLayer::create();
@@ -583,9 +579,7 @@ void NetworkLayer::onGameStart(CCObject* sender){
 				int index=randInt(num);
 				tmpChar=(CCString*)_selectList->objectAtIndex(index);
 			}
-			while(strcmp(tmpChar->getCString(),"Pain")==0 ||
-				strcmp(tmpChar->getCString(),"None")==0
-				);
+			while(strcmp(tmpChar->getCString(),"None")==0);
 				
 				
 			_playerSelect=tmpChar->getCString();				

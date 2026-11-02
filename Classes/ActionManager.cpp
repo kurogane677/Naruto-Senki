@@ -1137,6 +1137,12 @@ CCAction* ActionManager::createAnimation(CCArray* ationArray,float fps,bool isRe
 					callValue->setObject(CCString::create(keyValue), 1);
 					CCFiniteTimeAction *call = CCCallFuncND::create(this,callfuncND_selector(ActionManager::setSkillEffect),(void*)callValue);
 					seqArray->addObject(call);
+				}else if(strcmp(key,"setFont")==0){
+					callValue = CCDictionary::create(); 
+					callValue->retain();
+					callValue->setObject(CCString::create(keyValue), 1);
+					CCFiniteTimeAction *call = CCCallFuncND::create(this,callfuncND_selector(ActionManager::setFontEffect),(void*)callValue);
+					seqArray->addObject(call);
 				}else if(strcmp(key,"setJump")==0){
 					bool jumpDirection=dic->valueForKey(key)->boolValue();
 					CCFiniteTimeAction *call = CCCallFuncND::create(this,callfuncND_selector(ActionManager::setJump),(void*)jumpDirection);
@@ -1829,6 +1835,26 @@ void ActionManager::setSkillEffect(CCNode* sender,void* date){
 };
 
 
+
+// ougis text from Effects/FontEffect.plist (e.g. Pain's "dbtx.png"), floats up and fades
+void ActionManager::setFontEffect(CCNode* sender,void* date){
+
+	CCDictionary* file=(CCDictionary*) date;
+	CCString* str = (CCString*)(file->objectForKey(1));
+	CCSpriteFrame* frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(str->getCString());
+	if(!frame){
+		return;
+	}
+	if(role()!=Role::Player &&
+		abs(ccpSub(this->getPosition(),_delegate->currentPlayer->getPosition()).x)>=winSize.width/2){
+		return;
+	}
+
+	CCSprite* font=CCSprite::createWithSpriteFrame(frame);
+	font->setPosition(ccp(this->getPositionX(),this->getPositionY()+this->getHeight()+16));
+	_delegate->addChild(font,5000);
+	font->runAction(ax::Sequence::create(ax::MoveBy::create(0.4f,ccp(0,16)),ax::FadeOut::create(0.3f),ax::RemoveSelf::create(),nullptr));
+};
 
 void ActionManager::setItem(abType type){
 

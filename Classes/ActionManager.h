@@ -405,6 +405,7 @@ public:
 	
 	virtual void		setAI(float dt);
 	void				setSkillEffect(CCNode* sender,void* date);
+	void				setFontEffect(CCNode* sender,void* date);
 	void				setRestore2(float dt);
 
 

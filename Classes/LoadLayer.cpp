@@ -153,9 +153,7 @@ void LoadLayer::preloadIMG(){
 		}else if(strcmp(player->getCString(),"Deidara")==0){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Centipede/Centipede.plist");
 		}else if(strcmp(player->getCString(),"Pain")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/DevaPath/DevaPath.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/AsuraPath/AsuraPath.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/AnimalPath/AnimalPath.plist");
+			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Effects/FontEffect.plist");
 		}else if(strcmp(player->getCString(),"Sasuke")==0){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/ImmortalSasuke/ImmortalSasuke.plist");
 			tool->prepareFileOGG("ImmortalSasuke");
