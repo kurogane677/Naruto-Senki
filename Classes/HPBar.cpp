@@ -318,7 +318,7 @@ void HPBar::loseHP(float percent){
 			if(_delegate->isCharacter("Kakuzu") && _delegate->getDelegate()->_isOugis2Game){
 				
 				bool reieveAble=false;
-				if(_delegate->getCKR2()>=25000 && _delegate->hearts>0){
+				if(_delegate->getCKR2()>=CKR2_OUGIS && _delegate->hearts>0){
 					if(_delegate->role()==Role::Player){
 						if(_delegate->getDelegate()->getHudLayer()->skill5Button){
 							reieveAble=true;

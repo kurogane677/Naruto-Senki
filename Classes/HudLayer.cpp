@@ -1250,7 +1250,7 @@ bool HudLayer::getSkillFinish(){
 bool HudLayer::getOugisEnable(bool isCKR2){
 	if(!isCKR2){
 		float ckr=_delegate->currentPlayer->getCKR();
-		if (ckr>=15000){
+		if (ckr>=CKR_OUGIS){
 			return true;
 		}else{
 			return false;
@@ -1258,7 +1258,7 @@ bool HudLayer::getOugisEnable(bool isCKR2){
 	}else{
 
 		float ckr=_delegate->currentPlayer->getCKR2();
-		if (ckr>=25000){
+		if (ckr>=CKR2_OUGIS){
 			return true;
 		}else{
 			return false;

@@ -7,6 +7,12 @@
 constexpr float BASE_X_KONOHA = 11 * 32;
 constexpr float BASE_X_AKATSUKI = 85 * 32;
 
+// chakra needed for one ougis, and the bar caps (CKR: 3 bars, CKR2: 2 bars)
+constexpr int CKR_OUGIS = 15000;
+constexpr int CKR_MAX = 45000;
+constexpr int CKR2_OUGIS = 25000;
+constexpr int CKR2_MAX = 50000;
+
 
 //global parameter
 
@@ -28,19 +34,11 @@ extern int Cheats;
 
 //menu sound
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #define SELECT_SOUND	"Audio/Menu/select.mp3"
 #define TRAINING_SOUND	"Audio/Menu/training.ogg"
 #define NETWORK_SOUND	"Audio/Menu/arcade.ogg"
 #define CREDITS_SOUND	"Audio/Menu/credits.ogg"
 #define EXIT_SOUND		"Audio/Menu/exit.ogg"
-#else
-#define SELECT_SOUND	"Audio/Menu/select.mp3"
-#define TRAINING_SOUND	"Audio/Menu/training.ogg"
-#define NETWORK_SOUND	"Audio/Menu/arcade.ogg"
-#define CREDITS_SOUND	"Audio/Menu/credits.ogg"
-#define EXIT_SOUND		"Audio/Menu/exit.ogg"
-#endif
 
 
 //tile map

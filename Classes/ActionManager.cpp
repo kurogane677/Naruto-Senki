@@ -277,12 +277,12 @@ void ActionManager::update(float dt){
 				!this->isCharacter("Han")){
 
 
-					if(this->group()==Group::Konoha && this->getPositionX()<=11*32){
+					if(this->group()==Group::Konoha && this->getPositionX()<=BASE_X_KONOHA){
 					    _isHealling=true;
 						if(this->getHpPercent()<1.0f){
 							this->scheduleOnce(schedule_selector(ActionManager::setRestore),1.0f);							
 						}
-					}else if(this->group()==Group::Akatsuki && this->getPositionX()>=85*32){
+					}else if(this->group()==Group::Akatsuki && this->getPositionX()>=BASE_X_AKATSUKI){
 						_isHealling=true;
 						if ( this->getHpPercent()<1.0f){	
 							this->scheduleOnce(schedule_selector(ActionManager::setRestore),1.0f);						
@@ -1452,14 +1452,14 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		if(_master){
 
 			if(_master->getLV()>=2 && !_master->_isControled){
-				if(45000-_master->getCKR()>=boundValue){
+				if(CKR_MAX-_master->getCKR()>=boundValue){
 					float newValue=_master->getCKR()+boundValue;
 					_master->setCKR(newValue);
 				}else{
-					_master->setCKR(45000);
+					_master->setCKR(CKR_MAX);
 				}	
 
-				if(_master->getCKR()>=15000){
+				if(_master->getCKR()>=CKR_OUGIS){
 					_master->_isCanOugis1=true;
 					
 				}
@@ -1471,15 +1471,15 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 
 			if(_master->getLV()>=4 && !_master->_isControled){
 
-					if(50000-_master->getCKR2()>=boundValue){
+					if(CKR2_MAX-_master->getCKR2()>=boundValue){
 						float newValue=_master->getCKR2()+boundValue;
 						_master->setCKR2(newValue);
 					}else{
 						
-						_master->setCKR2(50000);
+						_master->setCKR2(CKR2_MAX);
 					}	
 
-					if(_master->getCKR2()>=25000){
+					if(_master->getCKR2()>=CKR2_OUGIS){
 						_master->_isCanOugis2=true;
 						
 					}
@@ -1529,15 +1529,15 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		}
 
 		if(_level>=2 && !_isControled && isGainable){
-				if(45000-this->getCKR()>=boundValue){
+				if(CKR_MAX-this->getCKR()>=boundValue){
 					float newValue=this->getCKR()+boundValue;
 					this->setCKR(newValue);
 				}else{
-					this->setCKR(45000);
+					this->setCKR(CKR_MAX);
 			
 				}	
 
-				if(this->getCKR()>=15000){
+				if(this->getCKR()>=CKR_OUGIS){
 					_isCanOugis1=true;
 				
 				}
@@ -1554,17 +1554,17 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 
 		if(_level>=4 && !_isControled && isGainable){
 
-				if(50000-this->getCKR2()>=boundValue){
+				if(CKR2_MAX-this->getCKR2()>=boundValue){
 					float newValue=this->getCKR2()+boundValue;
 					this->setCKR2(newValue);
 
 				}else{
-					this->setCKR2(50000);
+					this->setCKR2(CKR2_MAX);
 					
 					
 				}	
 
-				if(this->getCKR2()>=25000){
+				if(this->getCKR2()>=CKR2_OUGIS){
 					_isCanOugis2=true;
 					
 				}
@@ -1598,15 +1598,15 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 			
 				if(currentAttacker->_level>=2 && !currentAttacker->_isControled){
 
-					if(45000-currentAttacker->getCKR()>=gainValue){
+					if(CKR_MAX-currentAttacker->getCKR()>=gainValue){
 						float newValue=currentAttacker->getCKR()+gainValue;
 						currentAttacker->setCKR(newValue);
 
 					}else{
-						currentAttacker->setCKR(45000);
+						currentAttacker->setCKR(CKR_MAX);
 					}	
 
-					if(currentAttacker->getCKR()>=15000){
+					if(currentAttacker->getCKR()>=CKR_OUGIS){
 						currentAttacker->_isCanOugis1=true;
 
 					}
@@ -1618,16 +1618,16 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 
 				if(currentAttacker->_level>=4 && !currentAttacker->_isControled){
 
-					if(50000-currentAttacker->getCKR2()>=gainValue){
+					if(CKR2_MAX-currentAttacker->getCKR2()>=gainValue){
 						float newValue=currentAttacker->getCKR2()+gainValue;
 						currentAttacker->setCKR2(newValue);
 
 					}else{
-						currentAttacker->setCKR2(50000);
+						currentAttacker->setCKR2(CKR2_MAX);
 
 					}	
 
-					if(currentAttacker->getCKR2()>=25000){
+					if(currentAttacker->getCKR2()>=CKR2_OUGIS){
 						currentAttacker->_isCanOugis2=true;
 
 					}
@@ -2534,15 +2534,15 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 	}else if(strcmp(commandType->getCString(),"setGainCKR")==0){
 		int boundValue=1500;
 		if(_level>=2){
-			if(45000-this->getCKR()>=boundValue){
+			if(CKR_MAX-this->getCKR()>=boundValue){
 				float newValue=this->getCKR()+boundValue;
 				this->setCKR(newValue);
 			}else{
-				this->setCKR(45000);
+				this->setCKR(CKR_MAX);
 
 			}	
 
-			if(this->getCKR()>=15000){
+			if(this->getCKR()>=CKR_OUGIS){
 				_isCanOugis1=true;
 
 			}
@@ -2556,17 +2556,17 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 
 		if(_level>=4 && !_isControled ){
 
-			if(50000-this->getCKR2()>=boundValue){
+			if(CKR2_MAX-this->getCKR2()>=boundValue){
 				float newValue=this->getCKR2()+boundValue;
 				this->setCKR2(newValue);
 
 			}else{
-				this->setCKR2(50000);
+				this->setCKR2(CKR2_MAX);
 
 
 			}	
 
-			if(this->getCKR2()>=25000){
+			if(this->getCKR2()>=CKR2_OUGIS){
 				_isCanOugis2=true;
 
 			}
@@ -3244,15 +3244,15 @@ void ActionManager::healBuff(float dt){
 
 
 						if(tempHero->_level>=2){
-							if(45000-tempHero->getCKR()>=_healBuffValue){
+							if(CKR_MAX-tempHero->getCKR()>=_healBuffValue){
 								float newValue=tempHero->getCKR()+_healBuffValue;
 								tempHero->setCKR(newValue);
 							}else{
-								tempHero->setCKR(45000);
+								tempHero->setCKR(CKR_MAX);
 
 							}	
 
-							if(tempHero->getCKR()>=15000){
+							if(tempHero->getCKR()>=CKR_OUGIS){
 								tempHero->_isCanOugis1=true;
 
 							}
@@ -3266,16 +3266,16 @@ void ActionManager::healBuff(float dt){
 
 						if(tempHero->_level>=4 ){
 
-							if(50000-tempHero->getCKR2()>=_healBuffValue){
+							if(CKR2_MAX-tempHero->getCKR2()>=_healBuffValue){
 								float newValue=tempHero->getCKR2()+_healBuffValue;
 								tempHero->setCKR2(newValue);
 
 							}else{
-								tempHero->setCKR2(50000);
+								tempHero->setCKR2(CKR2_MAX);
 
 							}	
 
-							if(tempHero->getCKR2()>=25000){
+							if(tempHero->getCKR2()>=CKR2_OUGIS){
 								tempHero->_isCanOugis2=true;
 
 							}
@@ -6624,9 +6624,9 @@ void ActionManager::attack(abType type){
 
 	case OUGIS1:
 		if(role()!=Role::Player || this->_isAI){
-			float newValue=this->getCKR()-15000;;
+			float newValue=this->getCKR()-CKR_OUGIS;;
 			this->setCKR(newValue);
-			if(this->getCKR() <15000){
+			if(this->getCKR() <CKR_OUGIS){
 				_isCanOugis1=false;
 			}	
 		}
@@ -6641,9 +6641,9 @@ void ActionManager::attack(abType type){
 	case OUGIS2:
 
 		if(role()!=Role::Player || this->_isAI){
-			float newValue=this->getCKR2()-25000;
+			float newValue=this->getCKR2()-CKR2_OUGIS;
 			this->setCKR2(newValue);
-			if(this->getCKR2() <25000){
+			if(this->getCKR2() <CKR2_OUGIS){
 				_isCanOugis2=false;
 			}	
 		}
@@ -7675,7 +7675,7 @@ bool ActionManager::findEnemy2(const char* type){
 								&& !target->isCharacter("Han")){
 
 									friendCombatPoint+=baseSkillCombatPoint+ target->getHP()+
-										(target->getCKR()/15000)*target->_sattackCombatPoint4+ (target->getCKR2()/25000)*target->_sattackCombatPoint5;
+										(target->getCKR()/CKR_OUGIS)*target->_sattackCombatPoint4+ (target->getCKR2()/CKR2_OUGIS)*target->_sattackCombatPoint5;
 
 							}
 
@@ -7687,7 +7687,7 @@ bool ActionManager::findEnemy2(const char* type){
 						if(!target->isCharacter("Roshi")
 							&& !target->isCharacter("Han")){
 						enemyCombatPoint+=baseSkillCombatPoint+target->getHP()
-							+(target->getCKR()/15000)*target->_sattackCombatPoint4+ (target->getCKR2()/25000)*target->_sattackCombatPoint5;				
+							+(target->getCKR()/CKR_OUGIS)*target->_sattackCombatPoint4+ (target->getCKR2()/CKR2_OUGIS)*target->_sattackCombatPoint5;				
 						}
 
 						if(!target->_isWudi && (target->getPositionX()>=_delegate->currentMap->getTileSize().width*3 &&target->getPositionX()<=(_delegate->currentMap->getMapSize().width-3)*_delegate->currentMap->getTileSize().width) ){
@@ -7730,12 +7730,12 @@ bool ActionManager::checkBase(){
 		}
 		if(this->group()!=target->group()){
 			if( this->group()==Group::Konoha){
-				if(target->getPositionX()<=11*32){
+				if(target->getPositionX()<=BASE_X_KONOHA){
 					_mainTarget=target;
 					return true;
 				}
 			}else {
-				if(target->getPositionX()>=85*32){
+				if(target->getPositionX()>=BASE_X_AKATSUKI){
 					_mainTarget=target;
 					return true;
 				}
@@ -7756,12 +7756,12 @@ bool ActionManager::checkBase(){
 		}
 		if(this->group()!=target->group()){
 			if( this->group()==Group::Konoha){
-				if(target->getPositionX()<=11*32){
+				if(target->getPositionX()<=BASE_X_KONOHA){
 					_mainTarget=target;
 					return true;
 				}
 			}else {
-				if(target->getPositionX()>=85*32){
+				if(target->getPositionX()>=BASE_X_AKATSUKI){
 					_mainTarget=target;
 					return true;
 				}
