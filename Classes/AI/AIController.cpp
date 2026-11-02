@@ -405,6 +405,7 @@ bool AIController::condsHold(const SkillRule& rule, ActionManager* t)
         else if (n == "combo") ok = _params->combos && t && (isDown(t) || t->getActionState() == ACTION_STATE_HURT);
         else if (n == "selfBati") ok = h->_isBati;
         else if (n == "selfNotBati") ok = !h->_isBati;
+        else if (n == "ougis2Ready") ok = slotReady(Slot::Ougis2);
         else if (n == "buff") ok = h->_skillChangeBuffValue != 0;
         else if (n == "notBuff") ok = h->_skillChangeBuffValue == 0;
         else if (n == "skillUP") ok = h->_skillUPBuffValue != 0;
