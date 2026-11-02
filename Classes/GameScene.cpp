@@ -5,7 +5,6 @@ using namespace CocosDenshion;
 USING_NS_CC;
 
 
-int adResult=0;
 
 
 GameScene::GameScene(void)

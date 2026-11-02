@@ -4,22 +4,6 @@ USING_NS_CC_EXT;
 
 
 int Cheats=0;
-std::string CValue="999999";
-bool isFirst=false;
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)   
-#include <jni.h>   
-#include "platform/android/jni/JniHelper.h"   
-
-extern "C"  
-{  
-	void Java_net_zakume_game_NarutoSenki_onBannerInit( JNIEnv *env,jobject thiz,jint points)
-	{
-		adResult=points;
-		
-	}
-}  
-#endif  
 
 
 /*----------------------

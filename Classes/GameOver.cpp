@@ -321,17 +321,8 @@ void GameOver::listResult(){
 	adExtra->setPosition(ccp(coinBG->getPositionX()+70,coinBG->getPositionY()+22));
 	this->addChild(adExtra,7);
 
-	CCString* extraCoin;
-	int tempCoin;
-	if(adResult==1 && _isWin ){
-		std::string tempEtra="idd4";
-		tool->decode(tempEtra);
-		tempCoin=rewardNum+atoi(cl->getCString())+atoi(tempEtra.c_str());
-		extraCoin=CCString::createWithFormat("+%d",500);
-	}else{	
-		tempCoin=rewardNum+atoi(cl->getCString());
-		extraCoin=CCString::createWithFormat("+%d",0);	
-	}
+	int tempCoin=rewardNum+atoi(cl->getCString());
+	CCString* extraCoin=CCString::createWithFormat("+%d",0);
 
 	CCString* realCoin=CCString::createWithFormat("%d",tempCoin);
 	tool->saveToSQLite("GameRecord","coin",realCoin->getCString(),false);
@@ -356,7 +347,7 @@ void GameOver::listResult(){
 	char* imgSrc="";
 
 	
-	if(_isWin && adResult==1){
+	if(_isWin){
 		if(resultScore>=140 && _delegate->_isHardCoreGame && _delegate->_isRandomChar){
 			imgSrc="result_SSSR.png";
 		}else if(resultScore>=120 && _delegate->_isHardCoreGame && _delegate->_isRandomChar){
@@ -386,7 +377,7 @@ void GameOver::listResult(){
 		recordSprite->setPosition(ccp(winSize.width/2+result_bg->getContentSize().width/2-recordSprite->getContentSize().width-12,result_bg->getPositionY()-result_bg->getContentSize().height/2+88));
 		this->addChild(recordSprite,7);
 
-		if(_isWin && adResult==1 &&_delegate->_isHardCoreGame){
+		if(_isWin && _delegate->_isHardCoreGame){
 
 			finnalScore=resultScore+float(_delegate->currentPlayer->_flogNum)/100;
 			CCString* recordString=CCString::createWithFormat("%0.2fPts",finnalScore);

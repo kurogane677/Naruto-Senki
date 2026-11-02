@@ -23,8 +23,6 @@ constexpr float BASE_X_AKATSUKI = 85 * 32;
 
 
 extern int Cheats;
-extern int adResult;
-extern std::string CValue;
 
 
 
