@@ -31,6 +31,10 @@ import dev.axmol.lib.SharedLoader;
 import android.os.Build;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.view.KeyEvent;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
+import dev.axmol.lib.AxmolGLSurfaceView;
 
 public class AppActivity extends AxmolActivity {
     static {
@@ -58,7 +62,26 @@ public class AppActivity extends AxmolActivity {
             getWindow().setAttributes(lp);
         }
         // DO OTHER INITIALIZATION BELOW
-        
+        registerBackCallback();
+    }
+
+    // From targetSdk 36 Android uses predictive back: KEYCODE_BACK is no longer delivered and
+    // the activity just finishes. Forward back to the engine as KEY_BACK so each layer's
+    // keyBackClicked() runs again (StartMenu shows the exit dialog).
+    private void registerBackCallback() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+            return;
+        getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+            OnBackInvokedDispatcher.PRIORITY_DEFAULT, new OnBackInvokedCallback() {
+                @Override
+                public void onBackInvoked() {
+                    AxmolGLSurfaceView view = getGLSurfaceView();
+                    if (view == null)
+                        return;
+                    view.onKeyDown(KeyEvent.KEYCODE_BACK, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+                    view.onKeyUp(KeyEvent.KEYCODE_BACK, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
+                }
+            });
     }
 
 }
