@@ -107,13 +107,15 @@ void startMatch()
     select->_selectHero = chosen.c_str();
     const char* hc = getenv("NS_AUTOPLAY_HARDCORE");
     select->_isHardCoreMode = hc && *hc && strcmp(hc, "0") != 0;
+    if (const char* map = getenv("NS_AUTOPLAY_MAP"))  // HardCore map, 0 = random
+        CCUserDefault::sharedUserDefault()->setIntegerForKey("hardcore.map", atoi(map));
     select->onGameStart(nullptr);
 }
 
 void report(GameLayer* game, bool playerWon)
 {
-    std::string line = CCString::createWithFormat("%02u:%02u winner=%s player=%s |", game->_minute, game->_second,
-                                                   playerWon ? "player" : "enemy",
+    std::string line = CCString::createWithFormat("%02u:%02u map=%d winner=%s player=%s |", game->_minute,
+                                                   game->_second, game->randomMap + 1, playerWon ? "player" : "enemy",
                                                    game->currentPlayer->getCharacter()->getCString())
                            ->getCString();
     CCObject* obj;

@@ -43,11 +43,6 @@ extern int Cheats;
 
 //tile map
 
-#define S_MAP01	"Tiles/1.tmx"
-#define S_MAP02	"Tiles/2.tmx"
-#define S_MAP03	"Tiles/3.tmx"
-#define S_MAP04	"Tiles/4.tmx"
-#define S_MAP05 "Tiles/5.tmx"
 
 // game layer tag
 #define currentMapTag		-5000

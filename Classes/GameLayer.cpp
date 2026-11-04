@@ -1,4 +1,5 @@
 #include "GameLayer.h"
+#include "Maps.h"
 #include "Characters.h"
 #include "BGLayer.h"
 #include "HudLayer.h"
@@ -104,27 +105,16 @@ void GameLayer::initTileMap(){
 	//随机地图
 	
 
+	// randomMap is the 0-based map index (map 1 = Training); see Maps.h
 	if(_isHardCoreGame){
-		randomMap=randInt(4)+1;
+		// map picked on the HardCore select screen, or 0 for any of them
+		int pick=CCUserDefault::sharedUserDefault()->getIntegerForKey("hardcore.map",0);
+		randomMap=(pick>=1 && pick<=maps::count()) ? pick-1 : randInt(maps::count());
 	}else {
 		randomMap=0;
 	}
-	
-	const char* filePath;
-	if (randomMap==0){
-		filePath=S_MAP01;
-	}else if(randomMap==1){
-		filePath=S_MAP02;
-	}else if(randomMap==2){
-		filePath=S_MAP03;
-	}else if(randomMap==3){
-		filePath=S_MAP04;
-	}else if(randomMap==4){
-		filePath=S_MAP05;
-	}
 
-
-	currentMap=CCTMXTiledMap::create(filePath);
+	currentMap=CCTMXTiledMap::create(maps::tmx(randomMap+1).c_str());
 
 	this->addChild(currentMap,currentMapTag);
 
@@ -520,17 +510,7 @@ void GameLayer::addFlog(float dt){
 void GameLayer::initTower(){
 
 
-	if (randomMap==0) {
-		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Tower/Tower.plist");
-	}else if(randomMap==1){
-		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Tower/Tower2.plist");
-	}else if(randomMap==2){
-		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Tower/Tower3.plist");
-	}else if(randomMap==3){
-		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Tower/Tower4.plist");
-	}else if(randomMap==4){
-		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Tower/Tower5.plist");
-	}
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(maps::towerSheet(randomMap+1));
 
 
 
@@ -920,17 +900,7 @@ void GameLayer::onLeft(){
 
 	//清除地图缓存
 
-	if(randomMap==0) {
-		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Tower/Tower.plist");	
-	}else if(randomMap==1){
-		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Tower/Tower2.plist");
-	}else if (randomMap==2){
-		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Tower/Tower3.plist");
-	}else if (randomMap==3){
-		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Tower/Tower4.plist");
-	}else if (randomMap==4){
-		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Tower/Tower5.plist");
-	}
+	CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile(maps::towerSheet(randomMap+1));
 
 	KTools* tool=KTools::create();
 	
@@ -1033,13 +1003,13 @@ void GameLayer::checkBackgroundMusic(float dt){
 				SimpleAudioEngine::sharedEngine()->playBackgroundMusic("Audio/Music/Battle1.mp3");
 			}else{
 				if(_playNum==0){
-					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(CCString::createWithFormat("Audio/Music/Battle%d.mp3",int(2+randomMap*3))->getCString(),false);
+					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(maps::music(randomMap+1,2).c_str(),false);
 					_playNum++;
 				}else if(_playNum==1){
-					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(CCString::createWithFormat("Audio/Music/Battle%d.mp3",int(3+randomMap*3))->getCString(),false);
+					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(maps::music(randomMap+1,3).c_str(),false);
 					_playNum++;
 				}else if(_playNum==2){
-					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(CCString::createWithFormat("Audio/Music/Battle%d.mp3",int(1+randomMap*3))->getCString(),false);
+					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(maps::music(randomMap+1,1).c_str(),false);
 					_playNum=0;
 				}
 			}

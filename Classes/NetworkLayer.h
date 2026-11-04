@@ -59,6 +59,11 @@ public:
 	CC_SYNTHESIZE_RETAIN(CCSprite*,_heroName,HeroName);
 	CC_SYNTHESIZE_RETAIN(CCSprite*,_selectImg,SelectImg);
 
+	// HardCore map pick: 0 = random, n = Tiles/<n>.tmx (see Maps.h; stored in UserDefault "hardcore.map")
+	int _mapChoice;
+	CCSprite* _mapThumb;
+	CCLabelBMFont* _mapLabel;
+
 	virtual void keyBackClicked();
 
 private:
@@ -67,6 +72,9 @@ private:
 	void	onGameStart(CCObject* sender);
 	void    onSkillMenu(CCObject* sender);
 	void	onBackToMenu(CCObject* sender);
+	void	onMapPrev(CCObject* sender);
+	void	onMapNext(CCObject* sender);
+	void	showMapChoice();
 	
 };
 
