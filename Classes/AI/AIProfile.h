@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 
-// Per-hero AI data, loaded from Resources/AI/profiles.json.
+// Per-hero AI data, written in C++ in ProfilesData.cpp (compiled in, so it cannot be
+// changed by editing the APK).
 //
 // A hero's combat is an ordered list of skill rules. Each tick the first rule
 // whose slot is ready and whose conditions hold wins: the bot casts it when the
@@ -86,7 +87,16 @@ struct Profile
     std::vector<SkillRule> farm;  // vs creeps/towers
 };
 
+// The hero's own profile, or nullptr when it has none
 const Profile* findProfile(const std::string& hero);
+// Profile for a hero without its own (e.g. a modded hero); nullptr for heroes that
+// keep their old built-in routine (the HardCore guardians)
+const Profile* defaultProfile(const std::string& hero);
 const char* roleName(HeroRole role);
+
+// Defined in ProfilesData.cpp
+std::map<std::string, Profile> builtinProfiles();
+Profile builtinDefaultProfile();
+bool usesLegacyAI(const std::string& hero);
 
 }  // namespace ai

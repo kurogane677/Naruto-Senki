@@ -355,7 +355,7 @@ Naruto Senki/
 │  ├─ Compat/                # ★ lapisan kompatibilitas 2.x → Axmol (Compat2x.h/.cpp)
 │  ├─ ActionManager.*        # base class semua unit (state machine, damage, buff, AI helper)
 │  ├─ Characters.*           # Hero + AI summon/clone/guardian
-│  ├─ AI/                    # AI bot: AIController, TeamBrain, profil, build gear (lihat bagian AI bot)
+│  ├─ AI/                    # AI bot: AIController, TeamBrain, profil (ProfilesData.cpp), build gear (lihat bagian AI bot)
 │  ├─ AutoPlay.*             # mode uji AI-vs-AI (NS_AUTOPLAY=1)
 │  ├─ Element.*              # HeroElement, Flog (creep), Tower, Monster, Bullet
 │  ├─ GameLayer.*            # dunia game, spawn, kamera, kondisi menang
@@ -364,7 +364,6 @@ Naruto Senki/
 │  ├─ GameOver.*, PauseLayer.*, GearLayer.*, SkillLayer.*, RankingLayer.*
 │  └─ MyUtils/               # KTools (SQLite/XML), MD5, sqlite3, tinyxml2, util UI
 ├─ Resources/                # aset (sprite plist/pvr, audio mp3/ogg, peta .tmx, data XML)
-│  └─ AI/profiles.json       # profil AI per hero: role, build gear, aturan skill
 ├─ proj.win32/               # entry point Windows + CrashHandler
 ├─ proj.android/             # proyek Gradle Android dari template Axmol (lihat Build APK Android)
 │  └─ app/src/net/zakume/game/DialogUtils.java   # dialog Exit yang dipanggil lewat JNI
@@ -415,7 +414,7 @@ AI hero ditulis ulang menjadi **data-driven** (`Classes/AI/`). Sebelumnya ada se
 
 | Bagian | Isi |
 |---|---|
-| `Resources/AI/profiles.json` | Profil per hero: **role**, **build gear**, dan **aturan skill** (urutan prioritas, jarak cast, syarat). Format lengkap ada di komentar file |
+| `ProfilesData.cpp` | Profil per hero dalam C++ (gaya builder): **role**, **build gear**, dan **aturan skill**, misalnya `rule(Slot::Skill2).range(128, 32).minRange(64).when("invisible", "gp")`. Format lengkap ada di komentar kepala file. Profil ikut terkompilasi, jadi perilaku bot **tidak** bisa diubah lewat APK. Hero tanpa profil (mis. hero mod) memakai `builtinDefaultProfile()`; Guardian (`usesLegacyAI`) tetap memakai AI lamanya |
 | `AIController` | Otak tiap bot: memilih target → bertahan (substitution, potion, mundur sampai pulih) → menghindar ougis → membela base/tower → bertarung → farm creep/tower → maju |
 | `TeamBrain` | Info satu tim: target fokus (HP terendah), musuh yang memukul tower kita, momen push saat ≥2 hero musuh mati, kalah jumlah |
 | `AITuning.h` | Satu set parameter untuk semua bot, kawan dan lawan (dulu level "Hard"): jeda reaksi, peluang memakai skill, ambang potion/mundur, peluang menghindar, combo, fokus target |
