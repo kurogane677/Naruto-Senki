@@ -6,8 +6,8 @@ namespace ai
 const Profile* findProfile(const std::string& hero)
 {
     static const std::map<std::string, Profile> profiles = builtinProfiles();
-    auto it = profiles.find(hero);
-    return it == profiles.end() ? nullptr : &it->second;
+    auto found = profiles.find(hero);
+    return found == profiles.end() ? nullptr : &found->second;
 }
 
 const Profile* defaultProfile(const std::string& hero)

@@ -54,20 +54,20 @@ public:
         _rule.on = kind;
         return *this;
     }
-    RuleBuilder& range(int x, int y)
+    RuleBuilder& range(int rangeX, int rangeY)
     {
-        _rule.rangeX = x;
-        _rule.rangeY = y;
+        _rule.rangeX = rangeX;
+        _rule.rangeY = rangeY;
         return *this;
     }
-    RuleBuilder& gate(int x)
+    RuleBuilder& gate(int distance)
     {
-        _rule.gate = x;
+        _rule.gate = distance;
         return *this;
     }
-    RuleBuilder& minRange(int x)
+    RuleBuilder& minRange(int distance)
     {
-        _rule.minRange = x;
+        _rule.minRange = distance;
         return *this;
     }
     RuleBuilder& noApproach()
@@ -91,16 +91,16 @@ public:
     {
         for (const char* text : {names...})
         {
-            std::string s = text;
-            Cond c;
-            auto colon = s.find(':');
-            c.name = s.substr(0, colon);
-            if (colon != std::string::npos)
+            std::string condition = text;
+            Cond cond;
+            auto separator = condition.find(':');
+            cond.name = condition.substr(0, separator);
+            if (separator != std::string::npos)
             {
-                c.arg = s.substr(colon + 1);
-                c.value = (float)atof(c.arg.c_str());
+                cond.arg = condition.substr(separator + 1);
+                cond.value = (float)atof(cond.arg.c_str());
             }
-            _rule.conds.push_back(c);
+            _rule.conds.push_back(cond);
         }
         return *this;
     }
@@ -125,19 +125,19 @@ RuleBuilder farm(Slot slot)
 std::map<std::string, Profile> builtinProfiles()
 {
     std::map<std::string, Profile> profiles;
-    auto add = [&](const char* name) -> Profile& {
-        Profile& p = profiles[name];
-        p.name = name;
-        return p;
+    auto addProfile = [&](const char* name) -> Profile& {
+        Profile& profile = profiles[name];
+        profile.name = name;
+        return profile;
     };
 
     {
-        Profile& p = add("Naruto");
-        p.nattackX = 40;
-        p.nattackY = 32;
-        p.panicGear06 = false;
-        p.builds["default"] = {3, 7, 2};
-        p.hero = {
+        Profile& profile = addProfile("Naruto");
+        profile.nattackX = 40;
+        profile.nattackY = 32;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {3, 7, 2};
+        profile.hero = {
             rule(Slot::Ougis2).range(999, 999).noApproach().when("selfNotBati"),
             rule(Slot::Skill2).range(999, 999).noApproach().when("selfNotBati"),
             rule(Slot::Ougis1).range(96, 32).gate(128).minRange(32).when("gp"),
@@ -145,18 +145,18 @@ std::map<std::string, Profile> builtinProfiles()
             rule(Slot::Skill3).range(96, 32).gate(128).minRange(32).when("gp"),
             rule(Slot::Skill1).range(96, 32).gate(128).minRange(32).when("gp"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2).on(TargetKind::AnyFarm),
         };
     }
 
     {
-        Profile& p = add("SageNaruto");
-        p.nattackX = 40;
-        p.nattackY = 32;
-        p.panicGear06 = false;
-        p.builds["default"] = {3, 7, 2};
-        p.hero = {
+        Profile& profile = addProfile("SageNaruto");
+        profile.nattackX = 40;
+        profile.nattackY = 32;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {3, 7, 2};
+        profile.hero = {
             rule(Slot::Ougis2).range(999, 999).noApproach(),
             rule(Slot::Skill2).range(999, 999).noApproach(),
             rule(Slot::Skill3).range(999, 999).noApproach().when("gp"),
@@ -164,16 +164,16 @@ std::map<std::string, Profile> builtinProfiles()
             rule(Slot::Gear03).range(96, 32).gate(128),
             rule(Slot::Skill1).range(96, 32).gate(128).minRange(32),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2).on(TargetKind::AnyFarm),
         };
     }
 
     {
-        Profile& p = add("RikudoNaruto");
-        p.panicGear06 = false;
-        p.builds["default"] = {3, 7, 2};
-        p.hero = {
+        Profile& profile = addProfile("RikudoNaruto");
+        profile.panicGear06 = false;
+        profile.builds["default"] = {3, 7, 2};
+        profile.hero = {
             rule(Slot::Ougis2).range(999, 999).noApproach(),
             rule(Slot::Skill2).range(999, 999).noApproach(),
             rule(Slot::Skill3).range(999, 999).noApproach(),
@@ -181,53 +181,53 @@ std::map<std::string, Profile> builtinProfiles()
             rule(Slot::Gear03).range(999, 999).noApproach(),
             rule(Slot::Ougis1).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
             farm(Slot::Skill2).on(TargetKind::AnyFarm),
         };
     }
 
     {
-        Profile& p = add("Asuma");
-        p.builds["default"] = {6, 5, 2};
-        p.hero = {
+        Profile& profile = addProfile("Asuma");
+        profile.builds["default"] = {6, 5, 2};
+        profile.hero = {
             rule(Slot::Ougis1).range(999, 999).noApproach().when("gp"),
             rule(Slot::Skill3).range(96, 32).when("gp"),
             rule(Slot::Skill2).range(96, 32).when("gp"),
             rule(Slot::Ougis2).range(96, 32).gate(128).when("gp", "tNotBati"),
             rule(Slot::Skill1).range(96, 32).gate(128).when("gp"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2).when("baseDanger"),
             farm(Slot::Skill1),
         };
     }
 
     {
-        Profile& p = add("Kakashi");
-        p.role = HeroRole::Assassin;
-        p.builds["default"] = {6, 5, 2};
-        p.hero = {
+        Profile& profile = addProfile("Kakashi");
+        profile.role = HeroRole::Assassin;
+        profile.builds["default"] = {6, 5, 2};
+        profile.hero = {
             rule(Slot::Skill3).range(999, 999).noApproach(),
             rule(Slot::Skill2).range(999, 999).noApproach().when("gp"),
             rule(Slot::Ougis2).range(64, 32).gate(128).when("gp", "tNotBati", "tNotDown", "tNotSticking"),
             rule(Slot::Ougis1).range(64, 32).gate(128),
             rule(Slot::Skill1).range(64, 32).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill3),
             farm(Slot::Skill1),
         };
     }
 
     {
-        Profile& p = add("Konan");
-        p.role = HeroRole::Ranged;
-        p.nattackX = 48;
-        p.nattackY = 32;
-        p.panicGear06 = false;
-        p.builds["default"] = {3, 5, 2};
-        p.hero = {
+        Profile& profile = addProfile("Konan");
+        profile.role = HeroRole::Ranged;
+        profile.nattackX = 48;
+        profile.nattackY = 32;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {3, 5, 2};
+        profile.hero = {
             rule(Slot::Skill1).range(999, 999).noApproach(),
             rule(Slot::Ougis2).range(48, 16).when("gp", "tNotBati", "tNotDown", "tNotSticking", "selfNotBati"),
             rule(Slot::Skill3).range(128, 16).minRange(96).when("invisible", "gp", "tNotDown"),
@@ -237,7 +237,7 @@ std::map<std::string, Profile> builtinProfiles()
             rule(Slot::Skill2).range(48, 32).gate(128).minRange(32),
             rule(Slot::Gear03).range(48, 32).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Gear03).on(TargetKind::AnyFarm),
             farm(Slot::Ougis1).when("baseDanger"),
             farm(Slot::Skill2).when("baseDanger"),
@@ -245,12 +245,12 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& p = add("Kurenai");
-        p.nattackX = 40;
-        p.nattackY = 32;
-        p.panicGear06 = false;
-        p.builds["default"] = {3, 7, 2};
-        p.hero = {
+        Profile& profile = addProfile("Kurenai");
+        profile.nattackX = 40;
+        profile.nattackY = 32;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {3, 7, 2};
+        profile.hero = {
             rule(Slot::Skill1).range(999, 999).noApproach(),
             rule(Slot::Skill2).range(128, 32).minRange(64).when("invisible", "gp", "tNotDown"),
             rule(Slot::Ougis2).range(96, 32).gate(128).when("gp", "tNotBati", "tNotDown", "tNotSticking", "selfNotBati"),
@@ -259,20 +259,20 @@ std::map<std::string, Profile> builtinProfiles()
             rule(Slot::Skill3).gate(128).when("gp"),
             rule(Slot::Skill2).range(64, 32).gate(128).minRange(32).when("gp"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Gear03).on(TargetKind::AnyFarm),
             farm(Slot::Skill3).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Deidara");
-        p.role = HeroRole::Pusher;
-        p.subRoles = {"ranged"};
-        p.baseCheck = false;
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 1, 5};
-        p.hero = {
+        Profile& profile = addProfile("Deidara");
+        profile.role = HeroRole::Pusher;
+        profile.subRoles = {"ranged"};
+        profile.baseCheck = false;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 1, 5};
+        profile.hero = {
             rule(Slot::Ougis2).range(48, 16).speedGear().when("selfNotBati"),
             rule(Slot::Ougis1).range(999, 999).noApproach(),
             rule(Slot::Skill3).range(64, 16).speedGear(),
@@ -280,7 +280,7 @@ std::map<std::string, Profile> builtinProfiles()
             rule(Slot::Skill1).range(999, 999).gate(999).noApproach(),
             rule(Slot::NAttack).range(8, 8).gate(128).when("selfBati"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Ougis2).on(TargetKind::Tower).when("baseDanger"),
             farm(Slot::Skill1).on(TargetKind::Tower),
             farm(Slot::Skill2).on(TargetKind::AnyFarm),
@@ -288,27 +288,27 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& p = add("Ino");
-        p.role = HeroRole::Support;
-        p.idleWhenBuff = true;
-        p.builds["default"] = {6, 5, 1};
-        p.hero = {
+        Profile& profile = addProfile("Ino");
+        profile.role = HeroRole::Support;
+        profile.idleWhenBuff = true;
+        profile.builds["default"] = {6, 5, 1};
+        profile.hero = {
             rule(Slot::Ougis2).range(96, 16),
             rule(Slot::Skill2).range(96, 16).when("gp"),
             rule(Slot::Skill3).range(96, 16).when("gp"),
             rule(Slot::Ougis1).gate(128).when("gp"),
             rule(Slot::Skill1).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
         };
     }
 
     {
-        Profile& p = add("Sai");
-        p.role = HeroRole::Ranged;
-        p.builds["default"] = {6, 5, 1};
-        p.hero = {
+        Profile& profile = addProfile("Sai");
+        profile.role = HeroRole::Ranged;
+        profile.builds["default"] = {6, 5, 1};
+        profile.hero = {
             rule(Slot::Ougis2).range(48, 16).when("gp", "tNotBati", "tNotDown", "tNotSticking", "selfNotBati"),
             rule(Slot::Skill3).range(64, 16),
             rule(Slot::Skill2).range(999, 999).noApproach(),
@@ -316,29 +316,29 @@ std::map<std::string, Profile> builtinProfiles()
             rule(Slot::Skill1).range(999, 999).gate(999).noApproach(),
             rule(Slot::NAttack).range(8, 8).gate(128).when("selfBati"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
             farm(Slot::Skill2).when("baseDanger", "gp"),
         };
     }
 
     {
-        Profile& p = add("Sakura");
-        p.role = HeroRole::Support;
-        p.subRoles = {"healer", "pusher"};
-        p.baseCheck = false;
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 4, 8};
-        p.builds["push"] = {4, 8, 0};
-        p.builds["sustain"] = {7, 8, 1};
-        p.hero = {
+        Profile& profile = addProfile("Sakura");
+        profile.role = HeroRole::Support;
+        profile.subRoles = {"healer", "pusher"};
+        profile.baseCheck = false;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 4, 8};
+        profile.builds["push"] = {4, 8, 0};
+        profile.builds["sustain"] = {7, 8, 1};
+        profile.hero = {
             rule(Slot::Ougis2).range(48, 16).speedGear().when("gp", "tNotBati", "tNotDown", "tNotSticking", "notBuff"),
             rule(Slot::Ougis1).range(48, 16).speedGear().when("notBuff"),
             rule(Slot::Skill1).range(999, 999).gate(999).noApproach().self().when("hpBelow:0.9"),
             rule(Slot::Skill2).range(64, 32).gate(128).when("notBuff", "gp"),
             rule(Slot::Skill3).gate(128).when("notBuff", "hpAbove:0.5"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1).on(TargetKind::AnyFarm).self().when("hpBelow:0.9"),
             farm(Slot::Skill3).on(TargetKind::Tower).when("notBuff"),
             farm(Slot::Skill2),
@@ -346,18 +346,18 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& p = add("Tenten");
-        p.role = HeroRole::Ranged;
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 5, 2};
-        p.hero = {
+        Profile& profile = addProfile("Tenten");
+        profile.role = HeroRole::Ranged;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 5, 2};
+        profile.hero = {
             rule(Slot::Skill1).range(999, 999).noApproach(),
             rule(Slot::Ougis2).range(48, 16).speedGear().when("notBuff", "gp"),
             rule(Slot::Ougis1).range(48, 16).speedGear().when("tNotBati", "notBuff"),
             rule(Slot::Skill2).range(96, 16).gate(128).when("gp"),
             rule(Slot::Skill3).range(96, 16).gate(128).when("gp"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
             farm(Slot::Skill3),
             farm(Slot::Skill2).when("baseDanger"),
@@ -365,19 +365,19 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& p = add("Itachi");
-        p.role = HeroRole::Assassin;
-        p.nattackX = 56;
-        p.nattackY = 32;
-        p.builds["default"] = {6, 2, 5};
-        p.hero = {
+        Profile& profile = addProfile("Itachi");
+        profile.role = HeroRole::Assassin;
+        profile.nattackX = 56;
+        profile.nattackY = 32;
+        profile.builds["default"] = {6, 2, 5};
+        profile.hero = {
             rule(Slot::Ougis2).range(48, 32).when("selfNotBati"),
             rule(Slot::Ougis1).range(999, 999).noApproach().when("gp", "tNotBati", "tNotDown", "tNotSticking", "selfNotBati"),
             rule(Slot::Skill3).range(56, 32).gate(128).when("selfNotBati", "gp"),
             rule(Slot::Skill2).range(56, 32).gate(128).when("selfNotBati", "gp"),
             rule(Slot::Skill1).range(56, 32).gate(128).when("selfNotBati", "gp"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill3).when("baseDanger"),
             farm(Slot::Skill2).when("baseDanger"),
             farm(Slot::Skill1),
@@ -385,63 +385,63 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& p = add("Jiraiya");
-        p.role = HeroRole::Ranged;
-        p.builds["default"] = {6, 1, 2};
-        p.hero = {
+        Profile& profile = addProfile("Jiraiya");
+        profile.role = HeroRole::Ranged;
+        profile.builds["default"] = {6, 1, 2};
+        profile.hero = {
             rule(Slot::Ougis2).range(999, 999).noApproach(),
             rule(Slot::Skill2).range(999, 999).noApproach().when("gp"),
             rule(Slot::Ougis1).gate(128),
             rule(Slot::Skill3).gate(128),
             rule(Slot::Skill1).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill3).when("baseDanger"),
             farm(Slot::Skill1),
         };
     }
 
     {
-        Profile& p = add("SageJiraiya");
-        p.role = HeroRole::Ranged;
-        p.builds["default"] = {6, 1, 2};
-        p.hero = {
+        Profile& profile = addProfile("SageJiraiya");
+        profile.role = HeroRole::Ranged;
+        profile.builds["default"] = {6, 1, 2};
+        profile.hero = {
             rule(Slot::Skill2).range(999, 999).noApproach().when("gp"),
             rule(Slot::Ougis2).range(96, 32).gate(128).when("gp"),
             rule(Slot::Ougis1).gate(128),
             rule(Slot::Skill3).gate(128),
             rule(Slot::Skill1).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill3).when("baseDanger"),
             farm(Slot::Skill1),
         };
     }
 
     {
-        Profile& p = add("Suigetsu");
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 5, 1};
-        p.hero = {
+        Profile& profile = addProfile("Suigetsu");
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 5, 1};
+        profile.hero = {
             rule(Slot::Ougis2).range(48, 16).speedGear().when("gp", "tNotBati", "tNotDown", "tNotSticking", "selfNotBati"),
             rule(Slot::Ougis1).range(48, 16).speedGear().when("selfNotBati"),
             rule(Slot::Skill3).range(999, 999).noApproach().when("gp", "selfNotBati", "notBuff"),
             rule(Slot::Skill2).range(96, 32).gate(128),
             rule(Slot::Skill1).range(96, 32).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
             farm(Slot::Skill2).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Tsunade");
-        p.role = HeroRole::Tank;
-        p.subRoles = {"healer"};
-        p.panicGear06 = false;
-        p.builds["default"] = {3, 2, 4};
-        p.hero = {
+        Profile& profile = addProfile("Tsunade");
+        profile.role = HeroRole::Tank;
+        profile.subRoles = {"healer"};
+        profile.panicGear06 = false;
+        profile.builds["default"] = {3, 2, 4};
+        profile.hero = {
             rule(Slot::Ougis2).range(64, 16).when("gp", "selfNotBati"),
             rule(Slot::Skill3).range(999, 999).noApproach().when("gp", "selfNotBati"),
             rule(Slot::Gear03).range(64, 32).gate(128),
@@ -449,24 +449,24 @@ std::map<std::string, Profile> builtinProfiles()
             rule(Slot::Skill2).range(64, 32).gate(128),
             rule(Slot::Skill1).range(64, 32).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Gear03).on(TargetKind::AnyFarm),
             farm(Slot::Skill1).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Sasuke");
-        p.role = HeroRole::Assassin;
-        p.builds["default"] = {6, 1, 2};
-        p.hero = {
+        Profile& profile = addProfile("Sasuke");
+        profile.role = HeroRole::Assassin;
+        profile.builds["default"] = {6, 1, 2};
+        profile.hero = {
             rule(Slot::Ougis2).range(999, 999).noApproach().when("selfNotBati"),
             rule(Slot::Skill3).range(999, 999).gate(999).noApproach().when("notTaunt", "selfNotBati"),
             rule(Slot::Ougis1).range(96, 32).gate(128),
             rule(Slot::Skill2).range(96, 32).gate(128),
             rule(Slot::Skill1).range(96, 32).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
             farm(Slot::Skill2).when("baseDanger"),
             farm(Slot::Skill3),
@@ -474,34 +474,34 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& p = add("ImmortalSasuke");
-        p.role = HeroRole::Assassin;
-        p.builds["default"] = {6, 1, 2};
-        p.hero = {
+        Profile& profile = addProfile("ImmortalSasuke");
+        profile.role = HeroRole::Assassin;
+        profile.builds["default"] = {6, 1, 2};
+        profile.hero = {
             rule(Slot::Ougis1).range(999, 999).noApproach(),
             rule(Slot::Ougis2).range(48, 32),
             rule(Slot::Skill3).range(999, 999).gate(999).noApproach().when("notTaunt"),
             rule(Slot::Skill2).range(96, 32).gate(128),
             rule(Slot::Skill1).range(96, 32).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
             farm(Slot::Skill2).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Kankuro");
-        p.role = HeroRole::Summoner;
-        p.retreatGap = 5000;
-        p.builds["default"] = {6, 4, 8};
-        p.hero = {
+        Profile& profile = addProfile("Kankuro");
+        profile.role = HeroRole::Summoner;
+        profile.retreatGap = 5000;
+        profile.builds["default"] = {6, 4, 8};
+        profile.hero = {
             rule(Slot::Skill3).range(999, 999).noApproach(),
             rule(Slot::Skill1).range(999, 999).noApproach().self().when("noMonster:Karasu"),
             rule(Slot::Ougis1).range(999, 999).noApproach().self().when("noMonster:Sanshouuo"),
             rule(Slot::Ougis2).range(999, 999).noApproach().self().when("noMonster:Saso"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Ougis1).on(TargetKind::AnyFarm).self().when("noMonster:Sanshouuo"),
             farm(Slot::Ougis2).on(TargetKind::AnyFarm).self().when("noMonster:Saso"),
             farm(Slot::Skill1).on(TargetKind::AnyFarm).self().when("noMonster:Karasu"),
@@ -509,105 +509,105 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& p = add("Chiyo");
-        p.role = HeroRole::Support;
-        p.subRoles = {"summoner"};
-        p.retreatGap = 5000;
-        p.builds["default"] = {6, 7, 4};
-        p.hero = {
+        Profile& profile = addProfile("Chiyo");
+        profile.role = HeroRole::Support;
+        profile.subRoles = {"summoner"};
+        profile.retreatGap = 5000;
+        profile.builds["default"] = {6, 7, 4};
+        profile.hero = {
             rule(Slot::Ougis1).range(999, 999).noApproach().self().when("noBuffTime", "allyNear"),
             rule(Slot::Ougis2).range(96, 32).minRange(48).when("gp", "tNotBati", "tNotDown", "tNotSticking"),
             rule(Slot::Skill1).range(999, 999).noApproach().self().when("noMonster:Parents"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1).on(TargetKind::AnyFarm).self().when("noMonster:Parents"),
         };
     }
 
     {
-        Profile& p = add("Kakuzu");
-        p.role = HeroRole::Tank;
-        p.retreatGap = 5000;
-        p.panicGear06 = false;
-        p.hook = "kakuzu";
-        p.builds["default"] = {3, 8, 4};
-        p.hero = {
+        Profile& profile = addProfile("Kakuzu");
+        profile.role = HeroRole::Tank;
+        profile.retreatGap = 5000;
+        profile.panicGear06 = false;
+        profile.hook = "kakuzu";
+        profile.builds["default"] = {3, 8, 4};
+        profile.hero = {
             rule(Slot::Skill3).range(999, 999).noApproach(),
             rule(Slot::Ougis1).range(999, 999).noApproach().self().when("summonable"),
             rule(Slot::Skill2).range(96, 32),
             rule(Slot::Gear03).range(96, 32),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Ougis1).on(TargetKind::AnyFarm).self().when("summonable"),
         };
     }
 
     {
-        Profile& p = add("Shikamaru");
-        p.role = HeroRole::Support;
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 7, 8};
-        p.hero = {
+        Profile& profile = addProfile("Shikamaru");
+        profile.role = HeroRole::Support;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 7, 8};
+        profile.hero = {
             rule(Slot::Ougis2).range(999, 999).noApproach().when("tNotBati", "tNotSticking"),
             rule(Slot::Skill2).range(999, 999).noApproach().when("gp"),
             rule(Slot::Ougis1).range(48, 32).speedGear(),
             rule(Slot::Skill1).range(999, 999).gate(999).noApproach().when("lv:2"),
             rule(Slot::Skill3).range(156, 32).gate(999).minRange(32).speedGear().when("tNotBati", "tNotSticking"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Gaara");
-        p.role = HeroRole::Tank;
-        p.subRoles = {"ranged"};
-        p.builds["default"] = {6, 2, 5};
-        p.hero = {
+        Profile& profile = addProfile("Gaara");
+        profile.role = HeroRole::Tank;
+        profile.subRoles = {"ranged"};
+        profile.builds["default"] = {6, 2, 5};
+        profile.hero = {
             rule(Slot::Ougis2).range(999, 999).noApproach().when("selfNotBati", "gp"),
             rule(Slot::Ougis1).range(999, 999).noApproach().when("selfNotBati", "gp"),
             rule(Slot::Skill3).range(999, 999).noApproach().when("selfNotBati", "gp"),
             rule(Slot::Skill2).range(999, 999).noApproach().when("selfNotBati", "gp"),
             rule(Slot::Skill1).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
         };
     }
 
     {
-        Profile& p = add("Tobirama");
-        p.nattackX = 48;
-        p.nattackY = 32;
-        p.builds["default"] = {6, 1, 7};
-        p.hero = {
+        Profile& profile = addProfile("Tobirama");
+        profile.nattackX = 48;
+        profile.nattackY = 32;
+        profile.builds["default"] = {6, 1, 7};
+        profile.hero = {
             rule(Slot::Ougis2).range(999, 999).noApproach().when("gp"),
             rule(Slot::Skill1).range(999, 999).noApproach().when("tNotBati", "tIdle"),
             rule(Slot::Skill2).range(64, 16),
             rule(Slot::Ougis1).range(48, 32).gate(128),
             rule(Slot::Skill3).range(48, 32).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill3).when("baseDanger"),
             farm(Slot::Skill2).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Choji");
-        p.role = HeroRole::Tank;
-        p.subRoles = {"pusher"};
-        p.builds["default"] = {6, 1, 4};
-        p.builds["sustain"] = {8, 6, 7};
-        p.hero = {
+        Profile& profile = addProfile("Choji");
+        profile.role = HeroRole::Tank;
+        profile.subRoles = {"pusher"};
+        profile.builds["default"] = {6, 1, 4};
+        profile.builds["sustain"] = {8, 6, 7};
+        profile.hero = {
             rule(Slot::Skill1).range(999, 999).noApproach().when("selfNotBati"),
             rule(Slot::Skill3).range(96, 16),
             rule(Slot::Ougis1).gate(128),
             rule(Slot::Skill2).gate(128).when("skillUP"),
             rule(Slot::Ougis2).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2),
             farm(Slot::Ougis1).when("baseDanger"),
             farm(Slot::Ougis2).on(TargetKind::Tower),
@@ -615,123 +615,123 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& p = add("Karin");
-        p.role = HeroRole::Support;
-        p.subRoles = {"healer"};
-        p.builds["default"] = {6, 1, 7};
-        p.hero = {
+        Profile& profile = addProfile("Karin");
+        profile.role = HeroRole::Support;
+        profile.subRoles = {"healer"};
+        profile.builds["default"] = {6, 1, 7};
+        profile.hero = {
             rule(Slot::Ougis2).range(96, 16).when("gp", "tNotBati", "tNotDown", "tNotSticking"),
             rule(Slot::Ougis1).range(999, 999).noApproach().self().when("hpBelow:0.9", "noBuffTime", "notHealing"),
             rule(Slot::Skill3).range(128, 16).when("gp"),
             rule(Slot::Skill2).range(96, 32).gate(128),
             rule(Slot::Skill1).range(96, 32).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
             farm(Slot::Skill2).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Lee");
-        p.role = HeroRole::Assassin;
-        p.nattackX = 48;
-        p.nattackY = 32;
-        p.builds["default"] = {6, 7, 2};
-        p.hero = {
+        Profile& profile = addProfile("Lee");
+        profile.role = HeroRole::Assassin;
+        profile.nattackX = 48;
+        profile.nattackY = 32;
+        profile.builds["default"] = {6, 7, 2};
+        profile.hero = {
             rule(Slot::Skill1).range(999, 999).gate(128).noApproach().when("bamenBelow:5"),
             rule(Slot::Ougis1).range(48, 32).gate(128).when("gp", "tNotBati", "tNotDown", "tNotSticking", "bamenAtLeast:1"),
             rule(Slot::Skill2).range(48, 32).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2),
         };
     }
 
     {
-        Profile& p = add("RockLee");
-        p.role = HeroRole::Assassin;
-        p.nattackX = 46;
-        p.nattackY = 32;
-        p.builds["default"] = {6, 7, 2};
-        p.hero = {
+        Profile& profile = addProfile("RockLee");
+        profile.role = HeroRole::Assassin;
+        profile.nattackX = 46;
+        profile.nattackY = 32;
+        profile.builds["default"] = {6, 7, 2};
+        profile.hero = {
             rule(Slot::Skill1).range(999, 999).noApproach().when("bamenBelow:5"),
             rule(Slot::Ougis2).range(999, 999).noApproach().when("gp", "tNotBati", "tNotDown", "tNotSticking", "bamenAtLeast:3"),
             rule(Slot::Ougis1).range(46, 32).gate(128).when("gp", "tNotBati", "tNotDown", "tNotSticking", "bamenAtLeast:1"),
             rule(Slot::Skill2).range(46, 32).gate(128),
             rule(Slot::Skill3).range(46, 32).gate(128).when("bamenAtLeast:3"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2),
             farm(Slot::Skill3).when("baseDanger", "bamenAtLeast:3"),
         };
     }
 
     {
-        Profile& p = add("Jugo");
-        p.role = HeroRole::Tank;
-        p.nattackX = 48;
-        p.nattackY = 32;
-        p.builds["default"] = {6, 1, 2};
-        p.hero = {
+        Profile& profile = addProfile("Jugo");
+        profile.role = HeroRole::Tank;
+        profile.nattackX = 48;
+        profile.nattackY = 32;
+        profile.builds["default"] = {6, 1, 2};
+        profile.hero = {
             rule(Slot::Skill3).range(999, 999).noApproach().when("gp", "notBuff"),
             rule(Slot::Ougis2).gate(128).when("gp", "tNotBati", "tNotDown", "tNotSticking", "notBuff"),
             rule(Slot::Ougis1).gate(128).when("notBuff"),
             rule(Slot::Skill2).range(96, 32).gate(128).when("notBuff"),
             rule(Slot::Skill1).range(96, 32).gate(128).when("notBuff"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1).when("notBuff"),
         };
     }
 
     {
-        Profile& p = add("Kisame");
-        p.role = HeroRole::Tank;
-        p.nattackX = 64;
-        p.nattackY = 32;
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 1, 5};
-        p.builds["sustain"] = {8, 1, 7};
-        p.hero = {
+        Profile& profile = addProfile("Kisame");
+        profile.role = HeroRole::Tank;
+        profile.nattackX = 64;
+        profile.nattackY = 32;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 1, 5};
+        profile.builds["sustain"] = {8, 1, 7};
+        profile.hero = {
             rule(Slot::Ougis2).range(48, 32).speedGear().when("gp", "tNotBati", "tNotDown", "tNotSticking", "notBuff"),
             rule(Slot::Ougis1).range(48, 32).speedGear().when("notBuff"),
             rule(Slot::Skill3).range(96, 32).gate(999).when("notBuff"),
             rule(Slot::Skill2).range(96, 32).gate(999).when("gp", "notBuff"),
             rule(Slot::Skill1).range(64, 32).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2).when("baseDanger"),
             farm(Slot::Skill1),
         };
     }
 
     {
-        Profile& p = add("Hidan");
-        p.nattackX = 48;
-        p.nattackY = 32;
-        p.hook = "hidan";
-        p.builds["default"] = {6, 1, 7};
-        p.hero = {
+        Profile& profile = addProfile("Hidan");
+        profile.nattackX = 48;
+        profile.nattackY = 32;
+        profile.hook = "hidan";
+        profile.builds["default"] = {6, 1, 7};
+        profile.hero = {
             rule(Slot::Skill1).range(48, 32).when("selfNotBati", "noMonster:CircleMark", "ougis2Ready"),
             rule(Slot::Ougis2).range(48, 32).when("selfNotBati"),
             rule(Slot::Skill2).range(56, 32).when("gp", "selfNotBati"),
             rule(Slot::Ougis1).range(48, 32).gate(128).when("gp", "selfNotBati"),
             rule(Slot::Skill3).range(48, 32).gate(128).when("selfNotBati"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill3).when("baseDanger"),
             farm(Slot::Skill2).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Tobi");
-        p.nattackX = 64;
-        p.nattackY = 32;
-        p.panicGear06 = false;
-        p.builds["default"] = {3, 2, 5};
-        p.hero = {
+        Profile& profile = addProfile("Tobi");
+        profile.nattackX = 64;
+        profile.nattackY = 32;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {3, 2, 5};
+        profile.hero = {
             rule(Slot::Ougis2).range(48, 16).when("gp", "tNotBati", "tNotDown", "tNotSticking"),
             rule(Slot::Ougis1).range(999, 999).noApproach().when("gp"),
             rule(Slot::Skill3).range(999, 999).noApproach().when("notBuff"),
@@ -740,7 +740,7 @@ std::map<std::string, Profile> builtinProfiles()
             rule(Slot::Skill1).range(64, 32).gate(128).when("gp"),
             rule(Slot::Gear03).gate(128),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2).when("baseDanger"),
             farm(Slot::Skill1),
             farm(Slot::Gear03).on(TargetKind::AnyFarm),
@@ -748,18 +748,18 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& p = add("Shino");
-        p.role = HeroRole::Ranged;
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 1, 2};
-        p.hero = {
+        Profile& profile = addProfile("Shino");
+        profile.role = HeroRole::Ranged;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 1, 2};
+        profile.hero = {
             rule(Slot::Ougis2).range(64, 16).speedGear().when("gp", "tNotBati", "tNotDown", "tNotSticking"),
             rule(Slot::Ougis1).range(64, 16).speedGear(),
             rule(Slot::Skill2).range(999, 999).noApproach().when("gp"),
             rule(Slot::Skill3).range(64, 16).speedGear().when("gp"),
             rule(Slot::Skill1).range(999, 999).gate(999).noApproach(),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill3).when("baseDanger"),
             farm(Slot::Skill2).when("baseDanger"),
             farm(Slot::Skill1),
@@ -767,134 +767,134 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& p = add("Hiruzen");
-        p.role = HeroRole::Ranged;
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 2, 8};
-        p.hero = {
+        Profile& profile = addProfile("Hiruzen");
+        profile.role = HeroRole::Ranged;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 2, 8};
+        profile.hero = {
             rule(Slot::Ougis2).range(96, 32).minRange(32).speedGear().when("selfNotBati", "tHpAbsBelow:10000", "tNoGear06"),
             rule(Slot::Ougis1).range(48, 16).speedGear().when("selfNotBati"),
             rule(Slot::Skill3).range(999, 999).noApproach().when("selfNotBati", "notBuff"),
             rule(Slot::Skill1).gate(128),
             rule(Slot::Skill2).range(96, 32).gate(128).minRange(32),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
             farm(Slot::Skill2).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Kiba");
-        p.role = HeroRole::Assassin;
-        p.baseCheck = false;
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 4, 8};
-        p.hero = {
+        Profile& profile = addProfile("Kiba");
+        profile.role = HeroRole::Assassin;
+        profile.baseCheck = false;
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 4, 8};
+        profile.hero = {
             rule(Slot::Ougis2).speedGear().when("gp", "tNotBati", "tNotDown", "tNotSticking", "notPowerUP"),
             rule(Slot::Ougis1).range(999, 999).noApproach().when("notPowerUP"),
             rule(Slot::Skill1).range(999, 999).noApproach().self().when("selfBati"),
             rule(Slot::Skill3).gate(128).when("notPowerUP", "selfNotBati", "hpAbove:0.5"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1).on(TargetKind::AnyFarm).self().when("selfBati"),
             farm(Slot::Skill3).on(TargetKind::Tower),
         };
     }
 
     {
-        Profile& p = add("Minato");
-        p.role = HeroRole::Assassin;
-        p.hook = "minato";
-        p.builds["default"] = {6, 5, 2};
-        p.hero = {
+        Profile& profile = addProfile("Minato");
+        profile.role = HeroRole::Assassin;
+        profile.hook = "minato";
+        profile.builds["default"] = {6, 5, 2};
+        profile.hero = {
             rule(Slot::Skill1).range(999, 999).noApproach().when("noMonster:HiraishinMark"),
             rule(Slot::Ougis2).range(64, 16).when("gp"),
             rule(Slot::Ougis1).range(64, 16),
             rule(Slot::Skill2).range(999, 16),
             rule(Slot::Skill3).range(999, 999).gate(999).noApproach(),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill3),
         };
     }
 
     {
-        Profile& p = add("Hinata");
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 1, 2};
-        p.hero = {
+        Profile& profile = addProfile("Hinata");
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 1, 2};
+        profile.hero = {
             rule(Slot::Ougis2).range(48, 32).speedGear().when("gp", "tNotBati", "tNotDown", "tNotSticking"),
             rule(Slot::Ougis1).range(48, 32).speedGear(),
             rule(Slot::Skill1).range(999, 999).noApproach(),
             rule(Slot::Skill2).range(48, 32).speedGear().when("skillUP", "gp"),
             rule(Slot::Skill3).range(48, 32).speedGear().when("skillUP", "gp"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2).when("baseDanger"),
             farm(Slot::Skill3).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Neji");
-        p.panicGear06 = false;
-        p.builds["default"] = {0, 1, 7};
-        p.hero = {
+        Profile& profile = addProfile("Neji");
+        profile.panicGear06 = false;
+        profile.builds["default"] = {0, 1, 7};
+        profile.hero = {
             rule(Slot::Ougis2).range(48, 32).speedGear().when("gp", "tNotBati", "tNotDown", "tNotSticking"),
             rule(Slot::Ougis1).range(48, 32).speedGear(),
             rule(Slot::Skill1).range(999, 999).gate(999).noApproach(),
             rule(Slot::Skill3).range(48, 32).gate(999).speedGear().when("selfBati", "gp"),
             rule(Slot::Skill2).gate(128).when("gp"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill2).when("baseDanger"),
             farm(Slot::Skill3).when("baseDanger"),
         };
     }
 
     {
-        Profile& p = add("Orochimaru");
-        p.builds["default"] = {6, 5, 2};
-        p.hero = {
+        Profile& profile = addProfile("Orochimaru");
+        profile.builds["default"] = {6, 5, 2};
+        profile.hero = {
             rule(Slot::Ougis2).range(48, 32).when("gp", "tNotBati"),
             rule(Slot::Ougis1).range(48, 32),
             rule(Slot::Skill3).range(64, 32).when("gp"),
             rule(Slot::Skill2).range(64, 32).when("gp"),
             rule(Slot::Skill1).range(48, 32).gate(128).when("gp"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
         };
     }
 
     {
-        Profile& p = add("Nagato");
-        p.role = HeroRole::Ranged;
-        p.builds["default"] = {6, 1, 5};
-        p.hero = {
+        Profile& profile = addProfile("Nagato");
+        profile.role = HeroRole::Ranged;
+        profile.builds["default"] = {6, 1, 5};
+        profile.hero = {
             rule(Slot::Ougis2).range(64, 32).when("gp", "tNotBati"),
             rule(Slot::Ougis1).range(64, 32),
             rule(Slot::Skill3).range(96, 32).when("gp"),
             rule(Slot::Skill2).range(96, 32).when("gp"),
             rule(Slot::Skill1).range(64, 32).gate(128).when("gp"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
         };
     }
 
     {
-        Profile& p = add("Pain");
-        p.builds["default"] = {6, 5, 2};
-        p.hero = {
+        Profile& profile = addProfile("Pain");
+        profile.builds["default"] = {6, 5, 2};
+        profile.hero = {
             rule(Slot::Ougis2).range(64, 32).when("gp", "tNotBati"),
             rule(Slot::Ougis1).range(64, 32),
             rule(Slot::Skill3).range(96, 32).when("gp"),
             rule(Slot::Skill2).range(96, 32).when("gp"),
             rule(Slot::Skill1).range(64, 32).gate(128).when("gp"),
         };
-        p.farm = {
+        profile.farm = {
             farm(Slot::Skill1),
         };
     }
@@ -905,21 +905,21 @@ std::map<std::string, Profile> builtinProfiles()
 // For a hero without its own profile (e.g. a modded hero)
 Profile builtinDefaultProfile()
 {
-    Profile p;
-    p.name = "default";
-    p.panicGear06 = false;
-    p.builds["default"] = {4, 7, 8};
-    p.hero = {
+    Profile profile;
+    profile.name = "default";
+    profile.panicGear06 = false;
+    profile.builds["default"] = {4, 7, 8};
+    profile.hero = {
         rule(Slot::Ougis2).range(64, 32).gate(128).when("gp", "tNotDown"),
         rule(Slot::Ougis1).range(64, 32).gate(128).when("gp"),
         rule(Slot::Skill1).range(64, 32).gate(128).when("gp"),
         rule(Slot::Skill2).range(64, 32).gate(128).when("gp"),
         rule(Slot::Skill3).range(64, 32).gate(128).when("gp"),
     };
-    p.farm = {
+    profile.farm = {
         farm(Slot::Skill1).when("baseDanger"),
     };
-    return p;
+    return profile;
 }
 
 // Heroes that keep their old built-in routine: the HardCore guardians
