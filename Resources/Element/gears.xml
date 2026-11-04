@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Gear shop text, keyed by gear id (gear00 = gear_00.png). Effects are in code (ActionManager kGearSpecs);
+     {v} and {w} show that gear's values for Lv1/Lv2/Lv3; desc_en is shown under desc. -->
+<plist version="1.0">
+<dict>
+	<key>gear00</key>
+	<dict>
+		<key>name</key>
+		<string>Sepatu Ninja Kilat</string>
+		<key>desc</key>
+		<string>Aktif: lari lebih cepat selama 6 detik dan tak terlihat 3 detik pertama. Cooldown {v} detik.</string>
+		<key>desc_en</key>
+		<string>Active: run faster for 6s and stay invisible for the first 3s. Cooldown {v}s.</string>
+	</dict>
+	<key>gear01</key>
+	<dict>
+		<key>name</key>
+		<string>Gelang Chakra</string>
+		<key>desc</key>
+		<string>Chakra yang didapat saat terkena serangan +{v}%.</string>
+		<key>desc_en</key>
+		<string>Chakra gained when hit +{v}%.</string>
+	</dict>
+	<key>gear02</key>
+	<dict>
+		<key>name</key>
+		<string>Shuriken Chakra</string>
+		<key>desc</key>
+		<string>Serangan mengisi chakra sebesar {v}% damage. Chakra yang didapat musuh dari seranganmu -25%.</string>
+		<key>desc_en</key>
+		<string>Attacks restore chakra equal to {v}% of damage. Enemies gain 25% less chakra from your hits.</string>
+	</dict>
+	<key>gear03</key>
+	<dict>
+		<key>name</key>
+		<string>Perangkap Ninja</string>
+		<key>desc</key>
+		<string>Aktif: pasang perangkap. Musuh yang menginjaknya terkena 1960 damage dan terlempar. Cooldown {v} detik.</string>
+		<key>desc_en</key>
+		<string>Active: set a trap. Enemies who step on it take 1960 damage and are knocked up. Cooldown {v}s.</string>
+	</dict>
+	<key>gear04</key>
+	<dict>
+		<key>name</key>
+		<string>Pil Prajurit</string>
+		<key>desc</key>
+		<string>Serangan biasa +{v} dan menembus pertahanan musuh.</string>
+		<key>desc_en</key>
+		<string>Normal attack +{v} and pierces enemy defense.</string>
+	</dict>
+	<key>gear05</key>
+	<dict>
+		<key>name</key>
+		<string>Kitab Ninjutsu</string>
+		<key>desc</key>
+		<string>Cooldown skill 1-3 berkurang {v} detik. Peluang damage kritis lebih besar.</string>
+		<key>desc_en</key>
+		<string>Skill 1-3 cooldown -{v}s. Higher critical damage chance.</string>
+	</dict>
+	<key>gear06</key>
+	<dict>
+		<key>name</key>
+		<string>Kayu Pengganti</string>
+		<key>desc</key>
+		<string>Aktif: lolos dari serangan dengan jurus pengganti, lalu tak terlihat 1 detik. Cooldown {v} detik.</string>
+		<key>desc_en</key>
+		<string>Active: escape an attack with a substitution, then stay invisible for 1s. Cooldown {v}s.</string>
+	</dict>
+	<key>gear07</key>
+	<dict>
+		<key>name</key>
+		<string>Onigiri Spesial</string>
+		<key>desc</key>
+		<string>Item pemulih HP memulihkan {v} (dari 3000) dan cooldown-nya 3 detik.</string>
+		<key>desc_en</key>
+		<string>HP potion heals {v} (from 3000) and its cooldown is 3s.</string>
+	</dict>
+	<key>gear08</key>
+	<dict>
+		<key>name</key>
+		<string>Rompi Rantai</string>
+		<key>desc</key>
+		<string>HP maksimal +{v} dan damage yang diterima berkurang {w}%.</string>
+		<key>desc_en</key>
+		<string>Max HP +{v} and damage taken -{w}%.</string>
+	</dict>
+	<key>gear09</key>
+	<dict>
+		<key>name</key>
+		<string>Lifesteal</string>
+		<key>desc</key>
+		<string>Serangan biasa memulihkan HP sebesar {v}% damage yang diberikan.</string>
+		<key>desc_en</key>
+		<string>Normal attacks heal you for {v}% of the damage dealt.</string>
+	</dict>
+	<key>gear10</key>
+	<dict>
+		<key>name</key>
+		<string>Gulungan Kuchiyose</string>
+		<key>desc</key>
+		<string>Summon dan klon milikmu mendapat HP dan attack +{v}%.</string>
+		<key>desc_en</key>
+		<string>Your summons and clones get +{v}% HP and attack.</string>
+	</dict>
+</dict>
+</plist>

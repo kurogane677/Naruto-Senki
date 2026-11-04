@@ -142,12 +142,16 @@ public:
 	int					lostBloodValue;
 	int					gearCKRValue;
 	int					gearRecoverValue;
+	int					gearChakraOnAttack;
+	int					gearArmor;
+	int					gearLifesteal;
+	int					gearSummonBuff;
+	bool				gearPierce;
 
 	unsigned int		hearts;
 	unsigned int		bamen;
 	bool				isAttackGainCKR;
 	bool				isPofang;
-	bool				isHujia;
 	bool				isGearCD;
 
 	bool				_isCanGear00;
@@ -358,13 +362,22 @@ public:
 	void				disableGear2(float dt);
 	void				disableGear3(float dt);
 
+	// Gears have levels 1-3; the shop buys, upgrades and sells them
 	bool				setGear(gearType type);
+	bool				upgradeGear(gearType type);
+	bool				sellGear(gearType type);
+	int					gearLevel(gearType type) const { return type<None ? _gearLevel[type] : 0; }
 	static int			gearCost(gearType type);
+	static int			gearUpgradeCost(gearType type,int level);
+	static int			gearSellValue(gearType type,int level);
+	static int			gearValue(gearType type,int level,int which=0);
+	float				gearCooldown(gearType type) const;
 	void				useGear(gearType type);
 
 	void				setCoinDisplay(int num);
 	void				addCoin(int num);
 	void				minusCoin(int num);
+	void				healHP(int value);
 
 	bool				_isCanSkill1;
 	bool				_isCanSkill2;
@@ -413,7 +426,15 @@ public:
 
 protected:
 
-	
+	// Gear bonuses are recomputed from _gearLevel on every buy/upgrade/sell; the
+	// _gear* amounts below are what is currently added so it can be taken back.
+	int					_gearLevel[None]={};
+	int					_gearAttack=0;
+	int					_gearHP=0;
+	unsigned int		_gearCDCut[3]={};
+	void				applyGears();
+	void				applyGearCD();
+	void				updateGearHud();
 	
 	void				readDate(CCArray* tmpDate,CCString* &attackType,int &attackValue,int &attackRangeX,int &attackRangeY,unsigned int &coldDown,int &combatPoint);
 
@@ -489,7 +510,6 @@ public:
 	bool				checkRetri();
 	void				stepOn();
 	void				changeSide(CCPoint sp);
-	void				reduceSkillCD(unsigned int seconds);
 protected:
 
 	

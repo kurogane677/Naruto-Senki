@@ -217,14 +217,29 @@ void ActionButton::beganAnimation(bool isLock){
 
 };
 
+// None empties the slot again (the gear was sold) and brings back the "+" sign
 void ActionButton::setGearType(int tmpGearType){
 
-	CCSprite* gearIcon=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("gear_%02d.png",gearType(tmpGearType))->getCString());
-	gearIcon->setAnchorPoint(ccp(0.5f,0.5f));
-	gearIcon->setScale(0.85f);
-	gearIcon->setPosition(ccp(18,18));
-	this->addChild(gearIcon);
+	if(_gearIcon){
+		_gearIcon->removeFromParent();
+		_gearIcon=NULL;
+	}
 	this->_gearType=gearType(tmpGearType);
+
+	if(_gearType==None){
+		if(!gearSign){
+			gearSign =CCSprite::createWithSpriteFrameName("gearsign.png");
+			gearSign->setPosition(ccp(this->getPositionX()+17,this->getPositionY()+17));
+			this->_delegate->addChild(gearSign,500);
+		}
+		return;
+	}
+
+	_gearIcon=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("gear_%02d.png",_gearType)->getCString());
+	_gearIcon->setAnchorPoint(ccp(0.5f,0.5f));
+	_gearIcon->setScale(0.85f);
+	_gearIcon->setPosition(ccp(18,18));
+	this->addChild(_gearIcon);
 	
 	if(this->gearSign){
 		this->gearSign->removeFromParent();

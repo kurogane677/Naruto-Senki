@@ -55,6 +55,7 @@ private:
     bool slotReady(Slot slot) const;
     bool retreatFromFight(const CCPoint& sp);
     int gearReserve();
+    gearType nextUpgrade();
     void markUsed(Slot slot);
 
     Hero* _hero;

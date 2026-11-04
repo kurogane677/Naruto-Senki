@@ -38,6 +38,7 @@ public:
 	void					updateProgressMark();
 
 	CCSprite*		gearSign ;
+	CCSprite*		_gearIcon=NULL;
 	CCLabelBMFont*			cdLabel;
 
 	CCLabelBMFont*			lockLabel1;
