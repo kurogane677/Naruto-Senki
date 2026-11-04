@@ -1152,58 +1152,67 @@ CCSprite* HudLayer::createSPCReport(const char* killNum,int num){
 	
 	return reportSPCSprite;
 }
-CCSprite* HudLayer::createReport(const char* name1,const char* name2,float &length){
-	
+// Names and "has slain"/"has destroyed" in the kill report are text from
+// Element/report.xml, rasterized at kReportScale times their size for sharp
+// scaling. Arimo is metric-compatible with the Arial of the old images.
+static const float kReportScale=4;
 
+static ax::ValueMap& reportTexts(){
+	static ax::ValueMap texts=ax::FileUtils::getInstance()->getValueMapFromFile("Element/report.xml");
+	return texts;
+}
+
+static std::string reportName(const char* name){
+	ax::ValueMap& texts=reportTexts();
+	auto names=texts.find("names");
+	if(names!=texts.end() && names->second.getType()==ax::Value::Type::MAP){
+		auto it=names->second.asValueMap().find(name);
+		if(it!=names->second.asValueMap().end()) return it->second.asString();
+	}
+	return name;
+}
+
+static std::string reportPhrase(const char* key,const char* fallback){
+	ax::ValueMap& texts=reportTexts();
+	auto it=texts.find(key);
+	return it!=texts.end() ? it->second.asString() : fallback;
+}
+
+// Adds a report label at x and returns the width it takes, glow included
+static float addReportLabel(CCNode* parent,const std::string& text,float x){
+	ax::Label* label=ax::Label::createWithTTF(text,"Fonts/Arimo-SemiBold.ttf",18*kReportScale);
+	label->enableOutline(ax::Color4B(165,120,63,200),2*kReportScale);
+	label->setScale(1/kReportScale);
+	label->setAnchorPoint(ccp(0,0.5f));
+	label->setPosition(ccp(x+3,0));
+	parent->addChild(label);
+	return label->getContentSize().width/kReportScale+6;
+}
+
+CCSprite* HudLayer::createReport(const char* name1,const char* name2,float &length){
 
 	CCSprite* reportSprite=CCSprite::create();
+	bool isTower=strcmp(name2,"Tower")==0;
 
 	CCSprite* slain_p=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("%s_rp.png",name1)->getCString());
 	slain_p->setAnchorPoint(ccp(0,0.5f));
 	slain_p->setPosition(ccp(0,0));
 	reportSprite->addChild(slain_p);
 
-	CCSprite* slain_pf=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("%s_rpf.png",name1)->getCString());
-	slain_pf->setPosition(ccp(slain_p->getContentSize().width,0));
-	slain_pf->setAnchorPoint(ccp(0,0.5f));
-	reportSprite->addChild(slain_pf);
+	float x=slain_p->getContentSize().width;
+	x+=addReportLabel(reportSprite,reportName(name1),x);
+	x+=addReportLabel(reportSprite,isTower ? reportPhrase("destroyed","has destroyed") : reportPhrase("slain","has slain"),x);
+	x+=addReportLabel(reportSprite,reportName(name2),x);
 
-
-	CCSprite* slain;
-	if(strcmp(name2,"Tower")!=0){
-		slain=CCSprite::createWithSpriteFrameName("slain.png");
-
-		reportSprite->addChild(slain);
-	}else {
-		slain=CCSprite::createWithSpriteFrameName("destroy.png");
-		reportSprite->addChild(slain);
-	}
-	slain->setAnchorPoint(ccp(0,0.5f));
-	slain->setPosition(ccp(slain_pf->getPositionX()+slain_pf->getContentSize().width,0));
-
-
-	CCSprite* death_pf=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("%s_rpf.png",name2)->getCString());
-	death_pf->setAnchorPoint(ccp(0,0.5f));
-	death_pf->setPosition(ccp(slain->getPositionX()+slain->getContentSize().width,0));
-	reportSprite->addChild(death_pf);
-	CCSprite* death_p;
-	if(strcmp(name2,"Tower")!=0){
-
-		death_p=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("%s_rp.png",name2)->getCString());
+	if(!isTower){
+		CCSprite* death_p=CCSprite::createWithSpriteFrameName(CCString::createWithFormat("%s_rp.png",name2)->getCString());
 		death_p->setAnchorPoint(ccp(0,0.5f));
-		death_p->setPosition(ccp(death_pf->getPositionX()+death_pf->getContentSize().width,0));
+		death_p->setPosition(ccp(x,0));
 		reportSprite->addChild(death_p);
+		x+=death_p->getContentSize().width;
 	}
+	length=x;
 
-	if(strcmp(name2,"Tower")!=0){
-		length= slain_p->getContentSize().width+ slain_pf->getContentSize().width+ slain->getContentSize().width
-		+death_pf->getContentSize().width+death_p->getContentSize().width;
-
-	}else{
-		length= slain_p->getContentSize().width+ slain_pf->getContentSize().width+ slain->getContentSize().width
-			+death_pf->getContentSize().width;
-	}
-	
 	return reportSprite;
 
 

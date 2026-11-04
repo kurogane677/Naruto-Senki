@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Kill report text ("<name> has slain <name>"), drawn with Fonts/Arimo-SemiBold.ttf.
+     names: shown name per character; a character missing here shows its own name.
+     The portraits (<hero>_rp.png) and the multi-kill images stay in Report.png. -->
+<plist version="1.0">
+<dict>
+	<key>slain</key>
+	<string>has slain</string>
+	<key>destroyed</key>
+	<string>has destroyed</string>
+	<key>names</key>
+	<dict>
+		<key>Deidara</key>
+		<string>DeiDara</string>
+		<key>Fukasaku</key>
+		<string>NidaiSennin</string>
+		<key>Han</key>
+		<string>Guardian</string>
+		<key>HokageMinato</key>
+		<string>Minato</string>
+		<key>ImmortalSasuke</key>
+		<string>Sasuke</string>
+		<key>Lee</key>
+		<string>RockLee</string>
+		<key>RikudoNaruto</key>
+		<string>Naruto</string>
+		<key>Roshi</key>
+		<string>Guardian</string>
+		<key>SageJiraiya</key>
+		<string>Jiraiya</string>
+		<key>SageNaruto</key>
+		<string>Naruto</string>
+		<key>Tenten</key>
+		<string>TenTen</string>
+		<key>Tower</key>
+		<string>the Tower</string>
+	</dict>
+</dict>
+</plist>
