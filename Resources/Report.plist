@@ -7,7 +7,7 @@
             <key>Asuma_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,373},{34,34}}</string>
+                <string>{{141,75},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -16,24 +16,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Asuma_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,154},{66,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{66,22}}</string>
-                <key>sourceSize</key>
-                <string>{66,22}</string>
             </dict>
             <key>Chiyo_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{38,363},{34,34}}</string>
+                <string>{{177,75},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -42,24 +29,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Chiyo_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{140,158},{56,26}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{56,26}}</string>
-                <key>sourceSize</key>
-                <string>{56,26}</string>
             </dict>
             <key>Choji_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{74,354},{34,34}}</string>
+                <string>{{213,75},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -68,24 +42,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Choji_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{332,158},{50,26}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{50,26}}</string>
-                <key>sourceSize</key>
-                <string>{50,26}</string>
             </dict>
             <key>Deidara_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{110,330},{34,34}}</string>
+                <string>{{1,127},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -95,23 +56,10 @@
                 <key>sourceSize</key>
                 <string>{34,34}</string>
             </dict>
-            <key>Deidara_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{434,2},{76,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{76,22}}</string>
-                <key>sourceSize</key>
-                <string>{76,22}</string>
-            </dict>
             <key>Domination_rpf.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{148,24},{138,24}}</string>
+                <string>{{1,75},{138,24}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -124,7 +72,7 @@
             <key>DoubleKill_rpf.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{129,50},{119,20}}</string>
+                <string>{{123,115},{119,20}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -137,7 +85,7 @@
             <key>Fukasaku_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{218,314},{34,34}}</string>
+                <string>{{37,127},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -146,24 +94,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Fukasaku_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{286,80},{108,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{108,23}}</string>
-                <key>sourceSize</key>
-                <string>{108,23}</string>
             </dict>
             <key>Gaara_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{182,314},{34,34}}</string>
+                <string>{{73,127},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -173,23 +108,10 @@
                 <key>sourceSize</key>
                 <string>{34,34}</string>
             </dict>
-            <key>Gaara_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{198,161},{60,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{60,23}}</string>
-                <key>sourceSize</key>
-                <string>{60,23}</string>
-            </dict>
             <key>Godlike_rpf.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,81},{101,20}}</string>
+                <string>{{146,27},{101,20}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -202,7 +124,7 @@
             <key>Han_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{304,288},{34,34}}</string>
+                <string>{{109,137},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -211,24 +133,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Han_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{284,105},{85,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{85,23}}</string>
-                <key>sourceSize</key>
-                <string>{85,23}</string>
             </dict>
             <key>Hidan_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{268,288},{34,34}}</string>
+                <string>{{1,163},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -237,24 +146,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Hidan_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{406,196},{55,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{55,22}}</string>
-                <key>sourceSize</key>
-                <string>{55,22}</string>
             </dict>
             <key>Hinata_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{146,294},{34,34}}</string>
+                <string>{{37,163},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -263,24 +159,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Hinata_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{269,158},{61,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{61,22}}</string>
-                <key>sourceSize</key>
-                <string>{61,22}</string>
             </dict>
             <key>Hiruzen_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,337},{34,34}}</string>
+                <string>{{73,163},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -289,24 +172,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Hiruzen_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{434,74},{71,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{71,22}}</string>
-                <key>sourceSize</key>
-                <string>{71,22}</string>
             </dict>
             <key>HokageMinato_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{38,327},{34,34}}</string>
+                <string>{{145,137},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -316,23 +186,10 @@
                 <key>sourceSize</key>
                 <string>{34,34}</string>
             </dict>
-            <key>HokageMinato_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,178},{63,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{63,22}}</string>
-                <key>sourceSize</key>
-                <string>{63,22}</string>
-            </dict>
             <key>Holyshit_rpf.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,55},{107,24}}</string>
+                <string>{{147,1},{107,24}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -345,7 +202,7 @@
             <key>ImmortalSasuke_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{74,318},{34,34}}</string>
+                <string>{{181,137},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -354,24 +211,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>ImmortalSasuke_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{434,98},{70,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{70,23}}</string>
-                <key>sourceSize</key>
-                <string>{70,23}</string>
             </dict>
             <key>Ino_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{110,294},{34,34}}</string>
+                <string>{{217,137},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -380,24 +224,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Ino_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{225,186},{33,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{33,22}}</string>
-                <key>sourceSize</key>
-                <string>{33,22}</string>
             </dict>
             <key>Itachi_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{232,278},{34,34}}</string>
+                <string>{{109,173},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -406,24 +237,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Itachi_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{135,186},{52,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{52,22}}</string>
-                <key>sourceSize</key>
-                <string>{52,22}</string>
             </dict>
             <key>Jiraiya_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{196,278},{34,34}}</string>
+                <string>{{1,199},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -432,24 +250,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Jiraiya_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{219,86},{63,25}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{63,25}}</string>
-                <key>sourceSize</key>
-                <string>{63,25}</string>
             </dict>
             <key>Jugo_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{371,256},{34,34}}</string>
+                <string>{{37,199},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -458,24 +263,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Jugo_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,202},{48,25}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{48,25}}</string>
-                <key>sourceSize</key>
-                <string>{48,25}</string>
             </dict>
             <key>Kakashi_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{335,252},{34,34}}</string>
+                <string>{{73,199},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -484,24 +276,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Kakashi_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{434,26},{73,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{73,22}}</string>
-                <key>sourceSize</key>
-                <string>{73,22}</string>
             </dict>
             <key>Kakuzu_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{299,252},{34,34}}</string>
+                <string>{{145,173},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -510,24 +289,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Kakuzu_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{198,137},{69,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{69,22}}</string>
-                <key>sourceSize</key>
-                <string>{69,22}</string>
             </dict>
             <key>Kankuro_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{160,258},{34,34}}</string>
+                <string>{{181,173},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -536,24 +302,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Kankuro_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{204,113},{77,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{77,22}}</string>
-                <key>sourceSize</key>
-                <string>{77,22}</string>
             </dict>
             <key>Karin_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,301},{34,34}}</string>
+                <string>{{217,173},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -562,24 +315,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Karin_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{67,195},{50,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{50,22}}</string>
-                <key>sourceSize</key>
-                <string>{50,22}</string>
             </dict>
             <key>Kiba_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{38,291},{34,34}}</string>
+                <string>{{109,209},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -589,23 +329,10 @@
                 <key>sourceSize</key>
                 <string>{34,34}</string>
             </dict>
-            <key>Kiba_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{463,207},{44,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{44,22}}</string>
-                <key>sourceSize</key>
-                <string>{44,22}</string>
-            </dict>
             <key>KillingSpree_rpf.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{293,2},{139,24}}</string>
+                <string>{{1,49},{139,24}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -618,7 +345,7 @@
             <key>Kisame_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{74,282},{34,34}}</string>
+                <string>{{1,235},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -627,24 +354,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Kisame_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{91,122},{69,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{69,22}}</string>
-                <key>sourceSize</key>
-                <string>{69,22}</string>
             </dict>
             <key>Konan_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{124,258},{34,34}}</string>
+                <string>{{37,235},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -654,23 +368,23 @@
                 <key>sourceSize</key>
                 <string>{34,34}</string>
             </dict>
-            <key>Konan_rpf.png</key>
+            <key>Kurenai_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{260,182},{60,22}}</string>
+                <string>{{73,235},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{60,22}}</string>
+                <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
-                <string>{60,22}</string>
+                <string>{34,34}</string>
             </dict>
             <key>Lee_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{263,242},{34,34}}</string>
+                <string>{{145,209},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -679,24 +393,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Lee_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{407,147},{81,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{81,22}}</string>
-                <key>sourceSize</key>
-                <string>{81,22}</string>
             </dict>
             <key>Minato_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{227,242},{34,34}}</string>
+                <string>{{181,209},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -706,23 +407,10 @@
                 <key>sourceSize</key>
                 <string>{34,34}</string>
             </dict>
-            <key>Minato_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,178},{63,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{63,22}}</string>
-                <key>sourceSize</key>
-                <string>{63,22}</string>
-            </dict>
             <key>MonsterKill_rpf.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{148,2},{143,20}}</string>
+                <string>{{1,27},{143,20}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -735,7 +423,7 @@
             <key>Nagato_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{191,222},{34,34}}</string>
+                <string>{{217,209},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -744,24 +432,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Nagato_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,127},{67,25}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{67,25}}</string>
-                <key>sourceSize</key>
-                <string>{67,25}</string>
             </dict>
             <key>Naruto_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,265},{34,34}}</string>
+                <string>{{109,245},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -770,24 +445,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Naruto_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{70,171},{63,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{63,22}}</string>
-                <key>sourceSize</key>
-                <string>{63,22}</string>
             </dict>
             <key>Neji_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{38,255},{34,34}}</string>
+                <string>{{1,271},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -796,24 +458,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Neji_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{366,141},{39,25}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{39,25}}</string>
-                <key>sourceSize</key>
-                <string>{39,25}</string>
             </dict>
             <key>Orochimaru_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{88,246},{34,34}}</string>
+                <string>{{37,271},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -822,24 +471,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Orochimaru_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{111,72},{106,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{106,23}}</string>
-                <key>sourceSize</key>
-                <string>{106,23}</string>
             </dict>
             <key>Pain_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{155,222},{34,34}}</string>
+                <string>{{73,271},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -849,23 +485,10 @@
                 <key>sourceSize</key>
                 <string>{34,34}</string>
             </dict>
-            <key>Pain_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{360,192},{44,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{44,22}}</string>
-                <key>sourceSize</key>
-                <string>{44,22}</string>
-            </dict>
             <key>Rampage_rpf.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{288,28},{120,24}}</string>
+                <string>{{1,101},{120,24}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -878,7 +501,7 @@
             <key>RikudoNaruto_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{476,231},{34,34}}</string>
+                <string>{{145,245},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -887,24 +510,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>RikudoNaruto_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{70,171},{63,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{63,22}}</string>
-                <key>sourceSize</key>
-                <string>{63,22}</string>
             </dict>
             <key>RockLee_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{263,242},{34,34}}</string>
+                <string>{{145,209},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -913,24 +523,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>RockLee_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{407,147},{81,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{81,22}}</string>
-                <key>sourceSize</key>
-                <string>{81,22}</string>
             </dict>
             <key>Roshi_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{440,231},{34,34}}</string>
+                <string>{{181,245},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -939,24 +536,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Roshi_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{284,105},{85,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{85,23}}</string>
-                <key>sourceSize</key>
-                <string>{85,23}</string>
             </dict>
             <key>SageJiraiya_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{404,220},{34,34}}</string>
+                <string>{{217,245},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -965,24 +549,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>SageJiraiya_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{219,86},{63,25}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{63,25}}</string>
-                <key>sourceSize</key>
-                <string>{63,25}</string>
             </dict>
             <key>SageNaruto_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{368,216},{34,34}}</string>
+                <string>{{109,281},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -991,24 +562,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>SageNaruto_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{70,171},{63,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{63,22}}</string>
-                <key>sourceSize</key>
-                <string>{63,22}</string>
             </dict>
             <key>Sai_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{332,216},{34,34}}</string>
+                <string>{{1,307},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1017,24 +575,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Sai_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{464,171},{34,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{34,23}}</string>
-                <key>sourceSize</key>
-                <string>{34,23}</string>
             </dict>
             <key>Sakura_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{296,206},{34,34}}</string>
+                <string>{{37,307},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1043,24 +588,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Sakura_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{71,146},{67,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{67,23}}</string>
-                <key>sourceSize</key>
-                <string>{67,23}</string>
             </dict>
             <key>Sasuke_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{260,206},{34,34}}</string>
+                <string>{{73,307},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1069,24 +601,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Sasuke_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{434,98},{70,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{70,23}}</string>
-                <key>sourceSize</key>
-                <string>{70,23}</string>
             </dict>
             <key>Shikamaru_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,229},{34,34}}</string>
+                <string>{{145,281},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1095,24 +614,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Shikamaru_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{105,97},{97,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{97,23}}</string>
-                <key>sourceSize</key>
-                <string>{97,23}</string>
             </dict>
             <key>Shino_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{52,219},{34,34}}</string>
+                <string>{{181,281},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1121,24 +627,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Shino_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{406,171},{56,23}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{56,23}}</string>
-                <key>sourceSize</key>
-                <string>{56,23}</string>
             </dict>
             <key>Suigetsu_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{119,210},{34,34}}</string>
+                <string>{{217,281},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1147,24 +640,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Suigetsu_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{283,130},{81,26}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{81,26}}</string>
-                <key>sourceSize</key>
-                <string>{81,26}</string>
             </dict>
             <key>Tenten_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{189,186},{34,34}}</string>
+                <string>{{109,317},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1173,24 +653,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Tenten_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{434,50},{72,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{72,22}}</string>
-                <key>sourceSize</key>
-                <string>{72,22}</string>
             </dict>
             <key>Tobi_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{162,122},{34,34}}</string>
+                <string>{{1,343},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1199,24 +666,11 @@
                 <string>{{0,0},{34,34}}</string>
                 <key>sourceSize</key>
                 <string>{34,34}</string>
-            </dict>
-            <key>Tobi_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{360,168},{44,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{44,22}}</string>
-                <key>sourceSize</key>
-                <string>{44,22}</string>
             </dict>
             <key>Tobirama_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{371,105},{34,34}}</string>
+                <string>{{37,343},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1226,36 +680,10 @@
                 <key>sourceSize</key>
                 <string>{34,34}</string>
             </dict>
-            <key>Tobirama_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,103},{87,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{87,22}}</string>
-                <key>sourceSize</key>
-                <string>{87,22}</string>
-            </dict>
-            <key>Tower_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{410,28},{93,22}}</string>
-                <key>offset</key>
-                <string>{0,1}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,4},{93,22}}</string>
-                <key>sourceSize</key>
-                <string>{93,32}</string>
-            </dict>
             <key>TripeKill_rpf.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{286,54},{112,24}}</string>
+                <string>{{142,49},{112,24}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1268,7 +696,7 @@
             <key>Tsunade_rp.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{250,50},{34,34}}</string>
+                <string>{{73,343},{34,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1278,23 +706,10 @@
                 <key>sourceSize</key>
                 <string>{34,34}</string>
             </dict>
-            <key>Tsunade_rpf.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{407,123},{81,22}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{81,22}}</string>
-                <key>sourceSize</key>
-                <string>{81,22}</string>
-            </dict>
             <key>Unstoppable_rpf.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{144,24}}</string>
+                <string>{{1,1},{144,24}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1304,23 +719,10 @@
                 <key>sourceSize</key>
                 <string>{144,24}</string>
             </dict>
-            <key>destroy.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,28},{125,25}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{125,25}}</string>
-                <key>sourceSize</key>
-                <string>{125,25}</string>
-            </dict>
             <key>skull.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{129,28},{12,12}}</string>
+                <string>{{123,101},{12,12}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -1330,30 +732,21 @@
                 <key>sourceSize</key>
                 <string>{12,12}</string>
             </dict>
-            <key>slain.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{490,123},{81,20}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{1,0},{81,20}}</string>
-                <key>sourceSize</key>
-                <string>{83,20}</string>
-            </dict>
         </dict>
         <key>metadata</key>
         <dict>
             <key>format</key>
             <integer>2</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
             <key>realTextureFileName</key>
             <string>Report.png</string>
             <key>size</key>
-            <string>{512,512}</string>
+            <string>{256,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:d01b4eb6e1d450c36fff23a86df9d85e$</string>
+            <string>$TexturePacker:SmartUpdate:86d35202ac4dd0b80e8a644474f9cfd9:73d684cd6d2c03aed78ee8af7e169c19:b4eec95e708e605759124f96834a79cf$</string>
             <key>textureFileName</key>
             <string>Report.png</string>
         </dict>
