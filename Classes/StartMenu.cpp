@@ -182,7 +182,6 @@ StartMenu::StartMenu(void)
 	_menu_array=NULL;
 	isClockwise=false;
 	isDrag=false;
-	hardCore_btn=NULL;
 	hardCoreLayer=NULL;
 	notice_layer=NULL;
 	noticeLabel=NULL;
@@ -262,9 +261,8 @@ bool StartMenu::init()
 		menu_bar_t->setPosition(ccp(0,winSize.height-menu_bar_t->getContentSize().height));
 		this->addChild(menu_bar_t,2);
 
-		CCSprite* startmenu_title=CCSprite::createWithSpriteFrameName("startmenu_title.png");
-		startmenu_title->setAnchorPoint(ccp(0,0));
-		startmenu_title->setPosition(ccp(2,winSize.height-startmenu_title->getContentSize().height-2));
+		ax::Label* startmenu_title=KTools::createBarTitle("TitleMainMenu");
+		startmenu_title->setPosition(ccp(4,winSize.height-startmenu_title->getBoundingBox().size.height-2));
 		this->addChild(startmenu_title,3);
 
 		//produce the menu button
@@ -309,8 +307,7 @@ bool StartMenu::init()
 		
 		
 
-		menuText=CCSprite::createWithSpriteFrameName("menu02_text.png");
-		menuText->setAnchorPoint(ccp(0,0));
+		menuText=KTools::createBarText("MenuTraining");
 		menuText->setPosition(ccp(10,2));
 		this->addChild(menuText,5);
 
@@ -448,10 +445,6 @@ void StartMenu::setNotice(){
 }
 void StartMenu::onHardCoreOn(CCObject* sender){
 	CCUserDefault::sharedUserDefault()->setBoolForKey("isHardCore",true);
-	if(hardCore_btn){
-		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("menu02_1.png"); 
-		hardCore_btn->setSpriteFrame(frame);
-	}
 
 	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
 	if(hardCoreLayer){
@@ -687,31 +680,30 @@ void StartMenu::scrollMenu(int posY){
 			};
 
 		};
-		std::string src="";
+		const char* key="MenuTraining";
 		CCARRAY_FOREACH(_menu_array,pObject){
 			MenuButton* menu=(MenuButton *)pObject;
 			
 			if(menu->_isTop){
 				switch(menu->getBtnType()){
 				case Training:
-					 src="menu02_text.png";
+					 key="MenuTraining";
 					break;
 				case Network:
-					 src="menu01_text.png";
+					 key="MenuNetwork";
 					break;
 				case Credits:
-					 src="menu04_text.png";
+					 key="MenuCredits";
 					break;
 				case Exit:
-					 src="menu03_text.png";
+					 key="MenuExit";
 					break;
 				}
 
 			}
 		}
 
-		CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(src.c_str()); 
-		menuText->setSpriteFrame(frame);
+		menuText->setString(KTools::uiText(key));
 	
 }
 

@@ -93,9 +93,8 @@ public:
 	void				onExitCallBack();
 
 	void				scrollMenu(int posY);
-	CCSprite*			menuText;
+	ax::Label*			menuText;
 
-	MenuButton* hardCore_btn;
 
 	CCLayer* hardCoreLayer;
 
