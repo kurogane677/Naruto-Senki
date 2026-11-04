@@ -81,6 +81,7 @@ enum gearType{
 	gear08,
 	gear09,
 	gear10,
+	gear11,
 	None  // also the number of gears
 };
 

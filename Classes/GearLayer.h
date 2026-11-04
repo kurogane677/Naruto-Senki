@@ -52,8 +52,10 @@ private:
 	// Buy for a gear not owned yet, Upgrade + Sell for an owned one
 	CCMenu*			_buyMenu;
 	CCMenu*			_ownedMenu;
-	ax::MenuItemLabel*	_upgradeItem;
-	ax::MenuItemLabel*	_sellItem;
+	ax::MenuItemSprite*	_upgradeItem;
+	ax::MenuItemSprite*	_sellItem;
+	ax::Label*		_upgradePrice;
+	ax::Label*		_sellPrice;
 	CCNode*			_listClip;
 	
 	CC_SYNTHESIZE(GameLayer*,_delegate,Delegate);

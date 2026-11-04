@@ -62,6 +62,10 @@ public:
 	CC_SYNTHESIZE_RETAIN(CCAction*,_freezeAction,FreezeAction);
 	CC_SYNTHESIZE(HudLayer*,_delegate,Delegate);
 	virtual void	beganAnimation(bool isLock = false);
+	// Drops the cooldown shown on this button (countdown label, timer, freeze overlay)
+	void			clearCooldown();
+	// Shows a cooldown that is already running, e.g. a gear that moved onto this button
+	void			resumeCooldown(float secondsLeft);
 
 	
 

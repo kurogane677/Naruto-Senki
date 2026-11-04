@@ -102,5 +102,14 @@
 		<key>desc_en</key>
 		<string>Your summons and clones get +{v}% HP and attack.</string>
 	</dict>
+	<key>gear11</key>
+	<dict>
+		<key>name</key>
+		<string>Segel Cangkang Kura-kura</string>
+		<key>desc</key>
+		<string>Aktif: selama 4 detik, damage yang diterima menjadi {v}% dan {w}% damage dipantulkan ke penyerang (tidak bisa membunuh). Cooldown 30/25/15 detik.</string>
+		<key>desc_en</key>
+		<string>Active: for 4s you take {v}% damage and reflect {w}% back to the attacker (cannot kill). Cooldown 30/25/15s.</string>
+	</dict>
 </dict>
 </plist>

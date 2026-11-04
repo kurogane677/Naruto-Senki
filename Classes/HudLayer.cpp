@@ -652,15 +652,39 @@ void HudLayer::updateGears(){
 
 	ActionButton* items[]={getItem2Button(),getItem3Button(),getItem4Button()};
 	gearType active[]={gear06,gear00,gear03};
+	const char* images[]={"item2.png","item3.png","item4.png"};
+	// gear11 has no button of its own: it borrows the first button whose gear is not
+	// owned (at most 3 gears, so one is always free) and shows item11.png on it
+	int sealSlot=-1;
+	if(player->gearLevel(gear11)>0){
+		for(int i=0;i<3 && sealSlot<0;i++){
+			if(!player->gearLevel(active[i])){
+				sealSlot=i;
+			}
+		}
+	}
 	for(int i=0;i<3;i++){
-		bool owned=player->gearLevel(active[i])>0;
-		items[i]->_gearType=owned ? active[i] : None;
+		gearType type=i==sealSlot ? gear11 : active[i];
+		bool owned=player->gearLevel(type)>0;
+		gearType shown=owned ? type : None;
+		bool changed=items[i]->_gearType!=shown;
+		items[i]->_gearType=shown;
 		items[i]->_isLock=!owned;
 		items[i]->setVisible(owned);
 		if(items[i]->markSprite){
 			items[i]->markSprite->setVisible(owned);
 		}
-		items[i]->setCD(CCString::createWithFormat("%d",int(player->gearCooldown(active[i])*1000)));
+		int cd=int(player->gearCooldown(type)*1000);
+		if(!items[i]->getCD() || items[i]->getCD()->intValue()!=cd){
+			items[i]->setCD(CCString::createWithFormat("%d",cd));
+			items[i]->_isColdChanged=true;  // rebuild the freeze animation for the new length
+		}
+		items[i]->setSpriteFrame(i==sealSlot ? "item11.png" : images[i]);
+		// The cooldown belongs to the gear: when this button now shows another gear
+		// (or none, after a sale), drop what it showed and pick up that gear's own
+		if(changed){
+			items[i]->resumeCooldown(owned ? player->gearCooldownLeft(type) : 0);
+		}
 	}
 }
 
@@ -825,30 +849,36 @@ void HudLayer::setReport(const char* name1, const char* name2,int killNum){
 
 
 void HudLayer::setBuffDisplay(const char* buffName, float buffStayTime){
-
-	
 	// Only some heroes have a buff icon in UI.plist (e.g. Sakura_hBuff.png); the buff itself still applies.
+	showBuffIcon(CCString::createWithFormat("%s_%s.png",_delegate->currentPlayer->getCharacter()->getCString(),buffName)->getCString(),buffStayTime);
+}
+
+void HudLayer::showBuffIcon(const char* frameName, float buffStayTime){
+
 	// Look the frame up first: createWithSpriteFrameName() asserts on a missing frame in Debug builds.
-	CCSpriteFrame* buffFrame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_%s.png",_delegate->currentPlayer->getCharacter()->getCString(),buffName)->getCString());
+	CCSpriteFrame* buffFrame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(frameName);
 	if(!buffFrame){
 		return;
 	}
 	CCSprite* buffSprite=CCSprite::createWithSpriteFrame(buffFrame);
 	buffSprite->setAnchorPoint(ccp(0,0));
 	buffSprite->setPosition(ccp(8,item1Button->getPositionY()+76-28*_buffCount));
+	// buff icons are 25x25; a bigger frame (a gear icon) is scaled down, its countdown is not
+	float iconScale=std::min(1.0f,25/buffSprite->getContentSize().width);
+	buffSprite->setScale(iconScale);
 	if(buffStayTime !=0){
 		if(_buffCount==0){
 
 			bcdLabel1=CCLabelBMFont::create(CCString::createWithFormat("%d",(int)buffStayTime)->getCString(),"Fonts/1.fnt");
-			bcdLabel1->setScale(0.35f);
-			bcdLabel1->setPosition(ccp(5,5));
+			bcdLabel1->setScale(0.35f/iconScale);
+			bcdLabel1->setPosition(ccp(5/iconScale,5/iconScale));
 			bcdLabel1->setAnchorPoint(ccp(0.5,0.5));
 			buffSprite->addChild(bcdLabel1);
 			this->schedule(schedule_selector(HudLayer::updateBuffDisplay),1.0f);
 		}else{
 			bcdLabel2=CCLabelBMFont::create(CCString::createWithFormat("%d",(int)buffStayTime)->getCString(),"Fonts/1.fnt");
-			bcdLabel2->setScale(0.35f);
-			bcdLabel2->setPosition(ccp(5,5));
+			bcdLabel2->setScale(0.35f/iconScale);
+			bcdLabel2->setPosition(ccp(5/iconScale,5/iconScale));
 			bcdLabel2->setAnchorPoint(ccp(0.5,0.5));
 			buffSprite->addChild(bcdLabel2);
 			this->schedule(schedule_selector(HudLayer::updateBuffDisplay2),1.0f);

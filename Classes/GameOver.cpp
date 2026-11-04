@@ -542,14 +542,14 @@ void GameOver::listResult(){
 	
 
 	if(Cheats<=10){
-		CCLabelBMFont* version=CCLabelBMFont::create("The Last Fixed","Fonts/1.fnt");
+		CCLabelBMFont* version=CCLabelBMFont::create("Beta Version","Fonts/1.fnt");
 		version->setPosition(ccp(winSize.width/2+94,result_bg->getPositionY()-result_bg->getContentSize().height/2+6));
 		version->setScale(0.3f);
 		this->addChild(version,5);
 
 	}else{
 
-		CCLabelBMFont* version=CCLabelBMFont::create("The Carnival","Fonts/1.fnt");
+		CCLabelBMFont* version=CCLabelBMFont::create("Alt Version","Fonts/1.fnt");
 		version->setPosition(ccp(winSize.width/2+94,result_bg->getPositionY()-result_bg->getContentSize().height/2+6));
 		version->setScale(0.3f);
 		this->addChild(version,5);

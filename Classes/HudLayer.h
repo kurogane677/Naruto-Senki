@@ -107,6 +107,8 @@ public:
 	void	setReport(const char* name1, const char* name2,int killNum);
 	void	setReportCache();
 	void    setBuffDisplay(const char* buffName,float buffStayTime);
+	// Buff icon with a countdown on the left of the screen, from any sprite frame
+	void    showBuffIcon(const char* frameName,float buffStayTime);
 	void	clearSPCReport();
 	void	clearBuffDisplay(CCNode* sender);
 	
