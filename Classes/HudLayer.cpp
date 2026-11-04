@@ -639,47 +639,29 @@ void HudLayer::updateGears(){
 	}
 	
 
-	if(_delegate->currentPlayer->getGearArray() && _delegate->currentPlayer->getGearArray()->count()>0){
-		CCObject* pObject;
-		int i=0;
-		CCARRAY_FOREACH(_delegate->currentPlayer->getGearArray(),pObject){
-			CCString* tmpGear=(CCString*) pObject;
-			if(tmpGear->intValue()!=gear1Button->_gearType && i==0){
-				gear1Button->setGearType(tmpGear->intValue());
-			}else if(tmpGear->intValue()!=gear2Button->_gearType && i==1){
-				gear2Button->setGearType(tmpGear->intValue());
-			}else if(tmpGear->intValue()!=gear3Button->_gearType && i==2){
-				gear3Button->setGearType(tmpGear->intValue());
-			}
-
-			if(tmpGear->intValue()==6 && this->getItem2Button()->_gearType==None){
-				this->getItem2Button()->_gearType=gearType(tmpGear->intValue());
-				this->getItem2Button()->setVisible(true);
-				this->getItem2Button()->_isLock=false;
-			}else if(tmpGear->intValue()==0 && this->getItem3Button()->_gearType==None){
-				
-				
-				this->getItem3Button()->_gearType=gearType(tmpGear->intValue());
-				this->getItem3Button()->_isLock=false;
-				this->getItem3Button()->setVisible(true);
-
-			}else if(tmpGear->intValue()==3 && this->getItem4Button()->_gearType==None){
-
-				this->getItem4Button()->setVisible(true);
-				this->getItem4Button()->_gearType=gearType(tmpGear->intValue());
-				this->getItem4Button()->_isLock=false;
-			}
-			
-
-
-			
-			i++;
-
+	// Sync with the shop: a gear can be bought, upgraded (shorter cooldown) or sold
+	Hero* player=_delegate->currentPlayer;
+	CCArray* gears=player->getGearArray();
+	ActionButton* slots[]={gear1Button,gear2Button,gear3Button};
+	for(int i=0;i<3;i++){
+		int type=gears && i<(int)gears->count() ? ((CCString*)gears->objectAtIndex(i))->intValue() : None;
+		if(type!=slots[i]->_gearType){
+			slots[i]->setGearType(type);
 		}
 	}
 
-	
-	
+	ActionButton* items[]={getItem2Button(),getItem3Button(),getItem4Button()};
+	gearType active[]={gear06,gear00,gear03};
+	for(int i=0;i<3;i++){
+		bool owned=player->gearLevel(active[i])>0;
+		items[i]->_gearType=owned ? active[i] : None;
+		items[i]->_isLock=!owned;
+		items[i]->setVisible(owned);
+		if(items[i]->markSprite){
+			items[i]->markSprite->setVisible(owned);
+		}
+		items[i]->setCD(CCString::createWithFormat("%d",int(player->gearCooldown(active[i])*1000)));
+	}
 }
 
 

@@ -138,11 +138,15 @@ void report(GameLayer* game, bool playerWon)
         }
         if (game->_isHardCoreGame)
         {
+            // id:level, e.g. gear[3:2 7:1]
             line += " gear[";
             CCObject* g;
             CCARRAY_FOREACH(unit->getGearArray(), g)
             {
-                line += ((CCString*)g)->getCString();
+                int id = ((CCString*)g)->intValue();
+                if (line.back() != '[')
+                    line += " ";
+                line += ax::StringUtils::format("%d:%d", id, unit->gearLevel(gearType(id)));
             }
             line += "]";
         }

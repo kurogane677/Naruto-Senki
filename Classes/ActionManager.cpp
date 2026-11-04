@@ -30,7 +30,11 @@ ActionManager::ActionManager(void)
 	isAttackGainCKR=false;
 	isGearCD=false;
 	isPofang=false;
-	isHujia=false;
+	gearChakraOnAttack=0;
+	gearArmor=0;
+	gearLifesteal=0;
+	gearSummonBuff=0;
+	gearPierce=false;
 	battleCondiction=0;
 	hearts=0;
 	isHurtingTower=false;
@@ -1381,7 +1385,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 			realValue=attackValue+criticalValue;
 		}else if((attacker->getMaster() ||
 			attacker->getActionState()==ACTION_STATE_ATTACK)
-			&& attacker->isPofang){
+			&& (attacker->isPofang || attacker->gearPierce)){
 			realValue=attackValue+criticalValue;
 		}else{
 			if(attackValue-_gardValue<=0){
@@ -1390,9 +1394,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 				
 				realValue=attackValue-_gardValue+criticalValue;
 				float jianshang=0;
-				if(isHujia){
-					jianshang+=0.25; 
-				}
+				jianshang+=gearArmor/100.0f;
 
 				if(this->isCharacter("Kakuzu") && _skillChangeBuffValue){
 					jianshang+=0.25; 
@@ -1428,6 +1430,11 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		this->setHP(0);
 	}else{
 		this->setHP(this->getHP()-realValue);
+	}
+
+	// gear09: the hero's own normal attacks heal it
+	if(attacker->gearLifesteal && !attacker->getMaster() && attacker->getActionState()==ACTION_STATE_ATTACK){
+		attacker->healHP(int(realValue)*attacker->gearLifesteal/100);
 	}
 	
 	if(this->role()==Role::Clone){
@@ -1596,7 +1603,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 					gainValue=realValue*65/100;
 				}			
 			}else if(currentAttacker->isAttackGainCKR){
-				gainValue=realValue*15/100;
+				gainValue=realValue*currentAttacker->gearChakraOnAttack/100;
 			}
 
 			if(gainValue!=0){
@@ -1917,92 +1924,211 @@ void ActionManager::setItem(abType type){
 
 }
 
+// Gear stats by level (index 0 = Lv1). value2 is a second stat where a gear has one.
+struct GearSpec{ int cost; int value[3]; int value2[3]; };
+static const GearSpec kGearSpecs[None]={
+	{ 500,{15,12,9}},              // gear00 speed + stealth: cooldown (s)
+	{1000,{25,40,60}},             // gear01 chakra when hit +%
+	{1000,{15,20,25}},             // gear02 chakra from own attacks, % of damage
+	{ 500,{15,12,9}},              // gear03 trap: cooldown (s)
+	{1000,{160,240,320}},          // gear04 normal attack +, pierces defence
+	{1000,{5,6,7}},                // gear05 skill cooldown -s, higher critical
+	{ 500,{15,12,9}},              // gear06 substitution: cooldown (s)
+	{1000,{6000,7500,9000}},       // gear07 potion heal (base 3000)
+	{1000,{6000,8000,10000},{25,30,35}}, // gear08 max HP +, damage taken -%
+	{1000,{10,15,20}},             // gear09 normal attacks heal % of damage
+	{1000,{30,45,60}},             // gear10 summons and clones HP and attack +%
+};
+static const int kGearMaxLevel=3;
+
 int ActionManager::gearCost(gearType type){
-	return (type==gear00 || type==gear03 || type==gear06) ? 500 : 1000;
+	return type<None ? kGearSpecs[type].cost : 0;
+}
+
+// Lv1->2 costs the price, Lv2->3 twice the price
+int ActionManager::gearUpgradeCost(gearType type,int level){
+	return gearCost(type)*level;
+}
+
+// Half of everything paid: price, plus price at Lv2, plus twice the price at Lv3
+int ActionManager::gearSellValue(gearType type,int level){
+	int paid=0;
+	for(int lv=1;lv<=level;lv++){
+		paid+=lv==1 ? gearCost(type) : gearUpgradeCost(type,lv-1);
+	}
+	return paid/2;
+}
+
+int ActionManager::gearValue(gearType type,int level,int which){
+	if(type>=None || level<1){
+		return 0;
+	}
+	const GearSpec& spec=kGearSpecs[type];
+	return which ? spec.value2[level-1] : spec.value[level-1];
+}
+
+float ActionManager::gearCooldown(gearType type) const{
+	return float(gearValue(type,std::max(gearLevel(type),1)));
 }
 
 bool ActionManager::setGear(gearType type){
 
 	int cost=gearCost(type);
-	
-	if( this->getGearArray()->count()<=2 && this->getCoin()>=cost){
-		CCString* gearItem=CCString::createWithFormat("%d",gearType(type));
-		this->getGearArray()->addObject(gearItem);
-		
-		if(this->role()==Role::Player){
-			_delegate->getHudLayer()->offCoin(CCString::createWithFormat("%d",cost)->getCString());
-		}else{
-			this->minusCoin(cost);
-		}
-
-		switch (type){
-		case gear00:
-			this->_isCanGear00=true;
-			break;
-		case gear01:
-			this->gearCKRValue=25;
-			break;
-		case gear02:
-			this->isAttackGainCKR=true;
-			break;
-		case gear03:
-			this->_isCanGear03=true;
-			break;
-		case gear04:
-
-			if(this->gettempAttackValue1()){
-				this->settempAttackValue1(this->gettempAttackValue1()+160);
-			}
-			this->setnAttackValue(this->getnAttackValue()+160);
-			this->isPofang=true;
-
-			break;
-		case gear05:
-
-			
-			this->isGearCD=true;
-			
-			reduceSkillCD(5);
-
-			if(this->role()==Role::Player){
-				this->_delegate->getHudLayer()->skill1Button->setCD(CCString::createWithFormat("%d",this->_sattackcoldDown1*1000));
-				this->_delegate->getHudLayer()->skill2Button->setCD(CCString::createWithFormat("%d",this->_sattackcoldDown2*1000));
-				this->_delegate->getHudLayer()->skill3Button->setCD(CCString::createWithFormat("%d",this->_sattackcoldDown3*1000));
-				
-				this->_delegate->getHudLayer()->skill1Button->_isColdChanged=true;
-				this->_delegate->getHudLayer()->skill2Button->_isColdChanged=true;
-				this->_delegate->getHudLayer()->skill3Button->_isColdChanged=true;
-			}
-				
-			break;
-		case gear06:
-			this->_isCanGear06=true;
-			break;
-		case gear07:
-			gearRecoverValue=3000;
-			if(this->role()==Role::Player){
-				this->_delegate->getHudLayer()->item1Button->setCD(CCString::createWithFormat("%d",3000));
-				this->_delegate->getHudLayer()->item1Button->_isColdChanged=true;
-			}
-			break;
-		case gear08:
-			int tempMaxHP=this->getMaxHP();
-			tempMaxHP+=6000;
-			this->setMaxHP(tempMaxHP);
-			if(_hpBar){
-				_hpBar->loseHP(this->getHpPercent());
-			}
-			this->isHujia=true;
-
-			break;
-		}
-
-		return true;
-
-	}else{
+	if(type>=None || _gearLevel[type] || this->getGearArray()->count()>=3 || this->getCoin()<cost){
 		return false;
 	}
 
+	if(this->role()==Role::Player){
+		_delegate->getHudLayer()->offCoin(CCString::createWithFormat("%d",cost)->getCString());
+	}else{
+		this->minusCoin(cost);
+	}
+	this->getGearArray()->addObject(CCString::createWithFormat("%d",gearType(type)));
+	_gearLevel[type]=1;
+
+	switch (type){
+	case gear00:
+		this->_isCanGear00=true;
+		break;
+	case gear03:
+		this->_isCanGear03=true;
+		break;
+	case gear06:
+		this->_isCanGear06=true;
+		break;
+	default:
+		break;
+	}
+	applyGears();
+	return true;
+}
+
+bool ActionManager::upgradeGear(gearType type){
+
+	int level=gearLevel(type);
+	if(level<1 || level>=kGearMaxLevel){
+		return false;
+	}
+	int cost=gearUpgradeCost(type,level);
+	if(this->getCoin()<cost){
+		return false;
+	}
+	if(this->role()==Role::Player){
+		_delegate->getHudLayer()->offCoin(CCString::createWithFormat("%d",cost)->getCString());
+	}else{
+		this->minusCoin(cost);
+	}
+	_gearLevel[type]=level+1;
+	applyGears();
+	return true;
+}
+
+bool ActionManager::sellGear(gearType type){
+
+	int level=gearLevel(type);
+	if(level<1){
+		return false;
+	}
+	CCObject* pObject;
+	CCARRAY_FOREACH(this->getGearArray(),pObject){
+		if(((CCString*)pObject)->intValue()==int(type)){
+			this->getGearArray()->removeObject(pObject);
+			break;
+		}
+	}
+	int refund=gearSellValue(type,level);
+	this->addCoin(refund);
+	if(this->role()==Role::Player){
+		_delegate->setCoin(CCString::createWithFormat("%d",refund)->getCString());
+	}
+	_gearLevel[type]=0;
+
+	switch (type){
+	case gear00:
+		this->unschedule(schedule_selector(ActionManager::enableGear00));
+		this->_isCanGear00=false;
+		break;
+	case gear03:
+		this->unschedule(schedule_selector(ActionManager::enableGear03));
+		this->_isCanGear03=false;
+		break;
+	case gear06:
+		this->unschedule(schedule_selector(ActionManager::enableGear06));
+		this->_isCanGear06=false;
+		break;
+	default:
+		break;
+	}
+	applyGears();
+	return true;
+}
+
+void ActionManager::applyGears(){
+
+	gearCKRValue=gearValue(gear01,gearLevel(gear01));
+	gearChakraOnAttack=gearValue(gear02,gearLevel(gear02));
+	isAttackGainCKR=gearChakraOnAttack>0;
+	gearPierce=gearLevel(gear04)>0;
+	gearRecoverValue=gearLevel(gear07) ? gearValue(gear07,gearLevel(gear07))-3000 : 0;
+	gearArmor=gearValue(gear08,gearLevel(gear08),1);
+	gearLifesteal=gearValue(gear09,gearLevel(gear09));
+	gearSummonBuff=gearValue(gear10,gearLevel(gear10));
+
+	int attack=gearValue(gear04,gearLevel(gear04));
+	if(attack!=_gearAttack){
+		if(this->gettempAttackValue1()){
+			this->settempAttackValue1(this->gettempAttackValue1()+attack-_gearAttack);
+		}
+		this->setnAttackValue(this->getnAttackValue()+attack-_gearAttack);
+		_gearAttack=attack;
+	}
+
+	int hp=gearValue(gear08,gearLevel(gear08));
+	if(hp!=_gearHP){
+		this->setMaxHP(this->getMaxHP()+hp-_gearHP);
+		if(this->getHP()>this->getMaxHP()){
+			this->setHP(this->getMaxHP());
+		}
+		_gearHP=hp;
+		if(_hpBar){
+			_hpBar->loseHP(this->getHpPercent());
+		}
+		if(this->role()==Role::Player){
+			_delegate->setHPLose(this->getHpPercent());
+		}
+	}
+
+	isGearCD=gearLevel(gear05)>0;
+	applyGearCD();
+	updateGearHud();
+}
+
+// Gives back the current skill cooldown cut, then cuts by the gear05 level. A cut never
+// takes a cooldown below 1s, so the amount actually taken is kept per skill.
+void ActionManager::applyGearCD(){
+	unsigned int* cds[]={&_sattackcoldDown1,&_sattackcoldDown2,&_sattackcoldDown3};
+	unsigned int cut=gearValue(gear05,gearLevel(gear05));
+	for(int i=0;i<3;i++){
+		*cds[i]+=_gearCDCut[i];
+		_gearCDCut[i]=*cds[i]>cut+1 ? cut : *cds[i]-1;
+		*cds[i]-=_gearCDCut[i];
+	}
+}
+
+void ActionManager::updateGearHud(){
+	if(this->role()!=Role::Player){
+		return;
+	}
+	HudLayer* hud=_delegate->getHudLayer();
+	hud->skill1Button->setCD(CCString::createWithFormat("%d",this->_sattackcoldDown1*1000));
+	hud->skill2Button->setCD(CCString::createWithFormat("%d",this->_sattackcoldDown2*1000));
+	hud->skill3Button->setCD(CCString::createWithFormat("%d",this->_sattackcoldDown3*1000));
+	hud->skill1Button->_isColdChanged=true;
+	hud->skill2Button->_isColdChanged=true;
+	hud->skill3Button->_isColdChanged=true;
+
+	hud->item1Button->setCD(CCString::createWithFormat("%d",gearLevel(gear07) ? 3000 : 5000));
+	hud->item1Button->_isColdChanged=true;
 }
 
 void ActionManager::useGear(gearType type){
@@ -2025,7 +2151,7 @@ void ActionManager::useGear(gearType type){
 					_speedItemEffect=Effect::create("speedUp",this);
 					this->addChild(_speedItemEffect);
 
-					this->scheduleOnce(schedule_selector(ActionManager::enableGear00),15.0f);
+					this->scheduleOnce(schedule_selector(ActionManager::enableGear00),gearCooldown(gear00));
 
 					//隐身
 					if(role()==Role::Player || this->group()==_delegate->currentPlayer->group()){
@@ -2060,10 +2186,10 @@ void ActionManager::useGear(gearType type){
 		this->setMon(this,(void*)tmpValue);
 	
 
-		this->scheduleOnce(schedule_selector(ActionManager::enableGear03),15.0f);
+		this->scheduleOnce(schedule_selector(ActionManager::enableGear03),gearCooldown(gear03));
 	}else if(type==gear06){
 		_isCanGear06=false;
-		this->scheduleOnce(schedule_selector(ActionManager::enableGear06),15.0f);
+		this->scheduleOnce(schedule_selector(ActionManager::enableGear06),gearCooldown(gear06));
 
 		
 		if(!_isWudi && !_isBati){
@@ -2188,6 +2314,19 @@ void ActionManager::enableGear06(float dt){
 
 void ActionManager::addCoin(int num){
 	this->setCoin(this->getCoin()+num);
+}
+
+void ActionManager::healHP(int value){
+	if(value<=0 || _hp<=0){
+		return;
+	}
+	this->setHP(std::min(_hp+value,_maxHP));
+	if(_hpBar){
+		_hpBar->loseHP(this->getHpPercent());
+	}
+	if(this->role()==Role::Player){
+		_delegate->setHPLose(this->getHpPercent());
+	}
 }
 
 void ActionManager::minusCoin(int num){
@@ -5789,9 +5928,17 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	if(this->isPofang){
 		clone->isPofang=true;
 	}
+	clone->gearPierce=gearPierce;
+	clone->gearArmor=gearArmor;
 
-	if(isHujia){
-		clone->isHujia=true;
+	// gear10: the summoner's scroll makes summons and clones stronger
+	ActionManager* summoner=_master ? (ActionManager*)_master : this;
+	if(summoner->gearSummonBuff){
+		int buff=100+summoner->gearSummonBuff;
+		clone->setMaxHP(clone->getMaxHP()*buff/100);
+		clone->setHP(clone->getHP()*buff/100);
+		clone->setnAttackValue(clone->getnAttackValue()*buff/100);
+		clone->_hpBar->getHPBAR()->setScaleX(clone->getHpPercent());
 	}
 
 
@@ -6529,9 +6676,9 @@ void ActionManager::setTransform(){
 	_hpBar->loseHP(this->getHpPercent());
 	}
 	
-	if(isGearCD){
-		reduceSkillCD(5);
-	}
+	// setID loaded the new form's cooldowns, so the gear05 cut starts over
+	_gearCDCut[0]=_gearCDCut[1]=_gearCDCut[2]=0;
+	applyGearCD();
 
 	if(_role && role()==Role::Player){
 		_delegate->setHPLose(this->getHpPercent());
@@ -8051,14 +8198,6 @@ bool ActionManager::stepBack2(){
 
 }
 
-
-// Cooldowns are unsigned seconds: clamp instead of wrapping around.
-void ActionManager::reduceSkillCD(unsigned int seconds){
-	unsigned int* cds[]={&_sattackcoldDown1,&_sattackcoldDown2,&_sattackcoldDown3};
-	for(unsigned int* cd:cds){
-		*cd=*cd>seconds+1?*cd-seconds:1;
-	}
-}
 
 void ActionManager::setRole(CCString* role){
 	CC_SAFE_RETAIN(role);

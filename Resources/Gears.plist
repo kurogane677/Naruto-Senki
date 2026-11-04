@@ -212,6 +212,32 @@
                 <key>sourceSize</key>
                 <string>{34,34}</string>
             </dict>
+            <key>gear_09.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{130,440},{34,34}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{34,34}}</string>
+                <key>sourceSize</key>
+                <string>{34,34}</string>
+            </dict>
+            <key>gear_10.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{170,440},{34,34}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{34,34}}</string>
+                <key>sourceSize</key>
+                <string>{34,34}</string>
+            </dict>
             <key>gear_05.png</key>
             <dict>
                 <key>frame</key>

@@ -610,9 +610,24 @@ int AIController::gearReserve()
         _buildChosen = true;
     }
     int owned = _hero->getGearArray()->count();
-    if (owned >= 3 || owned >= (int)_build.size())
-        return 0;
-    return ActionManager::gearCost((gearType)_build[owned]);
+    if (owned < 3 && owned < (int)_build.size())
+        return ActionManager::gearCost((gearType)_build[owned]);
+    gearType up = nextUpgrade();
+    return up == None ? 0 : ActionManager::gearUpgradeCost(up, _hero->gearLevel(up));
+}
+
+// Once the build is bought, coin goes to upgrades: lowest level first, in build order
+gearType AIController::nextUpgrade()
+{
+    gearType best = None;
+    for (int id : _build)
+    {
+        gearType g = (gearType)id;
+        int level = _hero->gearLevel(g);
+        if (level >= 1 && level < 3 && (best == None || level < _hero->gearLevel(best)))
+            best = g;
+    }
+    return best;
 }
 
 void AIController::buyGear()
@@ -621,15 +636,19 @@ void AIController::buyGear()
     if (!_game->_isHardCoreGame || h->_isControled || h->getCoin() < 500)
         return;
     int owned = h->getGearArray()->count();
-    if (owned >= 3)
-        return;
     if (!_buildChosen)
     {
         _build = chooseBuild(*this);
         _buildChosen = true;
     }
-    if (owned < (int)_build.size())
+    if (owned < 3 && owned < (int)_build.size())
         h->setGear((gearType)_build[owned]);
+    else
+    {
+        gearType up = nextUpgrade();
+        if (up != None)
+            h->upgradeGear(up);
+    }
 }
 
 }  // namespace ai
