@@ -262,7 +262,8 @@ bool NetworkLayer::init(){
 			this->addChild(_heroName,5);
 
 
-			_selectImg=CCSprite::createWithSpriteFrameName("1p.png");
+			// HardCore picks COM1 and COM2 first, so the cursor starts as "COM"
+			_selectImg=CCSprite::createWithSpriteFrameName(_isHardCoreMode ? "com.png" : "1p.png");
 			_selectImg->setAnchorPoint(ccp(0,0));
 			SelectButton* pObject=(SelectButton*) selectArray->objectAtIndex(0);
 			_selectImg->setPosition(ccp(pObject->getPositionX()-2,pObject->getPositionY()-2));
@@ -485,6 +486,7 @@ void NetworkLayer::setSelected(CCObject* sender){
 
 			if(btn->_clickTime>=2){
 				_com2Select=_selectHero;
+				_selectImg->setSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("1p.png"));
 
 				this->getComLabel2()->stopAllActions();
 				this->getComLabel2()->setOpacity(255);
