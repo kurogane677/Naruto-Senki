@@ -613,11 +613,29 @@ void SkillLayer::updateSkillGroup(){
 	this->addChild(skillGroup,8);
 }
 
+// Skill descriptions come from Element/skills.xml (English) and are drawn with
+// Fonts/1.fnt. A hero without an entry there, e.g. a new mod hero, keeps its old
+// <hero>_label<n>.png image.
+static std::string skillText(const char* hero,sbtnType type){
+	static ax::ValueMap texts=ax::FileUtils::getInstance()->getValueMapFromFile("Element/skills.xml");
+	if(type==Unlock1 || type==Unlock2){
+		auto it=texts.find(type==Unlock1 ? "unlock1" : "unlock2");
+		return it!=texts.end() ? it->second.asString() : "";
+	}
+	auto it=texts.find(hero);
+	if(it==texts.end() || it->second.getType()!=ax::Value::Type::MAP){
+		return "";
+	}
+	ax::ValueMap& skills=it->second.asValueMap();
+	auto skill=skills.find(std::to_string((int)type-2));
+	return skill!=skills.end() ? skill->second.asString() : "";
+}
+
 void SkillLayer::setSkillExplain(sbtnType type){
 
 
 	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/select.mp3");
-	if(_skillExplain) _skillExplain->removeFromParent();
+	if(_skillExplain) _skillExplain->getParent()->removeFromParent();
 	CCString* imgPath=CCString::create("");
 	if(type==Unlock1){
 		imgPath=CCString::createWithFormat("fenglabel.png");
@@ -635,7 +653,15 @@ void SkillLayer::setSkillExplain(sbtnType type){
 	stencil->setAnchorPoint(ccp(0,0));
 	clipper->setStencil(stencil);
 	
-	_skillExplain=CCSprite::createWithSpriteFrameName(imgPath->getCString());
+	std::string text=skillText(selectHero,type);
+	if(text.empty() && CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(imgPath->getCString())){
+		_skillExplain=CCSprite::createWithSpriteFrameName(imgPath->getCString());
+	}else{
+		CCLabelBMFont* label=CCLabelBMFont::create(text.c_str(),"Fonts/1.fnt");
+		label->setScale(0.36f);
+		label->setPositionY(1);
+		_skillExplain=label;
+	}
 	_skillExplain->setAnchorPoint(ccp(0,0));
 	_skillExplain->setPositionX(10);
 	
@@ -658,7 +684,7 @@ void SkillLayer::update(float dt){
 
 	float currentX = _skillExplain->getPositionX();
 	float contentX = getContentSize().width;
-	float lableX = _skillExplain->getContentSize().width;
+	float lableX = _skillExplain->getBoundingBox().size.width;
 
 	if(_skillExplain->getPositionX()>=-lableX){
 		_skillExplain->setPositionX(_skillExplain->getPositionX()-0.6f);

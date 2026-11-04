@@ -27,7 +27,7 @@ public:
 	void initInterface();
 
 	CREATE_FUNC(SkillLayer);
-	CCSprite* _skillExplain;
+	CCNode* _skillExplain;
 
 
 	CCLabelBMFont* coinLabel;
