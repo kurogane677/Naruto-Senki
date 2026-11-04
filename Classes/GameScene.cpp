@@ -41,22 +41,16 @@ bool GameScene::init()
 
 		introLayer=CCLayer::create();
 
-		CCSprite* zakume=CCSprite::create("zakume.png");
-		zakume->setPosition(ccp(winSize.width/2,winSize.height/2));
+		CCSprite* yusrilcode=CCSprite::create("yusrilcode.png");
+		yusrilcode->setPosition(ccp(winSize.width / 2, winSize.height / 2));
 		CCActionInterval* fadein=CCFadeIn::create(1.5f);
 		CCActionInterval* fadeout=CCFadeOut::create(1.5f);
 		CCFiniteTimeAction *call=CCCallFunc::create(this,callfunc_selector(GameScene::onLogo));
 		CCAction* seq=CCSequence::create(fadein,fadeout,call,NULL);
-		introLayer->addChild(zakume);
-		zakume->runAction(seq);
+		introLayer->addChild(yusrilcode);
+		yusrilcode->runAction(seq);
 		this->addChild(introLayer);
 
-
-		//内部测试↓
-
-
-
-	
 		bRet=true;
 
 
@@ -73,7 +67,7 @@ void GameScene::onLogo(){
 	
 	logoMenu =CCMenu::create(logo_btn,NULL);
 	logoMenu->setPosition(ccp(winSize.width/2,winSize.height-logo_btn->getContentSize().height/2));
-	introLayer->addChild(logoMenu,3);
+	introLayer->addChild(logoMenu,0);
 
 
 	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/intro.ogg");
@@ -128,7 +122,7 @@ void GameScene::onFinish(){
 		pushMenu=CCMenu::create(btm_btn,NULL);
 
 
-		pushMenu->setPosition(ccp(winSize.width/2,winSize.height/2-100));
+		pushMenu->setPosition(ccp(winSize.width/2,winSize.height/2-122));
 		introLayer->addChild(pushMenu);
 		CCActionInterval* fade=CCFadeOut::create(0.5f);
 		CCActionInterval* seq=CCSequence::create(fade,fade->reverse(),NULL);

@@ -1,4 +1,4 @@
-package net.zakume.game;
+package com.yusrilcode.game;
 
 import android.app.Activity;
 import android.app.AlertDialog;

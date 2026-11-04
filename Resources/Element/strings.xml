@@ -1,92 +1,92 @@
 ﻿<dict>  
 		<key>AccountError</key>  
-		<string>账户或者密码错误</string>  
+		<string>Incorrect username or password</string>  
 		<key>ServerError</key>  
-		<string>无法连接到服务器</string>  
+		<string>Unable to connect to the server</string>  
 		<key>ServerMainten</key>  
-		<string>联网服务已经关闭</string>  
+		<string>The online service has been closed.</string>  
 		<key>VersionError</key>  
-		<string>您的游戏版本不是最新的</string>  
+		<string>Your version of the game is not up to date.</string>  
 		<key>AccountBaned</key>  
-		<string>设备账号存在违规记录已被封禁</string>  
+		<string>The device account has been suspended due to a history of breaches.</string>  
 		<key>AccountDisable</key>  
-		<string>账户未激活</string>  
+		<string>Your account has not been activated</string>  
 		<key>LoginSuccess</key>  
-		<string>登陆成功，欢迎开启火战之旅</string>  
+		<string>You have logged in successfully. Welcome to your Fire War adventure.</string>  
 		<key>LoginDuplicate</key>  
-		<string>您已经登陆</string>  	
+		<string>You are already logged in</string>  	
 		<key>LoginPlease</key>  
-		<string>请先登录</string>  
+		<string>Please log in first.</string>  
 		<key>UploadSuccess</key>  
-		<string>提交战绩成功</string>  
+		<string>Success to submit results</string>  
 		<key>UploadError</key>  
-		<string>提交战绩失败</string>  
+		<string>Failed to submit results</string>  
 		<key>RankingDetail</key>
-		<string>您位于本排行的第</string>
+		<string>Your position in this ranking is</string>
 		<key>GroupDetail</key>
-		<string>您的组织位于本排行的第</string>
+		<string>Your organisation is ranked</string>
 		<key>RankingDetail2</key>
-		<string>位</string>    
+		<string>place</string>    
 		<key>RankingNull</key>
-		<string>谨此纪念为火战做出杰出贡献的玩家</string>  
+		<string>Players who have made outstanding contributions.</string>  
 		<key>RankingNull2</key>
-		<string>谨此纪念为火战挥洒全部热情的玩家</string>  
+		<string>Players who have devoted their entire passion.</string>  
 		<key>DeviceError</key>
-		<string>今日重复登录设备</string>  
+		<string>Devices that have logged in repeatedly today</string>  
 		<key>SeachTips</key>  
-		<string>请输入组织ID</string>  
+		<string>Please enter your organisation ID</string>  
 		<key>CoinError1</key>  
-		<string>金币不足6000</string>  
+		<string>Fewer than 6,000 gold coins</string>  
 		<key>CoinError2</key>  
-		<string>金币不足12000</string>  
+		<string>Fewer than 12,000 gold coins</string>  
 		<key>CPError1</key>  
-		<string>创建组织需达到2000贡献值</string>  
+		<string>You must have 2,000 contribution points to create an organisation.</string>  
 		<key>CPError2</key>  
-		<string>使用忍牌需达到3000贡献值</string>  
+		<string>You must have 3,000 contribution points to use the Shinobi card.</string>  
 		<key>InputEmpty</key>  
-		<string>输入项不能为空</string> 
+		<string>The input field must not be left blank</string> 
 		<key>GroupDuplicate</key>  
-		<string>组织名已经存在</string> 
+		<string>The organisation name already exists</string> 
 		<key>GroupNotExist</key>  
-		<string>组织已经解散</string> 
+		<string>The organisation has been dissolved</string> 
 		<key>GroupNameLength</key>  
-		<string>组织长度错误</string> 
+		<string>Organisation length error</string> 
 		<key>GroupNameError</key>  
-		<string>组织包含非法字符</string> 
+		<string>The organisation contains invalid characters</string> 
 		<key>GPWError</key>  
-		<string>组织密码错误</string> 
+		<string>Incorrect organisation password</string> 
 		<key>GroupFull</key>  
-		<string>组织已经满员</string> 
+		<string>The organisation is already at full capacity</string> 
 		<key>GroupNull</key>  
-		<string>您尚未加入组织</string> 
+		<string>You have not yet joined the organisation</string> 
 		<key>GroupAccess</key>  
-		<string>组织加入成功</string> 
+		<string>The organisation has been successfully added</string> 
 		<key>GroupSuccessed</key>  
-		<string>创建成功</string> 
+		<string>Created successfully</string> 
 		<key>QuitSuccessed</key>  
-		<string>退出组织成功</string> 
+		<string>Withdrawal from the organisation successful</string> 
 		<key>DissovleSuccessed</key>  
-		<string>退出组织成功</string> 
+		<string>Withdrawal from the organisation successful</string> 
 		<key>KickSuccessed</key>  
-		<string>已踢出成功</string> 
+		<string>Kicked out successfully</string> 
 		<key>KickFailed</key>  
-		<string>该成员已经不在组织</string> 
+		<string>This member is no longer part of the organisation</string> 
 		<key>EmptyGPW</key>  
-		<string>已取消密码</string> 
+		<string>Password has been removed</string> 
 		<key>UpdateGPW</key>  
-		<string>已添加密码</string> 
+		<string>A password has been added</string> 
 		<key>UpdateNotice</key>  
-		<string>公告更新</string> 
+		<string>Announcement Update</string> 
 		<key>ManagementFailed</key>  
-		<string>操作失败</string> 
+		<string>Operation failed</string> 
 		<key>ManagementSuccessed</key>  
-		<string>操作成功</string> 
+		<string>Operation successful</string> 
 		<key>ComingSoon</key>  
-		<string>组织任务即将开放</string> 
+		<string>Organisational tasks will open shortly</string> 
 		<key>LimitedChar</key>  
-		<string>无法选择该角色</string> 
+		<string>This character cannot be selected</string> 
 		<key>HardCoreTips</key>  
-		<string>困难模式：随机地图，开启守护忍与忍具，确定进入吗？</string> 
+		<string>Hard Mode: Randomised map, Guardian Ninjas and ninja tools enabled. Are you sure you wish to proceed?</string> 
 		<key>Notice</key>  
-		<string>   火影战记已于2016年12月3日宣布停止更新，感谢玩家一路来的支持</string>  
+		<string>Join our discord server https://discord.gg/cEqU3AuyV</string>  
 </dict>  
