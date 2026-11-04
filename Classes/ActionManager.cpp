@@ -79,6 +79,7 @@ ActionManager::ActionManager(void)
 	_isCanGear00=false;
 	_isCanGear03=false;
 	_isCanGear06=false;
+	_isCanGear11=false;
 
 
 	enemyCombatPoint=0;
@@ -1426,6 +1427,27 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		
 	}
 
+	// gear11: while the seal is up, damage taken is cut and part of the full hit
+	// bounces back to a hero or summon attacker. The bounce never kills and is not
+	// a hit itself, so it is not reflected again and does not trigger lifesteal.
+	if(_gearSealTaken){
+		unsigned int fullHit=realValue;
+		realValue=realValue*_gearSealTaken/100;
+		ActionManager* source=attacker->role()==Role::Bullet && attacker->getMaster() ? (ActionManager*)attacker->getMaster() : attacker;
+		int bounce=int(fullHit)*gearValue(gear11,gearLevel(gear11),1)/100;
+		bool canBounce=source->role()==Role::Player || source->role()==Role::Com || source->role()==Role::Clone ||
+			source->role()==Role::Summon || source->role()==Role::Kuilei;
+		if(bounce>0 && canBounce && source!=this && source->getHP()>1){
+			source->setHP(std::max(1,source->getHP()-bounce));
+			if(source->_hpBar){
+				source->_hpBar->loseHP(source->getHpPercent());
+			}
+			if(source->role()==Role::Player){
+				_delegate->setHPLose(source->getHpPercent());
+			}
+		}
+	}
+
 	if (_hp<(int)realValue){
 		this->setHP(0);
 	}else{
@@ -1935,10 +1957,14 @@ static const GearSpec kGearSpecs[None]={
 	{1000,{5,6,7}},                // gear05 skill cooldown -s, higher critical
 	{ 500,{15,12,9}},              // gear06 substitution: cooldown (s)
 	{1000,{6000,7500,9000}},       // gear07 potion heal (base 3000)
-	{1000,{6000,8000,10000},{25,30,35}}, // gear08 max HP +, damage taken -%
+	{1000,{3000,4000,6000},{25,30,35}}, // gear08 max HP +, damage taken -%
 	{1000,{10,15,20}},             // gear09 normal attacks heal % of damage
 	{1000,{30,45,60}},             // gear10 summons and clones HP and attack +%
+	{1000,{70,65,50},{0,5,15}},    // gear11 seal: damage still taken %, % bounced back
 };
+// gear11's spec holds its two effects, so its cooldown (s) has a table of its own
+static const int kSealCooldown[3]={30,25,15};
+static const float kSealDuration=4;
 static const int kGearMaxLevel=3;
 
 int ActionManager::gearCost(gearType type){
@@ -1968,6 +1994,9 @@ int ActionManager::gearValue(gearType type,int level,int which){
 }
 
 float ActionManager::gearCooldown(gearType type) const{
+	if(type==gear11){
+		return float(kSealCooldown[std::max(gearLevel(type),1)-1]);
+	}
 	return float(gearValue(type,std::max(gearLevel(type),1)));
 }
 
@@ -1995,6 +2024,9 @@ bool ActionManager::setGear(gearType type){
 		break;
 	case gear06:
 		this->_isCanGear06=true;
+		break;
+	case gear11:
+		this->_isCanGear11=true;
 		break;
 	default:
 		break;
@@ -2026,7 +2058,8 @@ bool ActionManager::upgradeGear(gearType type){
 bool ActionManager::sellGear(gearType type){
 
 	int level=gearLevel(type);
-	if(level<1){
+	// an active gear can't be sold while it is cooling down
+	if(level<1 || gearCooldownLeft(type)>0){
 		return false;
 	}
 	CCObject* pObject;
@@ -2055,6 +2088,12 @@ bool ActionManager::sellGear(gearType type){
 	case gear06:
 		this->unschedule(schedule_selector(ActionManager::enableGear06));
 		this->_isCanGear06=false;
+		break;
+	case gear11:
+		this->unschedule(schedule_selector(ActionManager::enableGear11));
+		this->unschedule(schedule_selector(ActionManager::disableGear11));
+		this->disableGear11(0);
+		this->_isCanGear11=false;
 		break;
 	default:
 		break;
@@ -2152,6 +2191,7 @@ void ActionManager::useGear(gearType type){
 					this->addChild(_speedItemEffect);
 
 					this->scheduleOnce(schedule_selector(ActionManager::enableGear00),gearCooldown(gear00));
+					this->startGearCooldown(gear00);
 
 					//隐身
 					if(role()==Role::Player || this->group()==_delegate->currentPlayer->group()){
@@ -2187,9 +2227,25 @@ void ActionManager::useGear(gearType type){
 	
 
 		this->scheduleOnce(schedule_selector(ActionManager::enableGear03),gearCooldown(gear03));
+		this->startGearCooldown(gear03);
+	}else if(type==gear11){
+		if(!_isCanGear11 || this->getActionState()==ACTION_STATE_DEAD){
+			return;
+		}
+		_isCanGear11=false;
+		this->scheduleOnce(schedule_selector(ActionManager::enableGear11),gearCooldown(gear11));
+		this->startGearCooldown(gear11);
+		_gearSealTaken=gearValue(gear11,gearLevel(gear11));
+		this->setColor(ccc3(150,230,150));
+		if(this->role()==Role::Player){
+			_delegate->getHudLayer()->showBuffIcon("gear_11.png",kSealDuration);
+		}
+		this->unschedule(schedule_selector(ActionManager::disableGear11));
+		this->scheduleOnce(schedule_selector(ActionManager::disableGear11),kSealDuration);
 	}else if(type==gear06){
 		_isCanGear06=false;
 		this->scheduleOnce(schedule_selector(ActionManager::enableGear06),gearCooldown(gear06));
+		this->startGearCooldown(gear06);
 
 		
 		if(!_isWudi && !_isBati){
@@ -2308,6 +2364,35 @@ void ActionManager::enableGear03(float dt){
 }
 void ActionManager::enableGear06(float dt){
 	_isCanGear06=true;
+}
+
+void ActionManager::enableGear11(float dt){
+	_isCanGear11=true;
+}
+
+void ActionManager::startGearCooldown(gearType type){
+	_gearCDLeft[type]=gearCooldown(type);
+	if(!this->isScheduled(schedule_selector(ActionManager::updateGearCooldowns))){
+		this->schedule(schedule_selector(ActionManager::updateGearCooldowns),0.1f);
+	}
+}
+
+void ActionManager::updateGearCooldowns(float dt){
+	bool cooling=false;
+	for(int i=0;i<None;i++){
+		if(_gearCDLeft[i]>0){
+			_gearCDLeft[i]=std::max(0.0f,_gearCDLeft[i]-dt);
+			cooling=cooling || _gearCDLeft[i]>0;
+		}
+	}
+	if(!cooling){
+		this->unschedule(schedule_selector(ActionManager::updateGearCooldowns));
+	}
+}
+
+void ActionManager::disableGear11(float dt){
+	_gearSealTaken=0;
+	this->setColor(ccWHITE);
 }
 
 

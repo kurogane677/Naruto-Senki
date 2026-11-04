@@ -148,6 +148,8 @@ bool ActionButton::isCanClick(){
 			
 					 }else if( this->_gearType== gear03){
 						 return true;
+					 }else if(this->_gearType==gear11 && _delegate->_delegate->currentPlayer->getActionState()!=ACTION_STATE_DEAD){
+						 return true;
 					 }
 				 }
 
@@ -246,6 +248,38 @@ void ActionButton::setGearType(int tmpGearType){
 		this->gearSign=NULL;
 	}
 }
+void ActionButton::clearCooldown(){
+	this->unschedule(schedule_selector(ActionButton::updateCDLabel));
+	this->setTimeCout(NULL);
+	if(cdLabel){
+		cdLabel->removeFromParent();
+		cdLabel=NULL;
+	}
+	if(markSprite){
+		markSprite->stopAllActions();
+		markSprite->setPercentage(0);
+	}
+}
+
+void ActionButton::resumeCooldown(float secondsLeft){
+	this->clearCooldown();
+	if(secondsLeft<=0 || !markSprite){
+		return;
+	}
+	int seconds=int(ceilf(secondsLeft));
+	this->setTimeCout(CCString::createWithFormat("%d",seconds*1000));
+	cdLabel=CCLabelBMFont::create(CCString::createWithFormat("%d",seconds)->getCString(),"Fonts/1.fnt");
+	cdLabel->setScale(0.4f);
+	cdLabel->setPosition(ccp(this->getPositionX()+this->getContentSize().width/2,
+		this->getPositionY()+this->getContentSize().height/2));
+	this->_delegate->addChild(cdLabel,200);
+	this->schedule(schedule_selector(ActionButton::updateCDLabel),1.0f);
+
+	float total=std::max(secondsLeft,this->getCD()->intValue()/1000.0f);
+	markSprite->runAction(CCSequence::create(CCProgressTo::create(0,secondsLeft/total*100),
+		CCProgressTo::create(secondsLeft,0),NULL));
+}
+
 
 void ActionButton::updateCDLabel(float dt){
 

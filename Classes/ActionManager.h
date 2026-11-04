@@ -157,6 +157,7 @@ public:
 	bool				_isCanGear00;
 	bool				_isCanGear03;
 	bool				_isCanGear06;
+	bool				_isCanGear11;
 
 	CC_SYNTHESIZE(int, _walkSpeed, WalkSpeed);
 	int _originSpeed;
@@ -357,6 +358,8 @@ public:
 	void				enableGear00(float dt);
 	void				enableGear03(float dt);
 	void				enableGear06(float dt);
+	void				enableGear11(float dt);
+	void				disableGear11(float dt);
 
 	void				disableGear1(float dt);
 	void				disableGear2(float dt);
@@ -367,6 +370,8 @@ public:
 	bool				upgradeGear(gearType type);
 	bool				sellGear(gearType type);
 	int					gearLevel(gearType type) const { return type<None ? _gearLevel[type] : 0; }
+	// Seconds until an active gear can be used again (0 when ready)
+	float				gearCooldownLeft(gearType type) const { return type<None ? _gearCDLeft[type] : 0; }
 	static int			gearCost(gearType type);
 	static int			gearUpgradeCost(gearType type,int level);
 	static int			gearSellValue(gearType type,int level);
@@ -429,6 +434,13 @@ protected:
 	// Gear bonuses are recomputed from _gearLevel on every buy/upgrade/sell; the
 	// _gear* amounts below are what is currently added so it can be taken back.
 	int					_gearLevel[None]={};
+	// gear11 seal: % of damage still taken while it is up, 0 when it is down
+	int					_gearSealTaken=0;
+	// Cooldown left per active gear; it belongs to the gear, not to the HUD button
+	// showing it, since gear11 borrows whichever button is free
+	float				_gearCDLeft[None]={};
+	void				startGearCooldown(gearType type);
+	void				updateGearCooldowns(float dt);
 	int					_gearAttack=0;
 	int					_gearHP=0;
 	unsigned int		_gearCDCut[3]={};

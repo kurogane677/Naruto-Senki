@@ -7,7 +7,10 @@ using namespace CocosDenshion;
 // The shop text is rasterized at kTextScale times its size and scaled back down,
 // so it stays sharp on screens much larger than the 568x320 design size.
 static const float kTextScale=4;
-static const float kDetailWidth=70;
+// gears_bg.png (304x227): the gear list panel starts at x=9 and the detail panel
+// spans x=171..280, both measured from the image's left edge
+static const float kDetailWidth=102;
+static const float kDetailCenter=226;
 static const int kMaxGearLevel=3;
 
 static ax::Label* shopLabel(const char* font,float size,float width,ax::TextHAlignment align){
@@ -22,18 +25,11 @@ static ax::Label* detailLabel(const char* font,float size,ax::TextHAlignment ali
 	return label;
 }
 
-// Placeholder text button until there is art for Upgrade/Sell
-static ax::MenuItemLabel* textButton(const ax::Color4B& color,const ax::ccMenuCallback& callback){
-	const float w=66,h=15;
-	ax::Label* label=ax::Label::createWithTTF("","Fonts/PixelifySans-Bold.ttf",7*kTextScale,
-		ax::Size(w*kTextScale,h*kTextScale),ax::TextHAlignment::CENTER,ax::TextVAlignment::CENTER);
-	ax::LayerColor* bg=ax::LayerColor::create(color,w*kTextScale,h*kTextScale);
-	bg->setName("bg");
-	label->addChild(bg,-1);
-	// scale the item, not the label: the item takes its size from the unscaled label
-	ax::MenuItemLabel* item=ax::MenuItemLabel::create(label,callback);
-	item->setScale(1/kTextScale);
-	return item;
+// Shop button: <name>.png normally, <name>2.png when pressed or disabled
+static ax::MenuItemSprite* shopButton(const char* name,const ax::ccMenuCallback& callback){
+	return ax::MenuItemSprite::create(CCSprite::createWithSpriteFrameName(ax::StringUtils::format("%s.png",name)),
+		CCSprite::createWithSpriteFrameName(ax::StringUtils::format("%s2.png",name)),
+		CCSprite::createWithSpriteFrameName(ax::StringUtils::format("%s2.png",name)),callback);
 }
 
 /*----------------------
@@ -281,6 +277,8 @@ GearLayer::GearLayer(void)
 	_ownedMenu=NULL;
 	_upgradeItem=NULL;
 	_sellItem=NULL;
+	_upgradePrice=NULL;
+	_sellPrice=NULL;
 	_listClip=NULL;
 }
 
@@ -321,9 +319,11 @@ bool GearLayer::init(CCRenderTexture* snapshoot){
 		gears_bg->setPosition(ccp(winSize.width/2,winSize.height/2-12));
 		gears_layer->addChild(gears_bg,1);
 
+		float bgLeft=gears_bg->getPositionX()-gears_bg->getContentSize().width/2;
+
 		coinLabel=CCLabelBMFont::create("0","Fonts/arial.fnt");
 		coinLabel->setAnchorPoint(ccp(0,0));
-		coinLabel->setPosition(ccp(gears_bg->getPositionX()+2,58));
+		coinLabel->setPosition(ccp(bgLeft+134,58));
 		gears_layer->addChild(coinLabel,2);
 
 
@@ -347,12 +347,12 @@ bool GearLayer::init(CCRenderTexture* snapshoot){
 
 		_screwLayer->screwBar=CCSprite::createWithSpriteFrameName("screwBar.png");
 		_screwLayer->screwBar->setAnchorPoint(ccp(0.5f,0));
-		_screwLayer->screwBar->setPosition(ccp(gears_bg->getPositionX()+25,122));
+		_screwLayer->screwBar->setPosition(ccp(bgLeft+157,122));
 		this->addChild(_screwLayer->screwBar,600);
 
 
 		_gearTexts=ax::FileUtils::getInstance()->getValueMapFromFile("Element/gears.xml");
-		float detailX=gears_bg->getPositionX()+gears_bg->getContentSize().width/2-54;
+		float detailX=bgLeft+kDetailCenter;
 		_gearName=detailLabel("Fonts/PixelifySans-Bold.ttf",8,ax::TextHAlignment::CENTER);
 		_gearName->setTextColor(ax::Color4B(255,214,96,255));
 		_gearName->setPosition(ccp(detailX,210));
@@ -375,19 +375,27 @@ bool GearLayer::init(CCRenderTexture* snapshoot){
 		CCMenuItem* buy_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("gearBuy_btn.png"),
 			CCSprite::createWithSpriteFrameName("gearBuy_btn2.png"),this,menu_selector(GearLayer::onGearBuy));
 		_buyMenu=CCMenu::create(buy_btn,NULL);
-		_buyMenu->setPosition(ccp(gears_bg->getPositionX()+78,65));
+		_buyMenu->setPosition(ccp(detailX,65));
 		this->addChild(_buyMenu,600);
 
-		_upgradeItem=textButton(ax::Color4B(36,110,60,255),[this](ax::Object* sender){ onGearUpgrade(sender); });
-		_upgradeItem->setPosition(ccp(0,10));
-		_sellItem=textButton(ax::Color4B(130,40,40,255),[this](ax::Object* sender){ onGearSell(sender); });
-		_sellItem->setPosition(ccp(0,-9));
+		// Upgrade and Sell side by side on the Buy button's row, each price above its button
+		const float buttonY=65,buttonX=27,priceGap=15;
+		_upgradeItem=shopButton("gearUpgrade_btn",[this](ax::Object* sender){ onGearUpgrade(sender); });
+		_upgradeItem->setPosition(ccp(-buttonX,0));
+		_sellItem=shopButton("gearSell_btn",[this](ax::Object* sender){ onGearSell(sender); });
+		_sellItem->setPosition(ccp(buttonX,0));
 		_ownedMenu=CCMenu::create(_upgradeItem,_sellItem,NULL);
-		_ownedMenu->setPosition(ccp(detailX,68));
+		_ownedMenu->setPosition(ccp(detailX,buttonY));
 		_ownedMenu->setVisible(false);
 		this->addChild(_ownedMenu,600);
+		_upgradePrice=shopLabel("Fonts/PixelifySans-Bold.ttf",7,0,ax::TextHAlignment::CENTER);
+		_upgradePrice->setPosition(ccp(detailX-buttonX,buttonY+priceGap));
+		this->addChild(_upgradePrice,600);
+		_sellPrice=shopLabel("Fonts/PixelifySans-Bold.ttf",7,0,ax::TextHAlignment::CENTER);
+		_sellPrice->setPosition(ccp(detailX+buttonX,buttonY+priceGap));
+		this->addChild(_sellPrice,600);
 
-		clipper->setPosition(ccp(gears_bg->getPositionX()-gears_bg->getContentSize().width/2+4,85));
+		clipper->setPosition(ccp(bgLeft+5,85));
 		clipper->addChild(_screwLayer);
 		this->addChild(clipper,600);
 
@@ -505,12 +513,6 @@ static std::string fillGearValues(std::string desc,gearType type){
 	return desc;
 }
 
-static void setButton(ax::MenuItemLabel* item,const std::string& text,bool enabled){
-	item->setString(text);
-	item->setEnabled(enabled);
-	item->getLabel()->getChildByName("bg")->setOpacity(enabled ? 255 : 90);
-}
-
 void GearLayer::showGearDetail(gearType type){
 
 	if(type>=None){
@@ -539,19 +541,27 @@ void GearLayer::showGearDetail(gearType type){
 
 	_buyMenu->setVisible(!level);
 	_ownedMenu->setVisible(level>0);
+	_upgradePrice->setVisible(level>0);
+	_sellPrice->setVisible(level>0);
 	if(!level){
 		bool full=player->getGearArray()->count()>=3;
 		_gearInfo->setString(full ? "Slot penuh (maks 3)" : ax::StringUtils::format("Harga %d",ActionManager::gearCost(type)));
 		_gearInfo->setPositionY(88);
 	}else{
-		_gearInfo->setString("");
+		_gearInfo->setPositionY(98);  // above the Upgrade/Sell prices
+		// the game is paused while the shop is open, so the cooldown can't run out here
+		float cooling=player->gearCooldownLeft(type);
+		_sellItem->setEnabled(cooling<=0);
+		_gearInfo->setString(cooling>0 ? ax::StringUtils::format("Sedang cooldown %ds",int(ceilf(cooling))) : "");
 		if(level<kMaxGearLevel){
 			int cost=ActionManager::gearUpgradeCost(type,level);
-			setButton(_upgradeItem,ax::StringUtils::format("UPGRADE %d",cost),player->getCoin()>=cost);
+			_upgradeItem->setEnabled(player->getCoin()>=cost);
+			_upgradePrice->setString(std::to_string(cost));
 		}else{
-			setButton(_upgradeItem,"LEVEL MAKS",false);
+			_upgradeItem->setEnabled(false);
+			_upgradePrice->setString("MAKS");
 		}
-		setButton(_sellItem,ax::StringUtils::format("JUAL +%d",ActionManager::gearSellValue(type,level)),true);
+		_sellPrice->setString(ax::StringUtils::format("+%d",ActionManager::gearSellValue(type,level)));
 	}
 }
 
