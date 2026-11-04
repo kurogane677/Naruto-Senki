@@ -39,21 +39,9 @@ bool MenuButton::init(const char *szImage){
 
 void MenuButton::onEnter(){
 	CCSprite::onEnter();
-	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,10,true);
-	
-#if CC_TARGET_PLATFORM==CC_PLATFORM_ANDROID
-
-	JniMethodInfo minfo;
-
-	bool isHave = JniHelper::getStaticMethodInfo(minfo,"net/zakume/game/NarutoSenki","showBanner", "()V"); 
-	if (isHave) { 	
-		minfo.env -> CallStaticVoidMethod(minfo.classID,minfo.methodID);
-	} 
-
-#endif  
-
-
+	CCTouchDispatcher::sharedDispatcher()->addTargetedDelegate(this,10,true); 
 }
+
 void MenuButton::onExit(){
 	CCSprite::onExit();
 	CCTouchDispatcher::sharedDispatcher()->removeDelegate(this);
@@ -216,7 +204,11 @@ bool StartMenu::init()
 
 		SimpleAudioEngine::sharedEngine()->setEffectsVolume(0.5);
 
-
+		//create background
+		 CCSprite* bgSprite = CCSprite::create("red_bg.png");
+		 bgSprite->setAnchorPoint(ccp(0, 0));
+         bgSprite->setPosition(ccp(0, 0));
+         this->addChild(bgSprite, -5);
 
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Menu.plist");
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Result.plist");	
@@ -331,7 +323,7 @@ bool StartMenu::init()
 
 
 		//版本号
-		CCLabelBMFont* versionLabel=CCLabelBMFont::create("1.23 EX Version","Fonts/1.fnt");
+		CCLabelBMFont* versionLabel=CCLabelBMFont::create("Beta Version","Fonts/1.fnt");
 		versionLabel->setScale(0.3f);
 		versionLabel->setPosition(winSize.width-60,10);
 		this->addChild(versionLabel,5);
@@ -730,7 +722,7 @@ void StartMenu::keyBackClicked(){
 	#if CC_TARGET_PLATFORM==CC_PLATFORM_ANDROID
 
 	JniMethodInfo minfo;
-	bool isHave = JniHelper::getStaticMethodInfo(minfo,"net/zakume/game/DialogUtils","showTipDialog", "(Ljava/lang/String;Ljava/lang/String;)V");  
+	bool isHave = JniHelper::getStaticMethodInfo(minfo,"com/yusrilcode/game/DialogUtils","showTipDialog", "(Ljava/lang/String;Ljava/lang/String;)V");  
 
 	if (isHave)   
 	{  
