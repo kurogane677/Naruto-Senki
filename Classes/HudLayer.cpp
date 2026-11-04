@@ -358,7 +358,7 @@ void HudLayer::initHeroInterface(){
 
 	
 
-	coinLabel=CCLabelBMFont::create("50","Fonts/arial.fnt");
+	coinLabel=CCLabelBMFont::create(CCString::createWithFormat("%d",_delegate->currentPlayer->getCoin())->getCString(),"Fonts/arial.fnt");
 	coinLabel->setAnchorPoint(ccp(0,0));
 	coinLabel->setPosition(ccp(121,winSize.height-61));
 

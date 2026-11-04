@@ -41,6 +41,12 @@ public:
 	void saveSQLite(const char* table,const char* relatedColumn,const char* value,const char* targetColumn,const char* targetValue);
 
 
+	// Text from Element/strings.xml; the key itself when it is missing
+	static std::string uiText(const char* key);
+	// Menu bar text in Arimo Medium: a screen title (top-left) or a description (bottom-left)
+	static ax::Label* createBarTitle(const char* key);
+	static ax::Label* createBarText(const char* key);
+
 	CC_SYNTHESIZE(SelectLayer*,_delegate,Delegate);
 	CC_SYNTHESIZE(NetworkLayer*,_delegate2,Delegate2);
 

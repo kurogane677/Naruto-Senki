@@ -110,10 +110,8 @@ bool SelectLayer::init(){
 		this->addChild(menu_bar_t,2);
 
 		
-		CCSprite* select_title=CCSprite::createWithSpriteFrameName("hcmode_title.png");
-		
-		select_title->setAnchorPoint(ccp(0,0));
-		select_title->setPosition(ccp(2,winSize.height-select_title->getContentSize().height-2));
+		ax::Label* select_title=KTools::createBarTitle("TitleTraining");
+		select_title->setPosition(ccp(4,winSize.height-select_title->getBoundingBox().size.height-2));
 		this->addChild(select_title,3);
 
 		

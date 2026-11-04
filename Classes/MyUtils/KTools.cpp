@@ -509,6 +509,31 @@ void KTools::saveSQLite(const char* table,const char* relatedColumn,const char* 
 
 
 
+// Menu bar text is rasterized at kBarTextScale times its size for sharp scaling
+static const float kBarTextScale=4;
+
+std::string KTools::uiText(const char* key){
+	static ax::ValueMap texts=ax::FileUtils::getInstance()->getValueMapFromFile("Element/strings.xml");
+	auto it=texts.find(key);
+	return it!=texts.end() ? it->second.asString() : key;
+}
+
+static ax::Label* createBarLabel(const char* key,float size,float outline){
+	ax::Label* label=ax::Label::createWithTTF(KTools::uiText(key),"Fonts/Arimo-Medium.ttf",size*kBarTextScale);
+	label->enableOutline(ax::Color4B(40,40,40,255),outline*kBarTextScale);
+	label->setScale(1/kBarTextScale);
+	label->setAnchorPoint(ccp(0,0));
+	return label;
+}
+
+ax::Label* KTools::createBarTitle(const char* key){
+	return createBarLabel(key,16,1.5f);
+}
+
+ax::Label* KTools::createBarText(const char* key){
+	return createBarLabel(key,12,1);
+}
+
 CCTips::CCTips(void)
 {
 }

@@ -86,7 +86,21 @@
 		<key>LimitedChar</key>  
 		<string>This character cannot be selected</string> 
 		<key>HardCoreTips</key>  
-		<string>Hard Mode: Randomised map, Guardian Ninjas and ninja tools enabled. Are you sure you wish to proceed?</string> 
+		<string>Hard Mode: choose a map (or random), Guardian Ninjas and ninja tools enabled. Are you sure you wish to proceed?</string> 
 		<key>Notice</key>  
 		<string>Join our discord server https://discord.gg/cEqU3AuyV</string>  
+		<key>TitleMainMenu</key>  
+		<string>MAIN MENU</string>  
+		<key>TitleTraining</key>  
+		<string>TRAINING</string>  
+		<key>TitleHardCore</key>  
+		<string>HARDCORE</string>  
+		<key>MenuNetwork</key>  
+		<string>HardCore: 3v3 battle with gears, guardians and your choice of map</string>  
+		<key>MenuTraining</key>  
+		<string>Training mode</string>  
+		<key>MenuCredits</key>  
+		<string>Credits</string>  
+		<key>MenuExit</key>  
+		<string>Exit game</string>  
 </dict>  
