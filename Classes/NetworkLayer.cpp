@@ -160,7 +160,7 @@ bool NetworkLayer::init(){
 			"None","None","None",
 			"Shikamaru","Ino","Choji","Asuma",
 			"Kiba","Hinata","Shino",
-			"Neji","Tenten","Lee","None",
+			"Neji","Tenten","Lee","Kurenai",
 			"None","None","None",
 
 			"None","Tobirama","Hiruzen","Minato",
@@ -620,8 +620,8 @@ void NetworkLayer::onGameStart(CCObject* sender){
 			"Tsunade","Tobirama","Neji","Ino","Asuma","Gaara",
 			"Karin","Sasuke","Hidan","Choji","Kankuro",
 			"Shino","Minato","Tobi","Kakuzu","Hinata",
-			"Shikamaru","Chiyo","Kisame",
-			"Hiruzen","Kiba","Jugo","Lee"
+			"Shikamaru","Chiyo","Kisame", "Hiruzen", "Kiba", "Jugo", "Lee",
+			"Kurenai"
 		};
 
 		

@@ -100,6 +100,23 @@
         { "slot": "SKILL2", "on": "flog", "if": ["baseDanger"] }
       ]
     },
+    "Kurenai": {
+      "role": "fighter", "panicGear06": false, "nattack": [40, 32],
+      "builds": { "default": [3, 7, 2] },
+      "hero": [
+        { "slot": "SKILL1", "range": [999, 999], "approach": false },
+        { "slot": "SKILL2", "range": [128, 32], "min": 64, "if": ["invisible", "gp", "tNotDown"] },
+        { "slot": "OUGIS2", "gate": 128, "range": [96, 32], "if": ["gp", "tNotBati", "tNotDown", "tNotSticking", "selfNotBati"] },
+        { "slot": "OUGIS1", "gate": 128, "range": [64, 32], "min": 32, "if": ["gp"] },
+        { "slot": "GEAR03", "gate": 128, "range": [96, 32] },
+        { "slot": "SKILL3", "gate": 128, "range": [32, 32], "if": ["gp"] },
+        { "slot": "SKILL2", "gate": 128, "range": [64, 32], "min": 32, "if": ["gp"] }
+      ],
+      "farm": [
+        { "slot": "GEAR03", "on": "farm" },
+        { "slot": "SKILL3", "on": "flog", "if": ["baseDanger"] }
+      ]
+    },
     "Deidara": {
       "role": "pusher", "subRoles": ["ranged"], "baseCheck": false, "panicGear06": false,
       "builds": { "default": [0, 1, 5] },

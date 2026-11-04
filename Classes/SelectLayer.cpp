@@ -282,7 +282,7 @@ void SelectLayer::onGameStart(CCObject* sender){
 			"Tsunade","Tobirama","Neji","Ino","Asuma","Gaara",
 			"Karin","Sasuke","Hidan","Choji","Kankuro",
 			"Shino","Minato","Tobi","Kakuzu","Hinata",
-			"Hiruzen","Kiba","Jugo","Lee"
+			"Hiruzen","Kiba","Jugo","Lee","Kurenai"
 		};
 
 

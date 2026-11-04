@@ -7,7 +7,7 @@
             <key>Asuma_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{242,887},{226,196}}</string>
+                <string>{{1821,1},{226,196}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>Chiyo_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{257,441},{223,238}}</string>
+                <string>{{256,440},{223,238}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,11 +33,11 @@
             <key>Choji_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1033,446},{230,227}}</string>
+                <string>{{1820,420},{230,227}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{230,227}}</string>
                 <key>sourceSize</key>
@@ -46,7 +46,7 @@
             <key>Deidara_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1822,2},{224,193}}</string>
+                <string>{{1032,445},{224,193}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -59,7 +59,7 @@
             <key>Gaara_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1080,2},{250,194}}</string>
+                <string>{{1079,1},{250,194}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -72,7 +72,7 @@
             <key>Han_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,676},{238,215}}</string>
+                <string>{{1,675},{238,215}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -85,7 +85,7 @@
             <key>Hidan_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{283,2},{271,216}}</string>
+                <string>{{282,1},{271,216}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,7 +98,7 @@
             <key>Hinata_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{825,2},{219,253}}</string>
+                <string>{{824,1},{219,253}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -111,7 +111,7 @@
             <key>Hiruzen_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,439},{253,235}}</string>
+                <string>{{1,438},{253,235}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -124,7 +124,7 @@
             <key>ImmortalSasuke_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,1081},{205,220}}</string>
+                <string>{{241,886},{205,220}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -137,7 +137,7 @@
             <key>Ino_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{283,220},{263,219}}</string>
+                <string>{{282,219},{263,219}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -150,7 +150,7 @@
             <key>Itachi_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{969,675},{214,164}}</string>
+                <string>{{961,640},{214,164}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -163,7 +163,7 @@
             <key>Jiraiya_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{792,434},{239,202}}</string>
+                <string>{{791,433},{239,202}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -176,7 +176,7 @@
             <key>Jugo_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1582,210},{237,232}}</string>
+                <string>{{1581,209},{237,232}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -189,7 +189,7 @@
             <key>Kakashi_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1329,243},{232,222}}</string>
+                <string>{{1328,436},{232,222}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -202,7 +202,7 @@
             <key>Kakuzu_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,893},{223,186}}</string>
+                <string>{{496,701},{223,186}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -215,7 +215,7 @@
             <key>Kankuro_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{497,479},{238,221}}</string>
+                <string>{{496,478},{238,221}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -228,7 +228,7 @@
             <key>Karin_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{727,850},{192,208}}</string>
+                <string>{{961,806},{192,208}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -241,7 +241,7 @@
             <key>Kiba_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1332,2},{248,239}}</string>
+                <string>{{1331,1},{248,239}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -254,7 +254,7 @@
             <key>Kisame_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1822,197},{223,196}}</string>
+                <string>{{736,637},{223,196}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -267,20 +267,33 @@
             <key>Konan_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1482,656},{161,190}}</string>
+                <string>{{1388,660},{161,190}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{161,190}}</string>
                 <key>sourceSize</key>
                 <string>{161,190}</string>
             </dict>
+            <key>Kurenai_CutIn.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1328,242},{235,192}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{235,192}}</string>
+                <key>sourceSize</key>
+                <string>{235,192}</string>
+            </dict>
             <key>Lee_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1563,444},{232,210}}</string>
+                <string>{{1562,443},{232,210}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -293,7 +306,7 @@
             <key>Minato_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{825,223},{246,209}}</string>
+                <string>{{824,222},{246,209}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -306,7 +319,7 @@
             <key>Naruto_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1861,813},{184,181}}</string>
+                <string>{{1375,1015},{184,181}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -319,7 +332,7 @@
             <key>Neji_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1821,395},{225,219}}</string>
+                <string>{{1821,199},{225,219}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -332,7 +345,7 @@
             <key>Orochimaru_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1265,649},{210,215}}</string>
+                <string>{{1,1074},{210,215}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -345,7 +358,7 @@
             <key>Pain_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1797,616},{231,195}}</string>
+                <string>{{1796,652},{231,195}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -358,7 +371,7 @@
             <key>RikudoNaruto_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{279,264}}</string>
+                <string>{{1,1},{279,264}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -371,7 +384,7 @@
             <key>RockLee_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1563,444},{232,210}}</string>
+                <string>{{1562,443},{232,210}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -384,7 +397,7 @@
             <key>Roshi_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{556,2},{241,267}}</string>
+                <string>{{555,1},{241,267}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -397,7 +410,7 @@
             <key>SageJiraiya_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{470,922},{182,202}}</string>
+                <string>{{1171,848},{182,202}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -410,7 +423,7 @@
             <key>SageNaruto_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{497,702},{218,228}}</string>
+                <string>{{1794,849},{218,228}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -423,7 +436,7 @@
             <key>Sai_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{969,841},{209,186}}</string>
+                <string>{{1177,660},{209,186}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -436,7 +449,7 @@
             <key>Sakura_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1674,813},{161,185}}</string>
+                <string>{{1375,852},{161,185}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -449,7 +462,7 @@
             <key>Sasuke_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{737,638},{230,210}}</string>
+                <string>{{1562,655},{230,210}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -462,7 +475,7 @@
             <key>Shikamaru_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1582,2},{206,238}}</string>
+                <string>{{1581,1},{206,238}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -475,7 +488,7 @@
             <key>Shino_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,268},{169,256}}</string>
+                <string>{{1,267},{169,256}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -488,7 +501,7 @@
             <key>Suigetsu_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{224,1085},{189,200}}</string>
+                <string>{{1562,867},{189,200}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -501,7 +514,7 @@
             <key>Tenten_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1265,467},{180,216}}</string>
+                <string>{{1,892},{180,216}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -514,7 +527,7 @@
             <key>Tobi_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{548,245},{242,232}}</string>
+                <string>{{547,244},{242,232}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -527,7 +540,7 @@
             <key>Tobirama_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{257,666},{238,219}}</string>
+                <string>{{256,665},{238,219}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -540,7 +553,7 @@
             <key>Tsunade_CutIn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1080,198},{246,247}}</string>
+                <string>{{1079,197},{246,247}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -555,12 +568,16 @@
         <dict>
             <key>format</key>
             <integer>2</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
             <key>realTextureFileName</key>
             <string>Ougis2.png</string>
             <key>size</key>
             <string>{2048,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:c9615ee3e2a6a11e2fe7c03aabb92bcf$</string>
+            <string>$TexturePacker:SmartUpdate:54ee5dafebfe307a46247a6f6318a1d8:89691011f73daefd07baa545af436fe0:e3c3161075e594ab2abf9ef6e2cb229b$</string>
             <key>textureFileName</key>
             <string>Ougis2.png</string>
         </dict>

@@ -868,7 +868,7 @@ void RakingLayer::makeCharList(){
 	char* heroList[]={"Naruto","Sakura","Sai","Kakashi",
 		"Lee","Tenten","Neji",
 		"Shikamaru","Ino","Choji","Asuma",
-		"Shino","Hinata","Kiba",
+		"Shino","Hinata","Kiba","Kurenai",
 		"Tobirama","Hiruzen","Minato",
 		"Jiraiya","Tsunade","Gaara","Kankuro",
 		"Chiyo",
