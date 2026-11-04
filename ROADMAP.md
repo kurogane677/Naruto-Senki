@@ -1,6 +1,6 @@
 # Naruto Senki — Progres, Rencana, dan Update Mendatang
 
-Status per **4 November 2026**. Cakupan dokumen ini: **game** (server online dikerjakan sebagai proyek terpisah). Rilis terakhir: [`v0.0.4-beta`](https://github.com/kurogane677/Naruto-Senki/releases/tag/v0.0.4-beta) (pre-release, Android).
+Status per **5 November 2026**. Cakupan dokumen ini: **game** (server online dikerjakan sebagai proyek terpisah). Rilis terakhir: [`v0.0.5-beta`](https://github.com/kurogane677/Naruto-Senki/releases/tag/v0.0.5-beta) (pre-release, Android).
 
 ---
 
@@ -14,6 +14,16 @@ Status per **4 November 2026**. Cakupan dokumen ini: **game** (server online dik
 | `v0.0.2-beta` | 2 Nov 2026 | Perapian AI, APK kedua `-android-sdk29` untuk modding |
 | `v0.0.3-beta` | 2 Nov 2026 | Pain dan Orochimaru, AI summon baru, fix crash naik level, kemenangan tercatat lagi |
 | `v0.0.4-beta` | 4 Nov 2026 | Sistem gear baru, Kurenai, tombol back Android, pilih map HardCore, teks skill dan laporan kill dari XML, branding baru |
+| `v0.0.5-beta` | 5 Nov 2026 | Gear Segel Cangkang Kura-kura, ikon gear asli, toko gear baru, nerf Rompi Rantai, perbaikan cooldown gear, judul/menu berupa teks, ikon aplikasi baru |
+
+### Isi `v0.0.5-beta`
+- **Gear baru Segel Cangkang Kura-kura** (gear11, PR #65): aktif 4 detik, damage diterima 70/65/50%, pantulan 0/5/15% yang tidak bisa membunuh, cooldown 30/25/15 detik. Memakai tombol aktif pinjaman (`item11.png`) dan ikon buff berhitung mundur.
+- **Ikon asli** Lifesteal, Gulungan Kuchiyose, dan Segel; tombol UPGRADE/SELL bergambar; panel toko lebih lebar (`gears_bg.png` 304×227).
+- **Nerf Rompi Rantai:** bonus HP +3000/4000/6000.
+- **Cooldown gear milik gear, bukan tombol** (#64): tidak tertinggal setelah dijual, ikut pindah tombol, dan gear yang sedang cooldown tidak bisa dijual.
+- **Judul bar atas dan deskripsi menu utama berupa teks** dari `strings.xml` (Arimo Medium), memperbaiki judul HardCore yang tertulis "TRAINING" (PR #63).
+- **Label coin HUD** membaca coin player; teks peringatan HardCore diperbarui; kode mati `menu02_1.png` dihapus.
+- **Ikon aplikasi baru** 512 px (PR #62).
 
 ### Isi `v0.0.4-beta`
 - **Sistem gear baru** (PR #18).
@@ -54,6 +64,9 @@ Status per **4 November 2026**. Cakupan dokumen ini: **game** (server online dik
 | #17 | Karakter baru Kurenai |
 | #18 | Gear: upgrade, jual, 2 gear baru, toko berbasis teks |
 | #19 | Branding intro/menu, dialog keluar Android |
+| #62 | Ikon aplikasi baru, ROADMAP, ide gear, promo v0.0.4-beta |
+| #63 | Judul dan deskripsi menu berupa teks, judul HardCore, label coin HUD |
+| #65 | Gear Segel Cangkang Kura-kura, aset dan tata letak toko gear, nerf Rompi Rantai, cooldown gear (#64) |
 
 ---
 
@@ -61,7 +74,8 @@ Status per **4 November 2026**. Cakupan dokumen ini: **game** (server online dik
 
 ### Catatan lokal
 - `plan.md` (rincian teknis) sengaja **tidak** di-commit ke repo publik, karena memuat detail proteksi versi Privat.
-- Tidak akan di-commit: bypass ougis `// TESTING` di `ActionButton.cpp` dan `Naruto.xml` versi tes (attack 65000).
+- Tidak akan di-commit (khusus tes lokal): bypass ougis `// TESTING` di `ActionButton.cpp`, coin awal player 5000 (`// TESTING` di `Element.cpp`), dan `Naruto.xml` versi tes (attack 65000).
+- `PLAN_v0.0.5-beta.md` / `PLAN_v0.0.6-beta.md`: plan kerja per rilis (lokal).
 
 ### Kurenai
 - [ ] Suara `Kurenai_hurt`, `Kurenai_dead`, `Kurenai_skill02_2` (path-nya sudah ada di `Kurenai.xml`, file suaranya belum).
@@ -69,17 +83,11 @@ Status per **4 November 2026**. Cakupan dokumen ini: **game** (server online dik
 - [ ] Deskripsi skill di `skills.xml` masih "Lorem ipsum".
 
 ### Gear
-- [ ] Efek Lifesteal dan Gulungan Kuchiyose belum terbukti dalam permainan nyata, karena bot belum pernah membelinya.
-- [ ] Tambahkan Kuchiyose ke build AI hero pemanggil (Kiba, Kankuro, Chiyo, dan lainnya) di `profiles.json`.
-- [ ] Ikon asli Lifesteal dan Gulungan Kuchiyose (sekarang placeholder).
-- [ ] Gambar tombol Upgrade dan Jual (sekarang kotak warna dengan teks).
+- [ ] Bot memakai gear baru: Kuchiyose di build hero pemanggil, dan aturan AI untuk Segel Cangkang Kura-kura (setelah #61).
+- Efek Lifesteal/Kuchiyose sudah dites manual, dan ikon serta tombol asli sudah masuk di v0.0.5-beta.
 
 ### Keamanan mod
 - [ ] Pindahkan profil AI/bot dari `Resources/AI/profiles.json` ke kode, agar perilaku bot tidak mudah diubah modder ([#61](https://github.com/kurogane677/Naruto-Senki/issues/61)).
-
-### Temuan kecil
-- [ ] Frame `menu02_1.png` tidak ada di plist mana pun (`StartMenu.cpp:452`, tombol HardCore).
-- [ ] Judul "TRAINING" tampil di mode Network; perlu dicek.
 
 ### Dari roadmap migrasi (M6), belum dipastikan
 - [ ] Mode **Carnival 4v4**.
@@ -91,15 +99,18 @@ Status per **4 November 2026**. Cakupan dokumen ini: **game** (server online dik
 
 ## 3. To-do list (urutan prioritas)
 
-1. **Lengkapi Kurenai:** suara, sheet skill sendiri, deskripsi skill.
-2. **Gear:** buktikan Lifesteal/Kuchiyose dalam permainan, masukkan Kuchiyose ke build AI pemanggil, buat ikon asli.
-3. **Bug kecil:** `menu02_1.png`, judul TRAINING di Network.
-4. **Layar penuh di HP layar lebar**, tanpa garis hitam ([#20](https://github.com/kurogane677/Naruto-Senki/issues/20)).
-5. **Profil AI pindah ke kode** ([#61](https://github.com/kurogane677/Naruto-Senki/issues/61)).
-6. **Audit bug lama** dari laporan awal (HP underflow, stun, `abs()`, ougis tanpa chakra).
-7. **Clean code: karakter OOP + design pattern** ([#21](https://github.com/kurogane677/Naruto-Senki/issues/21), sub-issue #22–#60). Mulai dari fondasi #22 (unit test, hook `Hero`, `HeroFactory`).
-8. **Distribusi Privat (4.1):** colokan `NS_PRIVATE_DIR` di repo publik, lalu repo privat + `Protect/`.
-9. **Modul `Online/` di game (4.2)**, setelah API server (proyek terpisah) siap.
+Target **v0.0.6-beta**:
+1. **Profil AI pindah ke kode** ([#61](https://github.com/kurogane677/Naruto-Senki/issues/61)).
+2. **Bot memakai gear baru:** Kuchiyose di build hero pemanggil, aturan AI Segel Cangkang Kura-kura.
+3. **Layar penuh di HP layar lebar**, tanpa garis hitam ([#20](https://github.com/kurogane677/Naruto-Senki/issues/20)).
+4. **Lengkapi Kurenai:** suara, sheet skill sendiri, deskripsi skill (menunggu aset).
+
+Setelahnya:
+
+5. **Audit bug lama** dari laporan awal (HP underflow, stun, `abs()`, ougis tanpa chakra).
+6. **Clean code: karakter OOP + design pattern** ([#21](https://github.com/kurogane677/Naruto-Senki/issues/21), sub-issue #22–#60). Mulai dari fondasi #22 (unit test, hook `Hero`, `HeroFactory`).
+7. **Distribusi Privat (4.1):** colokan `NS_PRIVATE_DIR` di repo publik, lalu repo privat + `Protect/`.
+8. **Modul `Online/` di game (4.2)**, setelah API server (proyek terpisah) siap.
 
 ---
 
@@ -152,7 +163,8 @@ Dilacak di [#21](https://github.com/kurogane677/Naruto-Senki/issues/21), dengan 
 ## 6. Known issues
 - Kurenai belum punya suara saat terkena serangan dan saat mati, dan deskripsi skill-nya masih teks sementara.
 - Orochimaru belum punya suara karakter.
-- Di layar yang lebih lebar dari 16:9 ada strip hitam tipis di kiri-kanan. Ini disengaja agar kecepatan dan jangkauan AI sama di semua perangkat.
+- Bot belum memakai Segel Cangkang Kura-kura dan Gulungan Kuchiyose (menyusul di v0.0.6-beta).
+- Di layar yang lebih lebar dari 16:9 ada strip hitam tipis di kiri-kanan, agar kecepatan dan jangkauan AI sama di semua perangkat. Akan dihilangkan di v0.0.6-beta ([#20](https://github.com/kurogane677/Naruto-Senki/issues/20)).
 - Beberapa teks menu masih berbahasa Cina.
 
 ---
