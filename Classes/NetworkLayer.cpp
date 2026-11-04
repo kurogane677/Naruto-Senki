@@ -1,5 +1,6 @@
 #include "NetworkLayer.h"
 #include "StartMenu.h"
+#include "Maps.h"
 USING_NS_CC_EXT;
 using namespace CocosDenshion;
 #include<time.h>
@@ -45,6 +46,10 @@ NetworkLayer::NetworkLayer(void)
 
 	
 	_teamSelector=NULL;
+
+	_mapChoice=0;
+	_mapThumb=NULL;
+	_mapLabel=NULL;
 }
 
 
@@ -302,6 +307,31 @@ bool NetworkLayer::init(){
 
 				this->addChild(_teamSelector,50);
 
+				// map pick, above the team selector: "<" thumbnail ">" and its name
+				_mapChoice=CCUserDefault::sharedUserDefault()->getIntegerForKey("hardcore.map",0);
+				if(_mapChoice<0 || _mapChoice>maps::count()){
+					_mapChoice=0;
+				}
+
+				CCLabelBMFont* prevLabel=CCLabelBMFont::create("<","Fonts/1.fnt");
+				prevLabel->setScale(0.6f);
+				CCLabelBMFont* nextLabel=CCLabelBMFont::create(">","Fonts/1.fnt");
+				nextLabel->setScale(0.6f);
+				CCMenuItemLabel* prev_btn=CCMenuItemLabel::create(prevLabel,this,menu_selector(NetworkLayer::onMapPrev));
+				CCMenuItemLabel* next_btn=CCMenuItemLabel::create(nextLabel,this,menu_selector(NetworkLayer::onMapNext));
+				prev_btn->setPosition(ccp(16,268));
+				next_btn->setPosition(ccp(186,268));
+				CCMenu* mapMenu=CCMenu::create(prev_btn,next_btn,NULL);
+				mapMenu->setPosition(ccp(0,0));
+				this->addChild(mapMenu,50);
+
+				_mapLabel=CCLabelBMFont::create("","Fonts/1.fnt");
+				_mapLabel->setScale(0.4f);
+				_mapLabel->setPosition(ccp(101,244));
+				this->addChild(_mapLabel,50);
+
+				this->showMapChoice();
+
 				// COM1 is the first pick: blink its label until it is chosen
 				CCActionInterval* fd=CCFadeOut::create(1.0f);
 				_comLabel1->runAction(CCRepeatForever::create(CCSequence::create(fd,fd->reverse(),NULL)));
@@ -497,6 +527,36 @@ void NetworkLayer::setSelected(CCObject* sender){
 
 
 
+
+void NetworkLayer::onMapPrev(CCObject* sender){
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/select.mp3");
+	_mapChoice=(_mapChoice+maps::count())%(maps::count()+1);
+	this->showMapChoice();
+}
+
+void NetworkLayer::onMapNext(CCObject* sender){
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/select.mp3");
+	_mapChoice=(_mapChoice+1)%(maps::count()+1);
+	this->showMapChoice();
+}
+
+void NetworkLayer::showMapChoice(){
+	CCUserDefault::sharedUserDefault()->setIntegerForKey("hardcore.map",_mapChoice);
+
+	if(_mapThumb){
+		_mapThumb->removeFromParent();
+		_mapThumb=NULL;
+	}
+	if(_mapChoice>0){
+		_mapThumb=CCSprite::create(maps::background(_mapChoice).c_str());
+		_mapThumb->setScale(140.0f/_mapThumb->getContentSize().width);
+		_mapThumb->setPosition(ccp(101,268));
+		this->addChild(_mapThumb,49);
+		_mapLabel->setString(CCString::createWithFormat("MAP %d",_mapChoice)->getCString());
+	}else{
+		_mapLabel->setString("MAP ACAK");
+	}
+}
 
 void NetworkLayer::onSkillMenu(CCObject* sender){
 

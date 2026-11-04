@@ -84,11 +84,16 @@ jobs:
     permissions:
       contents: write
     steps:
+      # merge-multiple: with a single artifact, v8 extracts it without the
+      # artifact-name folder, so always collect everything into one folder
       - name: Download artifacts
         uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
 
       - name: Create release
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            NarutoSenki-android/*.apk
+            dist/*.apk
