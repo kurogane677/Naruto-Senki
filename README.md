@@ -230,7 +230,7 @@ Ukuran total yang diunduh: ±1,5 GB (NDK ±790 MB, cmdline-tools 143 MB, JDK 187
 | Package / applicationId | `com.yusrilcode.game` | `.axproj` (`package_name`) |
 | Nama aplikasi | `Naruto Senki` | `proj.android/app/res/values/strings.xml` |
 | ABI | `arm64-v8a` | `proj.android/gradle.properties` (`__1K_ARCHS`), atau opsi `-a` |
-| Icon | `icon.png` (root repo, 114×114) | di-resize ke `proj.android/app/res/mipmap-*/ic_launcher.png` (48/72/96/144 px) |
+| Icon | `icon.png` (root repo, 512×512) | di-resize ke `proj.android/app/res/mipmap-*/ic_launcher.png` (48/72/96/144/192 px) dan `proj.win32/res/game.ico` (16–256 px) |
 | Orientasi | `sensorLandscape` | `proj.android/app/AndroidManifest.xml` |
 | Resolusi | 568×320 (16:9), `SHOW_ALL` | `Classes/AppDelegate.cpp`. Di HP 19.5:9/20:9 ada strip hitam tipis kiri-kanan, karena kecepatan jalan dan jangkauan AI dihitung dari lebar layar |
 
