@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Skill descriptions on the skill screen (SkillLayer), drawn with Fonts/1.fnt: ASCII only.
+     <hero> holds skills 1-5; a hero without an entry keeps its <hero>_label<n>.png image. -->
+<plist version="1.0">
+<dict>
+	<key>unlock1</key>
+	<string>Unlock Ougi 1: requires 6000 coins</string>
+	<key>unlock2</key>
+	<string>Unlock Ougi 2: requires 12000 coins and Ougi 1 unlocked first</string>
+	<key>Asuma</key>
+	<dict>
+		<key>1</key>
+		<string>Whirlwind Fist: Deals staggering ninjutsu damage in front</string>
+		<key>2</key>
+		<string>Suiran Ressen: Dashes forward and deals staggering area ninjutsu damage</string>
+		<key>3</key>
+		<string>Flying Swallow: Asuma channels chakra into his trench knives and chases down enemies in front</string>
+		<key>4</key>
+		<string>Wolf Fang: Ougi - slashes all nearby enemies with chakra blades, dealing combo damage</string>
+		<key>5</key>
+		<string>Fire Style: Ash Pile Burning: Ougi 2 - exhales an ash cloud and ignites it, burning enemies for several seconds</string>
+	</dict>
+	<key>Chiyo</key>
+	<dict>
+		<key>1</key>
+		<string>Puppet: Mother and Father: Summons the Mother and Father puppets; while they stay beside Chiyo and are not attacking, Chiyo gains super armor and damage reduction</string>
+		<key>2</key>
+		<string>Puppet Jutsu: Amber Control: Controls the Mother and Father puppets to deal area ninjutsu damage</string>
+		<key>3</key>
+		<string>Performance: One Body, One Mind: Controls the Mother and Father puppets to seal one enemy's movement</string>
+		<key>4</key>
+		<string>Forbidden Jutsu: One's Own Life Reincarnation: Ougi - for a while Chiyo shares her chakra with teammates and gives nearby allies super armor</string>
+		<key>5</key>
+		<string>White Secret Technique: Chikamatsu's Ten Puppets: Ougi 2 - summons the ten puppets, the first puppeteer's masterpiece, to deal area ninjutsu damage</string>
+	</dict>
+	<key>Choji</key>
+	<dict>
+		<key>1</key>
+		<string>Secret Clan Pills: Boosts ninjutsu damage for a short time</string>
+		<key>2</key>
+		<string>Human Bullet Tank: Dashes forward and deals area ninjutsu damage</string>
+		<key>3</key>
+		<string>Super Expansion Jutsu: Grows huge and deals area damage</string>
+		<key>4</key>
+		<string>Super Open Palm: Ougi - grows huge and deals area damage</string>
+		<key>5</key>
+		<string>Butterfly Mode: Ougi 2 - greatly boosts basic attack damage for a while [works on towers]</string>
+	</dict>
+	<key>Deidara</key>
+	<dict>
+		<key>1</key>
+		<string>Explosive Clay: Bird: For a while, replaces taijutsu attacks with homing explosive clay</string>
+		<key>2</key>
+		<string>Explosive Clay: Centipede: For a while, summons a centipede with the same stats and level as Deidara</string>
+		<key>3</key>
+		<string>Explosive Clay Clone: Turns invisible for a short time and deals large area damage</string>
+		<key>4</key>
+		<string>Art Specialty: Rides a clay bird and continuously drops C1 while moving</string>
+		<key>5</key>
+		<string>C0: Self-Destruct: Ougi 2 - ultimate self-destruct, then dies [works on towers]</string>
+	</dict>
+	<key>Gaara</key>
+	<dict>
+		<key>1</key>
+		<string>Power of Shukaku: Deals crowd-control damage with a sand hand</string>
+		<key>2</key>
+		<string>Sand Hand: Summons a sand hand near enemies to deal area ninjutsu damage</string>
+		<key>3</key>
+		<string>Sand Coffin: Traps enemies in sand and deals area damage</string>
+		<key>4</key>
+		<string>Sand Burial: Ougi - deals area damage and binds enemies</string>
+		<key>5</key>
+		<string>Kazekage Mode: Ougi 2 - enters Kazekage Mode for a while and unleashes a Quicksand Waterfall Flow</string>
+	</dict>
+	<key>Hidan</key>
+	<dict>
+		<key>1</key>
+		<string>Curse Ritual: Draws a circle and curses every enemy ninja</string>
+		<key>2</key>
+		<string>Black Spear: Deals minor piercing damage in front</string>
+		<key>3</key>
+		<string>Bloody Frenzy: Hidan swings his giant scythe at high speed, dealing area damage</string>
+		<key>4</key>
+		<string>Bloody Triple Scythe: Ougi - swings the scythe to drag an enemy to him and deal damage</string>
+		<key>5</key>
+		<string>Curse Jutsu: Death-Ruling Blood: Ougi 2 - Hidan enters curse mode; while inside the ritual circle he reflects all damage (enemy teammates also take half the damage)</string>
+	</dict>
+	<key>Hinata</key>
+	<dict>
+		<key>1</key>
+		<string>Byakugan: Boosts ninjutsu damage for a short time; meanwhile Hinata's damage does not charge the enemy's Ougi - chakra</string>
+		<key>2</key>
+		<string>Mountain Crusher Fist: Small-area ninjutsu damage in front and knocks enemies up</string>
+		<key>3</key>
+		<string>Gentle Fist: Eight Trigrams 32 Palms: Crowd-control ninjutsu damage in front</string>
+		<key>4</key>
+		<string>Gentle Fist: Byakugan Heavenly Dance: Ougi - deals area crowd-control damage</string>
+		<key>5</key>
+		<string>Gentle Step Twin Lion Fists: Ougi 2 - shapes chakra into lions for continuous strikes</string>
+	</dict>
+	<key>Hiruzen</key>
+	<dict>
+		<key>1</key>
+		<string>Earth Style: Mud Wall: Summons an earth wall in front that damages nearby enemies</string>
+		<key>2</key>
+		<string>Shuriken Shadow Clone Jutsu EX: Summons several fast giant shuriken that damage along their path</string>
+		<key>3</key>
+		<string>Summoning: Adamantine Staff: Summons a staff that can transform into Enma the Monkey King</string>
+		<key>4</key>
+		<string>Earth Flow Triple Shot: Ougi - combo attack dealing area ninjutsu damage</string>
+		<key>5</key>
+		<string>Forbidden Jutsu: Reaper Death Seal: Ougi 2 - summons the Death God; its damage ignores enemy defense and invincible state</string>
+	</dict>
+	<key>ImmortalSasuke</key>
+	<dict>
+		<key>1</key>
+		<string>Chidori Blade EX: Dashes forward and deals staggering ninjutsu damage</string>
+		<key>2</key>
+		<string>Chidori Sharp Spear: Deals staggering mid-range ninjutsu damage in front</string>
+		<key>3</key>
+		<string>Feint EX: Taunts enemies and counterattacks with Kagutsuchi</string>
+		<key>4</key>
+		<string>Amaterasu EX: Ougi - summons black flames that randomly knock down the nearest enemies</string>
+		<key>5</key>
+		<string>Susanoo: Ougi 2 - summons Susanoo for a large-area strike</string>
+	</dict>
+	<key>Ino</key>
+	<dict>
+		<key>1</key>
+		<string>Boar Flying Kick: Dash forward and deal area crowd-control damage</string>
+		<key>2</key>
+		<string>Torikabuto Otoshi: Leap forward and knock down nearby enemies</string>
+		<key>3</key>
+		<string>Butterfly Dance: Unleash a dance-like combo on enemies in front</string>
+		<key>4</key>
+		<string>Genjutsu: Butterfly Burst: Ougi - genjutsu traps enemies in an attack of flowers and butterflies</string>
+		<key>5</key>
+		<string>Mind Body Switch Jutsu: Ougi 2 - continuously control the target; kill rewards earned meanwhile go to Ino</string>
+	</dict>
+	<key>Itachi</key>
+	<dict>
+		<key>1</key>
+		<string>Crow Body Jutsu: Dash forward and deal small-area ninjutsu damage</string>
+		<key>2</key>
+		<string>Fire Style: Great Fireball Jutsu: Small-area ninjutsu damage in front</string>
+		<key>3</key>
+		<string>Amaterasu: Summon black flames that deal damage over time to anyone stepping on them</string>
+		<key>4</key>
+		<string>Tsukuyomi: Imprison enemies with genjutsu and deal continuous area ninjutsu damage</string>
+		<key>5</key>
+		<string>Susanoo: Ougi 2 - summon Susanoo to strike a large area</string>
+	</dict>
+	<key>Jiraiya</key>
+	<dict>
+		<key>1</key>
+		<string>Ninja Art: Needle Jizo: Small-area ninjutsu damage</string>
+		<key>2</key>
+		<string>Summoning: Food Cart Destroyer: Summon a Mount Myoboku toad to deal damage</string>
+		<key>3</key>
+		<string>Fire Style: Great Flame Bomb: Small-area crowd-control ninjutsu damage in front</string>
+		<key>4</key>
+		<string>Great Flame Rasengan: Ougi - dash forward and deal crowd-control ninjutsu damage</string>
+		<key>5</key>
+		<string>Sage Mode: Ougi 2 - summon the Two Great Sage Toads and enter Sage Mode</string>
+	</dict>
+	<key>Jugo</key>
+	<dict>
+		<key>1</key>
+		<string>Steel Arm Bind: Dash forward and deal stagger damage</string>
+		<key>2</key>
+		<string>Shattering Fist: Dash forward and deal stagger ninjutsu damage</string>
+		<key>3</key>
+		<string>Axe Chop Shattering Fist: Next basic attack deals heavy damage and knocks the target down</string>
+		<key>4</key>
+		<string>Cursed Seal Combo: Ougi - launch enemies into the air and deal a series of hits</string>
+		<key>5</key>
+		<string>Earthquake Flame: Ougi 2 - Jugo unleashes his killing intent, instantly dealing large-area ninjutsu damage</string>
+	</dict>
+	<key>Kakashi</key>
+	<dict>
+		<key>1</key>
+		<string>One Thousand Years of Death: Seal the target's ninjutsu and deal ninjutsu damage</string>
+		<key>2</key>
+		<string>Earth Style: Pakkun Jutsu: Deal ninjutsu damage to anyone who steps on it</string>
+		<key>3</key>
+		<string>Sharingan Mode: Replaces skills 1 and 2 and slightly increases taijutsu damage</string>
+		<key>4</key>
+		<string>Earth Style: Mud Wall EX: Summon a dog wall in front that draws attacks for a while</string>
+		<key>5</key>
+		<string>Kamui Twin Thunder: Ougi 2 - continuously cast Lightning Style ninjutsu and warp enemies to another dimension</string>
+	</dict>
+	<key>Kakuzu</key>
+	<dict>
+		<key>1</key>
+		<string>Kakuzu's Finances: Pick up all nearby corpses to claim bounties; enemy corpses also give +100 max HP and +5 basic attack damage</string>
+		<key>2</key>
+		<string>Heart Seizing Jutsu: Grab an enemy with tendrils; the final hit steals their heart [max 5 hearts]</string>
+		<key>3</key>
+		<string>Earth Style: Hardening: Reduce damage taken by 25% for a while and reflect half of direct attack damage to the attacker</string>
+		<key>4</key>
+		<string>Elemental Masks: Ougi - spend 1 heart to summon three mask beasts with Kakuzu's base stats</string>
+		<key>5</key>
+		<string>Secret Technique: Jiongu: Ougi 2 - spend 1 heart to revive on the spot at full HP</string>
+	</dict>
+	<key>Kankuro</key>
+	<dict>
+		<key>1</key>
+		<string>Black Secret Technique: Crow: Summon the Crow puppet</string>
+		<key>2</key>
+		<string>Black Secret Technique: Six Blades: Control Crow to deal area damage</string>
+		<key>3</key>
+		<string>Black Secret Technique: Black Ant: Summon Black Ant and hold one enemy</string>
+		<key>4</key>
+		<string>Black Secret Technique: Salamander: Ougi - summon the Salamander puppet</string>
+		<key>5</key>
+		<string>Red Secret Technique: Sasori: Ougi 2 - summon the Sasori of the Red Sand puppet</string>
+	</dict>
+	<key>Karin</key>
+	<dict>
+		<key>1</key>
+		<string>Sexy Jutsu: Dash forward and deal area stagger damage</string>
+		<key>2</key>
+		<string>Kagura Beam: Deal stagger ninjutsu damage in front</string>
+		<key>3</key>
+		<string>Bad Girl Punishment: Dash forward and deal stagger ninjutsu damage</string>
+		<key>4</key>
+		<string>Kagura Jutsu: Ougi - heal nearby allies and yourself for a duration</string>
+		<key>5</key>
+		<string>Chakra Chains: Ougi 2 - strike continuously with chains</string>
+	</dict>
+	<key>Kiba</key>
+	<dict>
+		<key>1</key>
+		<string>Man-Beast Separation: Command Akamaru to act on his own</string>
+		<key>2</key>
+		<string>Fang Over Fang: Command Akamaru to spin and deal area damage to enemies</string>
+		<key>3</key>
+		<string>Four Legs Technique: Greatly increase basic attack damage and attack speed for a short time</string>
+		<key>4</key>
+		<string>Inuzuka Style: Heavenly Twin Fang: Ougi - dash forward and knock up nearby enemies</string>
+		<key>5</key>
+		<string>Inuzuka Style: Fang Wolf Fang: Ougi 2 - dash forward and deal large-area ninjutsu damage</string>
+	</dict>
+	<key>Kisame</key>
+	<dict>
+		<key>1</key>
+		<string>Water Style: Water Shark Bullet: Release a shark that damages along its path</string>
+		<key>2</key>
+		<string>Water Style: Five Feeding Sharks: Medium-area stagger ninjutsu damage in front</string>
+		<key>3</key>
+		<string>Samehada Release: Next basic attack carries 65% chakra</string>
+		<key>4</key>
+		<string>Water Style: Exploding Water Shockwave: Ougi - large-area stagger ninjutsu damage in front</string>
+		<key>5</key>
+		<string>Samehada Fusion: Ougi 2 - large-area ninjutsu damage in front</string>
+	</dict>
+	<key>Konan</key>
+	<dict>
+		<key>1</key>
+		<string>Origami Mode: Become invisible for a period of time</string>
+		<key>2</key>
+		<string>Paper Javelin: Throw a paper javelin that damages along its path</string>
+		<key>3</key>
+		<string>Paper Shuriken: Throw two paper shuriken that damage along their path</string>
+		<key>4</key>
+		<string>Dance of the Shikigami: Ougi - moves along a path dealing area ninjutsu damage</string>
+		<key>5</key>
+		<string>Angel's Paper Rain: Ougi 2 - knock up and deal large-area damage</string>
+	</dict>
+	<key>Lee</key>
+	<dict>
+		<key>1</key>
+		<string>Eight Gates: Remove the body's chakra limiters; each gate opened keeps raising your ninjutsu damage and speed</string>
+		<key>2</key>
+		<string>Leaf Whirlwind: 2-hit whirlwind kick dealing stagger taijutsu damage</string>
+		<key>3</key>
+		<string>Leaf Gale: Combo strikes at the enemy's legs, then knock them up [requires Gate of Life]</string>
+		<key>4</key>
+		<string>Front Lotus: Ougi - kick the enemy into the air and add landing damage [requires Gate of Opening]</string>
+		<key>5</key>
+		<string>Reverse Lotus: Ougi 2 - push the body to its limit for a high-speed combo on the enemy [requires Gate of Life]</string>
+	</dict>
+	<key>Minato</key>
+	<dict>
+		<key>1</key>
+		<string>Marked Kunai: Place a marker used for the Flying Thunder God technique</string>
+		<key>2</key>
+		<string>Flying Thunder God Second Step: Teleport to the first enemy the kunai touched and strike</string>
+		<key>3</key>
+		<string>Yellow Flash Mode: Boost normal attacks for a period and teleport behind enemies</string>
+		<key>4</key>
+		<string>Gale Triple Strike: Ougi - combo dealing area ninjutsu damage</string>
+		<key>5</key>
+		<string>Space-Time Gale Flash Combo Zero: Ougi 2 - throw 6 kunai in a combo dealing heavy area ninjutsu damage in front</string>
+	</dict>
+	<key>Naruto</key>
+	<dict>
+		<key>1</key>
+		<string>Rasengan: Small-area crowd-control ninjutsu damage in front</string>
+		<key>2</key>
+		<string>Shadow Clone Jutsu: Summon clones that only use taijutsu attacks</string>
+		<key>3</key>
+		<string>Wind Release Shuriken: Medium-area crowd-control ninjutsu damage in front</string>
+		<key>4</key>
+		<string>Uzumaki Naruto Barrage: Knock up enemies and deal continuous crowd-control ninjutsu damage</string>
+		<key>5</key>
+		<string>Nine-Tails Power: Ougi 2 - enter Nine-Tails chakra state for a period, then switch to Sage Mode</string>
+	</dict>
+	<key>Neji</key>
+	<dict>
+		<key>1</key>
+		<string>Byakugan: Briefly boost ninjutsu damage and gain super armor</string>
+		<key>2</key>
+		<string>Mountain Crusher: Small-area stagger damage in front</string>
+		<key>3</key>
+		<string>Gentle Fist - Eight Trigrams 64 Palms: Crowd-control ninjutsu damage in front</string>
+		<key>4</key>
+		<string>Gentle Fist - Eight Trigrams Palm Rotation: Ougi - area crowd-control ninjutsu damage</string>
+		<key>5</key>
+		<string>Gentle Fist - Eight Trigrams Vacuum Palm: Ougi 2 - consecutive strikes that knock up enemies</string>
+	</dict>
+	<key>Orochimaru</key>
+	<dict>
+		<key>1</key>
+		<string>Kusanagi Sword: Small ninjutsu damage in front</string>
+		<key>2</key>
+		<string>Fierce Snake Step: Dash forward dealing area crowd-control damage</string>
+		<key>3</key>
+		<string>Hidden Shadow Snake Hands: Release snakes that drag and knock back enemies</string>
+		<key>4</key>
+		<string>Eight Branches Technique: Ougi - turn into the white snake and restore full health</string>
+		<key>5</key>
+		<string>Triple Rashomon: Ougi 2 - summon Rashomon gates for a triple strike</string>
+	</dict>
+	<key>Pain</key>
+	<dict>
+		<key>1</key>
+		<string>Rinnegan Mode: Greatly boost ninjutsu damage for a short time</string>
+		<key>2</key>
+		<string>Bansho Ten'in: Pull in enemies at medium range in front</string>
+		<key>3</key>
+		<string>Shinra Tensei: Medium-area ninjutsu damage [works on towers]</string>
+		<key>4</key>
+		<string>Chibaku Tensei: Ougi - summon a giant boulder that pulls enemies in</string>
+		<key>5</key>
+		<string>Six Paths of Pain Arrive: Ougi 2 - the Six Paths strike together in a large area, ending with a knockback</string>
+	</dict>
+	<key>RikudoNaruto</key>
+	<dict>
+		<key>1</key>
+		<string>Planetary Rasengan: Teleport behind the enemy and deal stagger damage</string>
+		<key>2</key>
+		<string>Shadow Clone Jutsu EX: Summon clones that attack with Rasengan Barrage</string>
+		<key>3</key>
+		<string>Tailed Beast Rasenshuriken: Throw a fast homing Nine-Tails chakra shuriken</string>
+		<key>4</key>
+		<string>Tailed Beast Flash Bomb: Ougi - Naruto dashes at high speed dealing area ninjutsu damage</string>
+		<key>5</key>
+		<string>Kurama Mode: Ougi 2 - Naruto fully syncs with Kurama and summons it to destroy enemy targets in its path</string>
+	</dict>
+	<key>SageJiraiya</key>
+	<dict>
+		<key>1</key>
+		<string>Wild Lion's Mane: Small-area dash damage in front</string>
+		<key>2</key>
+		<string>Earth Release - Swamp of the Underworld: Create a swamp that traps enemies</string>
+		<key>3</key>
+		<string>Toad Oil Bullet + Toad Oil Flame Bullet: Medium-area ninjutsu damage in front</string>
+		<key>4</key>
+		<string>Super Giant Rasengan: Ougi - knock up then strike with a Rasengan</string>
+		<key>5</key>
+		<string>Sage Art - Goemon: Ougi 2 - large-area ninjutsu damage in front</string>
+	</dict>
+	<key>SageNaruto</key>
+	<dict>
+		<key>1</key>
+		<string>Sage Art - Giant Rasengan: Small-area stagger damage in front</string>
+		<key>2</key>
+		<string>Shadow Clone Jutsu: Summon clones that attack with Rasengan</string>
+		<key>3</key>
+		<string>Sage Art - Rasenshuriken: Throw a wind shuriken that deals area damage</string>
+		<key>4</key>
+		<string>Sage Art - Rasengan Barrage: Knock up enemies and deal continuous crowd-control ninjutsu damage</string>
+		<key>5</key>
+		<string>Tailed Beast Mode: Ougi 2 - enter Tailed Beast state for a period; normal attacks break guard, then enter ??? when it ends</string>
+	</dict>
+	<key>Sai</key>
+	<dict>
+		<key>1</key>
+		<string>Quick Ink Technique: Replaces taijutsu attacks with Super Beast Scroll: Snakes</string>
+		<key>2</key>
+		<string>Super Beast Scroll: Tiger: Summon a tiger that self-destructs for heavy area damage</string>
+		<key>3</key>
+		<string>Ink Blade Scroll: Ougi - triggers Super Beast Scroll: Hawk</string>
+		<key>4</key>
+		<string>Scout Mode: Summon an ink bird and ride it, continuously releasing Super Beast Scroll: Rats</string>
+		<key>5</key>
+		<string>Super Beast Scroll: All Creation: Ougi 2 - deals continuous assault damage</string>
+	</dict>
+	<key>Sakura</key>
+	<dict>
+		<key>1</key>
+		<string>Medical Ninjutsu: Restores HP over a short time</string>
+		<key>2</key>
+		<string>Cherry Blossom Strike: Small area ninjutsu damage</string>
+		<key>3</key>
+		<string>Brute Strength Mode: Greatly increases normal attack damage for a period of time</string>
+		<key>4</key>
+		<string>Cherry Blossom Dance: Ougi - deals medium area ninjutsu damage</string>
+		<key>5</key>
+		<string>Strength of a Hundred Seal: Ougi 2 - combo that deals area damage</string>
+	</dict>
+	<key>Sasuke</key>
+	<dict>
+		<key>1</key>
+		<string>Chidori Blade: Dash forward and deal small area crowd-control damage</string>
+		<key>2</key>
+		<string>Chidori: Dash and deal area stagger ninjutsu damage</string>
+		<key>3</key>
+		<string>Feint: Taunt enemies and counterattack with Chidori Current</string>
+		<key>4</key>
+		<string>Lightning Release: Kirin: Ougi - deals area ninjutsu damage</string>
+		<key>5</key>
+		<string>Eternal Mode: Ougi 2 - activates the Eternal Mangekyo Sharingan after the Curse Mark</string>
+	</dict>
+	<key>Shikamaru</key>
+	<dict>
+		<key>1</key>
+		<string>Strategist's Plan: Shikamaru thinks briefly, then gains some chakra</string>
+		<key>2</key>
+		<string>Shadow Sewing: Deals ninjutsu damage to distant enemies and slows them</string>
+		<key>3</key>
+		<string>Shadow Neck Bind Jutsu: Long crowd-control on the target with damage over time</string>
+		<key>4</key>
+		<string>Shadow Chakra Blades: Ougi - throws Asuma's chakra blades</string>
+		<key>5</key>
+		<string>Exploding Shadow Dive: Ougi 2 - binds enemies, then detonates explosive tags</string>
+	</dict>
+	<key>Shino</key>
+	<dict>
+		<key>1</key>
+		<string>Secret Technique: Insect Call: Briefly replaces taijutsu attacks with summoned kikaichu</string>
+		<key>2</key>
+		<string>Secret Technique: Insect Clone: Summon an insect clone that chases and restrains enemies</string>
+		<key>3</key>
+		<string>Secret Technique: Insect Wall: Summon a kikaichu barrier that knocks up enemies</string>
+		<key>4</key>
+		<string>Secret Technique: Insect Sphere: Ougi - releases a swarm of kikaichu that repels enemies and deals ninjutsu damage</string>
+		<key>5</key>
+		<string>Secret Technique: Insect Tornado: Ougi 2 - releases a kikaichu tornado that deals continuous ninjutsu damage</string>
+	</dict>
+	<key>Suigetsu</key>
+	<dict>
+		<key>1</key>
+		<string>Great Water Arm Jutsu: Dash and deal small area ninjutsu damage</string>
+		<key>2</key>
+		<string>Cleaver Shuriken Jutsu: Throw the Executioner's Blade, interrupting and dealing damage along its path</string>
+		<key>3</key>
+		<string>Hydrification Great Slash: Next normal attack deals heavy damage</string>
+		<key>4</key>
+		<string>Water Release: Water Gun Jutsu: Ougi - fires a bullet that deals damage along its path</string>
+		<key>5</key>
+		<string>Water Slash Trio: Ougi 2 - water-element combo with the Executioner's Blade</string>
+	</dict>
+	<key>Tenten</key>
+	<dict>
+		<key>1</key>
+		<string>Manipulated Tools: Exploding Iron Ball: Summon an iron ball that explodes</string>
+		<key>2</key>
+		<string>Manipulated Tools: Twin Blades: Throw two knives that deal damage along their path</string>
+		<key>3</key>
+		<string>Manipulated Tools: Ultimate Shuriken: Rapidly throw shuriken for a short time</string>
+		<key>4</key>
+		<string>Manipulated Tools: Rising Dragon: Ougi - attack with melee weapons</string>
+		<key>5</key>
+		<string>Manipulated Tools: Twin Rising Dragons: Ougi 2 - releases a barrage of ninja tools dealing area damage</string>
+	</dict>
+	<key>Tobi</key>
+	<dict>
+		<key>1</key>
+		<string>Spinning Rampage: Tobi spins at high speed, dealing dash damage and dragging enemies</string>
+		<key>2</key>
+		<string>Explosive Mines: Throw 2 mines that knock enemies down</string>
+		<key>3</key>
+		<string>Intangibility: For a period of time, Tobi ignores all attacks while moving, standing still or using normal attacks</string>
+		<key>4</key>
+		<string>Kamui: Ougi - teleports next to an enemy and sucks them into another dimension</string>
+		<key>5</key>
+		<string>Kamui Flame Formation: Ougi 2 - unleashes massive Fire Release ninjutsu and sends enemies to another dimension</string>
+	</dict>
+	<key>Tobirama</key>
+	<dict>
+		<key>1</key>
+		<string>Shadow Clone Flying Thunder God Jutsu: Summon a clone and teleport an enemy in front of you</string>
+		<key>2</key>
+		<string>Water Release: Water Shockwave: Spray a high-pressure water column that knocks back</string>
+		<key>3</key>
+		<string>Water Release: Water Dragon Bullet Jutsu: Medium area ninjutsu damage in front</string>
+		<key>4</key>
+		<string>Torrent Triple Leap: Ougi - combo that deals area ninjutsu damage</string>
+		<key>5</key>
+		<string>Hard Vortex Water Blade: Ougi 2 Flying Thunder God combo that releases a Water Release vortex</string>
+	</dict>
+	<key>Tsunade</key>
+	<dict>
+		<key>1</key>
+		<string>Heavenly Fist: Multi-hit small area ninjutsu damage</string>
+		<key>2</key>
+		<string>Chaotic Body Jutsu: Dash forward and briefly slow enemies</string>
+		<key>3</key>
+		<string>Summoning: Katsuyu: Summon a multiplying Katsuyu that heals allies on the battlefield</string>
+		<key>4</key>
+		<string>Strength Triple Combo: Ougi - combo that deals area ninjutsu damage</string>
+		<key>5</key>
+		<string>Ninja Art: Creation Rebirth: Ougi 2 - greatly increases healing and attack</string>
+	</dict>
+</dict>
+</plist>
