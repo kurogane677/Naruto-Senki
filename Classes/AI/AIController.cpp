@@ -69,7 +69,10 @@ AIController* AIController::create(Hero* hero)
 {
     if (hero->role() != Role::Com && hero->role() != Role::Player)
         return nullptr;  // clones and summons keep their small legacy routines
-    const Profile* p = findProfile(hero->getCharacter()->getCString());
+    const char* name = hero->getCharacter()->getCString();
+    const Profile* p = findProfile(name);
+    if (!p)
+        p = defaultProfile(name);
     return p ? new AIController(hero, p) : nullptr;
 }
 

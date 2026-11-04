@@ -12,7 +12,7 @@ namespace ai
 struct SummonSpec;
 
 // Drives summons and puppets (Akamaru, Kurama, Karasu, the Paths, ...).
-// Who they go after follows the summoner's role from profiles.json; how they
+// Who they go after follows the summoner's AI profile role; how they
 // fight comes from a per-summon spec. Summons cannot heal, so unlike
 // AIController they never look at their own HP: no retreat, potions or gear.
 class SummonController
