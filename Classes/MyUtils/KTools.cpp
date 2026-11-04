@@ -212,7 +212,7 @@ void KTools::initTableInDB(){
 			"Karin","Sasuke","Hidan","Choji","Kankuro",
 			"Shino","Minato","Tobi","Kakuzu","Hinata",
 			"Shikamaru","Chiyo","Kisame",
-			"Hiruzen","Kiba","Jugo","Lee"
+			"Hiruzen","Kiba","Jugo","Lee","Kurenai"
 		};
 		int num= sizeof(heroList)/sizeof(char*);
 
@@ -493,6 +493,14 @@ void KTools::saveSQLite(const char* table,const char* relatedColumn,const char* 
 		std::string saveValue=targetValue;
 		encode(saveValue,rand()%50+40);
 		sql=CCString::createWithFormat("update %s set %s='%s' where %s='%s'",table,targetColumn,saveValue.c_str(),relatedColumn,encodedKey.c_str());
+		sqlite3_exec(pDB,sql->getCString(),NULL,NULL,NULL);
+	}else{
+		// no row yet, e.g. a hero added after this sql.db was created
+		std::string key=value;
+		encode(key,rand()%50+40);
+		std::string saveValue=targetValue;
+		encode(saveValue,rand()%50+40);
+		sql=CCString::createWithFormat("insert into %s (%s,%s) values('%s','%s')",table,relatedColumn,targetColumn,key.c_str(),saveValue.c_str());
 		sqlite3_exec(pDB,sql->getCString(),NULL,NULL,NULL);
 	}
 	sqlite3_close(pDB);

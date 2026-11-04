@@ -267,6 +267,19 @@
 		<key>5</key>
 		<string>Angel's Paper Rain: Ougi 2 - knock up and deal large-area damage</string>
 	</dict>
+	<key>Kurenai</key>
+	<dict>
+		<key>1</key>
+		<string>Lorem ipsum dolor sit amet.</string>
+		<key>2</key>
+		<string>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, eum!</string>
+		<key>3</key>
+		<string>Lorem ipsum dolor sit amet, consectetur adipisicing.</string>
+		<key>4</key>
+		<string>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam fuga veritatis et in mollitia harum.</string>
+		<key>5</key>
+		<string>Lorem ipsum dolor sit amet.</string>
+	</dict>
 	<key>Lee</key>
 	<dict>
 		<key>1</key>

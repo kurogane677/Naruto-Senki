@@ -98,7 +98,7 @@ void startMatch()
                                    "Hinata", "Neji", "Kiba", "Shino", "Tenten", "Lee", "Tsunade", "Jiraiya",
                                    "Minato", "Hiruzen", "Tobirama", "Gaara", "Kankuro", "Chiyo", "Itachi",
                                    "Kisame", "Deidara", "Konan", "Tobi", "Hidan", "Kakuzu", "Sasuke",
-                                   "Suigetsu", "Karin", "Jugo"};
+                                   "Suigetsu", "Karin", "Jugo", "Kurenai"};
     static std::string chosen;
     const char* pick = getenv("NS_AUTOPLAY_HERO");
     chosen = pick && *pick ? pick : heroes[randInt(sizeof(heroes) / sizeof(heroes[0]))];

@@ -2932,7 +2932,8 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 							//取消隐身
 							if(!tempHero->_isVisable){
 								if(tempHero->isCharacter("Konan") ||
-									tempHero->isCharacter("Deidara")
+									tempHero->isCharacter("Deidara") ||
+									tempHero->isCharacter("Kurenai")
 									){
 										tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
 								}
@@ -3715,7 +3716,8 @@ void ActionManager::changeAction(){
 							//取消隐身
 							if(!tempHero->_isVisable){
 								if(tempHero->isCharacter("Konan") ||
-									tempHero->isCharacter("Deidara")
+									tempHero->isCharacter("Deidara") ||
+									tempHero->isCharacter("Kurenai")
 									){
 										tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
 								}
@@ -3795,7 +3797,8 @@ void ActionManager::changeAction(){
 							//取消隐身
 							if(!tempHero->_isVisable){
 								if(tempHero->isCharacter("Konan") ||
-									tempHero->isCharacter("Deidara")
+									tempHero->isCharacter("Deidara") ||
+									tempHero->isCharacter("Kurenai")
 									){
 										tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
 								}
@@ -3869,7 +3872,8 @@ void ActionManager::changeAction(){
 						//取消隐身
 						if(!tempHero->_isVisable){
 							if(tempHero->isCharacter("Konan") ||
-								tempHero->isCharacter("Deidara")
+								tempHero->isCharacter("Deidara") ||
+								tempHero->isCharacter("Kurenai")
 								){
 									tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
 							}
@@ -3968,7 +3972,8 @@ void ActionManager::changeAction(){
 						//取消隐身
 						if(!tempHero->_isVisable){
 							if(tempHero->isCharacter("Konan") ||
-								tempHero->isCharacter("Deidara")
+								tempHero->isCharacter("Deidara") ||
+								tempHero->isCharacter("Kurenai")
 								){
 									tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
 							}
@@ -6231,7 +6236,8 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 						//取消隐身
 						if(!tempHero->_isVisable){
 							if(tempHero->isCharacter("Konan") ||
-								tempHero->isCharacter("Deidara")
+								tempHero->isCharacter("Deidara") ||
+								tempHero->isCharacter("Kurenai")
 								){
 									tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
 							}
@@ -6708,7 +6714,8 @@ void ActionManager::sAttack(abType type){
 		//攻击取消隐身
 		if(!_isVisable){
 			if(this->isCharacter("Konan") ||
-				this->isCharacter("Deidara")
+				this->isCharacter("Deidara") ||
+				this->isCharacter("Kurenai")
 				){
 				this->unschedule(schedule_selector(ActionManager::disableBuff));
 			}
@@ -6786,7 +6793,8 @@ void ActionManager::oAttack(abType type){
 		//攻击取消隐身
 		if(!_isVisable){
 			if(this->isCharacter("Konan") ||
-				this->isCharacter("Deidara")
+				this->isCharacter("Deidara") ||
+				this->isCharacter("Kurenai")
 				){
 					this->unschedule(schedule_selector(ActionManager::disableBuff));
 			}
