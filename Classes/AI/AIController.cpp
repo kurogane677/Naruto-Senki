@@ -12,26 +12,26 @@ namespace ai
 namespace
 {
 
-bool inMoveState(ActionManager* u)
+bool inMoveState(ActionManager* unit)
 {
-    auto s = u->getActionState();
-    return s == ACTION_STATE_IDLE || s == ACTION_STATE_WALK || s == ACTION_STATE_ATTACK;
+    auto state = unit->getActionState();
+    return state == ACTION_STATE_IDLE || state == ACTION_STATE_WALK || state == ACTION_STATE_ATTACK;
 }
 
-bool isDown(ActionManager* u)
+bool isDown(ActionManager* unit)
 {
-    auto s = u->getActionState();
-    return s == ACTION_STATE_KOCKDOWN || s == ACTION_STATE_FLOAT || s == ACTION_STATE_AIRHURT;
+    auto state = unit->getActionState();
+    return state == ACTION_STATE_KOCKDOWN || state == ACTION_STATE_FLOAT || state == ACTION_STATE_AIRHURT;
 }
 
-bool hasMonster(ActionManager* u, const std::string& name)
+bool hasMonster(ActionManager* unit, const std::string& name)
 {
-    if (!u->getMonsterArray())
+    if (!unit->getMonsterArray())
         return false;
-    CCObject* obj;
-    CCARRAY_FOREACH(u->getMonsterArray(), obj)
+    CCObject* object;
+    CCARRAY_FOREACH(unit->getMonsterArray(), object)
     {
-        if (((ActionManager*)obj)->isCharacter(name.c_str()))
+        if (((ActionManager*)object)->isCharacter(name.c_str()))
             return true;
     }
     return false;
@@ -51,16 +51,16 @@ abType toAbType(Slot slot)
 }
 
 // valid enemy hero for targeting (same filter as ActionManager::findEnemy2)
-bool targetable(ActionManager* self, ActionManager* u, GameLayer* game)
+bool targetable(ActionManager* self, ActionManager* unit, GameLayer* game)
 {
-    if (!isLaneHero(u) || !self->isEnemy(u) || u->getActionState() == ACTION_STATE_DEAD || !u->_isVisable ||
-        u->_isWudi)
+    if (!isLaneHero(unit) || !self->isEnemy(unit) || unit->getActionState() == ACTION_STATE_DEAD || !unit->_isVisable ||
+        unit->_isWudi)
         return false;
     float tile = game->currentMap->getTileSize().width;
-    float x = u->getPositionX();
-    if (x < tile * 3 || x > (game->currentMap->getMapSize().width - 3) * tile)
+    float unitX = unit->getPositionX();
+    if (unitX < tile * 3 || unitX > (game->currentMap->getMapSize().width - 3) * tile)
         return false;
-    return fabsf(x - self->getPositionX()) < winSize.width / 2;
+    return fabsf(unitX - self->getPositionX()) < winSize.width / 2;
 }
 
 }  // namespace
@@ -165,8 +165,8 @@ void AIController::tick(float dt)
 std::string AIController::activitySummary() const
 {
     int total = 0;
-    for (int n : _activity)
-        total += n;
+    for (int count : _activity)
+        total += count;
     if (!total)
         return "";
     const char* keys = "iasfbh";
@@ -206,14 +206,14 @@ ActionManager* AIController::pickHeroTarget(bool think)
     {
         // assassins pick the weakest hero in reach
         float best = choice->getHpPercent();
-        CCObject* obj;
-        CCARRAY_FOREACH(_game->_CharacterArray, obj)
+        CCObject* object;
+        CCARRAY_FOREACH(_game->_CharacterArray, object)
         {
-            ActionManager* u = (ActionManager*)obj;
-            if (targetable(_hero, u, _game) && u->getHpPercent() < best - 0.15f)
+            ActionManager* unit = (ActionManager*)object;
+            if (targetable(_hero, unit, _game) && unit->getHpPercent() < best - 0.15f)
             {
-                best = u->getHpPercent();
-                choice = u;
+                best = unit->getHpPercent();
+                choice = unit;
             }
         }
     }
@@ -232,25 +232,25 @@ ActionManager* AIController::pickHeroTarget(bool think)
 
 bool AIController::survive()
 {
-    Hero* h = _hero;
-    float hp = h->getHpPercent();
+    Hero* hero = _hero;
+    float hp = hero->getHpPercent();
 
     // substitution jutsu out of a combo
-    bool beingHit = isDown(h) || h->getActionState() == ACTION_STATE_HURT;
-    if (_profile->panicGear06 && h->_isCanGear06 && beingHit && hp < 0.5f && !h->_isBati && !h->_isWudi)
-        h->useGear(gear06);
+    bool beingHit = isDown(hero) || hero->getActionState() == ACTION_STATE_HURT;
+    if (_profile->panicGear06 && hero->_isCanGear06 && beingHit && hp < 0.5f && !hero->_isBati && !hero->_isWudi)
+        hero->useGear(gear06);
 
     // Turtle Shell Seal (gear11): brace when hurt with an enemy hero close by
-    if (h->_isCanGear11 && hp < _params->sealHp && enemyHeroNear(_params->sealRange))
-        h->useGear(gear11);
+    if (hero->_isCanGear11 && hp < _params->sealHp && enemyHeroNear(_params->sealRange))
+        hero->useGear(gear11);
 
     float potionAt = _params->potionHp + (role() == HeroRole::Support ? 0.05f : 0.0f);
     int keep = hp < _params->retreatHp ? 0 : gearReserve();
-    if (h->_isCanItem1 && h->getCoin() >= 50 + keep && !h->_isHealling &&
-        (hp < potionAt || h->getMaxHP() - h->getHP() >= 3000 + h->gearRecoverValue + 2000))
-        h->setItem(Item1);
+    if (hero->_isCanItem1 && hero->getCoin() >= 50 + keep && !hero->_isHealling &&
+        (hp < potionAt || hero->getMaxHP() - hero->getHP() >= 3000 + hero->gearRecoverValue + 2000))
+        hero->setItem(Item1);
 
-    if (h->_isControled)
+    if (hero->_isControled)
         return false;
 
     float retreatAt = _params->retreatHp;
@@ -267,29 +267,29 @@ bool AIController::survive()
 
     if (!_retreating)
         return false;
-    if (h->_isHealling)
+    if (hero->_isHealling)
     {
         if (canAct())
-            h->idle();
+            hero->idle();
         return true;
     }
     if (!canAct())
         return true;
-    bool moved = h->_mainTarget ? h->stepBack2() : h->stepBack();
+    bool moved = hero->_mainTarget ? hero->stepBack2() : hero->stepBack();
     if (!moved)
-        h->idle();
+        hero->idle();
     return true;
 }
 
 bool AIController::enemyHeroNear(float distance) const
 {
-    Hero* h = _hero;
-    CCObject* obj;
-    CCARRAY_FOREACH(_game->_CharacterArray, obj)
+    Hero* hero = _hero;
+    CCObject* object;
+    CCARRAY_FOREACH(_game->_CharacterArray, object)
     {
-        ActionManager* u = (ActionManager*)obj;
-        if (isLaneHero(u) && h->isEnemy(u) && u->getActionState() != ACTION_STATE_DEAD &&
-            fabsf(u->getPositionX() - h->getPositionX()) <= distance)
+        ActionManager* unit = (ActionManager*)object;
+        if (isLaneHero(unit) && hero->isEnemy(unit) && unit->getActionState() != ACTION_STATE_DEAD &&
+            fabsf(unit->getPositionX() - hero->getPositionX()) <= distance)
             return true;
     }
     return false;
@@ -304,23 +304,23 @@ bool AIController::dodge()
         _hero->stepBack2();
         return true;
     }
-    CCObject* obj;
-    CCARRAY_FOREACH(_game->_CharacterArray, obj)
+    CCObject* object;
+    CCARRAY_FOREACH(_game->_CharacterArray, object)
     {
-        ActionManager* u = (ActionManager*)obj;
-        if (!isLaneHero(u) || !_hero->isEnemy(u))
+        ActionManager* unit = (ActionManager*)object;
+        if (!isLaneHero(unit) || !_hero->isEnemy(unit))
             continue;
-        auto s = u->getActionState();
-        bool casting = s == ACTION_STATE_OATTACK || s == ACTION_STATE_O2ATTACK;
+        auto state = unit->getActionState();
+        bool casting = state == ACTION_STATE_OATTACK || state == ACTION_STATE_O2ATTACK;
         if (!casting)
         {
-            _dodgeRolled.erase(u);
+            _dodgeRolled.erase(unit);
             continue;
         }
-        CCPoint d = ccpSub(u->getPosition(), _hero->getPosition());
-        if (fabsf(d.x) > 160 || fabsf(d.y) > 64 || _dodgeRolled[u])
+        CCPoint delta = ccpSub(unit->getPosition(), _hero->getPosition());
+        if (fabsf(delta.x) > 160 || fabsf(delta.y) > 64 || _dodgeRolled[unit])
             continue;
-        _dodgeRolled[u] = true;
+        _dodgeRolled[unit] = true;
         if (randChance(_params->dodgeChance))
         {
             _dodgeUntil = _time + randFloat(0.4f, 0.8f);
@@ -333,30 +333,30 @@ bool AIController::dodge()
 
 bool AIController::defendBase()
 {
-    Hero* h = _hero;
-    if (!_profile->baseCheck || h->_isControled)
+    Hero* hero = _hero;
+    if (!_profile->baseCheck || hero->_isControled)
         return false;
 
-    const TeamBrain& team = TeamBrain::get(_game, h->group());
-    if (team.towerThreat && targetable(h, team.towerThreat, _game) && role() != HeroRole::Assassin)
+    const TeamBrain& team = TeamBrain::get(_game, hero->group());
+    if (team.towerThreat && targetable(hero, team.towerThreat, _game) && role() != HeroRole::Assassin)
     {
-        h->_mainTarget = team.towerThreat;
+        hero->_mainTarget = team.towerThreat;
         return false;  // fightHero takes it from here
     }
 
-    if (!h->isBaseDanger)
+    if (!hero->isBaseDanger)
         return false;
-    ActionManager* keep = h->_mainTarget;
-    if (!h->checkBase())
+    ActionManager* keep = hero->_mainTarget;
+    if (!hero->checkBase())
     {
-        h->_mainTarget = keep;
+        hero->_mainTarget = keep;
         return false;
     }
     // checkBase put the intruder in _mainTarget; fall back toward the base first
-    float x = h->getPositionX();
-    bool away = h->group() == Group::Akatsuki ? x < BASE_X_AKATSUKI : x > BASE_X_KONOHA;
+    float heroX = hero->getPositionX();
+    bool away = hero->group() == Group::Akatsuki ? heroX < BASE_X_AKATSUKI : heroX > BASE_X_KONOHA;
     if (away && canAct())
-        return h->stepBack2();
+        return hero->stepBack2();
     return false;
 }
 
@@ -365,17 +365,17 @@ bool AIController::defendBase()
 
 bool AIController::slotReady(Slot slot) const
 {
-    Hero* h = _hero;
+    Hero* hero = _hero;
     switch (slot)
     {
     case Slot::NAttack: return true;
-    case Slot::Skill1: return h->_isCanSkill1;
-    case Slot::Skill2: return h->_isCanSkill2;
-    case Slot::Skill3: return h->_isCanSkill3;
-    case Slot::Ougis1: return h->_isCanOugis1 && !h->_isControled;
-    case Slot::Ougis2: return h->_isCanOugis2 && !h->_isControled && _game->_isOugis2Game;
-    case Slot::Gear00: return h->_isCanGear00;
-    case Slot::Gear03: return h->_isCanGear03;
+    case Slot::Skill1: return hero->_isCanSkill1;
+    case Slot::Skill2: return hero->_isCanSkill2;
+    case Slot::Skill3: return hero->_isCanSkill3;
+    case Slot::Ougis1: return hero->_isCanOugis1 && !hero->_isControled;
+    case Slot::Ougis2: return hero->_isCanOugis2 && !hero->_isControled && _game->_isOugis2Game;
+    case Slot::Gear00: return hero->_isCanGear00;
+    case Slot::Gear03: return hero->_isCanGear03;
     }
     return false;
 }
@@ -390,14 +390,14 @@ bool AIController::ruleReady(const SkillRule& rule)
     }
     if (rule.slot == Slot::NAttack || rule.slot == Slot::Gear00 || rule.slot == Slot::Gear03)
         return true;
-    auto it = _readySince.find(key);
-    if (it == _readySince.end())
+    auto found = _readySince.find(key);
+    if (found == _readySince.end())
     {
         // a human notices the cooldown a moment later
         _readySince[key] = _time + randFloat(_params->castDelayMin, _params->castDelayMax);
         return _params->castDelayMax <= 0;
     }
-    if (_time < it->second)
+    if (_time < found->second)
         return false;
     auto skip = _skipUntil.find(key);
     return skip == _skipUntil.end() || _time >= skip->second;
@@ -408,119 +408,119 @@ void AIController::markUsed(Slot slot)
     _readySince.erase((int)slot);
 }
 
-bool AIController::condsHold(const SkillRule& rule, ActionManager* t)
+bool AIController::condsHold(const SkillRule& rule, ActionManager* target)
 {
-    Hero* h = _hero;
-    for (const Cond& c : rule.conds)
+    Hero* hero = _hero;
+    for (const Cond& cond : rule.conds)
     {
-        const std::string& n = c.name;
+        const std::string& name = cond.name;
         bool ok = true;
-        if (n == "gp") ok = !t || t->getGP() < (_params->strictGp ? 5000 : 8000);
-        else if (n == "tNotBati") ok = !t || !t->_isBati;
-        else if (n == "tNotDown") ok = !t || t->getActionState() != ACTION_STATE_KOCKDOWN;
-        else if (n == "tNotSticking") ok = !t || !t->_isSticking;
-        else if (n == "tIdle") ok = t && inMoveState(t);
-        else if (n == "tHpBelow") ok = t && t->getHpPercent() < c.value;
-        else if (n == "tHpAbsBelow") ok = t && t->getHP() < c.value;
-        else if (n == "tNoGear06") ok = t && !t->_isCanGear06;
-        else if (n == "combo") ok = _params->combos && t && (isDown(t) || t->getActionState() == ACTION_STATE_HURT);
-        else if (n == "selfBati") ok = h->_isBati;
-        else if (n == "selfNotBati") ok = !h->_isBati;
-        else if (n == "ougis2Ready") ok = slotReady(Slot::Ougis2);
-        else if (n == "buff") ok = h->_skillChangeBuffValue != 0;
-        else if (n == "notBuff") ok = h->_skillChangeBuffValue == 0;
-        else if (n == "skillUP") ok = h->_skillUPBuffValue != 0;
-        else if (n == "notPowerUP") ok = h->_powerUPBuffValue == 0;
-        else if (n == "hpBelow") ok = h->getHpPercent() < c.value;
-        else if (n == "hpAbove") ok = h->getHpPercent() > c.value;
-        else if (n == "lv") ok = (int)h->getLV() >= (int)c.value;
-        else if (n == "bamenBelow") ok = (int)h->bamen < (int)c.value;
-        else if (n == "bamenAtLeast") ok = (int)h->bamen >= (int)c.value;
-        else if (n == "noMonster") ok = !hasMonster(h, c.arg);
-        else if (n == "hasMonster") ok = hasMonster(h, c.arg);
-        else if (n == "notHealing") ok = !h->_isHealling;
-        else if (n == "noBuffTime") ok = !h->_buffStartTime;
-        else if (n == "invisible") ok = !h->_isVisable;
-        else if (n == "notTaunt") ok = !h->_isTaunt;
-        else if (n == "baseDanger") ok = h->isBaseDanger;
-        else if (n == "losing") ok = h->battleCondiction < 0;
-        else if (n == "nattackBelow") ok = h->getnAttackValue() < c.value;
-        else if (n == "summonable")
-            ok = h->hearts > 0 && (!h->getMonsterArray() || h->getMonsterArray()->count() < 3);
-        else if (n == "allyNear")
+        if (name == "gp") ok = !target || target->getGP() < (_params->strictGp ? 5000 : 8000);
+        else if (name == "tNotBati") ok = !target || !target->_isBati;
+        else if (name == "tNotDown") ok = !target || target->getActionState() != ACTION_STATE_KOCKDOWN;
+        else if (name == "tNotSticking") ok = !target || !target->_isSticking;
+        else if (name == "tIdle") ok = target && inMoveState(target);
+        else if (name == "tHpBelow") ok = target && target->getHpPercent() < cond.value;
+        else if (name == "tHpAbsBelow") ok = target && target->getHP() < cond.value;
+        else if (name == "tNoGear06") ok = target && !target->_isCanGear06;
+        else if (name == "combo") ok = _params->combos && target && (isDown(target) || target->getActionState() == ACTION_STATE_HURT);
+        else if (name == "selfBati") ok = hero->_isBati;
+        else if (name == "selfNotBati") ok = !hero->_isBati;
+        else if (name == "ougis2Ready") ok = slotReady(Slot::Ougis2);
+        else if (name == "buff") ok = hero->_skillChangeBuffValue != 0;
+        else if (name == "notBuff") ok = hero->_skillChangeBuffValue == 0;
+        else if (name == "skillUP") ok = hero->_skillUPBuffValue != 0;
+        else if (name == "notPowerUP") ok = hero->_powerUPBuffValue == 0;
+        else if (name == "hpBelow") ok = hero->getHpPercent() < cond.value;
+        else if (name == "hpAbove") ok = hero->getHpPercent() > cond.value;
+        else if (name == "lv") ok = (int)hero->getLV() >= (int)cond.value;
+        else if (name == "bamenBelow") ok = (int)hero->bamen < (int)cond.value;
+        else if (name == "bamenAtLeast") ok = (int)hero->bamen >= (int)cond.value;
+        else if (name == "noMonster") ok = !hasMonster(hero, cond.arg);
+        else if (name == "hasMonster") ok = hasMonster(hero, cond.arg);
+        else if (name == "notHealing") ok = !hero->_isHealling;
+        else if (name == "noBuffTime") ok = !hero->_buffStartTime;
+        else if (name == "invisible") ok = !hero->_isVisable;
+        else if (name == "notTaunt") ok = !hero->_isTaunt;
+        else if (name == "baseDanger") ok = hero->isBaseDanger;
+        else if (name == "losing") ok = hero->battleCondiction < 0;
+        else if (name == "nattackBelow") ok = hero->getnAttackValue() < cond.value;
+        else if (name == "summonable")
+            ok = hero->hearts > 0 && (!hero->getMonsterArray() || hero->getMonsterArray()->count() < 3);
+        else if (name == "allyNear")
         {
             ok = false;
-            CCObject* obj;
-            CCARRAY_FOREACH(_game->_CharacterArray, obj)
+            CCObject* object;
+            CCARRAY_FOREACH(_game->_CharacterArray, object)
             {
-                ActionManager* u = (ActionManager*)obj;
-                if (u != h && isLaneHero(u) && !h->isEnemy(u) && u->getActionState() != ACTION_STATE_DEAD &&
-                    fabsf(u->getPositionX() - h->getPositionX()) <= winSize.width / 2)
+                ActionManager* unit = (ActionManager*)object;
+                if (unit != hero && isLaneHero(unit) && !hero->isEnemy(unit) && unit->getActionState() != ACTION_STATE_DEAD &&
+                    fabsf(unit->getPositionX() - hero->getPositionX()) <= winSize.width / 2)
                     ok = true;
             }
         }
         else
-            CCLOG("AI: unknown condition '%s' in %s", n.c_str(), _profile->name.c_str());
+            CCLOG("AI: unknown condition '%s' in %s", name.c_str(), _profile->name.c_str());
         if (!ok)
             return false;
     }
     return true;
 }
 
-bool AIController::retreatFromFight(const CCPoint& sp)
+bool AIController::retreatFromFight(const CCPoint& toTarget)
 {
-    Hero* h = _hero;
-    if (h->_isHealling || h->_isControled)
+    Hero* hero = _hero;
+    if (hero->_isHealling || hero->_isControled)
         return false;
     if (_time < _kiteUntil)
     {
-        h->stepBack2();
+        hero->stepBack2();
         return true;
     }
-    if (_time < _braveUntil || fabsf(sp.x) >= 160)
+    if (_time < _braveUntil || fabsf(toTarget.x) >= 160)
         return false;
-    int gap = h->enemyCombatPoint - h->friendCombatPoint;
+    int gap = hero->enemyCombatPoint - hero->friendCombatPoint;
     if (gap <= _profile->retreatGap)
         return false;
     // outmatched: back off for a moment, then fight again for a while,
     // instead of running back and forth at the edge of the fight
     _kiteUntil = _time + randFloat(0.8f, 1.5f);
     _braveUntil = _kiteUntil + randFloat(3.0f, 5.0f);
-    h->stepBack2();
+    hero->stepBack2();
     return true;
 }
 
 bool AIController::fightHero()
 {
-    Hero* h = _hero;
-    ActionManager* t = h->_mainTarget;
-    if (!t || t->role() == Role::Flog || t->role() == Role::Tower)
+    Hero* hero = _hero;
+    ActionManager* target = hero->_mainTarget;
+    if (!target || target->role() == Role::Flog || target->role() == Role::Tower)
         return false;
     if (!canAct())
         return true;  // mid-animation: keep the target, act next tick
 
-    CCPoint sp = deltaTo(t);
+    CCPoint toTarget = deltaTo(target);
     bool retreatChecked = false;
     for (const SkillRule& rule : _profile->hero)
     {
-        if (rule.gate && fabsf(sp.x) >= rule.gate)
+        if (rule.gate && fabsf(toTarget.x) >= rule.gate)
             continue;
         if (rule.gate && !retreatChecked)
         {
             retreatChecked = true;
-            if (retreatFromFight(sp))
+            if (retreatFromFight(toTarget))
                 return true;
         }
-        if (!ruleReady(rule) || !condsHold(rule, t))
+        if (!ruleReady(rule) || !condsHold(rule, target))
             continue;
-        bool inRange = fabsf(sp.x) <= rule.rangeX && fabsf(sp.y) <= rule.rangeY;
+        bool inRange = fabsf(toTarget.x) <= rule.rangeX && fabsf(toTarget.y) <= rule.rangeY;
         if (!inRange)
         {
             if (!rule.approach)
                 continue;
-            return walkTo(sp, rule.rangeX, rule.rangeY, rule.speedGear);
+            return walkTo(toTarget, rule.rangeX, rule.rangeY, rule.speedGear);
         }
-        if (rule.minRange && fabsf(sp.x) < rule.minRange && h->stepBack())
+        if (rule.minRange && fabsf(toTarget.x) < rule.minRange && hero->stepBack())
             return true;
         if (rule.slot != Slot::NAttack && !randChance(_params->castChance))
         {
@@ -529,20 +529,20 @@ bool AIController::fightHero()
         }
         if (rule.slot == Slot::Gear00 || rule.slot == Slot::Gear03)
         {
-            h->useGear(rule.slot == Slot::Gear00 ? gear00 : gear03);
+            hero->useGear(rule.slot == Slot::Gear00 ? gear00 : gear03);
             return true;
         }
-        strike(rule.selfCast ? nullptr : t, toAbType(rule.slot));
+        strike(rule.selfCast ? nullptr : target, toAbType(rule.slot));
         markUsed(rule.slot);
         return true;
     }
 
-    if (!retreatChecked && retreatFromFight(sp))
+    if (!retreatChecked && retreatFromFight(toTarget))
         return true;
-    if (fabsf(sp.x) >= 128)
+    if (fabsf(toTarget.x) >= 128)
         return false;  // nothing worth closing in for: go farm
 
-    if (walkTo(sp, _profile->nattackX, _profile->nattackY))
+    if (walkTo(toTarget, _profile->nattackX, _profile->nattackY))
         return true;
     // waiting on cooldowns: sometimes side-step instead of face-tanking
     if (_time < _strafeUntil)
@@ -550,10 +550,10 @@ bool AIController::fightHero()
     if (_thinking && (role() == HeroRole::Ranged || role() == HeroRole::Support) && randChance(0.08f))
     {
         _strafeUntil = _time + 0.4f;
-        h->stepBack2();
+        hero->stepBack2();
         return true;
     }
-    strike(t, NAttack);
+    strike(target, NAttack);
     return true;
 }
 
@@ -562,58 +562,58 @@ bool AIController::fightHero()
 
 bool AIController::farm()
 {
-    Hero* h = _hero;
-    h->_mainTarget = nullptr;
-    const TeamBrain& team = TeamBrain::get(_game, h->group());
+    Hero* hero = _hero;
+    hero->_mainTarget = nullptr;
+    const TeamBrain& team = TeamBrain::get(_game, hero->group());
     bool towerFirst = role() == HeroRole::Pusher || team.pushWindow ||
                       std::find(_profile->subRoles.begin(), _profile->subRoles.end(), "pusher") !=
                           _profile->subRoles.end();
     if (towerFirst)
     {
-        if (!h->findEnemy2("Tower"))
-            h->findEnemy2("Flog");
+        if (!hero->findEnemy2("Tower"))
+            hero->findEnemy2("Flog");
     }
-    else if (!h->findEnemy2("Flog"))
-        h->findEnemy2("Tower");
+    else if (!hero->findEnemy2("Flog"))
+        hero->findEnemy2("Tower");
 
-    ActionManager* t = h->_mainTarget;
-    if (!t)
+    ActionManager* target = hero->_mainTarget;
+    if (!target)
         return false;
-    CCPoint sp = deltaTo(t);
-    if (walkTo(sp, 32, 32))
+    CCPoint toTarget = deltaTo(target);
+    if (walkTo(toTarget, 32, 32))
         return true;
     if (!canAct())
         return true;
 
     for (const SkillRule& rule : _profile->farm)
     {
-        bool kindOk = rule.on == TargetKind::AnyFarm || (rule.on == TargetKind::Flog && t->role() == Role::Flog) ||
-                      (rule.on == TargetKind::Tower && t->role() == Role::Tower);
+        bool kindOk = rule.on == TargetKind::AnyFarm || (rule.on == TargetKind::Flog && target->role() == Role::Flog) ||
+                      (rule.on == TargetKind::Tower && target->role() == Role::Tower);
         if (!kindOk || !ruleReady(rule) || !condsHold(rule, nullptr))
             continue;
         if (rule.slot == Slot::Gear03)
         {
-            h->useGear(gear03);
+            hero->useGear(gear03);
             return true;
         }
-        strike(rule.selfCast ? nullptr : t, toAbType(rule.slot));
+        strike(rule.selfCast ? nullptr : target, toAbType(rule.slot));
         markUsed(rule.slot);
         return true;
     }
-    strike(t, NAttack);
+    strike(target, NAttack);
     return true;
 }
 
 void AIController::advance()
 {
-    Hero* h = _hero;
-    if (h->_isHealling && h->getHpPercent() < 1)
+    Hero* hero = _hero;
+    if (hero->_isHealling && hero->getHpPercent() < 1)
     {
         if (canAct())
-            h->idle();
+            hero->idle();
         return;
     }
-    h->stepOn();
+    hero->stepOn();
 }
 
 // ---------------------------------------------------------------------------
@@ -653,22 +653,22 @@ gearType AIController::nextUpgrade()
 
 void AIController::buyGear()
 {
-    Hero* h = _hero;
-    if (!_game->_isHardCoreGame || h->_isControled || h->getCoin() < 500)
+    Hero* hero = _hero;
+    if (!_game->_isHardCoreGame || hero->_isControled || hero->getCoin() < 500)
         return;
-    int owned = h->getGearArray()->count();
+    int owned = hero->getGearArray()->count();
     if (!_buildChosen)
     {
         _build = chooseBuild(*this);
         _buildChosen = true;
     }
     if (owned < 3 && owned < (int)_build.size())
-        h->setGear((gearType)_build[owned]);
+        hero->setGear((gearType)_build[owned]);
     else
     {
         gearType up = nextUpgrade();
         if (up != None)
-            h->upgradeGear(up);
+            hero->upgradeGear(up);
     }
 }
 
