@@ -42,6 +42,7 @@ public:
 private:
     // decision steps; each returns true when it issued a command this tick
     bool survive();
+    bool enemyHeroNear(float distance) const;
     void buyGear();
     bool defendBase();
     bool dodge();

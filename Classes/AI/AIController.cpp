@@ -240,6 +240,10 @@ bool AIController::survive()
     if (_profile->panicGear06 && h->_isCanGear06 && beingHit && hp < 0.5f && !h->_isBati && !h->_isWudi)
         h->useGear(gear06);
 
+    // Turtle Shell Seal (gear11): brace when hurt with an enemy hero close by
+    if (h->_isCanGear11 && hp < _params->sealHp && enemyHeroNear(_params->sealRange))
+        h->useGear(gear11);
+
     float potionAt = _params->potionHp + (role() == HeroRole::Support ? 0.05f : 0.0f);
     int keep = hp < _params->retreatHp ? 0 : gearReserve();
     if (h->_isCanItem1 && h->getCoin() >= 50 + keep && !h->_isHealling &&
@@ -275,6 +279,20 @@ bool AIController::survive()
     if (!moved)
         h->idle();
     return true;
+}
+
+bool AIController::enemyHeroNear(float distance) const
+{
+    Hero* h = _hero;
+    CCObject* obj;
+    CCARRAY_FOREACH(_game->_CharacterArray, obj)
+    {
+        ActionManager* u = (ActionManager*)obj;
+        if (isLaneHero(u) && h->isEnemy(u) && u->getActionState() != ACTION_STATE_DEAD &&
+            fabsf(u->getPositionX() - h->getPositionX()) <= distance)
+            return true;
+    }
+    return false;
 }
 
 bool AIController::dodge()

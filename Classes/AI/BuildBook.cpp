@@ -10,17 +10,18 @@ namespace
 {
 
 // gear ids: 0 speed/stealth, 1 +CKR, 2 CKR on attack, 3 trap, 4 attack+pierce,
-// 5 cooldown+crit, 6 substitution, 7 potion+, 8 HP+armor
+// 5 cooldown+crit, 6 substitution, 7 potion+, 8 HP+armor, 9 lifesteal,
+// 10 stronger summons/clones, 11 turtle shell seal
 const std::map<std::string, std::vector<int>>& roleBuilds(HeroRole role)
 {
     static const std::map<HeroRole, std::map<std::string, std::vector<int>>> table = {
-        {HeroRole::Fighter, {{"aggressive", {4, 5, 2}}, {"sustain", {7, 8, 1}}}},
+        {HeroRole::Fighter, {{"aggressive", {4, 5, 2}}, {"sustain", {7, 8, 11}}}},
         {HeroRole::Assassin, {{"aggressive", {0, 5, 4}}, {"sustain", {6, 8, 7}}}},
-        {HeroRole::Tank, {{"aggressive", {8, 4, 2}}, {"sustain", {8, 6, 7}}}},
+        {HeroRole::Tank, {{"aggressive", {8, 4, 2}}, {"sustain", {8, 11, 7}}}},
         {HeroRole::Support, {{"aggressive", {5, 1, 2}}, {"sustain", {7, 1, 8}}}},
         {HeroRole::Pusher, {{"aggressive", {4, 0, 8}}, {"push", {4, 0, 8}}, {"sustain", {7, 8, 0}}}},
         {HeroRole::Ranged, {{"aggressive", {5, 1, 2}}, {"sustain", {6, 7, 8}}}},
-        {HeroRole::Summoner, {{"aggressive", {5, 7, 4}}, {"sustain", {7, 8, 6}}}},
+        {HeroRole::Summoner, {{"aggressive", {10, 5, 4}}, {"sustain", {10, 7, 8}}}},
     };
     return table.at(role);
 }

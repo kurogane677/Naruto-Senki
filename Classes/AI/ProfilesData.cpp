@@ -494,7 +494,7 @@ std::map<std::string, Profile> builtinProfiles()
         Profile& profile = addProfile("Kankuro");
         profile.role = HeroRole::Summoner;
         profile.retreatGap = 5000;
-        profile.builds["default"] = {6, 4, 8};
+        profile.builds["default"] = {6, 10, 8};
         profile.hero = {
             rule(Slot::Skill3).range(999, 999).noApproach(),
             rule(Slot::Skill1).range(999, 999).noApproach().self().when("noMonster:Karasu"),
@@ -513,7 +513,7 @@ std::map<std::string, Profile> builtinProfiles()
         profile.role = HeroRole::Support;
         profile.subRoles = {"summoner"};
         profile.retreatGap = 5000;
-        profile.builds["default"] = {6, 7, 4};
+        profile.builds["default"] = {6, 7, 10};
         profile.hero = {
             rule(Slot::Ougis1).range(999, 999).noApproach().self().when("noBuffTime", "allyNear"),
             rule(Slot::Ougis2).range(96, 32).minRange(48).when("gp", "tNotBati", "tNotDown", "tNotSticking"),
@@ -530,7 +530,7 @@ std::map<std::string, Profile> builtinProfiles()
         profile.retreatGap = 5000;
         profile.panicGear06 = false;
         profile.hook = "kakuzu";
-        profile.builds["default"] = {3, 8, 4};
+        profile.builds["default"] = {3, 8, 10};
         profile.hero = {
             rule(Slot::Skill3).range(999, 999).noApproach(),
             rule(Slot::Ougis1).range(999, 999).noApproach().self().when("summonable"),
@@ -599,7 +599,7 @@ std::map<std::string, Profile> builtinProfiles()
         profile.role = HeroRole::Tank;
         profile.subRoles = {"pusher"};
         profile.builds["default"] = {6, 1, 4};
-        profile.builds["sustain"] = {8, 6, 7};
+        profile.builds["sustain"] = {8, 11, 7};
         profile.hero = {
             rule(Slot::Skill1).range(999, 999).noApproach().when("selfNotBati"),
             rule(Slot::Skill3).range(96, 16),
@@ -692,7 +692,7 @@ std::map<std::string, Profile> builtinProfiles()
         profile.nattackY = 32;
         profile.panicGear06 = false;
         profile.builds["default"] = {0, 1, 5};
-        profile.builds["sustain"] = {8, 1, 7};
+        profile.builds["sustain"] = {8, 11, 7};
         profile.hero = {
             rule(Slot::Ougis2).range(48, 32).speedGear().when("gp", "tNotBati", "tNotDown", "tNotSticking", "notBuff"),
             rule(Slot::Ougis1).range(48, 32).speedGear().when("notBuff"),
@@ -789,7 +789,7 @@ std::map<std::string, Profile> builtinProfiles()
         profile.role = HeroRole::Assassin;
         profile.baseCheck = false;
         profile.panicGear06 = false;
-        profile.builds["default"] = {0, 4, 8};
+        profile.builds["default"] = {0, 4, 10};
         profile.hero = {
             rule(Slot::Ougis2).speedGear().when("gp", "tNotBati", "tNotDown", "tNotSticking", "notPowerUP"),
             rule(Slot::Ougis1).range(999, 999).noApproach().when("notPowerUP"),
@@ -886,7 +886,7 @@ std::map<std::string, Profile> builtinProfiles()
 
     {
         Profile& profile = addProfile("Pain");
-        profile.builds["default"] = {6, 5, 2};
+        profile.builds["default"] = {6, 5, 10};
         profile.hero = {
             rule(Slot::Ougis2).range(64, 32).when("gp", "tNotBati"),
             rule(Slot::Ougis1).range(64, 32),

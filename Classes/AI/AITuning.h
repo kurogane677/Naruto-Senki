@@ -17,11 +17,13 @@ struct Tuning
     bool focusFire;                    // follow the team's focus target
     bool strictGp;                     // keep the original "target GP < 5000" skill gate
     float playerBuildChance;           // HardCore: chance to copy the player's best build
+    float sealHp;                      // raise the Turtle Shell Seal (gear11) below this HP fraction...
+    float sealRange;                   // ...with an enemy hero this close on x
 };
 
 inline const Tuning& tuning()
 {
-    static const Tuning t = {0.10f, 0.15f, 0.00f, 0.20f, 0.95f, 0.50f, 0.20f, 0.80f, true, true, false, 0.6f};
+    static const Tuning t = {0.10f, 0.15f, 0.00f, 0.20f, 0.95f, 0.50f, 0.20f, 0.80f, true, true, false, 0.6f, 0.50f, 96};
     return t;
 }
 
