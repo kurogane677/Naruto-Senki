@@ -42,6 +42,7 @@ public:
 private:
     // decision steps; each returns true when it issued a command this tick
     bool survive();
+    bool enemyHeroNear(float distance) const;
     void buyGear();
     bool defendBase();
     bool dodge();
@@ -53,7 +54,7 @@ private:
     bool ruleReady(const SkillRule& rule);
     bool condsHold(const SkillRule& rule, ActionManager* target);
     bool slotReady(Slot slot) const;
-    bool retreatFromFight(const CCPoint& sp);
+    bool retreatFromFight(const CCPoint& toTarget);
     int gearReserve();
     gearType nextUpgrade();
     void markUsed(Slot slot);
