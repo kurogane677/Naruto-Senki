@@ -3,6 +3,30 @@
 using namespace CocosDenshion;
 #include "StartMenu.h"
 
+// Credits text (#70) comes from Element/credits.xml: "# Title" is a heading, an empty
+// line is a gap. Text is rasterized at kCreditsTextScale times its size to stay sharp.
+static const float kCreditsTextScale=4;
+static const float kCreditsTextWidth=420;
+static const float kCreditsScrollSpeed=18;
+static const float kCreditsLineGap=3;
+static const float kCreditsBlankHeight=10;
+
+static ax::Label* createCreditsLine(const std::string& line){
+	bool isHeading=line.compare(0,2,"# ")==0;
+	std::string text=isHeading ? line.substr(2) : line;
+	const char* font=isHeading ? "Fonts/Arimo-SemiBold.ttf" : "Fonts/Arimo-Medium.ttf";
+	float fontSize=isHeading ? 13 : 11;
+	ax::Label* label=ax::Label::createWithTTF(text,font,fontSize*kCreditsTextScale,
+		ax::Size(kCreditsTextWidth*kCreditsTextScale,0),ax::TextHAlignment::CENTER);
+	label->enableOutline(ax::Color4B(40,40,40,255),kCreditsTextScale);
+	if(isHeading){
+		label->setTextColor(ax::Color4B(255,204,64,255));
+	}
+	label->setScale(1/kCreditsTextScale);
+	label->setAnchorPoint(ccp(0.5f,1));
+	return label;
+}
+
 
 
 
@@ -66,19 +90,41 @@ bool CreditsLayer::init(){
 		menu_bar_t->setPosition(ccp(0,winSize.height-menu_bar_t->getContentSize().height));
 		this->addChild(menu_bar_t,2);
 
-		CCSprite* staff_title=CCSprite::createWithSpriteFrameName("staff_title.png");
-		staff_title->setAnchorPoint(ccp(0,0));
-		staff_title->setPosition(ccp(2,winSize.height-staff_title->getContentSize().height-2));
-		this->addChild(staff_title,3);
+		ax::Label* credits_title=KTools::createBarTitle("TitleCredits");
+		credits_title->setPosition(ccp(4,winSize.height-credits_title->getBoundingBox().size.height-2));
+		this->addChild(credits_title,3);
 
+		// the text scrolls up between the two menu bars, then starts again from the bottom
+		float viewBottom=menu_bar_b->getContentSize().height;
+		float viewTop=winSize.height-menu_bar_t->getContentSize().height;
+		ax::ClippingRectangleNode* creditsView=ax::ClippingRectangleNode::create(
+			ax::Rect(0,viewBottom,winSize.width,viewTop-viewBottom));
+		this->addChild(creditsView,1);
 
-		CCSprite* credit01=CCSprite::createWithSpriteFrameName("credits01.png");
-		credit01->setPosition(ccp(winSize.width/2-20,winSize.height/2+80));
-		this->addChild(credit01);
+		ax::Node* creditsText=ax::Node::create();
+		float lineY=0;
+		for(const ax::Value& line : ax::FileUtils::getInstance()->getValueVectorFromFile("Element/credits.xml")){
+			std::string text=line.asString();
+			if(text.empty()){
+				lineY-=kCreditsBlankHeight;
+				continue;
+			}
+			ax::Label* label=createCreditsLine(text);
+			label->setPosition(ccp(0,lineY));
+			creditsText->addChild(label);
+			lineY-=label->getBoundingBox().size.height+kCreditsLineGap;
+		}
+		float textHeight=-lineY;
+		creditsText->setPosition(ccp(winSize.width/2,viewBottom));
+		creditsView->addChild(creditsText);
 
-		CCSprite* credit02=CCSprite::createWithSpriteFrameName("credits02.png");
-		credit02->setPosition(ccp(winSize.width/2+15,winSize.height/2-60));
-		this->addChild(credit02);
+		creditsText->schedule([creditsText,textHeight,viewBottom,viewTop](float dt){
+			float textY=creditsText->getPositionY()+kCreditsScrollSpeed*dt;
+			if(textY-textHeight>viewTop){
+				textY=viewBottom;
+			}
+			creditsText->setPositionY(textY);
+		},"creditsScroll");
 		if(CCUserDefault::sharedUserDefault()->getBoolForKey("isBGM")!=false){
 		SimpleAudioEngine::sharedEngine()->playBackgroundMusic("Audio/Music/credits_music.mp3",true);
 		}

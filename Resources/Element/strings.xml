@@ -95,6 +95,8 @@
 		<string>TRAINING</string>  
 		<key>TitleHardCore</key>  
 		<string>HARDCORE</string>  
+		<key>TitleCredits</key>  
+		<string>CREDITS</string>  
 		<key>MenuNetwork</key>  
 		<string>HardCore: 3v3 battle with gears, guardians and your choice of map</string>  
 		<key>MenuTraining</key>  
