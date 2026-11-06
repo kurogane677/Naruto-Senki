@@ -1507,8 +1507,14 @@ void Monster::setAI(float dt){
 		if(!this->findEnemy("Hero",0)){
 			_mainTarget=NULL;
 		}
-	}else if(isCharacter("Spider") ||
-		isCharacter("ClayBird")
+	}else if(isCharacter("Spider")){
+
+		// Deidara's ride drops chase heroes only; towers are C0's job (#69)
+		if(!this->findEnemy("Hero",0)){
+			_mainTarget=NULL;
+		}
+
+	}else if(isCharacter("ClayBird")
 		){
 
 		
@@ -1603,7 +1609,6 @@ void Monster::setAI(float dt){
 		
 	}else{
 		if(isCharacter("Rocket") ||
-			isCharacter("Spider") ||
 			isCharacter("ClayBird")
 			){
 			this->stepOn();

@@ -6,6 +6,12 @@
 
 using namespace CocosDenshion;
 
+// Deidara/Sai skill04 ride (#69): Spider/Mouse drops are capped, short-lived, and a
+// Mouse can hold the same hero only once per kMouseHoldImmunity seconds
+static const int kMaxRideMonsters=5;
+static const float kRideMonsterLifetime=4.0f;
+static const float kMouseHoldImmunity=1.0f;
+
 ActionManager::ActionManager(void)
 {
 	
@@ -240,6 +246,10 @@ void ActionManager::onExit(){
 
 
 void ActionManager::update(float dt){
+
+	if(_mouseHoldImmunity>0){
+		_mouseHoldImmunity-=dt;
+	}
 
 	if(_healBuffEffect){
 		_healBuffEffect->setPositionX(this->getContentSize().width/2+(_isFlipped?2:-2));
@@ -717,7 +727,15 @@ void ActionManager::acceptAttack(CCObject* object){
 								}
 
 							}
-							this->hurt();
+							// a Mouse (Sai's ride) holds a hero once, then not again for a moment
+							if(Attacker->isCharacter("Mouse")){
+								if(_mouseHoldImmunity<=0){
+									_mouseHoldImmunity=kMouseHoldImmunity;
+									this->hurt();
+								}
+							}else{
+								this->hurt();
+							}
 						}else if(strcmp(hitType,"ts_hit")==0){
 							if(!this->_isBati){
 								this->setKnockLength(1);
@@ -6419,6 +6437,19 @@ void ActionManager::setMonPer(float dt){
 		_monsterArray->retain();
 	}
 
+	int aliveRideMonsters=0;
+	CCObject* pObject;
+	CCARRAY_FOREACH(_monsterArray,pObject){
+		Monster* rideMonster=(Monster*) pObject;
+		if((rideMonster->isCharacter("Spider") || rideMonster->isCharacter("Mouse")) &&
+			rideMonster->getActionState()!=ACTION_STATE_DEAD){
+			aliveRideMonsters++;
+		}
+	}
+	if(aliveRideMonsters>=kMaxRideMonsters){
+		return;
+	}
+
 
 	Monster* monster=Monster::create();
 	monster->setDelegate(_delegate);
@@ -6443,6 +6474,13 @@ void ActionManager::setMonPer(float dt){
 	
 	_monsterArray->addObject(monster);
 	monster->doAI();
+	monster->scheduleOnce([monster](float){
+		if(monster->getActionState()!=ACTION_STATE_DEAD &&
+			monster->getActionState()!=ACTION_STATE_ATTACK){
+			// virtual: runs Monster::dealloc, which leaves the master's monster list
+			static_cast<ActionManager*>(monster)->dealloc();
+		}
+	},kRideMonsterLifetime,"rideMonsterLifetime");
 
 	this->_delegate->addChild(monster,-monster->getPositionY());
 
