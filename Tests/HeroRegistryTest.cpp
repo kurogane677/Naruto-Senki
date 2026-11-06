@@ -58,6 +58,18 @@ TEST_CASE("HardCore select pages (NetworkLayer)")
     CHECK(HeroRegistry::hardCoreSelectScreen() == expected);
 }
 
+TEST_CASE("the heroes with a stealth skill (stBuff in their XML)")
+{
+    std::set<std::string> stealthHeroes;
+    for (const HeroRegistry::HeroInfo& hero : HeroRegistry::heroes())
+        if (hero.stealthSkill)
+            stealthHeroes.insert(hero.name);
+    CHECK(stealthHeroes == std::set<std::string>{"Konan", "Deidara", "Kurenai"});
+    CHECK(HeroRegistry::hasStealthSkill("Kurenai"));
+    CHECK_FALSE(HeroRegistry::hasStealthSkill("Naruto"));
+    CHECK_FALSE(HeroRegistry::hasStealthSkill("Akamaru"));
+}
+
 TEST_CASE("hero names and slots are unique")
 {
     std::set<std::string> names;
