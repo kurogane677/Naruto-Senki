@@ -1,4 +1,5 @@
 #include "SelectLayer.h"
+#include "Heroes/HeroRegistry.h"
 #include "MyUtils/KTools.h"
 #include "StartMenu.h"
 USING_NS_CC_EXT;
@@ -124,18 +125,15 @@ bool SelectLayer::init(){
 			int first_player=0;
 			selectArray=CCArray::create();
 			
-			char* selectList[]={"Naruto","Sakura","Sai",
-				"Itachi","Konan","Deidara",
-				"Sasuke","Karin","Jugo"
-			};
+			std::vector<std::string> selectList=HeroRegistry::trainingSelectScreen();
 
-			int num= sizeof(selectList)/sizeof(char*);
+			int num=selectList.size();
 			for(int i=0;i<num;i++){
 				CCString* path;
 				const char* charName;
 				
-				path=CCString::createWithFormat("%s_select.png",selectList[i]);
-				charName=selectList[i];
+				path=CCString::createWithFormat("%s_select.png",selectList[i].c_str());
+				charName=selectList[i].c_str();
 				
 				SelectButton* select_btn=SelectButton::create(path->getCString());
 				select_btn->setDelegate1(this);
@@ -159,13 +157,13 @@ bool SelectLayer::init(){
 			first_player=0;
 			
 
-			const char* path=CCString::createWithFormat("%s_half.png",selectList[first_player])->getCString();
+			const char* path=CCString::createWithFormat("%s_half.png",selectList[first_player].c_str())->getCString();
 			_heroHalf=CCSprite::createWithSpriteFrameName(path);
 			_heroHalf->setAnchorPoint(ccp(0,0));
 			_heroHalf->setPosition(ccp(10,10));
 			this->addChild(_heroHalf,1);
 			num2=num;
-			const char* namePath=CCString::createWithFormat("%s_font.png",selectList[first_player])->getCString();
+			const char* namePath=CCString::createWithFormat("%s_font.png",selectList[first_player].c_str())->getCString();
 			_heroName=CCSprite::createWithSpriteFrameName(namePath);
 			_heroName->setAnchorPoint(ccp(0.5f,0));
 			_heroName->setPosition(ccp(100,20));
@@ -279,16 +277,10 @@ void SelectLayer::onGameStart(CCObject* sender){
 		CCString* tmpChar;
 
 
-		char* heroList[]={"Konan","Sakura","Naruto","Sai","Deidara",
-			"Kakashi","Itachi","Tenten","Jiraiya","Suigetsu",
-			"Tsunade","Tobirama","Neji","Ino","Asuma","Gaara",
-			"Karin","Sasuke","Hidan","Choji","Kankuro",
-			"Shino","Minato","Tobi","Kakuzu","Hinata",
-			"Hiruzen","Kiba","Jugo","Lee","Kurenai"
-		};
+		std::vector<std::string> heroList=HeroRegistry::trainingOpponents();
 
 
-		int num= sizeof(heroList)/sizeof(char*);
+		int num=heroList.size();
 
 		
 		tmpChar=CCString::create(_selectHero);
@@ -312,7 +304,7 @@ void SelectLayer::onGameStart(CCObject* sender){
 		CCArray* realHero=CCArray::create();
 		
 		for(int i=0;i<num;i++){
-			if(strcmp(tmpChar->getCString(),heroList[i])==0){
+			if(heroList[i]==tmpChar->getCString()){
 				continue;
 			}		
 			CCString* hero=CCString::create(heroList[i]);

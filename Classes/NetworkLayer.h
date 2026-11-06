@@ -2,7 +2,6 @@
 #include "Compat/Compat2x.h"
 #include "LoadLayer.h"
 #include "SkillLayer.h"
-#include "RankingLayer.h"
 USING_NS_CC;
 
 class NetworkLayer : public CCLayer{
@@ -67,7 +66,6 @@ public:
 	virtual void keyBackClicked();
 
 private:
-	void	onRankingBtn(CCObject* sender);
 	void	onQuestBtn(CCObject* sender);
 	void	onGameStart(CCObject* sender);
 	void    onSkillMenu(CCObject* sender);

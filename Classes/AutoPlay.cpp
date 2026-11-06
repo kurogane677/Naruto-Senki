@@ -1,4 +1,5 @@
 #include "AutoPlay.h"
+#include "Heroes/HeroRegistry.h"
 #include "GameLayer.h"
 #include "Characters.h"
 #include "AI/AIController.h"
@@ -155,15 +156,15 @@ void startMatch()
                               "Report.plist", "Ougis.plist", "Ougis2.plist", "Map.plist", "Gears.plist"})
         cache->addSpriteFramesWithFile(plist);
 
-    // the Training roster (SelectLayer's selectable heroes)
-    static const char* heroes[] = {"Naruto", "Sakura", "Sai", "Kakashi", "Asuma", "Shikamaru", "Choji", "Ino",
-                                   "Hinata", "Neji", "Kiba", "Shino", "Tenten", "Lee", "Tsunade", "Jiraiya",
-                                   "Minato", "Hiruzen", "Tobirama", "Gaara", "Kankuro", "Chiyo", "Itachi",
-                                   "Kisame", "Deidara", "Konan", "Tobi", "Hidan", "Kakuzu", "Sasuke",
-                                   "Suigetsu", "Karin", "Jugo", "Kurenai"};
     static std::string chosen;
     const char* pick = getenv("NS_AUTOPLAY_HERO");
-    chosen = pick && *pick ? pick : heroes[randInt(sizeof(heroes) / sizeof(heroes[0]))];
+    if (pick && *pick)
+        chosen = pick;
+    else
+    {
+        std::vector<std::string> heroes = HeroRegistry::recordHeroes();
+        chosen = heroes[randInt((int)heroes.size())];
+    }
 
     SelectLayer* select = SelectLayer::create();
     select->_selectHero = chosen.c_str();

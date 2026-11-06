@@ -21,16 +21,6 @@
 		<string>Success to submit results</string>  
 		<key>UploadError</key>  
 		<string>Failed to submit results</string>  
-		<key>RankingDetail</key>
-		<string>Your position in this ranking is</string>
-		<key>GroupDetail</key>
-		<string>Your organisation is ranked</string>
-		<key>RankingDetail2</key>
-		<string>place</string>    
-		<key>RankingNull</key>
-		<string>Players who have made outstanding contributions.</string>  
-		<key>RankingNull2</key>
-		<string>Players who have devoted their entire passion.</string>  
 		<key>DeviceError</key>
 		<string>Devices that have logged in repeatedly today</string>  
 		<key>SeachTips</key>  

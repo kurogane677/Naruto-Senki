@@ -1,19 +1,10 @@
 #include "doctest.h"
 #include "AI/AIProfile.h"
+#include "Heroes/HeroRegistry.h"
 
-namespace
+TEST_CASE("every hero with a record has its own AI profile")
 {
-// the selectable roster (SelectLayer)
-const char* const kHeroes[] = {"Naruto",   "Sakura", "Sai",     "Kakashi",  "Asuma",  "Shikamaru", "Choji",
-                               "Ino",      "Hinata", "Neji",    "Kiba",     "Shino",  "Tenten",    "Lee",
-                               "Tsunade",  "Jiraiya", "Minato", "Hiruzen",  "Tobirama", "Gaara",   "Kankuro",
-                               "Chiyo",    "Itachi", "Kisame",  "Deidara",  "Konan",  "Tobi",      "Hidan",
-                               "Kakuzu",   "Sasuke", "Suigetsu", "Karin",   "Jugo",   "Kurenai"};
-}
-
-TEST_CASE("every selectable hero has its own AI profile")
-{
-    for (const char* hero : kHeroes)
+    for (const std::string& hero : HeroRegistry::recordHeroes())
     {
         CAPTURE(hero);
         const ai::Profile* profile = ai::findProfile(hero);
@@ -25,7 +16,7 @@ TEST_CASE("every selectable hero has its own AI profile")
 
 TEST_CASE("profile gear builds only use existing gears")
 {
-    for (const char* hero : kHeroes)
+    for (const std::string& hero : HeroRegistry::recordHeroes())
     {
         const ai::Profile* profile = ai::findProfile(hero);
         REQUIRE(profile != nullptr);
