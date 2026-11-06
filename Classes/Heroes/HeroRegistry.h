@@ -16,10 +16,14 @@ struct HeroInfo
     bool trainingOpponent;  // can be drawn as a COM in Training
     int trainingSlot;       // place on the Training select screen (3x3), or kNoSlot
     int hardCoreSlot;       // place on the HardCore select pages (3 pages of 3x7), or kNoSlot
+    bool stealthSkill;      // a skill that turns it invisible (stBuff); attacking or being seen ends it
 };
 
 // sorted by HardCore select slot
 const std::vector<HeroInfo>& heroes();
+
+// false for names that are not playable heroes (summons, clones)
+bool hasStealthSkill(const std::string& name);
 
 // heroes with a CharRecord row: the HardCore COM pool
 std::vector<std::string> recordHeroes();

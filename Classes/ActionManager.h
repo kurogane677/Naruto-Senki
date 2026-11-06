@@ -387,6 +387,11 @@ public:
 	// Only the player's unit has ougis buttons; for any other unit these do nothing
 	void				lockOugis(OugisButton buttons=OugisButton::Both);
 	void				unlockOugis(OugisButton buttons=OugisButton::Both);
+	// Invisible -> visible again: sprite, HP bar and shadow
+	void				endStealth();
+	// Attacking or seen while invisible; a stealth skill's timer is cancelled first
+	void				breakStealth();
+	bool				hasStealthSkill() const;
 	void				useGear(gearType type);
 
 	void				setCoinDisplay(int num);

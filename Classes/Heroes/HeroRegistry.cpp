@@ -39,47 +39,56 @@ const std::vector<HeroInfo>& heroes()
 {
     // clang-format off
     static const std::vector<HeroInfo> table = {
-        // name        record training  training  hardCore
-        //                    opponent  slot      slot (sorted)
-        {"Naruto",     true,  true,     0,        0},
-        {"Sakura",     true,  true,     1,        1},
-        {"Sai",        true,  true,     2,        2},
-        {"Kakashi",    true,  true,     kNoSlot,  3},
-        {"Shikamaru",  true,  false,    kNoSlot,  7},
-        {"Ino",        true,  true,     kNoSlot,  8},
-        {"Choji",      true,  true,     kNoSlot,  9},
-        {"Asuma",      true,  true,     kNoSlot,  10},
-        {"Kiba",       true,  true,     kNoSlot,  11},
-        {"Hinata",     true,  true,     kNoSlot,  12},
-        {"Shino",      true,  true,     kNoSlot,  13},
-        {"Neji",       true,  true,     kNoSlot,  14},
-        {"Tenten",     true,  true,     kNoSlot,  15},
-        {"Lee",        true,  true,     8,        16},
-        {"Kurenai",    true,  true,     kNoSlot,  17},
-        {"Tobirama",   true,  true,     kNoSlot,  22},
-        {"Hiruzen",    true,  true,     kNoSlot,  23},
-        {"Minato",     true,  true,     kNoSlot,  24},
-        {"Jiraiya",    true,  true,     kNoSlot,  25},
-        {"Tsunade",    true,  true,     kNoSlot,  26},
-        {"Orochimaru", false, false,    kNoSlot,  27},
-        {"Deidara",    true,  true,     5,        29},
-        {"Kakuzu",     true,  true,     kNoSlot,  30},
-        {"Hidan",      true,  true,     kNoSlot,  31},
-        {"Tobi",       true,  true,     kNoSlot,  32},
-        {"Konan",      true,  true,     4,        33},
-        {"Pain",       false, false,    kNoSlot,  34},
-        {"Itachi",     true,  true,     3,        35},
-        {"Kisame",     true,  false,    kNoSlot,  36},
-        {"Sasuke",     true,  true,     6,        42},
-        {"Karin",      true,  true,     7,        43},
-        {"Suigetsu",   true,  true,     kNoSlot,  44},
-        {"Jugo",       true,  true,     kNoSlot,  45},
-        {"Gaara",      true,  true,     kNoSlot,  49},
-        {"Kankuro",    true,  true,     kNoSlot,  51},
-        {"Chiyo",      true,  false,    kNoSlot,  52},
+        // name        record training  training  hardCore  stealth
+        //                    opponent  slot      slot      skill
+        //                                        (sorted)
+        {"Naruto",     true,  true,     0,        0,        false},
+        {"Sakura",     true,  true,     1,        1,        false},
+        {"Sai",        true,  true,     2,        2,        false},
+        {"Kakashi",    true,  true,     kNoSlot,  3,        false},
+        {"Shikamaru",  true,  false,    kNoSlot,  7,        false},
+        {"Ino",        true,  true,     kNoSlot,  8,        false},
+        {"Choji",      true,  true,     kNoSlot,  9,        false},
+        {"Asuma",      true,  true,     kNoSlot,  10,       false},
+        {"Kiba",       true,  true,     kNoSlot,  11,       false},
+        {"Hinata",     true,  true,     kNoSlot,  12,       false},
+        {"Shino",      true,  true,     kNoSlot,  13,       false},
+        {"Neji",       true,  true,     kNoSlot,  14,       false},
+        {"Tenten",     true,  true,     kNoSlot,  15,       false},
+        {"Lee",        true,  true,     kNoSlot,  16,       false},
+        {"Kurenai",    true,  true,     kNoSlot,  17,       true},
+        {"Tobirama",   true,  true,     kNoSlot,  22,       false},
+        {"Hiruzen",    true,  true,     kNoSlot,  23,       false},
+        {"Minato",     true,  true,     kNoSlot,  24,       false},
+        {"Jiraiya",    true,  true,     kNoSlot,  25,       false},
+        {"Tsunade",    true,  true,     kNoSlot,  26,       false},
+        {"Orochimaru", false, false,    kNoSlot,  27,       false},
+        {"Deidara",    true,  true,     5,        29,       true},
+        {"Kakuzu",     true,  true,     kNoSlot,  30,       false},
+        {"Hidan",      true,  true,     kNoSlot,  31,       false},
+        {"Tobi",       true,  true,     kNoSlot,  32,       false},
+        {"Konan",      true,  true,     4,        33,       true},
+        {"Pain",       false, false,    kNoSlot,  34,       false},
+        {"Itachi",     true,  true,     3,        35,       false},
+        {"Kisame",     true,  false,    kNoSlot,  36,       false},
+        {"Sasuke",     true,  true,     6,        42,       false},
+        {"Karin",      true,  true,     7,        43,       false},
+        {"Suigetsu",   true,  true,     kNoSlot,  44,       false},
+        {"Jugo",       true,  true,     8,        45,       false},
+        {"Gaara",      true,  true,     kNoSlot,  49,       false},
+        {"Kankuro",    true,  true,     kNoSlot,  51,       false},
+        {"Chiyo",      true,  false,    kNoSlot,  52,       false},
     };
     // clang-format on
     return table;
+}
+
+bool hasStealthSkill(const std::string& name)
+{
+    for (const HeroInfo& hero : heroes())
+        if (name == hero.name)
+            return hero.stealthSkill;
+    return false;
 }
 
 std::vector<std::string> recordHeroes()

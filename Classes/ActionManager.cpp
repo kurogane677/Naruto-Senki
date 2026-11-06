@@ -1,4 +1,5 @@
 #include "ActionManager.h"
+#include "Heroes/HeroRegistry.h"
 #include "Characters.h"
 #include "HudLayer.h"
 #include "MyUtils/CCShake.h"
@@ -3197,27 +3198,7 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 						if(abs(distanceX)<kGameWidth/2){
 							//取消隐身
-							if(!tempHero->_isVisable){
-								if(tempHero->isCharacter("Konan") ||
-									tempHero->isCharacter("Deidara") ||
-									tempHero->isCharacter("Kurenai")
-									){
-										tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
-								}
-
-
-								tempHero->setOpacity(255);
-								tempHero->setVisible(true);
-
-								if(tempHero->_hpBar){
-									tempHero->_hpBar->setVisible(true);
-								}
-								if(tempHero->_shadow){
-									tempHero->_shadow->setVisible(true);
-								}
-
-								tempHero->_isVisable=true;
-							}
+							tempHero->breakStealth();
 
 						}
 
@@ -3405,6 +3386,35 @@ void ActionManager::removeBuffEffect(const char* type){
 	}
 }
 
+bool ActionManager::hasStealthSkill() const{
+	return _character && HeroRegistry::hasStealthSkill(_character->getCString());
+}
+
+void ActionManager::endStealth(){
+	if(_isVisable){
+		return;
+	}
+	this->setOpacity(255);
+	this->setVisible(true);
+	if(_hpBar){
+		_hpBar->setVisible(true);
+	}
+	if(_shadow){
+		_shadow->setVisible(true);
+	}
+	_isVisable=true;
+}
+
+void ActionManager::breakStealth(){
+	if(_isVisable){
+		return;
+	}
+	if(this->hasStealthSkill()){
+		this->unschedule(schedule_selector(ActionManager::disableBuff));
+	}
+	this->endStealth();
+}
+
 void ActionManager::disableBuff(float dt){
 	if(_skillUPBuffValue){
 		this->setsAttackValue1(this->_sattackValue1-_skillUPBuffValue);
@@ -3420,18 +3430,7 @@ void ActionManager::disableBuff(float dt){
 		this->removeBuffEffect("sBuff");
 	}else if(!_isVisable && this->_actionState!=ACTION_STATE_HURT){ 
 		//防止被困住的时候进行还原
-
-		this->setOpacity(255);
-		this->setVisible(true);
-		
-		if(_hpBar){
-			_hpBar->setVisible(true);
-		}
-		if(_shadow){
-			_shadow->setVisible(true);
-		}
-
-		_isVisable=true;
+		this->endStealth();
 	}else if(_skillChangeBuffValue && this->isCharacter("Tobi") ){
 		this->setOpacity(255);
 	}
@@ -3946,27 +3945,7 @@ void ActionManager::changeAction(){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 						if(abs(distanceX)<kGameWidth/2){
 							//取消隐身
-							if(!tempHero->_isVisable){
-								if(tempHero->isCharacter("Konan") ||
-									tempHero->isCharacter("Deidara") ||
-									tempHero->isCharacter("Kurenai")
-									){
-										tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
-								}
-
-
-								tempHero->setOpacity(255);
-								tempHero->setVisible(true);
-
-								if(tempHero->_hpBar){
-									tempHero->_hpBar->setVisible(true);
-								}
-								if(tempHero->_shadow){
-									tempHero->_shadow->setVisible(true);
-								}
-
-								tempHero->_isVisable=true;
-							}
+							tempHero->breakStealth();
 
 						}
 
@@ -4020,27 +3999,7 @@ void ActionManager::changeAction(){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 						if(abs(distanceX)<kGameWidth/2){
 							//取消隐身
-							if(!tempHero->_isVisable){
-								if(tempHero->isCharacter("Konan") ||
-									tempHero->isCharacter("Deidara") ||
-									tempHero->isCharacter("Kurenai")
-									){
-										tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
-								}
-
-
-								tempHero->setOpacity(255);
-								tempHero->setVisible(true);
-
-								if(tempHero->_hpBar){
-									tempHero->_hpBar->setVisible(true);
-								}
-								if(tempHero->_shadow){
-									tempHero->_shadow->setVisible(true);
-								}
-
-								tempHero->_isVisable=true;
-							}
+							tempHero->breakStealth();
 
 						}
 
@@ -4088,27 +4047,7 @@ void ActionManager::changeAction(){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 					if(abs(distanceX)<kGameWidth/2){
 						//取消隐身
-						if(!tempHero->_isVisable){
-							if(tempHero->isCharacter("Konan") ||
-								tempHero->isCharacter("Deidara") ||
-								tempHero->isCharacter("Kurenai")
-								){
-									tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
-							}
-
-
-							tempHero->setOpacity(255);
-							tempHero->setVisible(true);
-
-							if(tempHero->_hpBar){
-								tempHero->_hpBar->setVisible(true);
-							}
-							if(tempHero->_shadow){
-								tempHero->_shadow->setVisible(true);
-							}
-
-							tempHero->_isVisable=true;
-						}
+						tempHero->breakStealth();
 
 					}
 
@@ -4174,27 +4113,7 @@ void ActionManager::changeAction(){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 					if(abs(distanceX)<kGameWidth/2){
 						//取消隐身
-						if(!tempHero->_isVisable){
-							if(tempHero->isCharacter("Konan") ||
-								tempHero->isCharacter("Deidara") ||
-								tempHero->isCharacter("Kurenai")
-								){
-									tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
-							}
-
-
-							tempHero->setOpacity(255);
-							tempHero->setVisible(true);
-
-							if(tempHero->_hpBar){
-								tempHero->_hpBar->setVisible(true);
-							}
-							if(tempHero->_shadow){
-								tempHero->_shadow->setVisible(true);
-							}
-
-							tempHero->_isVisable=true;
-						}
+						tempHero->breakStealth();
 
 					}
 
@@ -6251,27 +6170,7 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
 					if(abs(distanceX)<kGameWidth/2){
 						//取消隐身
-						if(!tempHero->_isVisable){
-							if(tempHero->isCharacter("Konan") ||
-								tempHero->isCharacter("Deidara") ||
-								tempHero->isCharacter("Kurenai")
-								){
-									tempHero->unschedule(schedule_selector(ActionManager::disableBuff));
-							}
-
-
-							tempHero->setOpacity(255);
-							tempHero->setVisible(true);
-
-							if(tempHero->_hpBar){
-								tempHero->_hpBar->setVisible(true);
-							}
-							if(tempHero->_shadow){
-								tempHero->_shadow->setVisible(true);
-							}
-
-							tempHero->_isVisable=true;
-						}
+						tempHero->breakStealth();
 
 					}
 
@@ -6729,27 +6628,7 @@ void ActionManager::sAttack(abType type){
 		
 	
 		//攻击取消隐身
-		if(!_isVisable){
-			if(this->isCharacter("Konan") ||
-				this->isCharacter("Deidara") ||
-				this->isCharacter("Kurenai")
-				){
-				this->unschedule(schedule_selector(ActionManager::disableBuff));
-			}
-			
-			
-			this->setOpacity(255);
-			this->setVisible(true);
-
-			if(_hpBar){
-				_hpBar->setVisible(true);
-			}
-			if(_shadow){
-				_shadow->setVisible(true);
-			}
-
-			_isVisable=true;
-		}
+		this->breakStealth();
 
 		
 		this->stopAllActions();
@@ -6808,28 +6687,7 @@ void ActionManager::oAttack(abType type){
 		};	
 		
 		//攻击取消隐身
-		if(!_isVisable){
-			if(this->isCharacter("Konan") ||
-				this->isCharacter("Deidara") ||
-				this->isCharacter("Kurenai")
-				){
-					this->unschedule(schedule_selector(ActionManager::disableBuff));
-			}
-
-			
-			this->setOpacity(255);
-			this->setVisible(true);
-			
-
-			if(_hpBar){
-				_hpBar->setVisible(true);
-			}
-
-			if(_shadow){
-				_shadow->setVisible(true);
-			}
-			_isVisable=true;
-		}
+		this->breakStealth();
 
 		this->stopAllActions();
 		switch(type){
@@ -7392,21 +7250,7 @@ void ActionManager::dead(){
 
 		
 
-		if(!_isVisable){
-
-			
-			this->setOpacity(255);
-			
-			this->setVisible(true);	
-			if(_hpBar){
-			_hpBar->setVisible(true);
-			}
-
-			if(_shadow){
-				_shadow->setVisible(true);
-			}
-			_isVisable=true;
-		};
+		this->endStealth();
 
 		
 
