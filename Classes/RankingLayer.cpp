@@ -1,4 +1,5 @@
 ﻿#include "RankingLayer.h"
+#include "Heroes/HeroRegistry.h"
 #include "MyUtils/KTools.h"
 #include "NetworkLayer.h"
 USING_NS_CC_EXT;
@@ -868,23 +869,13 @@ void RakingLayer::makeCharList(){
 		rankingDetail->removeFromParent();
 		rankingDetail=NULL;
 	}
-	char* heroList[]={"Naruto","Sakura","Sai","Kakashi",
-		"Lee","Tenten","Neji",
-		"Shikamaru","Ino","Choji","Asuma",
-		"Shino","Hinata","Kiba","Kurenai",
-		"Tobirama","Hiruzen","Minato",
-		"Jiraiya","Tsunade","Gaara","Kankuro",
-		"Chiyo",
-		"Sasuke","Karin","Suigetsu","Jugo",
-		"Deidara","Tobi","Hidan","Kakuzu",
-		"Konan","Itachi","Kisame"
-	};
+	std::vector<std::string> heroList=HeroRegistry::rankingList();
 
-	int num= sizeof(heroList)/sizeof(char*);
+	int num=heroList.size();
 
 	for(int i=0;i<num;i++){
 
-		const char* charName=heroList[i];
+		const char* charName=heroList[i].c_str();
 		CCString* path=CCString::createWithFormat("%s_small.png",charName);
 		
 	

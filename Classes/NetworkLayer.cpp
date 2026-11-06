@@ -1,4 +1,5 @@
 #include "NetworkLayer.h"
+#include "Heroes/HeroRegistry.h"
 #include "MyUtils/KTools.h"
 #include "StartMenu.h"
 #include "Maps.h"
@@ -158,32 +159,12 @@ bool NetworkLayer::init(){
 			_pageLayer2=CCLayer::create();
 			_pageLayer3=CCLayer::create();
 
-			char* selectList[]={"Naruto","Sakura","Sai","Kakashi",
-			"None","None","None",
-			"Shikamaru","Ino","Choji","Asuma",
-			"Kiba","Hinata","Shino",
-			"Neji","Tenten","Lee","Kurenai",
-			"None","None","None",
-
-			"None","Tobirama","Hiruzen","Minato",
-			"Jiraiya","Tsunade","Orochimaru",
-			"None","Deidara","Kakuzu","Hidan",
-			"Tobi","Konan","Pain",
-			"Itachi","Kisame","None","None",
-			"None","None","None",
-
-			"Sasuke","Karin","Suigetsu","Jugo",
-			"None","None","None",
-			"Gaara","None","Kankuro","Chiyo",
-			"None","None","None",
-			"None","None","None","None",
-			"None","None","None"
-			};
+			std::vector<std::string> selectList=HeroRegistry::hardCoreSelectScreen();
 
 			
 
 
-			int num= sizeof(selectList)/sizeof(char*);
+			int num=selectList.size();
 
 			int Column=0;
 			int Row=0;
@@ -192,7 +173,7 @@ bool NetworkLayer::init(){
 			for (int i=0; i < num; i++)  {
 				
 				const char* charName;
-				charName=selectList[i];
+				charName=selectList[i].c_str();
 
 				_selectList->addObject(CCString::createWithFormat("%s",charName));
 				
@@ -617,18 +598,11 @@ void NetworkLayer::onGameStart(CCObject* sender){
 
 		
 		
-		char* heroList[]={"Konan","Sakura","Naruto","Sai","Deidara",
-			"Kakashi","Itachi","Tenten","Jiraiya","Suigetsu",
-			"Tsunade","Tobirama","Neji","Ino","Asuma","Gaara",
-			"Karin","Sasuke","Hidan","Choji","Kankuro",
-			"Shino","Minato","Tobi","Kakuzu","Hinata",
-			"Shikamaru","Chiyo","Kisame", "Hiruzen", "Kiba", "Jugo", "Lee",
-			"Kurenai"
-		};
+		std::vector<std::string> heroList=HeroRegistry::recordHeroes();
 
 		
 	
-		int num= sizeof(heroList)/sizeof(char*);
+		int num=heroList.size();
 
 		
 		
@@ -678,17 +652,17 @@ void NetworkLayer::onGameStart(CCObject* sender){
 		for(int i=0;i<num;i++){
 
 			
-			if(strcmp(_playerSelect,heroList[i])==0){
+			if(heroList[i]==_playerSelect){
 				continue;
 			}
 
 			if(_com1Select){
-				if(strcmp(_com1Select,heroList[i])==0){
+				if(heroList[i]==_com1Select){
 					continue;
 				}
 			}
 			if(_com2Select){
-				if(strcmp(_com2Select,heroList[i])==0){
+				if(heroList[i]==_com2Select){
 					continue;
 				}
 			}

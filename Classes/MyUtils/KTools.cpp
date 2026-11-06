@@ -1,4 +1,5 @@
 #include "KTools.h"
+#include "Heroes/HeroRegistry.h"
 #include "SelectLayer.h"
 #include "NetworkLayer.h"
 
@@ -206,15 +207,8 @@ void KTools::initTableInDB(){
 	
 	if(!isExisted_){
 
-		char* heroList[]={"Konan","Sakura","Naruto","Sai","Deidara",
-			"Kakashi","Itachi","Tenten","Jiraiya","Suigetsu",
-			"Tsunade","Tobirama","Neji","Ino","Asuma","Gaara",
-			"Karin","Sasuke","Hidan","Choji","Kankuro",
-			"Shino","Minato","Tobi","Kakuzu","Hinata",
-			"Shikamaru","Chiyo","Kisame",
-			"Hiruzen","Kiba","Jugo","Lee","Kurenai"
-		};
-		int num= sizeof(heroList)/sizeof(char*);
+		std::vector<std::string> heroList=HeroRegistry::recordHeroes();
+		int num=heroList.size();
 
 		for(int i=0;i<num;i++){
 
