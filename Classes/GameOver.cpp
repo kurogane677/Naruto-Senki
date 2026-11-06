@@ -1,4 +1,5 @@
 #include "GameOver.h"
+#include "Heroes/HeroRegistry.h"
 #include "MyUtils/KTools.h"
 #include "GameLayer.h"
 #include "Characters.h"
@@ -403,16 +404,7 @@ void GameOver::listResult(){
 
 			resultChar=_delegate->currentPlayer->getCharacter();
 			// records are kept under the base hero, not its transformation
-			const char* playerChar=resultChar->getCString();
-			if(strcmp(playerChar,"SageNaruto")==0 || strcmp(playerChar,"RikudoNaruto")==0){
-				resultChar=CCString::create("Naruto");
-			}else if(strcmp(playerChar,"SageJiraiya")==0){
-				resultChar=CCString::create("Jiraiya");
-			}else if(strcmp(playerChar,"ImmortalSasuke")==0){
-				resultChar=CCString::create("Sasuke");
-			}else if(strcmp(playerChar,"RockLee")==0){
-				resultChar=CCString::create("Lee");
-			}
+			resultChar=CCString::create(HeroRegistry::baseForm(resultChar->getCString()));
 
 			// HardCore: remember the player's gear order so bots can copy what wins
 			if(_delegate->_isHardCoreGame){

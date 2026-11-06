@@ -6259,25 +6259,12 @@ void ActionManager::setTransform(){
 	
 	int tempHP=this->getHP();
 	int tempAttackValue=this->getnAttackValue();
-	const char* charName;
-	if(isCharacter("Naruto")){
-		this->setID(CCString::create("SageNaruto"),_role,_group);
-		charName="SageNaruto";
-	}else if(isCharacter("SageNaruto")){
-		this->setID(CCString::create("RikudoNaruto"),_role,_group);
-		charName="RikudoNaruto";
-	}else if(isCharacter("Jiraiya")){
-		this->setID(CCString::create("SageJiraiya"),_role,_group);
-		charName="SageJiraiya";
-	}else if(isCharacter("Sasuke")){
-		this->setID(CCString::create("ImmortalSasuke"),_role,_group);
-		charName="ImmortalSasuke";
-	}else if(isCharacter("Lee")){
-		this->setID(CCString::create("RockLee"),_role,_group);
-		charName="Lee";
-	}else if(isCharacter("RockLee")){
-		this->setID(CCString::create("Lee"),_role,_group);
-		charName="Lee";
+	// charName: the form whose skill icons the HUD shows
+	const char* charName=HeroRegistry::nextForm(_character->getCString());
+	if(charName){
+		this->setID(CCString::create(charName),_role,_group);
+	}else{
+		charName=_character->getCString();
 	}
 
 	//还原

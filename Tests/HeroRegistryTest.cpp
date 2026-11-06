@@ -70,6 +70,40 @@ TEST_CASE("the heroes with a stealth skill (stBuff in their XML)")
     CHECK_FALSE(HeroRegistry::hasStealthSkill("Akamaru"));
 }
 
+TEST_CASE("transformations (ActionManager::setTransform)")
+{
+    CHECK(std::string(HeroRegistry::nextForm("Naruto")) == "SageNaruto");
+    CHECK(std::string(HeroRegistry::nextForm("SageNaruto")) == "RikudoNaruto");
+    CHECK(HeroRegistry::nextForm("RikudoNaruto") == nullptr);
+    CHECK(std::string(HeroRegistry::nextForm("Jiraiya")) == "SageJiraiya");
+    CHECK(std::string(HeroRegistry::nextForm("Sasuke")) == "ImmortalSasuke");
+    CHECK(std::string(HeroRegistry::nextForm("Lee")) == "RockLee");
+    CHECK(std::string(HeroRegistry::nextForm("RockLee")) == "Lee");
+    CHECK(HeroRegistry::nextForm("Kakashi") == nullptr);
+}
+
+TEST_CASE("the skill menu previews awakenings only (SkillLayer)")
+{
+    CHECK(std::string(HeroRegistry::nextAwakening("Naruto")) == "SageNaruto");
+    CHECK(std::string(HeroRegistry::nextAwakening("SageNaruto")) == "RikudoNaruto");
+    CHECK(HeroRegistry::nextAwakening("RikudoNaruto") == nullptr);
+    CHECK(std::string(HeroRegistry::nextAwakening("Jiraiya")) == "SageJiraiya");
+    CHECK(std::string(HeroRegistry::nextAwakening("Sasuke")) == "ImmortalSasuke");
+    CHECK(HeroRegistry::nextAwakening("Lee") == nullptr);
+    CHECK(HeroRegistry::nextAwakening("Kakashi") == nullptr);
+}
+
+TEST_CASE("wins are recorded under the base form (GameOver)")
+{
+    CHECK(HeroRegistry::baseForm("SageNaruto") == "Naruto");
+    CHECK(HeroRegistry::baseForm("RikudoNaruto") == "Naruto");
+    CHECK(HeroRegistry::baseForm("SageJiraiya") == "Jiraiya");
+    CHECK(HeroRegistry::baseForm("ImmortalSasuke") == "Sasuke");
+    CHECK(HeroRegistry::baseForm("RockLee") == "Lee");
+    CHECK(HeroRegistry::baseForm("Naruto") == "Naruto");
+    CHECK(HeroRegistry::baseForm("Kakashi") == "Kakashi");
+}
+
 TEST_CASE("hero names and slots are unique")
 {
     std::set<std::string> names;

@@ -25,6 +25,15 @@ const std::vector<HeroInfo>& heroes();
 // false for names that are not playable heroes (summons, clones)
 bool hasStealthSkill(const std::string& name);
 
+// A hero's forms, base form first. An awakening (Naruto -> Sage -> Rikudo) only goes
+// forward and the skill menu previews it; a stance (Lee <-> RockLee) switches back and forth.
+// next form in battle, nullptr when there is none
+const char* nextForm(const std::string& name);
+// next awakened form, for the skill menu; nullptr when there is none
+const char* nextAwakening(const std::string& name);
+// the form wins are recorded under (SageNaruto -> Naruto); other names unchanged
+std::string baseForm(const std::string& name);
+
 // heroes with a CharRecord row: the HardCore COM pool
 std::vector<std::string> recordHeroes();
 std::vector<std::string> trainingOpponents();

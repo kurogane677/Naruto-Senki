@@ -33,6 +33,33 @@ int slotCount(int HeroInfo::*slot)
     return (int)std::count_if(heroes().begin(), heroes().end(),
                               [slot](const HeroInfo& hero) { return hero.*slot != kNoSlot; });
 }
+
+struct FormChain
+{
+    std::vector<const char*> forms;  // base form first
+    bool stance;                     // switches back from the last form to the first
+};
+
+const std::vector<FormChain>& formChains()
+{
+    static const std::vector<FormChain> chains = {
+        {{"Naruto", "SageNaruto", "RikudoNaruto"}, false},
+        {{"Jiraiya", "SageJiraiya"}, false},
+        {{"Sasuke", "ImmortalSasuke"}, false},
+        {{"Lee", "RockLee"}, true},
+    };
+    return chains;
+}
+
+// the chain holding `name` and its place in it; nullptr when it has no other form
+const FormChain* findChain(const std::string& name, size_t& index)
+{
+    for (const FormChain& chain : formChains())
+        for (index = 0; index < chain.forms.size(); index++)
+            if (name == chain.forms[index])
+                return &chain;
+    return nullptr;
+}
 }  // namespace
 
 const std::vector<HeroInfo>& heroes()
@@ -89,6 +116,31 @@ bool hasStealthSkill(const std::string& name)
         if (name == hero.name)
             return hero.stealthSkill;
     return false;
+}
+
+const char* nextForm(const std::string& name)
+{
+    size_t index;
+    const FormChain* chain = findChain(name, index);
+    if (!chain)
+        return nullptr;
+    if (index + 1 < chain->forms.size())
+        return chain->forms[index + 1];
+    return chain->stance ? chain->forms.front() : nullptr;
+}
+
+const char* nextAwakening(const std::string& name)
+{
+    size_t index;
+    const FormChain* chain = findChain(name, index);
+    return chain && !chain->stance ? nextForm(name) : nullptr;
+}
+
+std::string baseForm(const std::string& name)
+{
+    size_t index;
+    const FormChain* chain = findChain(name, index);
+    return chain ? chain->forms.front() : name;
 }
 
 std::vector<std::string> recordHeroes()
