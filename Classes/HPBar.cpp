@@ -345,11 +345,11 @@ void HPBar::loseHP(float percent){
 					
 					if(_delegate->role()==Role::Player){
 
-						_delegate->getDelegate()->getHudLayer()->skill5Button->unLock();
+						_delegate->unlockOugis(OugisButton::Ougis2);
 						_delegate->setActionState(ACTION_STATE_IDLE);
 						_delegate->getDelegate()->setSkillFinish(true);
 						_delegate->getDelegate()->getHudLayer()->skill5Button->click();	
-						_delegate->getDelegate()->getHudLayer()->skill5Button->setLock();
+						_delegate->lockOugis(OugisButton::Ougis2);
 
 					}else{
 
@@ -369,11 +369,7 @@ void HPBar::loseHP(float percent){
 					}
 
 					if(_delegate->hearts<1){
-						if(_delegate->role()==Role::Player){
-							if(_delegate->getDelegate()->getHudLayer()->skill4Button){
-								_delegate->getDelegate()->getHudLayer()->skill4Button->setLock();
-							}
-						}
+						_delegate->lockOugis(OugisButton::Ougis1);
 					}
 
 					return;
@@ -425,12 +421,8 @@ void HPBar::loseHP(float percent){
 							currentSlayer->_heartEffect->setSpriteFrame(frame);
 						}
 
-						if(currentSlayer->role()==Role::Player){
-							if(currentSlayer->getMonsterArray() && currentSlayer->getMonsterArray()->count()<3 && currentSlayer->getLV()>=2){
-								if(_delegate->getDelegate()->getHudLayer()->skill4Button){
-									_delegate->getDelegate()->getHudLayer()->skill4Button->unLock();
-								}
-							}										
+						if(currentSlayer->getMonsterArray() && currentSlayer->getMonsterArray()->count()<3 && currentSlayer->getLV()>=2){
+							currentSlayer->unlockOugis(OugisButton::Ougis1);
 						}
 
 					}

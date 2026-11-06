@@ -28,6 +28,13 @@ enum actionState{
 
 
 
+// The two ougis buttons on the player's HUD (skill4Button / skill5Button)
+enum class OugisButton{
+	Ougis1,
+	Ougis2,
+	Both,
+};
+
 class HPBar;
 class ActionManager :public CCSprite{
 public:
@@ -377,6 +384,9 @@ public:
 	static int			gearSellValue(gearType type,int level);
 	static int			gearValue(gearType type,int level,int which=0);
 	float				gearCooldown(gearType type) const;
+	// Only the player's unit has ougis buttons; for any other unit these do nothing
+	void				lockOugis(OugisButton buttons=OugisButton::Both);
+	void				unlockOugis(OugisButton buttons=OugisButton::Both);
 	void				useGear(gearType type);
 
 	void				setCoinDisplay(int num);

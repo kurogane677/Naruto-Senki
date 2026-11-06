@@ -500,15 +500,11 @@ void HeroElement::changeHPbar(){
 				this->getDelegate()->removeOugisMark(1);
 
 				if(this->isCharacter("Kakuzu") && this->hearts<1){
-					if(_delegate->getHudLayer()->skill4Button){
-						_delegate->getHudLayer()->skill4Button->setLock();
-					}
+					this->lockOugis(OugisButton::Ougis1);
 				}
 				if(this->isCharacter("Lee") ){
 						if(this->bamen<1){
-							if(_delegate->getHudLayer()->skill4Button){
-								_delegate->getHudLayer()->skill4Button->setLock();
-							}
+							this->lockOugis(OugisButton::Ougis1);
 						}
 					
 				}
@@ -537,16 +533,12 @@ void HeroElement::changeHPbar(){
 				this->getDelegate()->removeOugisMark(2);
 
 				if(this->isCharacter("Kakuzu")){
-					if(_delegate->getHudLayer()->skill5Button){
-						_delegate->getHudLayer()->skill5Button->setLock();
-					}
+					this->lockOugis(OugisButton::Ougis2);
 				}
 
 				if(this->isCharacter("Lee") ){
 					if(this->bamen<3){
-						if(_delegate->getHudLayer()->skill5Button){
-							_delegate->getHudLayer()->skill5Button->setLock();
-						}
+						this->lockOugis(OugisButton::Ougis2);
 					}
 				}
 			}
@@ -647,12 +639,7 @@ void HeroElement::dealloc(){
 							
 				this->getMaster()->_skillChangeBuffValue=0;
 
-				if(this->getMaster()->role()==Role::Player){
-					if(this->_delegate->getHudLayer()->skill5Button){
-						this->_delegate->getHudLayer()->skill5Button->unLock();
-					}
-
-				}
+				this->getMaster()->unlockOugis(OugisButton::Ougis2);
 
 			}else if(this->isCharacter("Akamaru") ||
 				this->isCharacter("Karasu")||
@@ -662,13 +649,7 @@ void HeroElement::dealloc(){
 
 			}else if(this->isCharacter("Sanshouuo")){
 
-				if(this->getMaster()->role()==Role::Player){
-
-					if(this->_delegate->getHudLayer()->skill4Button){
-					this->_delegate->getHudLayer()->skill4Button->unLock();
-					}
-
-				}
+				this->getMaster()->unlockOugis(OugisButton::Ougis1);
 
 			}else if(this->isCharacter("MaskFudon") ||
 				this->isCharacter("MaskRaidon") ||
@@ -676,21 +657,11 @@ void HeroElement::dealloc(){
 				){
 					
 				if(_master->hearts>0){
-					if(_master->role()==Role::Player){
-						if(_delegate->getHudLayer()->skill4Button){
-							_delegate->getHudLayer()->skill4Button->unLock();
-						}
-					}
+					_master->unlockOugis(OugisButton::Ougis1);
 				}
 			}else if(this->isCharacter("Saso")){
 
-				if(this->getMaster()->role()==Role::Player){
-
-					if(this->_delegate->getHudLayer()->skill5Button){
-						this->_delegate->getHudLayer()->skill5Button->unLock();
-					}
-					
-				}
+				this->getMaster()->unlockOugis(OugisButton::Ougis2);
 			}
 
 			this->removeFromParentAndCleanup(true);
@@ -701,15 +672,7 @@ void HeroElement::dealloc(){
 			if(this->isCharacter("Kankuro")){
 
 
-				if(this->role()==Role::Player){
-
-					if(this->_delegate->getHudLayer()->skill4Button){
-						this->_delegate->getHudLayer()->skill4Button->unLock();
-					}
-					if(this->_delegate->getHudLayer()->skill5Button){
-					this->_delegate->getHudLayer()->skill5Button->unLock();
-					}
-				}
+				this->unlockOugis();
 
 			}else if(this->isCharacter("Shikamaru") ||
 				this->isCharacter("Choji")
