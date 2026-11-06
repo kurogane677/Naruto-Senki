@@ -57,26 +57,26 @@ bool hidan(AIController& ai)
 // behind him; otherwise, with nothing to fight, to a mark further up the lane.
 bool minato(AIController& ai)
 {
-    Hero* h = ai.hero();
-    if (!h->_isCanSkill1 || !ai.canAct() || !h->getMonsterArray())
+    Hero* hero = ai.hero();
+    if (!hero->_isCanSkill1 || !ai.canAct() || !hero->getMonsterArray())
         return false;
-    bool lowHp = h->getHpPercent() < 0.3f;
-    float dir = h->group() == Group::Konoha ? 1.0f : -1.0f;
-    CCObject* obj;
-    CCARRAY_FOREACH(h->getMonsterArray(), obj)
+    bool lowHp = hero->getHpPercent() < 0.3f;
+    float laneDirection = hero->group() == Group::Konoha ? 1.0f : -1.0f;
+    CCObject* object;
+    CCARRAY_FOREACH(hero->getMonsterArray(), object)
     {
-        ActionManager* m = (ActionManager*)obj;
-        if (!m->isCharacter("HiraishinMark"))
+        ActionManager* mark = (ActionManager*)object;
+        if (!mark->isCharacter("HiraishinMark"))
             continue;
-        float ahead = (m->getPositionX() - h->getPositionX()) * dir;
+        float ahead = (mark->getPositionX() - hero->getPositionX()) * laneDirection;
         if (lowHp && ahead < 0)
         {
-            h->attack(SKILL1);
+            hero->attack(SKILL1);
             return true;
         }
-        if (!lowHp && ahead > kGameWidth / 2 && !h->_isHealling)
+        if (!lowHp && ahead > kGameWidth / 2 && !hero->_isHealling)
         {
-            h->attack(SKILL1);
+            hero->attack(SKILL1);
             return true;
         }
     }
@@ -86,32 +86,32 @@ bool minato(AIController& ai)
 // Kakuzu: Skill1 on a fallen hero takes a heart (extra life for his masks).
 bool kakuzu(AIController& ai)
 {
-    Hero* h = ai.hero();
-    if (!ai.canAct() || h->getHpPercent() <= 0.3f || h->_isControled || !h->_isCanSkill1)
+    Hero* hero = ai.hero();
+    if (!ai.canAct() || hero->getHpPercent() <= 0.3f || hero->_isControled || !hero->_isCanSkill1)
         return false;
     ActionManager* best = nullptr;
-    float bestDist = 0;
-    CCObject* obj;
-    CCARRAY_FOREACH(h->getDelegate()->_CharacterArray, obj)
+    float bestDistance = 0;
+    CCObject* object;
+    CCARRAY_FOREACH(hero->getDelegate()->_CharacterArray, object)
     {
-        ActionManager* u = (ActionManager*)obj;
-        if (!isLaneHero(u) || u->getActionState() != ACTION_STATE_DEAD)
+        ActionManager* unit = (ActionManager*)object;
+        if (!isLaneHero(unit) || unit->getActionState() != ACTION_STATE_DEAD)
             continue;
-        CCPoint d = ccpSub(u->getPosition(), h->getPosition());
-        if (fabsf(d.x) >= kGameWidth / 2)
+        CCPoint toUnit = ccpSub(unit->getPosition(), hero->getPosition());
+        if (fabsf(toUnit.x) >= kGameWidth / 2)
             continue;
-        float dist = ccpLength(d);
-        if (!best || dist < bestDist)
+        float distance = ccpLength(toUnit);
+        if (!best || distance < bestDistance)
         {
-            best = u;
-            bestDist = dist;
+            best = unit;
+            bestDistance = distance;
         }
     }
     if (!best)
         return false;
-    h->_mainTarget = best;
-    CCPoint d = ai.deltaTo(best);
-    if (ai.walkTo(d, 32, 32))
+    hero->_mainTarget = best;
+    CCPoint toUnit = ai.deltaTo(best);
+    if (ai.walkTo(toUnit, 32, 32))
         return true;
     ai.strike(best, SKILL1);
     return true;

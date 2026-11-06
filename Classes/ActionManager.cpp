@@ -3489,8 +3489,8 @@ void ActionManager::healBuff(float dt){
 				&& (tempHero->role()==Role::Player || tempHero->role()==Role::Com)
 				&& !tempHero->isCharacter("Chiyo")
 				){
-					CCPoint	sp=ccpSub(tempHero->getPosition(),this->getPosition());
-					if(abs(sp.x)<=kGameWidth/2){
+					CCPoint	toHero=ccpSub(tempHero->getPosition(),this->getPosition());
+					if(abs(toHero.x)<=kGameWidth/2){
 
 
 						if(tempHero->_level>=2){
@@ -3896,9 +3896,9 @@ void ActionManager::changeAction(){
 		}else if(_skillChangeBuffValue==18){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-				Monster* mo=(Monster*) pObject;
-				if(mo->isCharacter("Akamaru")){
-					mo->attack(SKILL2);
+				Monster* monster=(Monster*) pObject;
+				if(monster->isCharacter("Akamaru")){
+					monster->attack(SKILL2);
 				}
 				
 			};
@@ -6451,8 +6451,8 @@ void ActionManager::setMonPer(float dt){
 void ActionManager::setTrap(CCNode* sender,void* date){
 	
 	CCDictionary* file=(CCDictionary*) date;
-	CCString* str = (CCString*)(file->objectForKey(1));
-	CCString* trapType=str;
+	CCString* trapName = (CCString*)(file->objectForKey(1));
+	CCString* trapType=trapName;
 	if(strcmp(trapType->getCString(),"Amaterasu")==0  ){
 
 		CCObject* pObject;
@@ -6502,8 +6502,8 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 				targetPoint=this->getPosition();
 			}
 
-			for(int z=0;z<3;z++){
-				if(z==0){
+			for(int trapIndex=0;trapIndex<3;trapIndex++){
+				if(trapIndex==0){
 					
 					Bullet* trap=Bullet::create();
 					trap->setDelegate(_delegate);
@@ -6516,7 +6516,7 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 					trap->scheduleOnce(schedule_selector(Bullet::removeSelf),4.0f);
 					this->_delegate->addChild(trap,-trap->getPositionY());
 
-				}else if(z==1){
+				}else if(trapIndex==1){
 					for(int i=0;i<3;i++){
 					Bullet* trap=Bullet::create();
 					trap->setDelegate(_delegate);
@@ -6530,7 +6530,7 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 					this->_delegate->addChild(trap,-trap->getPositionY());
 					}
 
-				}else if(z==2){
+				}else if(trapIndex==2){
 				
 					Bullet* trap=Bullet::create();
 					trap->setDelegate(_delegate);
@@ -6548,8 +6548,8 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 
 		}
 		
-		for (int z=0;z<3;z++){
-			if(z==0){
+		for (int trapIndex=0;trapIndex<3;trapIndex++){
+			if(trapIndex==0){
 				for(int i=0;i<3;i++){
 					Bullet* trap=Bullet::create();
 					trap->setDelegate(_delegate);
@@ -6564,7 +6564,7 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 				}
 
 
-			}else if(z==1){
+			}else if(trapIndex==1){
 
 				for(int i=0;i<2;i++){
 					Bullet* trap=Bullet::create();
@@ -6633,8 +6633,8 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 				&& !tempHero->_isSticking
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-					float tempRange1=kGameWidth/2;
-					if(abs(distanceX)<=tempRange1){
+					float trapRange=kGameWidth/2;
+					if(abs(distanceX)<=trapRange){
 						Monster* trap=Monster::create();
 						trap->setDelegate(_delegate);
 						trap->_master=(Hero*)this;
@@ -7190,8 +7190,8 @@ bool ActionManager::hurt(){
 				tempHero->_buffStartTime
 				){
 
-				CCPoint	sp=ccpSub(tempHero->getPosition(),this->getPosition());
-				if(abs(sp.x)<=kGameWidth/2){
+				CCPoint	toHero=ccpSub(tempHero->getPosition(),this->getPosition());
+				if(abs(toHero.x)<=kGameWidth/2){
 					return false;
 				}		
 			}
@@ -7199,10 +7199,10 @@ bool ActionManager::hurt(){
 		if(this->isCharacter("Chiyo")){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-				Monster* mo=(Monster*) pObject;
-				if(mo->isCharacter("Parents") && !mo->_skillChangeBuffValue && mo->getActionState()!=ACTION_STATE_SATTACK  && mo->getActionState()!=ACTION_STATE_DEAD){
-					CCPoint	sp=ccpSub(mo->getPosition(),this->getPosition());
-					if(abs(sp.x)<=48){
+				Monster* monster=(Monster*) pObject;
+				if(monster->isCharacter("Parents") && !monster->_skillChangeBuffValue && monster->getActionState()!=ACTION_STATE_SATTACK  && monster->getActionState()!=ACTION_STATE_DEAD){
+					CCPoint	toHero=ccpSub(monster->getPosition(),this->getPosition());
+					if(abs(toHero.x)<=48){
 					
 						return false;
 					}
@@ -7223,8 +7223,8 @@ bool ActionManager::hurt(){
 			list->addObject(_hurtAction);
 			CCFiniteTimeAction *call = CCCallFunc::create(this,callfunc_selector(ActionManager::idle));
 			list->addObject(call);
-			CCAction* seq=CCSequence::create(list);
-			this->runAction(seq);
+			CCAction* sequence=CCSequence::create(list);
+			this->runAction(sequence);
 
 		}
 		return true;
@@ -7262,8 +7262,8 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 					tempHero->_actionState!=ACTION_STATE_DEAD &&
 					tempHero->_buffStartTime
 					){
-						CCPoint	sp=ccpSub(tempHero->getPosition(),this->getPosition());
-						if(abs(sp.x)<=kGameWidth/2){
+						CCPoint	toHero=ccpSub(tempHero->getPosition(),this->getPosition());
+						if(abs(toHero.x)<=kGameWidth/2){
 							return false;
 						}
 
@@ -7273,12 +7273,12 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 			if(this->isCharacter("Chiyo")){
 				CCObject* pObject;
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-					Monster* mo=(Monster*) pObject;
-					if(mo->isCharacter("Parents") && !mo->_skillChangeBuffValue && mo->getActionState()!=ACTION_STATE_SATTACK  && mo->getActionState()!=ACTION_STATE_DEAD){
-						CCPoint	sp=ccpSub(mo->getPosition(),this->getPosition());
-						if(abs(sp.x)<=48){
-							if(mo->_isCanSkill3){						
-								mo->attack(SKILL3);
+					Monster* monster=(Monster*) pObject;
+					if(monster->isCharacter("Parents") && !monster->_skillChangeBuffValue && monster->getActionState()!=ACTION_STATE_SATTACK  && monster->getActionState()!=ACTION_STATE_DEAD){
+						CCPoint	toHero=ccpSub(monster->getPosition(),this->getPosition());
+						if(abs(toHero.x)<=48){
+							if(monster->_isCanSkill3){						
+								monster->attack(SKILL3);
 							}
 							return false;
 						}
@@ -7345,8 +7345,8 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 			CCFiniteTimeAction *call = CCCallFunc::create(this,callfunc_selector(ActionManager::idle));
 			list->addObject(call);
 
-			CCAction* seq=CCSequence::create(list);
-			this->runAction(seq);
+			CCAction* sequence=CCSequence::create(list);
+			this->runAction(sequence);
 
 		return true;	
 	}
@@ -7447,8 +7447,8 @@ void ActionManager::floatUP(float floatHeight, bool isCancelSkill){
 					tempHero->_actionState!=ACTION_STATE_DEAD &&
 					tempHero->_buffStartTime
 					){
-						CCPoint	sp=ccpSub(tempHero->getPosition(),this->getPosition());
-						if(abs(sp.x)<=kGameWidth/2){
+						CCPoint	toHero=ccpSub(tempHero->getPosition(),this->getPosition());
+						if(abs(toHero.x)<=kGameWidth/2){
 							return ;
 						}
 
@@ -7458,12 +7458,12 @@ void ActionManager::floatUP(float floatHeight, bool isCancelSkill){
 			if(this->isCharacter("Chiyo")){
 				CCObject* pObject;
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-					Monster* mo=(Monster*) pObject;
-					if(mo->isCharacter("Parents") && !mo->_skillChangeBuffValue && mo->getActionState()!=ACTION_STATE_SATTACK  && mo->getActionState()!=ACTION_STATE_DEAD){
-						CCPoint	sp=ccpSub(mo->getPosition(),this->getPosition());
-						if(abs(sp.x)<=48){
-							if(mo->_isCanSkill3){						
-								mo->attack(SKILL3);
+					Monster* monster=(Monster*) pObject;
+					if(monster->isCharacter("Parents") && !monster->_skillChangeBuffValue && monster->getActionState()!=ACTION_STATE_SATTACK  && monster->getActionState()!=ACTION_STATE_DEAD){
+						CCPoint	toHero=ccpSub(monster->getPosition(),this->getPosition());
+						if(abs(toHero.x)<=48){
+							if(monster->_isCanSkill3){						
+								monster->attack(SKILL3);
 							}
 							return ;
 						}
@@ -7812,7 +7812,7 @@ bool ActionManager::findEnemy(const char* type,int searchRange,bool masterRange)
 	CCObject* pObject;
 	float distance;
 	float curDistance=0 ;
-	CCPoint sp;
+	CCPoint toTarget;
 	bool findSome=false;
 	CCARRAY_FOREACH(list,pObject){
 		ActionManager* target=(ActionManager*) pObject;
@@ -7843,13 +7843,13 @@ bool ActionManager::findEnemy(const char* type,int searchRange,bool masterRange)
 
 						if(masterRange && this->getMaster()){
 							distance=ccpDistance(target->getPosition(),this->getMaster()->getPosition());
-							sp=ccpSub(target->getPosition(),this->getMaster()->getPosition());
+							toTarget=ccpSub(target->getPosition(),this->getMaster()->getPosition());
 						}else{
 							distance=ccpDistance(target->getPosition(),this->getPosition());
-							sp=ccpSub(target->getPosition(),this->getPosition());
+							toTarget=ccpSub(target->getPosition(),this->getPosition());
 						}
 
-						if(abs(sp.x)<(searchRange?searchRange:kGameWidth/2)){
+						if(abs(toTarget.x)<(searchRange?searchRange:kGameWidth/2)){
 							if(target->_isTaunt){
 								_mainTarget=target;
 								return true;
@@ -7897,7 +7897,7 @@ bool ActionManager::findEnemy2(const char* type){
 	CCObject* pObject;
 	float distance;
 	float curDistance=0 ;
-	CCPoint sp;
+	CCPoint toTarget;
 	bool findSome=false;
 	
 	enemyCombatPoint=0;
@@ -7914,10 +7914,10 @@ bool ActionManager::findEnemy2(const char* type){
 		}
 
 		distance=ccpDistance(target->getPosition(),this->getPosition());
-		sp=ccpSub(target->getPosition(),this->getPosition());
+		toTarget=ccpSub(target->getPosition(),this->getPosition());
 
 		//计算combatpoint
-		if(abs(sp.x)<kGameWidth/2){
+		if(abs(toTarget.x)<kGameWidth/2){
 			if(target->role()!=Role::Clone &&
 				target->role()!=Role::Summon 
 				){
@@ -7934,7 +7934,7 @@ bool ActionManager::findEnemy2(const char* type){
 					}
 
 					if(this->group()==target->group()){
-						if(abs(sp.x)<_delegate->currentMap->getTileSize().width*3){
+						if(abs(toTarget.x)<_delegate->currentMap->getTileSize().width*3){
 
 							if(!target->isCharacter("Roshi")
 								&& !target->isCharacter("Han")){

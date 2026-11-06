@@ -247,10 +247,10 @@ int SummonController::leash(HeroRole role, Hero* master) const
 {
     if (!master)
         return 0;
-    int px = (_spec->freeWhenBuffed && _summon->_skillChangeBuffValue) ? 0 : _spec->leash;
-    if (!px && (role == HeroRole::Support || role == HeroRole::Ranged))
-        px = kScreen;  // guards and backline summons stay by their summoner
-    return px == kScreen ? int(kGameWidth / 2 - 48) : px;
+    int leashRange = (_spec->freeWhenBuffed && _summon->_skillChangeBuffValue) ? 0 : _spec->leash;
+    if (!leashRange && (role == HeroRole::Support || role == HeroRole::Ranged))
+        leashRange = kScreen;  // guards and backline summons stay by their summoner
+    return leashRange == kScreen ? int(kGameWidth / 2 - 48) : leashRange;
 }
 
 bool SummonController::canWalk(Hero* master) const
@@ -289,47 +289,47 @@ ActionManager* SummonController::weakestHero(ActionManager* center, float range)
 
 ActionManager* SummonController::pickTarget(HeroRole role, Hero* master, int leash)
 {
-    Hero* s = _summon;
+    Hero* summon = _summon;
     bool fromMaster = master && leash;
     int range = int(kGameWidth / 2 - 32);
-    auto find = [&](const char* type, int r) -> ActionManager* {
-        return s->findEnemy(type, r, fromMaster) ? s->_mainTarget : nullptr;
+    auto find = [&](const char* type, int searchRange) -> ActionManager* {
+        return summon->findEnemy(type, searchRange, fromMaster) ? summon->_mainTarget : nullptr;
     };
 
-    ActionManager* t = nullptr;
+    ActionManager* target = nullptr;
     if (!_spec->heroes || role == HeroRole::Pusher)
     {
         // pushers clear the lane first
-        if (!(t = find("Flog", range)))
-            t = find("Tower", range);
-        if (!t && _spec->heroes)
-            t = find("Hero", range);
-        return t;
+        if (!(target = find("Flog", range)))
+            target = find("Tower", range);
+        if (!target && _spec->heroes)
+            target = find("Hero", range);
+        return target;
     }
 
     switch (role)
     {
     case HeroRole::Assassin:
-        t = weakestHero(fromMaster ? (ActionManager*)master : s, range);
+        target = weakestHero(fromMaster ? (ActionManager*)master : summon, range);
         break;
     case HeroRole::Ranged:
         if (master && validTarget(master->_mainTarget))
-            t = master->_mainTarget;  // focus what the summoner shoots at
+            target = master->_mainTarget;  // focus what the summoner shoots at
         break;
     case HeroRole::Support:
         if (master)
-            t = s->findEnemy("Hero", 192, true) ? s->_mainTarget : nullptr;  // whoever reaches the summoner
+            target = summon->findEnemy("Hero", 192, true) ? summon->_mainTarget : nullptr;  // whoever reaches the summoner
         break;
     default:
         break;
     }
-    if (!t)
-        t = find("Hero", range);
-    if (!t)
-        t = find("Flog", range);
-    if (!t)
-        t = find("Tower", range);
-    return t;
+    if (!target)
+        target = find("Hero", range);
+    if (!target)
+        target = find("Flog", range);
+    if (!target)
+        target = find("Tower", range);
+    return target;
 }
 
 void SummonController::tick(float)

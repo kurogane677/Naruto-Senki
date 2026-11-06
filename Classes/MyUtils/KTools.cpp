@@ -535,22 +535,22 @@ ax::Label* KTools::createBarText(const char* key){
 }
 
 void KTools::fitScreenWidth(CCSprite* background){
-	float width=background->getContentSize().width;
-	if(winSize.width>width){
-		background->setScaleX(winSize.width/width);
+	float backgroundWidth=background->getContentSize().width;
+	if(winSize.width>backgroundWidth){
+		background->setScaleX(winSize.width/backgroundWidth);
 	}
 }
 
 void KTools::extendBarToScreen(CCSprite* bar){
-	CCSize size=bar->getContentSize();
-	if(winSize.width<=size.width){
+	CCSize barSize=bar->getContentSize();
+	if(winSize.width<=barSize.width){
 		return;
 	}
 	const float sliceWidth=4;
-	CCSprite* extension=CCSprite::createWithTexture(bar->getTexture(),CCRectMake(size.width-sliceWidth,0,sliceWidth,size.height));
+	CCSprite* extension=CCSprite::createWithTexture(bar->getTexture(),CCRectMake(barSize.width-sliceWidth,0,sliceWidth,barSize.height));
 	extension->setAnchorPoint(ccp(0,0));
-	extension->setPosition(ccp(size.width,0));
-	extension->setScaleX((winSize.width-size.width)/sliceWidth);
+	extension->setPosition(ccp(barSize.width,0));
+	extension->setScaleX((winSize.width-barSize.width)/sliceWidth);
 	bar->addChild(extension);
 }
 
