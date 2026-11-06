@@ -270,15 +270,15 @@
 	<key>Kurenai</key>
 	<dict>
 		<key>1</key>
-		<string>Lorem ipsum dolor sit amet.</string>
+		<string>Mist Veil: Become invisible for a period of time; attacking breaks the illusion</string>
 		<key>2</key>
-		<string>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, eum!</string>
+		<string>Illusion Ambush: Teleport to the nearest enemy and strike, holding them in place</string>
 		<key>3</key>
-		<string>Lorem ipsum dolor sit amet, consectetur adipisicing.</string>
+		<string>Petal Snare: Pull enemies in with a flurry of strikes, then knock them up</string>
 		<key>4</key>
-		<string>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam fuga veritatis et in mollitia harum.</string>
+		<string>Demonic Illusion: Tree Binding Death: Ougi - bind enemies in front and knock them up with heavy damage</string>
 		<key>5</key>
-		<string>Lorem ipsum dolor sit amet.</string>
+		<string>Demonic Illusion: Petal Storm: Ougi 2 - become invincible while trapping a wide area in illusion with continuous damage</string>
 	</dict>
 	<key>Lee</key>
 	<dict>
