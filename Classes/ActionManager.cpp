@@ -720,9 +720,7 @@ void ActionManager::acceptAttack(CCObject* object){
 
 									};
 									if(countMON<3 && Attacker->getLV()>=2){
-										if(_delegate->getHudLayer()->skill4Button){
-											_delegate->getHudLayer()->skill4Button->unLock();
-										}
+										Attacker->unlockOugis(OugisButton::Ougis1);
 									}										
 								}
 
@@ -2016,6 +2014,33 @@ float ActionManager::gearCooldown(gearType type) const{
 		return float(kSealCooldown[std::max(gearLevel(type),1)-1]);
 	}
 	return float(gearValue(type,std::max(gearLevel(type),1)));
+}
+
+static void setOugisButtonsLocked(HudLayer* hud,OugisButton buttons,bool locked){
+	ActionButton* ougis1=buttons!=OugisButton::Ougis2 ? hud->skill4Button : NULL;
+	ActionButton* ougis2=buttons!=OugisButton::Ougis1 ? hud->skill5Button : NULL;
+	for(ActionButton* button : {ougis1,ougis2}){
+		if(!button){
+			continue;
+		}
+		if(locked){
+			button->setLock();
+		}else{
+			button->unLock();
+		}
+	}
+}
+
+void ActionManager::lockOugis(OugisButton buttons){
+	if(this->role()==Role::Player){
+		setOugisButtonsLocked(_delegate->getHudLayer(),buttons,true);
+	}
+}
+
+void ActionManager::unlockOugis(OugisButton buttons){
+	if(this->role()==Role::Player){
+		setOugisButtonsLocked(_delegate->getHudLayer(),buttons,false);
+	}
 }
 
 bool ActionManager::setGear(gearType type){
@@ -3739,14 +3764,7 @@ void ActionManager::changeAction(){
 			_nattackRangeY=48;
 			this->_isOnlySkillLocked=true;
 
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->setLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->setLock();
-				}
-			}
+			this->lockOugis();
 			this->_gardValue+=5000;
 
 			if(_hpBar){
@@ -3777,14 +3795,7 @@ void ActionManager::changeAction(){
 			this->setWalkSpeed(320);	
 			_originSpeed=320;
 			
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->setLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->setLock();
-				}
-			}
+			this->lockOugis();
 
 			this->setIdleAction(createAnimation(skillSPC2Array,5.0f,true,false));
 			this->setWalkAction(createAnimation(skillSPC3Array,5.0f,true,false));
@@ -3823,14 +3834,7 @@ void ActionManager::changeAction(){
 		this->_gardValue+=5000;
 		_isBati=true;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->setLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->setLock();
-			}
-		}
+		this->lockOugis();
 
 		
 	}else if(this->isCharacter("SageNaruto") ||
@@ -3856,14 +3860,7 @@ void ActionManager::changeAction(){
 		this->setWalkSpeed(320);
 		_originSpeed=320;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->setLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->setLock();
-			}
-		}
+		this->lockOugis();
 	}else if(this->isCharacter("Konan")){
 
 		this->_isAllAttackLocked=true;
@@ -3883,14 +3880,7 @@ void ActionManager::changeAction(){
 		if(_hpBar){
 		_hpBar->setPositionY(90);
 		}
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->setLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->setLock();
-			}
-		}
+		this->lockOugis();
 
 
 	}else if(this->isCharacter("Kiba")){
@@ -4008,14 +3998,7 @@ void ActionManager::changeAction(){
 			this->_gardValue+=5000;
 			_isBati=true;
 
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->setLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->setLock();
-				}
-			}
+			this->lockOugis();
 
 
 		}
@@ -4081,14 +4064,7 @@ void ActionManager::changeAction(){
 			this->_isBati=true;
 			this->_isOnlySkillLocked=true;
 
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->setLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->setLock();
-				}
-			}
+			this->lockOugis();
 		}
 
 
@@ -4150,14 +4126,7 @@ void ActionManager::changeAction(){
 		this->_gardValue+=5000;
 		_isBati=true;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->setLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->setLock();
-			}
-		}
+		this->lockOugis();
 
 		if(_hpBar){
 			_hpBar->setPositionY(134);
@@ -4183,14 +4152,7 @@ void ActionManager::changeAction(){
 		this->_gardValue+=5000;
 		_isBati=true;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->setLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->setLock();
-			}
-		}
+		this->lockOugis();
 
 	
 	}else if(this->isCharacter("Kakashi")){
@@ -4262,14 +4224,7 @@ void ActionManager::changeAction(){
 			this->setWalkAction(createAnimation(skillSPC2Array,10.0f,true,false));
 			this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
 
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->setLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->setLock();
-				}
-			}
+			this->lockOugis();
 
 
 	}else if(this->isCharacter("Suigetsu") ){
@@ -4288,14 +4243,7 @@ void ActionManager::changeAction(){
 		this->setWalkAction(createAnimation(skillSPC2Array,10.0f,true,false));
 		this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->setLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->setLock();
-			}
-		}
+		this->lockOugis();
 
 
 	}else if(this->isCharacter("Kisame")){
@@ -4317,14 +4265,7 @@ void ActionManager::changeAction(){
 		this->setWalkSpeed(112);
 		_originSpeed=112;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->setLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->setLock();
-			}
-		}
+		this->lockOugis();
 
 
 
@@ -4347,14 +4288,7 @@ void ActionManager::changeAction(){
 	    this->setWalkSpeed(320);
 		_originSpeed=320;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->setLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->setLock();
-			}
-		}
+		this->lockOugis();
 
 
 
@@ -4441,11 +4375,7 @@ void ActionManager::changeAction(){
 		
 		if(bamen ==1){
 			this->setnAttackValue(this->_nattackValue+30);
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->unLock();
-				}
-			}
+			this->unlockOugis(OugisButton::Ougis1);
 		}else if(bamen ==2){
 			this->setsAttackValue2(this->_sattackValue2+100);
 		}else if(bamen==3){
@@ -4459,11 +4389,7 @@ void ActionManager::changeAction(){
 				_delegate->getHudLayer()->skill3Button->unLock();
 			}
 
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->unLock();
-				}
-			}
+			this->unlockOugis(OugisButton::Ougis2);
 		}else if(bamen==4){
 			this->setsAttackValue2(this->_sattackValue2+100);
 			this->setsAttackValue3(this->_sattackValue3+100);
@@ -4493,14 +4419,7 @@ void ActionManager::changeAction(){
 		this->setWalkAction(createAnimation(skillSPC2Array,10.0f,true,false));
 		this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->setLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->setLock();
-			}
-		}
+		this->lockOugis();
 
 	}else if(this->isCharacter("Roshi") ||
 		this->isCharacter("Han") 
@@ -4529,14 +4448,7 @@ void ActionManager::changeAction(){
 		this->setWalkAction(createAnimation(skillSPC2Array,10.0f,true,false));
 		this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->setLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->setLock();
-			}
-		}
+		this->lockOugis();
 
 	}
 	
@@ -4594,14 +4506,7 @@ void ActionManager::resumeAction(float dt){
 				this->idle();
 			}
 
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->unLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->unLock();
-				}
-			}
+			this->unlockOugis();
 
 			if(_hpBar){
 				_hpBar->setPositionY(this->getHeight());
@@ -4629,14 +4534,7 @@ void ActionManager::resumeAction(float dt){
 			
 			this->setWalkSpeed(224);
 			
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->unLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->unLock();
-				}
-			}
+			this->unlockOugis();
 
 			this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 			this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
@@ -4660,14 +4558,7 @@ void ActionManager::resumeAction(float dt){
 
 		this->_isOnlySkillLocked=false;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 		_gardValue-=5000;
 		_isBati=false;
 
@@ -4691,14 +4582,7 @@ void ActionManager::resumeAction(float dt){
 		this->setWalkSpeed(224);
 		
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
@@ -4719,14 +4603,7 @@ void ActionManager::resumeAction(float dt){
 
 		this->_isOnlySkillLocked=false;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 
 		
 		this->setWalkSpeed(224);
@@ -4762,14 +4639,7 @@ void ActionManager::resumeAction(float dt){
 
 		this->_isOnlySkillLocked=false;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 	
 		this->setWalkSpeed(224);
 		
@@ -4825,14 +4695,7 @@ void ActionManager::resumeAction(float dt){
 
 		this->_isOnlySkillLocked=false;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 
 		
 		this->setWalkSpeed(224);
@@ -4924,14 +4787,7 @@ void ActionManager::resumeAction(float dt){
 
 		this->_isOnlySkillLocked=false;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 
 		
 		this->setWalkSpeed(224);
@@ -4962,14 +4818,7 @@ void ActionManager::resumeAction(float dt){
 
 		this->_isOnlySkillLocked=false;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 
 		
 
@@ -5031,14 +4880,7 @@ void ActionManager::resumeAction(float dt){
 
 		this->_isOnlySkillLocked=false;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 		_isBati=false;
 
 		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
@@ -5078,14 +4920,7 @@ void ActionManager::resumeAction(float dt){
 		_isBati=false;
 		_isTaunt=false;
 		this->_isOnlySkillLocked=false;
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 
 		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
@@ -5137,14 +4972,7 @@ void ActionManager::setActionResume(){
 			_tempAttackValue1=0;
 			}
 			_isOnlySkillLocked=false;
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->unLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->unLock();
-				}
-			}
+			this->unlockOugis();
 
 			_nattackRangeX=16;
 			_nattackRangeY=48;
@@ -5170,14 +4998,7 @@ void ActionManager::setActionResume(){
 				_tempAttackValue1=0;
 			}
 			_isOnlySkillLocked=false;
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->unLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->unLock();
-				}
-			}
+			this->unlockOugis();
 
 			_nattackRangeX=16;
 			_nattackRangeY=48;
@@ -5208,14 +5029,7 @@ void ActionManager::setActionResume(){
 				_tempAttackValue1=0;
 			}
 			_isOnlySkillLocked=false;
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->unLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->unLock();
-				}
-			}
+			this->unlockOugis();
 
 			_nattackRangeX=16;
 			_nattackRangeY=48;
@@ -5337,14 +5151,7 @@ void ActionManager::setActionResume(){
 		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
 		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 
 		_skillChangeBuffValue=0;
 		
@@ -5386,14 +5193,7 @@ void ActionManager::setActionResume(){
 			this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
 
 			this->_isOnlySkillLocked=false;
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->unLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->unLock();
-				}
-			}
+			this->unlockOugis();
 
 			
 			this->setWalkSpeed(224);
@@ -5426,14 +5226,7 @@ void ActionManager::setActionResume(){
 			this->setKnockDownAction(createAnimation(knockDownArray,10.0f,false,true));
 
 			this->_isOnlySkillLocked=false;
-			if(this->role()==Role::Player){
-				if(_delegate->getHudLayer()->skill4Button){
-					_delegate->getHudLayer()->skill4Button->unLock();
-				}
-				if(_delegate->getHudLayer()->skill5Button){
-					_delegate->getHudLayer()->skill5Button->unLock();
-				}
-			}
+			this->unlockOugis();
 			
 			this->setWalkSpeed(224);
 			
@@ -5470,14 +5263,7 @@ void ActionManager::setActionResume(){
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 
 		if(_hpBar){
 			_hpBar->setPositionY(this->getHeight());
@@ -5494,14 +5280,7 @@ void ActionManager::setActionResume(){
 
 		this->_isOnlySkillLocked=false;
 
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 		_gardValue-=5000;
 		_isBati=false;
 		_skillChangeBuffValue=0;
@@ -5539,14 +5318,7 @@ void ActionManager::setActionResume(){
 		_isBati=false;
 		_isTaunt=false;
 		this->_isOnlySkillLocked=false;
-		if(this->role()==Role::Player){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
-			if(_delegate->getHudLayer()->skill5Button){
-				_delegate->getHudLayer()->skill5Button->unLock();
-			}
-		}
+		this->unlockOugis();
 		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
@@ -5599,14 +5371,7 @@ void ActionManager::setActionResume(){
 				
 				this->setWalkSpeed(224);
 
-				if(this->role()==Role::Player){
-					if(_delegate->getHudLayer()->skill4Button){
-						_delegate->getHudLayer()->skill4Button->unLock();
-					}
-					if(_delegate->getHudLayer()->skill5Button){
-						_delegate->getHudLayer()->skill5Button->unLock();
-					}
-				}
+				this->unlockOugis();
 
 				this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 				this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
@@ -5833,12 +5598,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 
 		clone->setID(CCString::create("DevaPath"),CCString::create("Clone"),this->_group);
 		clone->_isBati=true;		
-		if(this->role()==Role::Player ){
-			if(this->_delegate->getHudLayer()->skill5Button){
-				this->_delegate->getHudLayer()->skill5Button->setLock();
-			}
-			
-		}
+		this->lockOugis(OugisButton::Ougis2);
 
 		_skillChangeBuffValue=100;
 
@@ -5891,11 +5651,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 			
 			if(this->hearts<1 || countMon >=2){
 				
-				if(this->role()==Role::Player){
-					if(_delegate->getHudLayer()->skill4Button){
-						_delegate->getHudLayer()->skill4Button->setLock();
-					}
-				}
+				this->lockOugis(OugisButton::Ougis1);
 
 			}
 
@@ -5914,19 +5670,10 @@ void ActionManager::setClone(CCNode* sender,void* date){
 			clone->setID(CCString::create("Karasu"),CCString::create("Kuilei"),this->_group);
 		}else if(cloneTime==1){
 			clone->setID(CCString::create("Sanshouuo"),CCString::create("Kuilei"),this->_group);
-			if(this->role()==Role::Player ){
-				if(this->_delegate->getHudLayer()->skill4Button){
-					this->_delegate->getHudLayer()->skill4Button->setLock();
-				}
-				
-			}
+			this->lockOugis(OugisButton::Ougis1);
 		}else if(cloneTime==2){
 			clone->setID(CCString::create("Saso"),CCString::create("Kuilei"),this->_group);
-			if(this->role()==Role::Player ){
-				if(this->_delegate->getHudLayer()->skill5Button){
-				this->_delegate->getHudLayer()->skill5Button->setLock();
-				}
-			}
+			this->lockOugis(OugisButton::Ougis2);
 		}
 		clone->_isBati=true;
 		_monsterArray->addObject(clone);
@@ -7681,10 +7428,8 @@ void ActionManager::dead(){
 			this->_heartEffect->setSpriteFrame(frame);
 		}
 
-		if(this->role()==Role::Player && this->getLV()>=2){
-			if(_delegate->getHudLayer()->skill4Button){
-				_delegate->getHudLayer()->skill4Button->unLock();
-			}
+		if(this->getLV()>=2){
+			this->unlockOugis(OugisButton::Ougis1);
 		}
 	}
 
@@ -7722,11 +7467,7 @@ void ActionManager::dead(){
 			}else if(bamen==2){
 				this->setsAttackValue2(this->_sattackValue2-100);
 			}else if(bamen==1){
-				if(this->role()==Role::Player){
-					if(_delegate->getHudLayer()->skill4Button){
-						_delegate->getHudLayer()->skill4Button->setLock();
-					}
-				}
+				this->lockOugis(OugisButton::Ougis1);
 				this->setnAttackValue(this->_nattackValue-30);
 			}
 			bamen-=1;
