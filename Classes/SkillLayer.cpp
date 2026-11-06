@@ -1,4 +1,5 @@
 #include "SkillLayer.h"
+#include "Heroes/HeroRegistry.h"
 #include "MyUtils/KTools.h"
 #include "SelectLayer.h"
 #include "NetworkLayer.h"
@@ -307,10 +308,7 @@ void SkillLayer::initInterface(){
 
 	
 		CCMenuItem* change_bt=NULL;
-		if(strcmp(selectHero,"Naruto")==0 ||
-			strcmp(selectHero,"Jiraiya")==0  ||
-			strcmp(selectHero,"Sasuke")==0 
-			){
+		if(HeroRegistry::nextAwakening(selectHero)){
 
 				change_bt=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("change_btn.png"),NULL,NULL,this,menu_selector(SkillLayer::onChangeBtn));
 
@@ -541,14 +539,8 @@ void SkillLayer::onChangeBtn(CCObject* sender){
 
 
 	//觉醒必备
-	if(strcmp(selectHero,"Naruto")==0){
-		selectHero="SageNaruto";
-	}else if(strcmp(selectHero,"SageNaruto")==0){
-		selectHero="RikudoNaruto";
-	}else if(strcmp(selectHero,"Jiraiya")==0){
-		selectHero="SageJiraiya";
-	}else if(strcmp(selectHero,"Sasuke")==0){
-		selectHero="ImmortalSasuke";
+	if(const char* awakened=HeroRegistry::nextAwakening(selectHero)){
+		selectHero=awakened;
 	}
 
 	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("%s_full.png",selectHero)->getCString()); 
@@ -558,7 +550,7 @@ void SkillLayer::onChangeBtn(CCObject* sender){
 	//更新技能表
 	this->updateSkillGroup();
 
-	if(strcmp(selectHero,"SageNaruto")==0 ){
+	if(HeroRegistry::nextAwakening(selectHero)){
 
 		CCMenuItem* change_bt=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("change_btn2.png"),NULL,NULL,this,menu_selector(SkillLayer::onChangeBtn));
 
