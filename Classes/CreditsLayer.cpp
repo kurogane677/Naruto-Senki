@@ -1,4 +1,5 @@
 #include "CreditsLayer.h"
+#include "MyUtils/KTools.h"
 using namespace CocosDenshion;
 #include "StartMenu.h"
 
@@ -23,6 +24,7 @@ bool CreditsLayer::init(){
 		CC_BREAK_IF(!CCLayer::init());
 
 		CCSprite* bgSprite = CCSprite::create("blue_bg.png");
+		KTools::fitScreenWidth(bgSprite);
 		bgSprite->setAnchorPoint(ccp(0,0));
 		bgSprite->setPosition(ccp(0,0));
 		this->addChild(bgSprite, -5);
@@ -53,11 +55,13 @@ bool CreditsLayer::init(){
 
 		//produce the menu_bar
 		CCSprite* menu_bar_b = CCSprite::create("menu_bar2.png");
+		KTools::extendBarToScreen(menu_bar_b);
 		menu_bar_b->setAnchorPoint(ccp(0,0));
 		this->addChild(menu_bar_b,2);
 
 
 		CCSprite* menu_bar_t = CCSprite::create("menu_bar3.png");
+		KTools::extendBarToScreen(menu_bar_t);
 		menu_bar_t->setAnchorPoint(ccp(0,0));
 		menu_bar_t->setPosition(ccp(0,winSize.height-menu_bar_t->getContentSize().height));
 		this->addChild(menu_bar_t,2);

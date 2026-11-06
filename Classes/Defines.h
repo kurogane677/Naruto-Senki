@@ -17,6 +17,9 @@ constexpr int CKR2_MAX = 50000;
 //global parameter
 
 #define winSize  CCDirector::sharedDirector()->getWinSize()
+// Gameplay width: walk speed, AI and skill ranges stay at the 568px design width
+// however wide the screen is, so a wider phone doesn't change the game (#20).
+#define kGameWidth 568.0f
 
 
 

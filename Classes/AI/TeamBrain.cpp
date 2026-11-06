@@ -23,64 +23,64 @@ struct Cache
 
 void compute(GameLayer* game, Cache& cache)
 {
-    for (auto& b : cache.brain)
-        b = TeamBrain{};
+    for (auto& brain : cache.brain)
+        brain = TeamBrain{};
     int alive[3] = {0, 0, 0};
     int dead[3] = {0, 0, 0};
 
-    CCObject* obj;
-    CCARRAY_FOREACH(game->_CharacterArray, obj)
+    CCObject* object;
+    CCARRAY_FOREACH(game->_CharacterArray, object)
     {
-        ActionManager* u = (ActionManager*)obj;
-        if (!isLaneHero(u))
+        ActionManager* unit = (ActionManager*)object;
+        if (!isLaneHero(unit))
             continue;
-        int g = (int)u->group();
-        if (u->getActionState() == ACTION_STATE_DEAD)
+        int groupIndex = (int)unit->group();
+        if (unit->getActionState() == ACTION_STATE_DEAD)
         {
-            dead[g]++;
+            dead[groupIndex]++;
             continue;
         }
-        alive[g]++;
-        TeamBrain& b = cache.brain[g];
-        float x = u->getPositionX();
-        bool ahead = u->group() == Group::Konoha ? x > b.frontX : x < b.frontX;
-        if (!b.hasFront || ahead)
+        alive[groupIndex]++;
+        TeamBrain& brain = cache.brain[groupIndex];
+        float unitX = unit->getPositionX();
+        bool ahead = unit->group() == Group::Konoha ? unitX > brain.frontX : unitX < brain.frontX;
+        if (!brain.hasFront || ahead)
         {
-            b.frontX = x;
-            b.hasFront = true;
+            brain.frontX = unitX;
+            brain.hasFront = true;
         }
     }
 
-    float tile = game->currentMap->getTileSize().width;
-    float mapW = game->currentMap->getMapSize().width * tile;
+    float tileWidth = game->currentMap->getTileSize().width;
+    float mapWidth = game->currentMap->getMapSize().width * tileWidth;
     for (Group side : {Group::Konoha, Group::Akatsuki})
     {
-        TeamBrain& b = cache.brain[(int)side];
+        TeamBrain& brain = cache.brain[(int)side];
         int enemy = side == Group::Konoha ? (int)Group::Akatsuki : (int)Group::Konoha;
-        b.pushWindow = dead[enemy] >= 2;
-        b.outnumbered = alive[enemy] > alive[(int)side] + 1;
-        if (!b.hasFront)
+        brain.pushWindow = dead[enemy] >= 2;
+        brain.outnumbered = alive[enemy] > alive[(int)side] + 1;
+        if (!brain.hasFront)
             continue;
 
         float best = 2.0f;
-        CCARRAY_FOREACH(game->_CharacterArray, obj)
+        CCARRAY_FOREACH(game->_CharacterArray, object)
         {
-            ActionManager* u = (ActionManager*)obj;
-            if (!isLaneHero(u) || (int)u->group() != enemy || u->getActionState() == ACTION_STATE_DEAD ||
-                !u->_isVisable || u->_isWudi)
+            ActionManager* unit = (ActionManager*)object;
+            if (!isLaneHero(unit) || (int)unit->group() != enemy || unit->getActionState() == ACTION_STATE_DEAD ||
+                !unit->_isVisable || unit->_isWudi)
                 continue;
-            float x = u->getPositionX();
-            if (x < tile * 3 || x > mapW - tile * 3)
+            float unitX = unit->getPositionX();
+            if (unitX < tileWidth * 3 || unitX > mapWidth - tileWidth * 3)
                 continue;  // inside a base: not worth diving
-            if (u->isHurtingTower)
-                b.towerThreat = u;
-            if (fabsf(x - b.frontX) > winSize.width * 0.6f)
+            if (unit->isHurtingTower)
+                brain.towerThreat = unit;
+            if (fabsf(unitX - brain.frontX) > kGameWidth * 0.6f)
                 continue;
-            float score = u->getHpPercent();
+            float score = unit->getHpPercent();
             if (score < best)
             {
                 best = score;
-                b.focus = u;
+                brain.focus = unit;
             }
         }
     }

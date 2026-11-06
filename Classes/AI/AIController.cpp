@@ -60,7 +60,7 @@ bool targetable(ActionManager* self, ActionManager* unit, GameLayer* game)
     float unitX = unit->getPositionX();
     if (unitX < tile * 3 || unitX > (game->currentMap->getMapSize().width - 3) * tile)
         return false;
-    return fabsf(unitX - self->getPositionX()) < winSize.width / 2;
+    return fabsf(unitX - self->getPositionX()) < kGameWidth / 2;
 }
 
 }  // namespace
@@ -455,7 +455,7 @@ bool AIController::condsHold(const SkillRule& rule, ActionManager* target)
             {
                 ActionManager* unit = (ActionManager*)object;
                 if (unit != hero && isLaneHero(unit) && !hero->isEnemy(unit) && unit->getActionState() != ACTION_STATE_DEAD &&
-                    fabsf(unit->getPositionX() - hero->getPositionX()) <= winSize.width / 2)
+                    fabsf(unit->getPositionX() - hero->getPositionX()) <= kGameWidth / 2)
                     ok = true;
             }
         }

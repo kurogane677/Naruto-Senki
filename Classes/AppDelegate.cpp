@@ -31,17 +31,23 @@ bool AppDelegate::applicationDidFinishLaunching() {
     ax::RenderView* pRenderView = pDirector->getRenderView();
     if (!pRenderView) {
 #if (AX_TARGET_PLATFORM != AX_PLATFORM_ANDROID) && (AX_TARGET_PLATFORM != AX_PLATFORM_IOS)
-        // 16:9 window (720p) for the 568x320 design resolution
-        pRenderView = ax::RenderViewImpl::createWithRect("NarutoSenki", ax::Rect(0, 0, 1280, 720));
+        // 16:9 window (720p); NS_WINDOW=WxH (e.g. 1280x576 for 20:9) tests other screen shapes
+        int windowWidth = 1280, windowHeight = 720;
+        if (const char* windowSize = getenv("NS_WINDOW"))
+            sscanf(windowSize, "%dx%d", &windowWidth, &windowHeight);
+        pRenderView = ax::RenderViewImpl::createWithRect("NarutoSenki", ax::Rect(0, 0, windowWidth, windowHeight));
 #else
         pRenderView = ax::RenderViewImpl::create("NarutoSenki");
 #endif
         pDirector->setRenderView(pRenderView);
     }
-	// 16:9 design (the menu backgrounds are 570x320). SHOW_ALL keeps it 16:9 on every
-	// device, with bars on wider/narrower screens: walk speed and AI ranges scale
-	// with winSize.width, so letting the width follow the screen would change gameplay.
-	pRenderView->setDesignResolutionSize(568,320,ResolutionPolicy::SHOW_ALL);
+	// The design is 568x320. On wider screens the height stays 320 and the width follows
+	// the screen, so there are no black bars (#20); gameplay ranges use kGameWidth, not
+	// the screen width. Narrower screens (4:3/16:10 tablets) keep SHOW_ALL: a taller view
+	// would show past the top of the map.
+	ax::Size frameSize = pRenderView->getFrameSize();
+	bool isWideScreen = frameSize.width * 320 >= frameSize.height * 568;
+	pRenderView->setDesignResolutionSize(568,320,isWideScreen ? ResolutionPolicy::FIXED_HEIGHT : ResolutionPolicy::SHOW_ALL);
 
     // turn on display FPS
     pDirector->setStatsDisplay(false);
