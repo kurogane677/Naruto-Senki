@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Credits screen text (#70). One <string> per line, shown top to bottom while scrolling.
+  "# Title" is a section heading, an empty <string/> is a blank line.
+  The font (Arimo) has Latin characters only, so names are written in Latin script.
+-->
+<plist version="1.0">
+<array>
+	<string># NARUTO SENKI</string>
+	<string>A free, non-commercial fan game</string>
+	<string/>
+	<string># ORIGINAL GAME</string>
+	<string>BlackIsle</string>
+	<string>zakume.net</string>
+	<string/>
+	<string># SPECIAL THANKS</string>
+	<string>Neimad, Zoso, benhazard, Cao Lisheng</string>
+	<string>and everyone who helped the original game</string>
+	<string/>
+	<string># AXMOL / ANDROID PORT</string>
+	<string>yusrilcode</string>
+	<string/>
+	<string># ENGINE</string>
+	<string>Axmol Engine (MIT License)</string>
+	<string/>
+	<string># FONTS</string>
+	<string>Arimo (SIL Open Font License)</string>
+	<string>Pixelify Sans (SIL Open Font License)</string>
+	<string/>
+	<string># COPYRIGHT</string>
+	<string>Naruto © Masashi Kishimoto / Shueisha</string>
+	<string>Characters and assets belong to their respective owners (Bandai Namco)</string>
+	<string/>
+	<string># NOTICE</string>
+	<string>Naruto Senki is a free, non-commercial fan project. It is not for sale and is not affiliated with the rights holders.</string>
+	<string/>
+	<string>Naruto Senki adalah fan project gratis dan non-komersial. Tidak untuk dijual dan tidak berafiliasi dengan pemegang hak cipta.</string>
+	<string/>
+	<string># SOURCE</string>
+	<string>github.com/kurogane677/Naruto-Senki</string>
+</array>
+</plist>
