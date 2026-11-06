@@ -439,6 +439,9 @@ protected:
 	// Cooldown left per active gear; it belongs to the gear, not to the HUD button
 	// showing it, since gear11 borrows whichever button is free
 	float				_gearCDLeft[None]={};
+	// Sai's ride (skill04) Mouse: seconds left in which a Mouse can't hold this hero again,
+	// so a stream of mice can't stun-lock (#69)
+	float				_mouseHoldImmunity=0;
 	void				startGearCooldown(gearType type);
 	void				updateGearCooldowns(float dt);
 	int					_gearAttack=0;
