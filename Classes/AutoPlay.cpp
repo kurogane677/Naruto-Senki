@@ -70,8 +70,70 @@ bool enabled()
     return on;
 }
 
+bool fixedStep()
+{
+    static const bool on = enabled() && getenv("NS_AUTOPLAY_SEED");
+    return on;
+}
+
+static const float kFixedStep = 1.0f / 60;
+
+static void appendLine(const char* fileName, const std::string& line)
+{
+    std::string path = CCFileUtils::sharedFileUtils()->getWritablePath() + fileName;
+    if (FILE* f = fopen(path.c_str(), "a"))
+    {
+        fprintf(f, "%s\n", line.c_str());
+        fclose(f);
+    }
+}
+
+void beforeLaunch()
+{
+    if (const char* dataDir = getenv("NS_DATA_DIR"))
+    {
+        std::string path = dataDir;
+        if (!path.empty() && path.back() != '/' && path.back() != '\\')
+            path += '/';
+        CCFileUtils::sharedFileUtils()->setWritablePath(path);
+    }
+    if (!fixedStep())
+        return;
+    unsigned seed = (unsigned)strtoul(getenv("NS_AUTOPLAY_SEED"), nullptr, 10);
+    srand(seed);
+    rng().seed(seed);
+    simulatedClockMs() = 0;
+}
+
+void afterLaunch()
+{
+    if (!fixedStep())
+        return;
+    CCDirector* director = CCDirector::sharedDirector();
+    // no frame cap: each frame is one fixed step, so the match runs as fast as it can render
+    director->setAnimationInterval(1.0f / 1000);
+    // Director keeps a delta time passed through mainLoop(dt) for every later frame; this
+    // runs the first frame early, with nothing scheduled yet. Restarting the animation
+    // would zero that delta time for good, so its "skip one frame" flag is cleared first.
+    director->setNextDeltaTimeZero(false);
+    director->mainLoop(kFixedStep);
+    auto* events = director->getEventDispatcher();
+    events->addCustomEventListener(ax::Director::EVENT_BEFORE_UPDATE, [director](ax::EventCustom*) {
+        static bool reported = false;
+        if (director->getDeltaTime() != kFixedStep && !reported)
+        {
+            reported = true;
+            appendLine("autoplay.log", "ERROR fixed step lost");
+        }
+    });
+    events->addCustomEventListener(ax::Director::EVENT_AFTER_UPDATE,
+                                   [](ax::EventCustom*) { simulatedClockMs() += kFixedStep * 1000.0; });
+}
+
 float speed()
 {
+    if (fixedStep())
+        return 1.0f;
     const char* v = getenv("NS_AUTOPLAY_SPEED");
     float s = v ? (float)atof(v) : 3.0f;
     return s > 0 ? s : 3.0f;
@@ -152,12 +214,12 @@ void report(GameLayer* game, bool playerWon)
         }
     }
     CCLOG("[autoplay] %s", line.c_str());
-    std::string path = CCFileUtils::sharedFileUtils()->getWritablePath() + "autoplay.log";
-    if (FILE* f = fopen(path.c_str(), "a"))
-    {
-        fprintf(f, "%s\n", line.c_str());
-        fclose(f);
-    }
+    appendLine("autoplay.log", line);
+    static int matchesPlayed = 0;
+    const char* matchLimit = getenv("NS_AUTOPLAY_MATCHES");
+    int maxMatches = matchLimit ? atoi(matchLimit) : 0;
+    if (maxMatches > 0 && ++matchesPlayed >= maxMatches)
+        CCDirector::sharedDirector()->end();
 }
 
 }  // namespace AutoPlay
