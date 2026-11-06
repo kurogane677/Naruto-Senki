@@ -324,9 +324,9 @@ void ActionManager::update(float dt){
 						if (rect.containsPoint(_desiredPosition)){
 							float anchorYpoint=metaY+metaHeight/2;
 							if(this->getPositionY()>anchorYpoint){
-								_velocity =ccp(0,1 * this->_walkSpeed*winSize.width/1280);
+								_velocity =ccp(0,1 * this->_walkSpeed*kGameWidth/1280);
 							}else{
-								_velocity =ccp(0,-1 * this->_walkSpeed*winSize.width/1280);
+								_velocity =ccp(0,-1 * this->_walkSpeed*kGameWidth/1280);
 							}
 							_desiredPosition=ccpAdd(this->getPosition(), ccpMult(_velocity,dt));
 						};
@@ -2737,7 +2737,7 @@ void ActionManager::setCharge(CCNode* sender,void* date){
 		){
 			return;
 	}else{
-		_moveAction=CCMoveBy::create(0.1f,ccp(_isFlipped?-moveLength*winSize.width/1280:moveLength*winSize.width/1280,0));
+		_moveAction=CCMoveBy::create(0.1f,ccp(_isFlipped?-moveLength*kGameWidth/1280:moveLength*kGameWidth/1280,0));
 		this->runAction(_moveAction);
 		
 	}
@@ -2760,7 +2760,7 @@ void ActionManager::setChargeB(CCNode* sender,void* date){
 		){
 		return;
 	}else{
-			_moveAction=CCMoveBy::create(delay,ccp(_isFlipped?-moveLength*winSize.width/1280:moveLength*winSize.width/1280,0));
+			_moveAction=CCMoveBy::create(delay,ccp(_isFlipped?-moveLength*kGameWidth/1280:moveLength*kGameWidth/1280,0));
 			this->runAction(_moveAction);
 	}
 
@@ -3152,7 +3152,7 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 					&& tempHero->_actionState!=ACTION_STATE_DEAD
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-						if(abs(distanceX)<winSize.width/2){
+						if(abs(distanceX)<kGameWidth/2){
 							//取消隐身
 							if(!tempHero->_isVisable){
 								if(tempHero->isCharacter("Konan") ||
@@ -3490,7 +3490,7 @@ void ActionManager::healBuff(float dt){
 				&& !tempHero->isCharacter("Chiyo")
 				){
 					CCPoint	sp=ccpSub(tempHero->getPosition(),this->getPosition());
-					if(abs(sp.x)<=winSize.width/2){
+					if(abs(sp.x)<=kGameWidth/2){
 
 
 						if(tempHero->_level>=2){
@@ -3936,7 +3936,7 @@ void ActionManager::changeAction(){
 					&& tempHero->_actionState!=ACTION_STATE_DEAD
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-						if(abs(distanceX)<winSize.width/2){
+						if(abs(distanceX)<kGameWidth/2){
 							//取消隐身
 							if(!tempHero->_isVisable){
 								if(tempHero->isCharacter("Konan") ||
@@ -4017,7 +4017,7 @@ void ActionManager::changeAction(){
 					&& tempHero->_actionState!=ACTION_STATE_DEAD
 					){
 						float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-						if(abs(distanceX)<winSize.width/2){
+						if(abs(distanceX)<kGameWidth/2){
 							//取消隐身
 							if(!tempHero->_isVisable){
 								if(tempHero->isCharacter("Konan") ||
@@ -4092,7 +4092,7 @@ void ActionManager::changeAction(){
 				&& tempHero->_actionState!=ACTION_STATE_DEAD
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-					if(abs(distanceX)<winSize.width/2){
+					if(abs(distanceX)<kGameWidth/2){
 						//取消隐身
 						if(!tempHero->_isVisable){
 							if(tempHero->isCharacter("Konan") ||
@@ -4192,7 +4192,7 @@ void ActionManager::changeAction(){
 				&& tempHero->_actionState!=ACTION_STATE_DEAD
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-					if(abs(distanceX)<winSize.width/2){
+					if(abs(distanceX)<kGameWidth/2){
 						//取消隐身
 						if(!tempHero->_isVisable){
 							if(tempHero->isCharacter("Konan") ||
@@ -6464,7 +6464,7 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 				&& tempHero->_actionState!=ACTION_STATE_DEAD
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-					if(abs(distanceX)<winSize.width/2){
+					if(abs(distanceX)<kGameWidth/2){
 						//取消隐身
 						if(!tempHero->_isVisable){
 							if(tempHero->isCharacter("Konan") ||
@@ -6633,7 +6633,7 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 				&& !tempHero->_isSticking
 				){
 					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-					float tempRange1=winSize.width/2;
+					float tempRange1=kGameWidth/2;
 					if(abs(distanceX)<=tempRange1){
 						Monster* trap=Monster::create();
 						trap->setDelegate(_delegate);
@@ -7161,7 +7161,7 @@ void ActionManager::walk(CCPoint direction){
 		
 		
 		
-		_velocity = ccp(direction.x * _walkSpeed*winSize.width/1280, direction.y * _walkSpeed*winSize.width/1280);
+		_velocity = ccp(direction.x * _walkSpeed*kGameWidth/1280, direction.y * _walkSpeed*kGameWidth/1280);
 		
 	};
 };
@@ -7191,7 +7191,7 @@ bool ActionManager::hurt(){
 				){
 
 				CCPoint	sp=ccpSub(tempHero->getPosition(),this->getPosition());
-				if(abs(sp.x)<=winSize.width/2){
+				if(abs(sp.x)<=kGameWidth/2){
 					return false;
 				}		
 			}
@@ -7263,7 +7263,7 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 					tempHero->_buffStartTime
 					){
 						CCPoint	sp=ccpSub(tempHero->getPosition(),this->getPosition());
-						if(abs(sp.x)<=winSize.width/2){
+						if(abs(sp.x)<=kGameWidth/2){
 							return false;
 						}
 
@@ -7448,7 +7448,7 @@ void ActionManager::floatUP(float floatHeight, bool isCancelSkill){
 					tempHero->_buffStartTime
 					){
 						CCPoint	sp=ccpSub(tempHero->getPosition(),this->getPosition());
-						if(abs(sp.x)<=winSize.width/2){
+						if(abs(sp.x)<=kGameWidth/2){
 							return ;
 						}
 
@@ -7849,7 +7849,7 @@ bool ActionManager::findEnemy(const char* type,int searchRange,bool masterRange)
 							sp=ccpSub(target->getPosition(),this->getPosition());
 						}
 
-						if(abs(sp.x)<(searchRange?searchRange:winSize.width/2)){
+						if(abs(sp.x)<(searchRange?searchRange:kGameWidth/2)){
 							if(target->_isTaunt){
 								_mainTarget=target;
 								return true;
@@ -7917,7 +7917,7 @@ bool ActionManager::findEnemy2(const char* type){
 		sp=ccpSub(target->getPosition(),this->getPosition());
 
 		//计算combatpoint
-		if(abs(sp.x)<winSize.width/2){
+		if(abs(sp.x)<kGameWidth/2){
 			if(target->role()!=Role::Clone &&
 				target->role()!=Role::Summon 
 				){

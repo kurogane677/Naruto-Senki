@@ -250,7 +250,7 @@ int SummonController::leash(HeroRole role, Hero* master) const
     int px = (_spec->freeWhenBuffed && _summon->_skillChangeBuffValue) ? 0 : _spec->leash;
     if (!px && (role == HeroRole::Support || role == HeroRole::Ranged))
         px = kScreen;  // guards and backline summons stay by their summoner
-    return px == kScreen ? int(winSize.width / 2 - 48) : px;
+    return px == kScreen ? int(kGameWidth / 2 - 48) : px;
 }
 
 bool SummonController::canWalk(Hero* master) const
@@ -291,7 +291,7 @@ ActionManager* SummonController::pickTarget(HeroRole role, Hero* master, int lea
 {
     Hero* s = _summon;
     bool fromMaster = master && leash;
-    int range = int(winSize.width / 2 - 32);
+    int range = int(kGameWidth / 2 - 32);
     auto find = [&](const char* type, int r) -> ActionManager* {
         return s->findEnemy(type, r, fromMaster) ? s->_mainTarget : nullptr;
     };

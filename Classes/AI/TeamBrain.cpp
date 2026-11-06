@@ -74,7 +74,7 @@ void compute(GameLayer* game, Cache& cache)
                 continue;  // inside a base: not worth diving
             if (u->isHurtingTower)
                 b.towerThreat = u;
-            if (fabsf(x - b.frontX) > winSize.width * 0.6f)
+            if (fabsf(x - b.frontX) > kGameWidth * 0.6f)
                 continue;
             float score = u->getHpPercent();
             if (score < best)

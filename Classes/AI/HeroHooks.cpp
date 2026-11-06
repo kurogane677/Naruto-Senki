@@ -74,7 +74,7 @@ bool minato(AIController& ai)
             h->attack(SKILL1);
             return true;
         }
-        if (!lowHp && ahead > winSize.width / 2 && !h->_isHealling)
+        if (!lowHp && ahead > kGameWidth / 2 && !h->_isHealling)
         {
             h->attack(SKILL1);
             return true;
@@ -98,7 +98,7 @@ bool kakuzu(AIController& ai)
         if (!isLaneHero(u) || u->getActionState() != ACTION_STATE_DEAD)
             continue;
         CCPoint d = ccpSub(u->getPosition(), h->getPosition());
-        if (fabsf(d.x) >= winSize.width / 2)
+        if (fabsf(d.x) >= kGameWidth / 2)
             continue;
         float dist = ccpLength(d);
         if (!best || dist < bestDist)
