@@ -25,11 +25,12 @@ Port dari game Naruto Senki (game 2D *lane battle* Konoha vs Akatsuki dengan tow
 6. [Cakupan MVP](#cakupan-mvp)
 7. [Struktur proyek](#struktur-proyek)
 8. [Catatan teknis migrasi](#catatan-teknis-migrasi)
-9. [Debugging & crash](#debugging--crash)
-10. [Known issues](#known-issues)
-11. [Aturan kontribusi](#aturan-kontribusi)
-12. [Roadmap](#roadmap)
-13. [Credits](#credits)
+9. [Pengujian](#pengujian)
+10. [Debugging & crash](#debugging--crash)
+11. [Known issues](#known-issues)
+12. [Aturan kontribusi](#aturan-kontribusi)
+13. [Roadmap](#roadmap)
+14. [Credits](#credits)
 
 ---
 
@@ -435,6 +436,35 @@ AI hero ditulis ulang menjadi **data-driven** (`Classes/AI/`). Sebelumnya ada se
 **Uji AI-vs-AI**: set environment variable `NS_AUTOPLAY=1` sebelum menjalankan exe. Game melewati menu dan memainkan match Training terus-menerus, dengan hero Anda ikut dikendalikan AI. Hasil tiap match ditulis ke `%LOCALAPPDATA%\NarutoSenki\autoplay.log`, dan stack crash (jika ada) ke `autoplay_crash.log`. Opsi tambahan:
 - `NS_AUTOPLAY_HERO=Naruto`: hero player.
 - `NS_AUTOPLAY_SPEED=4`: kecepatan game.
+- `NS_AUTOPLAY_HARDCORE=1`: aturan HardCore.
+- `NS_AUTOPLAY_SEED=1`: seed tetap dan langkah waktu tetap, dipakai `tools\soak.ps1` (lihat [Pengujian](#pengujian)).
+- `NS_AUTOPLAY_MATCHES=20`: keluar setelah sekian match.
+- `NS_DATA_DIR=<folder>`: folder data (sql.db, pengaturan) pengganti `%LOCALAPPDATA%\NarutoSenki`.
+
+---
+
+## Pengujian
+
+Dua jaring pengaman untuk refactor (#21): unit test untuk logika yang tidak butuh scene, dan soak autoplay untuk seluruh game.
+
+### Unit test (doctest)
+```powershell
+cmake -S . -B build_x64 -D_AX_TESTS=ON
+cmake --build build_x64 --config RelWithDebInfo --target NarutoSenki_test
+.\build_x64\bin\NarutoSenki_test\RelWithDebInfo\NarutoSenki_test.exe
+```
+Test ada di `Tests/`. Target test mengompilasi semua kode `Classes/` (tanpa `main.cpp` platform), jadi test bisa memanggil fungsi game mana pun yang tidak butuh scene. Target ini hanya untuk desktop; build Android tidak terpengaruh.
+
+### Soak autoplay
+```powershell
+tools\soak.ps1 -MatchCount 20 -Out main.json                       # di main
+tools\soak.ps1 -MatchCount 20 -Out branch.json -Baseline main.json  # di branch
+tools\soak.ps1 -MatchCount 20 -HardCore -Out hardcore.json          # mode HardCore
+```
+- Memainkan match AI-vs-AI dengan seed tetap, dalam langkah tetap 1/60 detik, secepat yang bisa di-render (sekitar 10× waktu nyata).
+- Memakai folder data sementara, jadi `sql.db` milik Anda tidak tersentuh.
+- Hasilnya ringkasan JSON: crash, win rate Konoha, rata-rata durasi match, kill, death, dan level hero. Dengan `-Baseline`, kedua ringkasan ditampilkan berdampingan.
+- **Bandingkan rata-rata, bukan match per match.** Seed menetapkan hero dan map, tapi satu match tetap bisa berbeda antar run, karena engine menjalankan timer node menurut urutan alamat memori.
 
 ---
 

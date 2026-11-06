@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "GameScene.h"
+#include "AutoPlay.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -18,6 +19,8 @@ void AppDelegate::initGfxContextAttrs()
 {
     // red,green,blue,alpha,depth,stencil,multisamplesCount; stencil is needed by CCClippingNode
     GfxContextAttrs gfxContextAttrs = {8, 8, 8, 8, 24, 8, 0};
+    // autoplay soak runs uncapped
+    gfxContextAttrs.vsync = !AutoPlay::fixedStep();
     ax::RenderView::setGfxContextAttrs(gfxContextAttrs);
 }
 
@@ -25,6 +28,7 @@ void AppDelegate::initGfxContextAttrs()
 bool AppDelegate::applicationDidFinishLaunching() {
     // seed rand() once (critical hits, effects, save keys)
     srand((unsigned)time(nullptr));
+    AutoPlay::beforeLaunch();
 
     // initialize director
     CCDirector* pDirector = CCDirector::sharedDirector();
@@ -60,6 +64,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // run
     pDirector->runWithScene(pScene);
+    AutoPlay::afterLaunch();
 
     return true;
 }
@@ -67,6 +72,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
     void AppDelegate::applicationDidEnterBackground() {
+    // restarting the animation would reset the autoplay soak's fixed step
+    if (AutoPlay::fixedStep())
+        return;
 
 
 		
@@ -82,6 +90,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 // this function will be called when the app is active again
     void AppDelegate::applicationWillEnterForeground() {
+    // restarting the animation would reset the autoplay soak's fixed step
+    if (AutoPlay::fixedStep())
+        return;
     CCDirector::sharedDirector()->startAnimation();
 
     // if you use SimpleAudioEngine, it must resume here

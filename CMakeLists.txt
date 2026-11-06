@@ -78,6 +78,7 @@ set(APP_SOURCES
 )
 
 if(LINUX OR MACOSX OR WINDOWS)
+  # Unit tests (doctest): cmake -D_AX_TESTS=ON, then run NarutoSenki_test
   option(_AX_TESTS "Enable doctest" OFF)
 endif()
 
@@ -93,17 +94,18 @@ if(_AX_TESTS)
     Tests/*.cpp Tests/*.c
   )
   list(APPEND TEST_SOURCE ${GAME_SOURCE})
+  # the game code without the platform entry point; Tests/main.cpp is doctest's
+  list(FILTER TEST_SOURCE EXCLUDE REGEX "proj\\.[a-z0-9_]+/(app/jni/)?main\\.cpp$")
 
   set(TEST_TARGET_SOURCES
-    ${APP_SOURCES}
     ${TEST_HEADER}
     ${TEST_SOURCE}
   )
 
- set(TEST_INC_DIRS
-   "${CMAKE_CURRENT_SOURCE_DIR}/Tests"
-   "${CMAKE_CURRENT_SOURCE_DIR}/Source"
- )
+  set(TEST_INC_DIRS
+    "${CMAKE_CURRENT_SOURCE_DIR}/Tests"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Classes"
+  )
 endif()
 
 include(AXGameTargetSetup)
@@ -112,6 +114,9 @@ include(AXGameTargetSetup)
 # pre-C++11 idioms (game target only; the engine keeps strict mode).
 if(MSVC)
   target_compile_options(${APP_NAME} PRIVATE /Zc:strictStrings-)
+  if(_AX_TESTS)
+    target_compile_options(${TEST_TARGET_NAME} PRIVATE /Zc:strictStrings-)
+  endif()
 endif()
 
 # mark app resources, resource will be copy auto after mark

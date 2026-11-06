@@ -29,11 +29,21 @@ inline bool randChance(float p)
     return randFloat(0.0f, 1.0f) < p;
 }
 
+// Game clock for the autoplay soak, in ms; negative = use the wall clock.
+inline double& simulatedClockMs()
+{
+    static double ms = -1;
+    return ms;
+}
+
 // Milliseconds since the first call, starting at 1000 so callers can keep using
 // 0 as "not set". Replaces tv_sec*1000 epoch math, which overflowed a 32-bit
 // long and lost precision in a float.
 inline float nowMs()
 {
+    // the autoplay soak (NS_AUTOPLAY_SEED) advances a game clock instead
+    if (simulatedClockMs() >= 0)
+        return 1000.0f + (float)simulatedClockMs();
     static const auto start = std::chrono::steady_clock::now();
     return 1000.0f + std::chrono::duration<float, std::milli>(std::chrono::steady_clock::now() - start).count();
 }
