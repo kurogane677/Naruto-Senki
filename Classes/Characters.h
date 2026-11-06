@@ -21,9 +21,8 @@ protected:
 	std::string			_brainFor;
 
 	void setAI(float dt);
-	void   AI_NarutoClone();
-	void	AI_SageNarutoClone();
-	void	AI_RikudoNarutoClone();
+	// a clone's own routine; none by default
+	virtual void	cloneAI() {}
 	void	AI_DogWall();
 	void	AI_Guardian();
 	

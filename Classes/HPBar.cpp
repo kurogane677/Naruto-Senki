@@ -128,16 +128,8 @@ void HPBar::loseHP(float percent){
 
 			if(currentSlayer->getLV()!=6){
 
-				if(currentSlayer->isCharacter("Naruto")||
-					currentSlayer->isCharacter("SageNaruto")
-					){
-						currentSlayer->setEXP(currentSlayer->getEXP()+12);
-						currentSlayer->changeHPbar();
-
-				}else{
-					currentSlayer->setEXP(currentSlayer->getEXP()+10);
-					currentSlayer->changeHPbar();
-				}
+				currentSlayer->setEXP(currentSlayer->getEXP()+10*currentSlayer->expGainPercent()/100);
+				currentSlayer->changeHPbar();
 				
 			}
 
@@ -206,16 +198,8 @@ void HPBar::loseHP(float percent){
 			
 
 				if(currentSlayer->getLV()!=6){
-					if(currentSlayer->isCharacter("Naruto")||
-						currentSlayer->isCharacter("SageNaruto")
-						){
-							currentSlayer->setEXP(currentSlayer->getEXP()+625);
-							currentSlayer->changeHPbar();
-
-					}else{
-						currentSlayer->setEXP(currentSlayer->getEXP()+500);
-						currentSlayer->changeHPbar();
-					}
+					currentSlayer->setEXP(currentSlayer->getEXP()+500*currentSlayer->expGainPercent()/100);
+					currentSlayer->changeHPbar();
 
 					
 				}
@@ -464,17 +448,8 @@ void HPBar::loseHP(float percent){
 					
 					if( currentSlayer->getLV()!=6){
 
-						if(currentSlayer->isCharacter("Naruto")||
-							currentSlayer->isCharacter("SageNaruto")
-							){
-								currentSlayer->setEXP(currentSlayer->getEXP()+125);
-								currentSlayer->changeHPbar();
-
-						}else{
-
-							currentSlayer->setEXP(currentSlayer->getEXP()+100);
-							currentSlayer->changeHPbar();
-						}
+						currentSlayer->setEXP(currentSlayer->getEXP()+100*currentSlayer->expGainPercent()/100);
+						currentSlayer->changeHPbar();
 
 					}
 				

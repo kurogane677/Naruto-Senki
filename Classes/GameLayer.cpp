@@ -1,4 +1,5 @@
 #include "GameLayer.h"
+#include "Heroes/HeroFactory.h"
 #include "Maps.h"
 #include "Characters.h"
 #include "BGLayer.h"
@@ -222,7 +223,7 @@ void GameLayer::initHeros(){
 
 			
 			
-				currentPlayer=Hero::create();
+				currentPlayer=HeroFactory::create(player->getCString());
 				currentPlayer->setDelegate(this);
 				currentPlayer->setID(player,role,group);
 				currentPlayer->setPosition(spawnPoint);
@@ -237,7 +238,7 @@ void GameLayer::initHeros(){
 
 			}else{
 
-				Hero* Com=Hero::create();
+				Hero* Com=HeroFactory::create(player->getCString());
 				Com->setDelegate(this);
 				Com->setID(player,role,group);
 				Com->setPosition(spawnPoint);
@@ -289,7 +290,7 @@ void GameLayer::initHeros(){
 					zhenying=0;
 				}
 				
-				currentPlayer=Hero::create();
+				currentPlayer=HeroFactory::create(player->getCString());
 				currentPlayer->setDelegate(this);
 				currentPlayer->setID(player,role,group);
 				currentPlayer->setPosition(spawnPoint);
@@ -308,7 +309,7 @@ void GameLayer::initHeros(){
 
 			}else{
 
-				Hero* Com=Hero::create();
+				Hero* Com=HeroFactory::create(player->getCString());
 				Com->setDelegate(this);
 				Com->setID(player,role,group);
 				Com->setPosition(spawnPoint);

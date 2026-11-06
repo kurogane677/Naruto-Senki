@@ -392,6 +392,8 @@ public:
 	// Attacking or seen while invisible; a stealth skill's timer is cancelled first
 	void				breakStealth();
 	bool				hasStealthSkill() const;
+	// Hero hook (more below): % of the usual EXP a kill gives
+	virtual int			expGainPercent() const { return 100; }
 	void				useGear(gearType type);
 
 	void				setCoinDisplay(int num);
@@ -445,6 +447,20 @@ public:
 
 
 protected:
+	// Hero hooks: a hero class in Classes/Heroes overrides these; the defaults are a plain unit's behaviour
+	// a skill that changes the hero for a while (changeAction / resumeAction); true when handled
+	virtual bool		onTransformSkillStart() { return false; }
+	virtual bool		onTransformSkillEnd() { return false; }
+	// setClone: give the clone its identity (true when handled), its HP, last touches
+	virtual bool		setUpClone(Hero* clone,int cloneTime) { return false; }
+	virtual bool		cloneStartsWithOwnerHP(int cloneTime) const { return false; }
+	virtual void		finishClone(Hero* clone,int cloneTime) {}
+	virtual bool		clonesExpire() const { return false; }
+	// as a clone: % of the damage it takes that hurts its attacker
+	virtual int			cloneDamageSharePercent() const { return 0; }
+	// findTarget commands ignore creeps
+	virtual bool		targetsHeroesOnly() const { return false; }
+
 
 	// Gear bonuses are recomputed from _gearLevel on every buy/upgrade/sell; the
 	// _gear* amounts below are what is currently added so it can be taken back.
