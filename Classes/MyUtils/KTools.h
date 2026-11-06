@@ -46,6 +46,10 @@ public:
 	// Menu bar text in Arimo Medium: a screen title (top-left) or a description (bottom-left)
 	static ax::Label* createBarTitle(const char* key);
 	static ax::Label* createBarText(const char* key);
+	// Wide screens (#20): stretch a 570px menu background to the screen width, or
+	// continue a menu bar past its right end with its plain last column
+	static void fitScreenWidth(CCSprite* background);
+	static void extendBarToScreen(CCSprite* bar);
 
 	CC_SYNTHESIZE(SelectLayer*,_delegate,Delegate);
 	CC_SYNTHESIZE(NetworkLayer*,_delegate2,Delegate2);

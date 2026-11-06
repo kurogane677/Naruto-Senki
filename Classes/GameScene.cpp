@@ -41,6 +41,9 @@ bool GameScene::init()
 
 		introLayer=CCLayer::create();
 
+		// paper-coloured backdrop behind the splash and logo (640x360) for wide screens (#20)
+		introLayer->addChild(CCLayerColor::create(ccc4(248,246,245,255)),-1);
+
 		CCSprite* yusrilcode=CCSprite::create("yusrilcode.png");
 		yusrilcode->setPosition(ccp(winSize.width / 2, winSize.height / 2));
 		CCActionInterval* fadein=CCFadeIn::create(1.5f);

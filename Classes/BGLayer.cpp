@@ -39,6 +39,15 @@ void BGLayer::initBg(){
 
 	this->addChild(bgMap);
 
+	// wide screens (#20): repeat the 576px backdrop to the right edge
+	float width=bgMap->getContentSize().width;
+	for(float x=width;x<winSize.width;x+=width){
+		CCSprite* tile=CCSprite::createWithTexture(bgMap->getTexture());
+		tile->setAnchorPoint(ccp(0,0));
+		tile->setPosition(ccp(x,bgMap->getPositionY()));
+		this->addChild(tile);
+	}
+
 }
 
 void BGLayer::setDelegate(GameLayer* layer){

@@ -534,6 +534,26 @@ ax::Label* KTools::createBarText(const char* key){
 	return createBarLabel(key,12,1);
 }
 
+void KTools::fitScreenWidth(CCSprite* background){
+	float width=background->getContentSize().width;
+	if(winSize.width>width){
+		background->setScaleX(winSize.width/width);
+	}
+}
+
+void KTools::extendBarToScreen(CCSprite* bar){
+	CCSize size=bar->getContentSize();
+	if(winSize.width<=size.width){
+		return;
+	}
+	const float sliceWidth=4;
+	CCSprite* extension=CCSprite::createWithTexture(bar->getTexture(),CCRectMake(size.width-sliceWidth,0,sliceWidth,size.height));
+	extension->setAnchorPoint(ccp(0,0));
+	extension->setPosition(ccp(size.width,0));
+	extension->setScaleX((winSize.width-size.width)/sliceWidth);
+	bar->addChild(extension);
+}
+
 CCTips::CCTips(void)
 {
 }
