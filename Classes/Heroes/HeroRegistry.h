@@ -12,21 +12,20 @@ constexpr int kNoSlot = -1;
 struct HeroInfo
 {
     const char* name;
-    bool hasRecord;         // wins/games row in CharRecord, COM opponent in HardCore, Ranking entry
+    bool hasRecord;         // wins/games row in CharRecord, COM opponent in HardCore
     bool trainingOpponent;  // can be drawn as a COM in Training
     int trainingSlot;       // place on the Training select screen (3x3), or kNoSlot
     int hardCoreSlot;       // place on the HardCore select pages (3 pages of 3x7), or kNoSlot
-    int rankingSlot;        // place in the Ranking hero grid, or kNoSlot
 };
 
-// in CharRecord order, the order COM opponents are drawn from
+// sorted by HardCore select slot
 const std::vector<HeroInfo>& heroes();
 
+// heroes with a CharRecord row: the HardCore COM pool
 std::vector<std::string> recordHeroes();
 std::vector<std::string> trainingOpponents();
 std::vector<std::string> trainingSelectScreen();
 // one entry per HardCore select button, "None" for an empty button
 std::vector<std::string> hardCoreSelectScreen();
-std::vector<std::string> rankingList();
 
 }  // namespace HeroRegistry

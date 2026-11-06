@@ -322,12 +322,6 @@ bool NetworkLayer::init(){
 			}
 
 
-			//排行榜
-			CCMenuItem* ranking_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("ranking_btn.png"),NULL,NULL,this,menu_selector(NetworkLayer::onRankingBtn));
-			CCMenu* menu3 =CCMenu::create(ranking_btn,NULL);
-			ranking_btn->setAnchorPoint(ccp(1,0.5f));
-			menu3->setPosition(winSize.width-15,winSize.height-34);
-			this->addChild(menu3,5);
 
 
 
@@ -553,17 +547,6 @@ void NetworkLayer::onSkillMenu(CCObject* sender){
 
 	CCDirector::sharedDirector()->pushScene(pscene);
 
-}
-
-void  NetworkLayer::onRankingBtn(CCObject* sender){
-	SimpleAudioEngine::sharedEngine()->stopAllEffects();
-	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-	CCScene* pscene =CCScene::create();
-	RakingLayer* rakingLayer=RakingLayer::create();
-	rakingLayer->setDelegate(this);
-	pscene->addChild(rakingLayer);
-
-	CCDirector::sharedDirector()->pushScene(pscene);
 }
 
 void  NetworkLayer::onQuestBtn(CCObject* sender){
