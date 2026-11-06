@@ -1,4 +1,5 @@
 #include "ActionManager.h"
+#include "Heroes/HeroFactory.h"
 #include "Heroes/HeroRegistry.h"
 #include "Characters.h"
 #include "HudLayer.h"
@@ -1479,14 +1480,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 	if(this->role()==Role::Clone){
 
 		
-		int boundValue=0;
-		if(this->isCharacter("Naruto")){
-			boundValue=realValue*15/100;
-		}else if(this->isCharacter("SageNaruto")){
-			boundValue=realValue*25/100;
-		}else if(this->isCharacter("RikudoNaruto")){
-			boundValue=realValue*35/100;
-		}
+		int boundValue=realValue*this->cloneDamageSharePercent()/100;
 		
 		//4v4
 		if(Cheats>10){
@@ -2961,9 +2955,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 	}else if(strcmp(commandType->getCString(),"findTarget")==0){
 
 		if(!this->findEnemy("Hero",0)){
-			if(!this->findEnemy("Flog",0) || this->isCharacter("RikudoNaruto") ||
-				this->isCharacter("SageNaruto")
-				){
+			if(!this->findEnemy("Flog",0) || this->targetsHeroesOnly()){
 					_mainTarget=NULL;
 			}
 		};
@@ -3742,6 +3734,9 @@ void ActionManager::removeLostBlood(float dt){
 }
 
 void ActionManager::changeAction(){
+	if(this->onTransformSkillStart()){
+		return;
+	}
 
 	if(this->isCharacter("Tenten") ||
 		 this->isCharacter("Shino")
@@ -3806,60 +3801,6 @@ void ActionManager::changeAction(){
 			
 		}
 
-	}else if(this->isCharacter("Naruto")){
-
-		this->setIdleAction(createAnimation(skillSPC1Array,5.0f,true,false));
-		this->setWalkAction(createAnimation(skillSPC2Array,10.0f,true,false));
-		this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
-		this->setKnockDownAction(createAnimation(skillSPC4Array,10.0f,false,true));
-
-		
-		this->setWalkSpeed(320);
-
-		_originSpeed=320;
-
-		
-		this->_isOnlySkillLocked=true;
-
-		this->settempAttackValue1(_nattackValue);	
-		this->setnAttackValue(960);
-		
-	
-		_nattackRangeX=_spcattackRangeX3;
-		_nattackRangeY=_spcattackRangeY3;
-		_tempAttackType=_nattackType;
-		_nattackType=_spcattackType3;
-
-		this->_gardValue+=5000;
-		_isBati=true;
-
-		this->lockOugis();
-
-		
-	}else if(this->isCharacter("SageNaruto") ||
-		this->isCharacter("RikudoNaruto")
-		){
-
-		this->_gardValue+=5000;
-		_isBati=true;
-		this->isPofang=true;
-		this->_isOnlySkillLocked=true;
-
-		this->setIdleAction(createAnimation(skillSPC4Array,5.0f,true,false));
-		this->setWalkAction(createAnimation(skillSPC2Array,10.0f,true,false));
-		this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
-
-		
-			
-		if(this->isCharacter("RikudoNaruto")){
-			this->settempAttackValue1(_nattackValue);	
-			this->setnAttackValue(560);
-		}
-		
-		this->setWalkSpeed(320);
-		_originSpeed=320;
-
-		this->lockOugis();
 	}else if(this->isCharacter("Konan")){
 
 		this->_isAllAttackLocked=true;
@@ -4397,6 +4338,10 @@ void ActionManager::reCatched(float dt){
 }
 
 void ActionManager::resumeAction(float dt){
+	if(this->onTransformSkillEnd()){
+		_skillChangeBuffValue=0;
+		return;
+	}
 
 	if(this->isCharacter("Tenten") ||
 		this->isCharacter("Shino") ){
@@ -4514,80 +4459,6 @@ void ActionManager::resumeAction(float dt){
 		_hpBar->setPositionY(this->getHeight());
 		}
 	
-	}else if(this->isCharacter("Naruto")){
-
-		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
-		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
-		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
-
-		this->_isOnlySkillLocked=false;
-
-		this->unlockOugis();
-
-		
-		this->setWalkSpeed(224);
-		
-		_originSpeed=224;
-		if(_tempAttackValue1){
-				this->setnAttackValue(this->_tempAttackValue1);
-				_tempAttackValue1=0;
-		}
-		isPofang=false;
-	
-		_nattackRangeX=16;
-		_nattackRangeY=48;
-		_nattackType=_tempAttackType;
-		_gardValue-=5000;
-		_isBati=false;
-
-		if(_actionState!=ACTION_STATE_DEAD){
-			_actionState=ACTION_STATE_WALK;
-			this->knockDown();
-		}
-
-		this->setKnockDownAction(createAnimation(knockDownArray,10.0f,false,true));
-
-
-	}else if(this->isCharacter("SageNaruto") ||
-		this->isCharacter("RikudoNaruto")
-		){
-
-		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
-		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
-		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
-
-		this->_isOnlySkillLocked=false;
-
-		this->unlockOugis();
-	
-		this->setWalkSpeed(224);
-		
-		_originSpeed=224;
-
-		_gardValue-=5000;
-		_isBati=false;
-		isPofang=false;
-
-		if(_actionState!=ACTION_STATE_DEAD){
-			
-			if(this->isCharacter("SageNaruto") && this->getLV()==6){
-				_actionState=ACTION_STATE_WALK;
-				this->setKnockDownAction(createAnimation(skillSPC5Array,10.0f,false,true));
-				this->knockDown();
-				this->setKnockDownAction(createAnimation(knockDownArray,10.0f,false,true));
-				_skillChangeBuffValue=0;
-				return;
-			}
-			_actionState=ACTION_STATE_WALK;
-			this->idle();
-		}
-		
-		if(_tempAttackValue1){
-			this->setnAttackValue(this->_tempAttackValue1);
-			_tempAttackValue1=0;
-		}
-
-
 	}else if(this->isCharacter("Kakashi")){
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setSkill1Action(createAnimation(skill1Array,10.0f,false,true));
@@ -5501,7 +5372,7 @@ void ActionManager::setBulletGroup(float dt){
 
 void ActionManager::setClone(CCNode* sender,void* date){
 	int cloneTime=(int)(intptr_t) date;
-	Hero* clone=Hero::create();
+	Hero* clone=HeroFactory::create(this->getCharacter()->getCString());
 	
 	if(this->_master){
 		clone->setMaster((Hero*)this);
@@ -5513,7 +5384,9 @@ void ActionManager::setClone(CCNode* sender,void* date){
 			
 	clone->setDelegate(_delegate) ;
 	clone->setPosition(ccp(this->getPositionX()+(this->_isFlipped?-32:32),this->getPositionY()-1));
-	if(this->isCharacter("Nagato")){
+	if(this->setUpClone(clone,cloneTime)){
+		// the hero class gave the clone its identity
+	}else if(this->isCharacter("Nagato")){
 
 		clone->setID(CCString::create("DevaPath"),CCString::create("Clone"),this->_group);
 		clone->_isBati=true;		
@@ -5643,34 +5516,10 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	}else if(this->isCharacter("Deidara")){
 		clone->setID(CCString::create("Centipede"),CCString::create("Summon"),this->_group);
 		clone->_isBati=true;
-	}else if(this->isCharacter("Naruto")){
-		clone->setID(this->getCharacter(),CCString::create("Clone"),this->_group);
-		
-	}else if(this->isCharacter("SageNaruto")||
-		(this->isCharacter("RikudoNaruto") && cloneTime==10)
-		){
-		//鸣人
-		clone->setID(this->getCharacter(),CCString::create("Clone"),this->_group);
-		clone->setSkill1Action(clone->createAnimation(clone->skillSPC1Array,10.0f,false,true));	
-		clone->_sattackValue1=_spcattackValue1;
-		clone->_sattackType1=_spcattackType1;
-		clone->_sattackcoldDown1=_spcattackcoldDown1;
-
-	}else if(this->isCharacter("RikudoNaruto") && cloneTime==9){
-		clone->setID(CCString::create("Kurama"),CCString::create("Clone"),this->_group);
-		clone->_gardValue+=5000;
-		clone->_isBati=true;	
-		clone->setWalkSpeed(320);
-		clone->_originSpeed=320;
-		clone->isPofang=true;
-
 	}
 
 
-	if(this->isCharacter("SageNaruto") ||
-		this->isCharacter("Naruto")||
-		(this->isCharacter("RikudoNaruto") && cloneTime==10)
-		){
+	if(this->cloneStartsWithOwnerHP(cloneTime)){
 		clone->setHP(this->getHP());
 		
 	}else{	
@@ -5685,12 +5534,8 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	clone->setHPbar();
 	clone->_hpBar->getHPBAR()->setScaleX(clone->getHpPercent());
 	
-	if(this->isCharacter("RikudoNaruto") && cloneTime==9){
-		if(clone->_hpBar){
-			clone->_hpBar->setPositionY(120);
-		}
-		clone->setnAttackValue(1060);
-	}else if(this->isCharacter("Kakashi")){
+	this->finishClone(clone,cloneTime);
+	if(this->isCharacter("Kakashi")){
 		clone->setnAttackValue(1060);
 	}
 
@@ -5724,10 +5569,8 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	
 
 
-	if(this->isCharacter("Naruto") ||
-		this->isCharacter("SageNaruto") ||
+	if(this->clonesExpire() ||
 		this->isCharacter("Kakashi") ||
-		this->isCharacter("RikudoNaruto") ||
 		this->isCharacter("Tsunade") ||
 		this->isCharacter("Deidara")
 		){
