@@ -1343,17 +1343,19 @@ void Monster::setID(CCString* character,CCString* role,CCString* group){
 
 
 
+// Kage, KageHand and Kubi have no class of their own yet
+bool Monster::attackEndsInIdle() const{
+	return !(this->isCharacter(CharacterId::Kage) ||
+		this->isCharacter(CharacterId::KageHand) ||
+		this->isCharacter(CharacterId::Kubi));
+}
+
 void Monster::initAction(){
 
 	this->setIdleAction(createAnimation(idleArray,5.0,true,false));
 	this->setWalkAction(createAnimation(walkArray,10.0,true,false));
 	this->setDeadAction(createAnimation(deadArray,10.0f,false,false));
-	if(this->isCharacter(CharacterId::Kage)||
-		this->isCharacter(CharacterId::KageHand) ||
-		this->isCharacter(CharacterId::FudonSRK) ||
-		this->isCharacter(CharacterId::FudonSRK2) || 
-		this->isCharacter(CharacterId::Kubi) 
-		){
+	if(!this->attackEndsInIdle()){
 	this->setNAttackAction(createAnimation(nattackArray,10.0,false,false));
 	}else{
 	this->setNAttackAction(createAnimation(nattackArray,10.0,false,true));
@@ -1480,9 +1482,6 @@ void Monster::setAI(float dt){
 				}				
 			}
 
-	}else if(isCharacter(CharacterId::FudonSRK2)||
-		isCharacter(CharacterId::FudonSRK)){
-		
 	}else{
 
 		if(!this->findEnemy("Hero",0)){
@@ -1503,22 +1502,7 @@ void Monster::setAI(float dt){
 			ccp(this->getPositionX(),_originY?_originY:this->getPositionY()));
 
 
-		if( this->isCharacter(CharacterId::FudonSRK2) ||
-			this->isCharacter(CharacterId::FudonSRK) ){
-				if(abs(sp.x)> 48 || abs(sp.y)> 32){
-					this->setActionState(ACTION_STATE_WALK);
-					moveDirection =ccpNormalize(sp);
-					this->walk(moveDirection);
-					return;
-				}
-
-				if(_mainTarget->role()==Role::Player || 
-					_mainTarget->role()==Role::Com ){
-						this->stopAllActions();
-						this->dealloc();
-				}
-				
-		}else if (this->isCharacter(CharacterId::Traps) ){
+		if (this->isCharacter(CharacterId::Traps) ){
 			if(abs(sp.x)>32 || abs(sp.y)> 32 ){
 
 			}else{
@@ -1579,20 +1563,6 @@ void Monster::dealloc(){
 	this->unschedule(schedule_selector(ActionManager::setAI));
 	this->setActionState(ACTION_STATE_DEAD);
 	this->stopAllActions();
-
-	if(this->isCharacter(CharacterId::FudonSRK)||
-		this->isCharacter(CharacterId::FudonSRK2)
-		){
-
-			CCFiniteTimeAction *call=CCCallFunc::create(this,callfunc_selector(Monster::dealloc2));
-			CCArray* seqArray=CCArray::create();
-			seqArray->addObject(this->getDeadAction());
-			seqArray->addObject(call);
-			CCAction* seq=CCSequence::create(seqArray);
-			this->runAction(seq);
-			return;
-
-	}
 
 	//飞雷神标记
 	if(this->isCharacter(CharacterId::HiraishinMark)){

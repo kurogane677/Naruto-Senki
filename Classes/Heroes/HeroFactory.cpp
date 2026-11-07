@@ -5,31 +5,20 @@
 namespace HeroFactory
 {
 
-namespace
+const UnitClasses<Hero>& heroClasses()
 {
-// CREATE_FUNC returns the class's own pointer type; the table holds Hero*
-template <class HeroClass>
-Hero* make()
-{
-    return HeroClass::create();
-}
-}  // namespace
-
-const std::map<CharacterId, Creator>& heroClasses()
-{
-    static const std::map<CharacterId, Creator> table = {
-        {CharacterId::Naruto, &make<Naruto>},
-        {CharacterId::SageNaruto, &make<Naruto>},
-        {CharacterId::RikudoNaruto, &make<Naruto>},
-        {CharacterId::Sakura, &make<Sakura>},
-    };
+    static const UnitClasses<Hero> table({
+        {CharacterId::Naruto, &makeUnit<Hero, Naruto>},
+        {CharacterId::SageNaruto, &makeUnit<Hero, Naruto>},
+        {CharacterId::RikudoNaruto, &makeUnit<Hero, Naruto>},
+        {CharacterId::Sakura, &makeUnit<Hero, Sakura>},
+    });
     return table;
 }
 
 Hero* create(CharacterId character)
 {
-    auto found = heroClasses().find(character);
-    return found != heroClasses().end() ? found->second() : Hero::create();
+    return heroClasses().create(character);
 }
 
 }  // namespace HeroFactory

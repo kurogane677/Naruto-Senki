@@ -85,7 +85,11 @@ public:
 	void	setDirectMove(unsigned int length,float delay,bool isReverse);
 	void	setEaseIn(unsigned int length,float delay);
 	void	setDirectMoveBy(unsigned int length,float delay);
+	// setMon: place and start a monster of this class; true when handled
+	virtual bool	onSpawn(ActionManager* owner) { return false; }
 protected: 
+	// false: the attack animation does not go back to idle when it ends
+	virtual bool	attackEndsInIdle() const;
 	void	dealloc();
 	void	dealloc2();
 	void	setAI(float dt);

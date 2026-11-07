@@ -1,4 +1,5 @@
 #include "ActionManager.h"
+#include "Units/MonsterFactory.h"
 #include "Heroes/HeroFactory.h"
 #include "Heroes/HeroRegistry.h"
 #include "Characters.h"
@@ -5564,7 +5565,7 @@ void ActionManager::setMon(CCNode* sender,void* date){
 	}
 
 
-	Monster* monster=Monster::create();
+	Monster* monster=MonsterFactory::create(characterIdFromString(monsterType->getCString()));
 	monster->setDelegate(_delegate);
 
 
@@ -5592,7 +5593,9 @@ void ActionManager::setMon(CCNode* sender,void* date){
 	
 	
 
-	if(strcmp(monsterType->getCString(),"FakeDeidara")==0 ||
+	if(monster->onSpawn(this)){
+		// the monster's class placed and started it
+	}else if(strcmp(monsterType->getCString(),"FakeDeidara")==0 ||
 		strcmp(monsterType->getCString(),"FakeKisame")==0 ||
 		strcmp(monsterType->getCString(),"DeidaraBom")==0 ||
 		strcmp(monsterType->getCString(),"ChuiDi")==0 ||
@@ -5699,13 +5702,6 @@ void ActionManager::setMon(CCNode* sender,void* date){
 		_monsterArray->addObject(monster);
 		monster->attack(NAttack);
 
-	}else if(strcmp(monsterType->getCString(),"Bikyu")==0){
-		monster->setFlippedX(_isFlipped);
-		monster->isPofang=true;
-		monster->setPosition(ccp(this->getPositionX()+(_isFlipped?-(16+this->getContentSize().width):
-		(16+this->getContentSize().width)),this->getPositionY()-32));
-		_monsterArray->addObject(monster);
-		monster->attack(NAttack);
 	}else if( strcmp(monsterType->getCString(),"Qilin")==0){
 		monster->setPosition(ccp(this->getPositionX()+(_isFlipped?-4:4),this->getPositionY()-6));
 		_monsterArray->addObject(monster);
@@ -5802,40 +5798,6 @@ void ActionManager::setMon(CCNode* sender,void* date){
 	}else if(strcmp(monsterType->getCString(),"BugTomado")==0 ){
 		monster->attack(NAttack);
 		monster->setDirectMove(128,2.0f,false);
-	}else if(strcmp(monsterType->getCString(),"FudonSRK2")==0 ||
-		strcmp(monsterType->getCString(),"FudonSRK")==0 
-		){
-		monster->setPosition(ccp(this->getPositionX()+(this->_isFlipped==true?-48:48),this->getPositionY()));
-	
-		monster->attack(NAttack);	
-		bool isFollow=false;
-		CCPoint moveDirection;
-		if(_mainTarget){
-
-			if(_mainTarget->getPositionX()>this->getPositionX()&& !_isFlipped){
-				isFollow=true;
-			}else if(_mainTarget->getPositionX()<=this->getPositionX() && _isFlipped){
-				isFollow=true;
-			}
-			
-		}
-
-		if(isFollow){
-			monster->_mainTarget=this->_mainTarget;
-			monster->doAI();
-
-		}else{
-			if(this->_isFlipped){
-				moveDirection =ccpNormalize(ccp(-1,0));
-			}else{
-				moveDirection =ccpNormalize(ccp(1,0));
-			}
-			monster->setActionState(ACTION_STATE_WALK);
-			monster->walk(moveDirection);
-
-		}
-
-		
 	}else if(strcmp(monsterType->getCString(),"Kubi")==0
 		){
 			monster->attack(NAttack);
