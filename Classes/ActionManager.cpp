@@ -9,10 +9,7 @@
 
 using namespace CocosDenshion;
 
-// Deidara/Sai skill04 ride (#69): Spider/Mouse drops are capped, short-lived, and a
-// Mouse can hold the same hero only once per kMouseHoldImmunity seconds
-static const int kMaxRideMonsters=5;
-static const float kRideMonsterLifetime=4.0f;
+// a Mouse (Sai's ride drop) can hold the same hero only once per kMouseHoldImmunity seconds (#69)
 static const float kMouseHoldImmunity=1.0f;
 
 ActionManager::ActionManager(void)
@@ -3762,33 +3759,6 @@ void ActionManager::changeAction(){
 
 		this->setBuffEffect("jdBuff");		
 
-	}else if(this->isCharacter(CharacterId::Sai) ||
-		this->isCharacter(CharacterId::Deidara)
-		){
-
-		if(_skillChangeBuffValue==17){
-			this->setNAttackAction(createAnimation(skillSPC1Array,10.0f,false,true));
-		}else if(_skillChangeBuffValue==18){
-
-			this->_isAllAttackLocked=true;
-			this->_isBati=true;
-
-			
-			this->setWalkSpeed(320);	
-			_originSpeed=320;
-			
-			this->lockOugis();
-
-			this->setIdleAction(createAnimation(skillSPC2Array,5.0f,true,false));
-			this->setWalkAction(createAnimation(skillSPC3Array,5.0f,true,false));
-
-			if(_hpBar){
-				_hpBar->setPositionY(120);
-			}
-			this->schedule(schedule_selector(ActionManager::setMonPer),0.5f);
-			
-		}
-
 	}else if(this->isCharacter(CharacterId::Konan)){
 
 		this->_isAllAttackLocked=true;
@@ -4366,39 +4336,6 @@ void ActionManager::resumeAction(float dt){
 
 		
 
-	}else if(this->isCharacter(CharacterId::Sai) ||
-		this->isCharacter(CharacterId::Deidara)
-		){
-
-
-		if(_skillChangeBuffValue==17){
-			this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
-		}else if(_skillChangeBuffValue==18){
-
-			this->_isBati=false;
-			this->_isAllAttackLocked=false;
-			_originSpeed=224;
-
-			
-			this->setWalkSpeed(224);
-			
-			this->unlockOugis();
-
-			this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
-			this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
-
-			if(_actionState!=ACTION_STATE_DEAD){
-				_actionState=ACTION_STATE_WALK;
-				this->idle();
-			}
-			if(_hpBar){
-			_hpBar->setPositionY(this->getHeight());
-			}
-
-			this->unschedule(schedule_selector(ActionManager::setMonPer));
-
-		}
-
 	}else if(this->isCharacter(CharacterId::Gaara)){
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
@@ -4735,6 +4672,9 @@ void ActionManager::resumeAction(float dt){
 
 }
 void ActionManager::setActionResume(){
+	if(this->onTransformSkillCancel()){
+		return;
+	}
 
 	if(this->isCharacter(CharacterId::Suigetsu)){
 	
@@ -5127,38 +5067,6 @@ void ActionManager::setActionResume(){
 
 		_skillChangeBuffValue=0;
 
-	}else if(this->isCharacter(CharacterId::Deidara) ||
-		this->isCharacter(CharacterId::Sai)
-		){
-
-		if(_skillChangeBuffValue){
-			this->unschedule(schedule_selector(ActionManager::resumeAction));
-
-			if(_skillChangeBuffValue==17){
-				this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
-			}else if(_skillChangeBuffValue==18){
-
-				this->_isBati=false;
-				this->_isAllAttackLocked=false;
-				_originSpeed=224;
-
-				
-				this->setWalkSpeed(224);
-
-				this->unlockOugis();
-
-				this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
-				this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
-
-				if(_hpBar){
-					_hpBar->setPositionY(this->getHeight());
-				}
-				this->unschedule(schedule_selector(ActionManager::setMonPer));
-			}
-
-			_skillChangeBuffValue=0;
-		}
-		
 	}
 
 
@@ -5791,10 +5699,6 @@ void ActionManager::setMon(CCNode* sender,void* date){
 		if(this->role()==Role::Player ){
 			this->_delegate->getHudLayer()->skill1Button->setLock();
 		}
-	}else if(strcmp(monsterType->getCString(),"InkDragon")==0 ){
-		monster->setPosition(ccp(_isFlipped?this->getPositionX()-128:this->getPositionX()+128,this->getPositionY()));
-		monster->attack(NAttack);
-		monster->setDirectMove(156,2.0f,false);
 	}else if(strcmp(monsterType->getCString(),"BugTomado")==0 ){
 		monster->attack(NAttack);
 		monster->setDirectMove(128,2.0f,false);
@@ -5859,64 +5763,6 @@ void ActionManager::setMon(CCNode* sender,void* date){
 
 	}
 	
-
-}
-
-void ActionManager::setMonPer(float dt){
-
-
-
-	if(!_monsterArray){
-		_monsterArray=CCArray::create();
-		_monsterArray->retain();
-	}
-
-	int aliveRideMonsters=0;
-	CCObject* pObject;
-	CCARRAY_FOREACH(_monsterArray,pObject){
-		Monster* rideMonster=(Monster*) pObject;
-		if((rideMonster->isCharacter(CharacterId::Spider) || rideMonster->isCharacter(CharacterId::Mouse)) &&
-			rideMonster->getActionState()!=ACTION_STATE_DEAD){
-			aliveRideMonsters++;
-		}
-	}
-	if(aliveRideMonsters>=kMaxRideMonsters){
-		return;
-	}
-
-
-	Monster* monster=Monster::create();
-	monster->setDelegate(_delegate);
-
-	if(this->isCharacter(CharacterId::Deidara)){
-		monster->setID(CCString::create("Spider"),CCString::create("Mon"),this->_group);
-	}else if(this->isCharacter(CharacterId::Sai)){
-		monster->setID(CCString::create("Mouse"),CCString::create("Mon"),this->_group);
-		CCDictionary* callValue2 = CCDictionary::create(); 
-		callValue2->setObject(CCString::create("Audio/Sai/ink_mouse.mp3"),1);
-		this->setSound(this,callValue2); 
-	}
-	
-	monster->setMaster((Hero*)this);
-	
-
-	monster->idle();
-	monster->setPosition(ccp(this->getPositionX()+(this->_isFlipped?-32:32),this->_originY?this->_originY:this->getPositionY()));
-	monster->setFlippedX(_isFlipped);
-	monster->_isFlipped=_isFlipped;
-
-	
-	_monsterArray->addObject(monster);
-	monster->doAI();
-	monster->scheduleOnce([monster](float){
-		if(monster->getActionState()!=ACTION_STATE_DEAD &&
-			monster->getActionState()!=ACTION_STATE_ATTACK){
-			// virtual: runs Monster::dealloc, which leaves the master's monster list
-			static_cast<ActionManager*>(monster)->dealloc();
-		}
-	},kRideMonsterLifetime,"rideMonsterLifetime");
-
-	this->_delegate->addChild(monster,-monster->getPositionY());
 
 }
 

@@ -454,6 +454,8 @@ protected:
 	// a skill that changes the hero for a while (changeAction / resumeAction); true when handled
 	virtual bool		onTransformSkillStart() { return false; }
 	virtual bool		onTransformSkillEnd() { return false; }
+	// setActionResume: the same skill buff ends early; true when handled
+	virtual bool		onTransformSkillCancel() { return false; }
 	// setTransport command: true when the hero moved itself instead of teleporting
 	virtual bool		onTransportCommand() { return false; }
 	// setClone hooks. The clone skill being cast (_actionState) tells which clone it is;
@@ -523,7 +525,6 @@ protected:
 	
 	void				setClone(CCNode* sender,void* date);
 	void				setMon(CCNode* sender,void* date);
-	void				setMonPer(float dt);
 	void				setBullet(CCNode* sender,void* date);
 	void				setBulletGroup(float dt);
 
