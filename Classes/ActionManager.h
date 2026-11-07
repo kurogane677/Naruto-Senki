@@ -456,6 +456,8 @@ protected:
 	virtual bool		onTransformSkillEnd() { return false; }
 	// setActionResume: the same skill buff ends early; true when handled
 	virtual bool		onTransformSkillCancel() { return false; }
+	// setID: a transform skill swaps skill 1/2 animations and back, so keep the originals
+	virtual bool		swapsSkillAnimations() const { return false; }
 	// setTransport command: true when the hero moved itself instead of teleporting
 	virtual bool		onTransportCommand() { return false; }
 	// setClone hooks. The clone skill being cast (_actionState) tells which clone it is;

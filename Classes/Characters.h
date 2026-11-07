@@ -21,9 +21,8 @@ protected:
 	std::string			_brainFor;
 
 	void setAI(float dt);
-	// a clone's own routine; none by default
-	virtual void	cloneAI() {}
-	void	AI_DogWall();
+	// the routine of a clone or summon that no AI controller drives; none by default
+	virtual void	ownAI() {}
 	void	AI_Guardian();
 	
 };

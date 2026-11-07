@@ -3993,41 +3993,6 @@ void ActionManager::changeAction(){
 		this->lockOugis();
 
 	
-	}else if(this->isCharacter(CharacterId::Kakashi)){
-		
-		this->setSkill1Action(createAnimation(skillSPC1Array,10.0f,false,true));
-		this->setSkill2Action(createAnimation(skillSPC2Array,10.0f,false,true));
-		this->setIdleAction(createAnimation(skillSPC3Array,5.0f,true,false));
-		this->settempAttackValue1(_sattackValue1);
-		this->setsAttackValue1(_spcattackValue1);
-		
-		CCObject* pObject;
-		CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
-			ActionManager* tempHero=(ActionManager*) pObject;
-			if(this->group()!=tempHero->group()
-				&& (tempHero->role()==Role::Player || tempHero->role()==Role::Com)
-				&& tempHero->_actionState!=ACTION_STATE_HURT
-				&& tempHero->_actionState!=ACTION_STATE_DEAD
-				){
-					float distanceX=ccpSub(tempHero->getPosition(),this->getPosition()).x;
-					if(abs(distanceX)<kGameWidth/2){
-						//取消隐身
-						tempHero->breakStealth();
-
-					}
-
-			}
-		};
-		
-
-		if(this->role()==Role::Player){
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Kakashi_skill1_1.png"); 
-			_delegate->getHudLayer()->skill1Button->setSpriteFrame(frame);
-			frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Kakashi_skill2_1.png"); 
-			_delegate->getHudLayer()->skill2Button->setSpriteFrame(frame);
-
-		}
-		
 	}else if(this->isCharacter(CharacterId::Hiruzen) ){
 			_isBati=true;
 			_nattackRangeX=16;
@@ -4380,24 +4345,6 @@ void ActionManager::resumeAction(float dt){
 		_hpBar->setPositionY(this->getHeight());
 		}
 	
-	}else if(this->isCharacter(CharacterId::Kakashi)){
-		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
-		this->setSkill1Action(createAnimation(skill1Array,10.0f,false,true));
-		this->setSkill2Action(createAnimation(skill2Array,10.0f,false,true));
-		
-		this->setsAttackValue1(_tempAttackValue1);
-
-
-		if(this->role()==Role::Player){
-			
-			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Kakashi_skill1.png"); 
-			_delegate->getHudLayer()->skill1Button->setSpriteFrame(frame);
-			frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName("Kakashi_skill2.png"); 
-			_delegate->getHudLayer()->skill2Button->setSpriteFrame(frame);
-
-		}
-
-
 	}else if(this->isCharacter(CharacterId::Itachi)){
 
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
@@ -5380,11 +5327,6 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	}else if(this->isCharacter(CharacterId::Tsunade)){
 		clone->setID(CCString::create("Slug"),CCString::create("Summon"),this->_group);
 		clone->_isBati=true;
-	}else if(this->isCharacter(CharacterId::Kakashi)){
-		clone->setID(CCString::create("DogWall"),CCString::create("Summon"),this->_group);
-			clone->setPosition(ccp(this->getPositionX()+(this->_isFlipped?-56:56),this->getPositionY()));
-		clone->setAnchorPoint(ccp(0.5f,0.1f));
-		clone->_isBati=true;
 	}else if(this->isCharacter(CharacterId::Deidara)){
 		clone->setID(CCString::create("Centipede"),CCString::create("Summon"),this->_group);
 		clone->_isBati=true;
@@ -5407,9 +5349,6 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	clone->_hpBar->getHPBAR()->setScaleX(clone->getHpPercent());
 	
 	this->finishClone(clone);
-	if(this->isCharacter(CharacterId::Kakashi)){
-		clone->setnAttackValue(1060);
-	}
 
 	if(this->isPofang){
 		clone->isPofang=true;
@@ -5442,7 +5381,6 @@ void ActionManager::setClone(CCNode* sender,void* date){
 
 
 	if(this->clonesExpire() ||
-		this->isCharacter(CharacterId::Kakashi) ||
 		this->isCharacter(CharacterId::Tsunade) ||
 		this->isCharacter(CharacterId::Deidara)
 		){
