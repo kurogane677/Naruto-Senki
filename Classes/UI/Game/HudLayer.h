@@ -1,11 +1,11 @@
 #pragma once
 #include "Compat/Compat2x.h"
 #include "Defines.h"
-#include "JoyStick.h"
+#include "UI/Game/JoyStick.h"
 #include "GameLayer.h"
 #include "Characters.h"
 #include "Defines.h"
-#include "ActionButton.h"
+#include "UI/Game/ActionButton.h"
 
 USING_NS_CC;
 

@@ -1,8 +1,8 @@
-#include "SkillLayer.h"
+#include "UI/Game/SkillLayer.h"
 #include "Heroes/HeroRegistry.h"
-#include "MyUtils/KTools.h"
-#include "SelectLayer.h"
-#include "NetworkLayer.h"
+#include "Utils/KTools.h"
+#include "UI/Menu/SelectLayer.h"
+#include "UI/Menu/NetworkLayer.h"
 USING_NS_CC_EXT;
 using namespace CocosDenshion;
 

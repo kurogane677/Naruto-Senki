@@ -1,5 +1,5 @@
-#include "JoyStick.h"
-#include "HudLayer.h"
+#include "UI/Game/JoyStick.h"
+#include "UI/Game/HudLayer.h"
 
 JoyStick::JoyStick(void)
 {

@@ -2,7 +2,7 @@
 // Contact: www.frozax.com - http://twitter.com/frozax - www.facebook.com/frozax  
 
 
-#include "CCShake.h"  
+#include "Utils/CCShake.h"  
 
 
 

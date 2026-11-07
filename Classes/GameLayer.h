@@ -1,9 +1,9 @@
 #pragma once
 #include "Compat/Compat2x.h"
 #include "Defines.h"
-#include "PauseLayer.h"
-#include "GearLayer.h"
-#include "GameOver.h"
+#include "UI/Game/PauseLayer.h"
+#include "UI/Game/GearLayer.h"
+#include "UI/Game/GameOver.h"
 
 #include <vector>
 

@@ -1,6 +1,6 @@
 #include "Compat/Compat2x.h"
-#include "StartMenu.h"
-#include "MyUtils/KTools.h"
+#include "UI/Menu/StartMenu.h"
+#include "Utils/KTools.h"
 #include "Defines.h"
 class GameScene :  public CCScene{
 public:

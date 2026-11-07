@@ -1,7 +1,7 @@
-#include "NetworkLayer.h"
+#include "UI/Menu/NetworkLayer.h"
 #include "Heroes/HeroRegistry.h"
-#include "MyUtils/KTools.h"
-#include "StartMenu.h"
+#include "Utils/KTools.h"
+#include "UI/Menu/StartMenu.h"
 #include "Maps.h"
 USING_NS_CC_EXT;
 using namespace CocosDenshion;

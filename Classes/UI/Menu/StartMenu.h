@@ -1,13 +1,11 @@
 #pragma once
 #include "Defines.h"
 #include "Compat/Compat2x.h"
-#include "SelectLayer.h"
-#include "NetworkLayer.h"
-#include "CreditsLayer.h"
+#include "UI/Menu/SelectLayer.h"
+#include "UI/Menu/NetworkLayer.h"
+#include "UI/Menu/CreditsLayer.h"
 
-#include "MyUtils/KTools.h"
-#include "MyUtils/CCStrokeLabel.h"
-#include "MyUtils/CCScrewLayer.h"
+#include "Utils/KTools.h"
 
 
 USING_NS_CC;
