@@ -1,10 +1,5 @@
 #include "Heroes/Characters/Naruto.h"
 
-bool Naruto::isForm(const std::string& character)
-{
-    return character == "Naruto" || character == "SageNaruto" || character == "RikudoNaruto";
-}
-
 Naruto::Form Naruto::form() const
 {
     if (isCharacter(CharacterId::Naruto))

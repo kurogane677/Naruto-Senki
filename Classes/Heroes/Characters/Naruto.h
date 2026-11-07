@@ -1,6 +1,5 @@
 #pragma once
 #include "Characters.h"
-#include <string>
 
 // Naruto and his two transformations. Transforming keeps the same object and only
 // changes the character name, so one class covers all three forms; his shadow clones
@@ -9,7 +8,6 @@ class Naruto : public Hero
 {
 public:
     CREATE_FUNC(Naruto);
-    static bool isForm(const std::string& character);
 
     int expGainPercent() const override;
 

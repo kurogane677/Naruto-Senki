@@ -225,7 +225,7 @@ void GameLayer::initHeros(){
 
 			
 			
-				currentPlayer=HeroFactory::create(player->getCString());
+				currentPlayer=HeroFactory::create(characterIdFromString(player->getCString()));
 				currentPlayer->setDelegate(this);
 				currentPlayer->setID(player,role,group);
 				currentPlayer->setPosition(spawnPoint);
@@ -240,7 +240,7 @@ void GameLayer::initHeros(){
 
 			}else{
 
-				Hero* Com=HeroFactory::create(player->getCString());
+				Hero* Com=HeroFactory::create(characterIdFromString(player->getCString()));
 				Com->setDelegate(this);
 				Com->setID(player,role,group);
 				Com->setPosition(spawnPoint);
@@ -292,7 +292,7 @@ void GameLayer::initHeros(){
 					zhenying=0;
 				}
 				
-				currentPlayer=HeroFactory::create(player->getCString());
+				currentPlayer=HeroFactory::create(characterIdFromString(player->getCString()));
 				currentPlayer->setDelegate(this);
 				currentPlayer->setID(player,role,group);
 				currentPlayer->setPosition(spawnPoint);
@@ -311,7 +311,7 @@ void GameLayer::initHeros(){
 
 			}else{
 
-				Hero* Com=HeroFactory::create(player->getCString());
+				Hero* Com=HeroFactory::create(characterIdFromString(player->getCString()));
 				Com->setDelegate(this);
 				Com->setID(player,role,group);
 				Com->setPosition(spawnPoint);

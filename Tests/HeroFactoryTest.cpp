@@ -1,13 +1,31 @@
 #include "doctest.h"
-#include "Heroes/Characters/Naruto.h"
+#include "Heroes/HeroFactory.h"
+#include "Heroes/HeroRegistry.h"
 
-// HeroFactory picks Naruto's class by Naruto::isForm. Creating the objects needs a
-// renderer, so the factory itself is covered by the soak, not here.
-TEST_CASE("Naruto's three forms are one hero class")
+#include <set>
+
+// Creating the objects needs a renderer, so these check the table HeroFactory::create
+// looks up; the objects themselves are covered by the soak.
+TEST_CASE("a hero's forms share its hero class")
 {
-    CHECK(Naruto::isForm("Naruto"));
-    CHECK(Naruto::isForm("SageNaruto"));
-    CHECK(Naruto::isForm("RikudoNaruto"));
-    CHECK_FALSE(Naruto::isForm("Kurama"));
-    CHECK_FALSE(Naruto::isForm("naruto"));
+    const auto& classes = HeroFactory::heroClasses();
+    REQUIRE(classes.count(CharacterId::Naruto));
+    CHECK(classes.at(CharacterId::SageNaruto) == classes.at(CharacterId::Naruto));
+    CHECK(classes.at(CharacterId::RikudoNaruto) == classes.at(CharacterId::Naruto));
+    CHECK(classes.at(CharacterId::Sakura) != classes.at(CharacterId::Naruto));
+    CHECK(classes.count(CharacterId::Kurama) == 0);
+}
+
+TEST_CASE("only heroes and their forms have a hero class")
+{
+    std::set<CharacterId> heroesAndForms;
+    for (const HeroRegistry::HeroInfo& hero : HeroRegistry::heroes())
+        for (const std::string& form : HeroRegistry::forms(hero.name))
+            heroesAndForms.insert(characterIdFromString(form.c_str()));
+
+    for (const auto& entry : HeroFactory::heroClasses())
+    {
+        CAPTURE(static_cast<int>(entry.first));
+        CHECK(heroesAndForms.count(entry.first) == 1);
+    }
 }
