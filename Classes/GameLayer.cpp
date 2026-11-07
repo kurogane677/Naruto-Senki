@@ -4,9 +4,9 @@
 #include "Heroes/HeroFactory.h"
 #include "Maps.h"
 #include "Characters.h"
-#include "BGLayer.h"
-#include "HudLayer.h"
-#include "StartMenu.h"
+#include "UI/Game/BGLayer.h"
+#include "UI/Game/HudLayer.h"
+#include "UI/Menu/StartMenu.h"
 #include "AutoPlay.h"
 
 

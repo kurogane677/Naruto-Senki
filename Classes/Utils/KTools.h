@@ -1,7 +1,7 @@
 #pragma once
-#include "MyUtils/tinyxml2/tinyxml2.h"
+#include "Utils/Vendor/tinyxml2/tinyxml2.h"
 #include "Compat/Compat2x.h"
-#include "MyUtils/sqlite3.h"
+#include "Utils/Vendor/sqlite3.h"
 
 
 USING_NS_CC;

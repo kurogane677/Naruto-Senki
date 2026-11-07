@@ -1,7 +1,7 @@
 #pragma once
 #include "Compat/Compat2x.h"
-#include "LoadLayer.h"
-#include "SkillLayer.h"
+#include "UI/Menu/LoadLayer.h"
+#include "UI/Game/SkillLayer.h"
 USING_NS_CC;
 
 class NetworkLayer : public CCLayer{

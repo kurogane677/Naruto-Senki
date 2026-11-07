@@ -3,8 +3,8 @@
 #include "Heroes/HeroFactory.h"
 #include "Heroes/HeroRegistry.h"
 #include "Characters.h"
-#include "HudLayer.h"
-#include "MyUtils/CCShake.h"
+#include "UI/Game/HudLayer.h"
+#include "Utils/CCShake.h"
 
 
 using namespace CocosDenshion;

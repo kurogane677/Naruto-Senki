@@ -1,6 +1,6 @@
-#include "GameOver.h"
+#include "UI/Game/GameOver.h"
 #include "Heroes/HeroRegistry.h"
-#include "MyUtils/KTools.h"
+#include "Utils/KTools.h"
 #include "GameLayer.h"
 #include "Characters.h"
 #include "AI/BuildBook.h"

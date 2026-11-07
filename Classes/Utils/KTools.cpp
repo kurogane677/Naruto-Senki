@@ -1,7 +1,7 @@
-#include "KTools.h"
+#include "Utils/KTools.h"
 #include "Heroes/HeroRegistry.h"
-#include "SelectLayer.h"
-#include "NetworkLayer.h"
+#include "UI/Menu/SelectLayer.h"
+#include "UI/Menu/NetworkLayer.h"
 
 #ifdef _WIN32
 #include <io.h>

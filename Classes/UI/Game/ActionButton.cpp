@@ -1,5 +1,5 @@
-#include "ActionButton.h"
-#include "HudLayer.h"
+#include "UI/Game/ActionButton.h"
+#include "UI/Game/HudLayer.h"
 
 ActionButton::ActionButton(void)
 {

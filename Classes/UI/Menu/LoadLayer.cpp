@@ -1,6 +1,6 @@
-#include "LoadLayer.h"
+#include "UI/Menu/LoadLayer.h"
 #include "Heroes/HeroAssets.h"
-#include "MyUtils/KTools.h"
+#include "Utils/KTools.h"
 
 
 #include<time.h>

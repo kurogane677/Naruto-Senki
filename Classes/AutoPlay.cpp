@@ -3,8 +3,8 @@
 #include "GameLayer.h"
 #include "Characters.h"
 #include "AI/AIController.h"
-#include "SelectLayer.h"
-#include "MyUtils/KTools.h"
+#include "UI/Menu/SelectLayer.h"
+#include "Utils/KTools.h"
 #include <cstdio>
 #include <cstdlib>
 

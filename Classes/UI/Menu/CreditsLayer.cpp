@@ -1,7 +1,7 @@
-#include "CreditsLayer.h"
-#include "MyUtils/KTools.h"
+#include "UI/Menu/CreditsLayer.h"
+#include "Utils/KTools.h"
 using namespace CocosDenshion;
-#include "StartMenu.h"
+#include "UI/Menu/StartMenu.h"
 
 // Credits text (#70) comes from Element/credits.xml: "# Title" is a heading, an empty
 // line is a gap. Text is rasterized at kCreditsTextScale times its size to stay sharp.

@@ -1,5 +1,5 @@
 #include "Characters.h"
-#include "HudLayer.h"
+#include "UI/Game/HudLayer.h"
 USING_NS_CC;
 
 

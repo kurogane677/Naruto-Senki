@@ -1,5 +1,5 @@
-#include "PauseLayer.h"
-#include "MyUtils/KTools.h"
+#include "UI/Game/PauseLayer.h"
+#include "Utils/KTools.h"
 #include "GameLayer.h"
 using namespace CocosDenshion;
 

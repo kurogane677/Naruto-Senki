@@ -2,8 +2,8 @@
 #include "Compat/Compat2x.h"
 #include "Defines.h"
 #include "GameLayer.h"
-#include "BGLayer.h"
-#include "HudLayer.h"
+#include "UI/Game/BGLayer.h"
+#include "UI/Game/HudLayer.h"
 
 
 #if (CC_TARGET_PLATFORM==CC_PLATFORM_ANDROID) 
