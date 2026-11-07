@@ -1,6 +1,6 @@
-#include "GearLayer.h"
+#include "UI/Game/GearLayer.h"
 #include "GameLayer.h"
-#include "HudLayer.h"
+#include "UI/Game/HudLayer.h"
 #include "Characters.h"
 using namespace CocosDenshion;
 

@@ -50,7 +50,7 @@ file(GLOB_RECURSE GAME_HEADER
   Classes/*.h Classes/*.hpp
 )
 
-# Classes/MyUtils/sqlite3.c is the vendored SQLite amalgamation (compiled as C).
+# Classes/Utils/Vendor/sqlite3.c is the vendored SQLite amalgamation (compiled as C).
 file(GLOB_RECURSE GAME_SOURCE
   Classes/*.cpp Classes/*.c
 )

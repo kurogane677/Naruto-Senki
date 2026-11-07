@@ -1,7 +1,7 @@
 #pragma once
 #include "Compat/Compat2x.h"
 #include "ActionManager.h"
-#include "HPBar.h"
+#include "UI/Game/HPBar.h"
 
 class HPBar;
 

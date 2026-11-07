@@ -1,6 +1,6 @@
 #pragma once
 #include "Compat/Compat2x.h"
-#include "MyUtils/KTools.h"
+#include "Utils/KTools.h"
 #include "GameLayer.h"
 #include "Defines.h"
 #include "Effect.h"

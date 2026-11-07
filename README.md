@@ -605,3 +605,5 @@ Teks berbahasa Cina di layar yang sama menyatakan bahwa game ini dibuat untuk tu
 - Library pihak ketiga di repo: SQLite (public domain), tinyxml2 (zlib).
 
 Proyek ini **non-komersial** dan mengikuti syarat dari developer asli. Jangan menjual atau mendistribusikan build untuk tujuan komersial.
+
+<!-- Refactor UI & Utils – PR ready -->

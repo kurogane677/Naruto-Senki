@@ -1,7 +1,7 @@
-#include "SelectLayer.h"
+#include "UI/Menu/SelectLayer.h"
 #include "Heroes/HeroRegistry.h"
-#include "MyUtils/KTools.h"
-#include "StartMenu.h"
+#include "Utils/KTools.h"
+#include "UI/Menu/StartMenu.h"
 USING_NS_CC_EXT;
 using namespace CocosDenshion;
 #include<time.h>

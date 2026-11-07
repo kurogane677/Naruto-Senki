@@ -1,7 +1,7 @@
 #include "AI/BuildBook.h"
 #include "AI/AIController.h"
 #include "Characters.h"
-#include "MyUtils/sqlite3.h"
+#include "Utils/Vendor/sqlite3.h"
 
 namespace ai
 {
