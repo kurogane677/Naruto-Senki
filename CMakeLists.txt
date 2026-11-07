@@ -124,6 +124,8 @@ ax_setup_app_config(${APP_NAME})
 
 if(_AX_TESTS)
   ax_setup_app_config(${TEST_TARGET_NAME} CONSOLE)
+  # data tests read the game data straight from the source tree
+  target_compile_definitions(${TEST_TARGET_NAME} PRIVATE NS_RESOURCES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Resources")
 endif()
 
 # Add any libraries you need to link to the project after this point

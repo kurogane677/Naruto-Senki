@@ -48,9 +48,9 @@ void Hero::setAI(float dt){
 		return;
 	}
 
-	if(isCharacter("DogWall")){
+	if(isCharacter(CharacterId::DogWall)){
 		AI_DogWall();
-	}else if(isCharacter("Roshi") || isCharacter("Han")){
+	}else if(isCharacter(CharacterId::Roshi) || isCharacter(CharacterId::Han)){
 		AI_Guardian();
 	}
 }
@@ -98,13 +98,13 @@ void Hero::AI_Guardian(){
 			CCObject* pObject;
 			CCARRAY_FOREACH(_delegate->_TowerArray,pObject){
 				ActionManager* target=(ActionManager*) pObject;
-				const char* gardTower;
+				CharacterId gardTower;
 				if(this->getDelegate()->zhenying>0){
-					gardTower="AkatsukiCenter";
+					gardTower=CharacterId::AkatsukiCenter;
 				}else{
-					gardTower="KonohaCenter";
+					gardTower=CharacterId::KonohaCenter;
 				}
-				if(strcmp(target->getCharacter()->getCString(),gardTower)==0 && target->getHpPercent()<0.5f){
+				if(target->isCharacter(gardTower) && target->getHpPercent()<0.5f){
 					isTurn=true;
 
 				}

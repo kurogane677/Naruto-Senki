@@ -7,8 +7,8 @@ namespace ai
 
 bool isLaneHero(ActionManager* unit)
 {
-    return (unit->role() == Role::Player || unit->role() == Role::Com) && !unit->isCharacter("Roshi") &&
-           !unit->isCharacter("Han");
+    return (unit->role() == Role::Player || unit->role() == Role::Com) && !unit->isCharacter(CharacterId::Roshi) &&
+           !unit->isCharacter(CharacterId::Han);
 }
 
 namespace

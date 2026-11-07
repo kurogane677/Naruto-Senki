@@ -60,14 +60,14 @@ void HPBar::loseHP(float percent){
 	
 	if(_delegate->getDelegate()->_isHardCoreGame){
 
-		const char* gardTower;
+		CharacterId gardTower;
 		if(_delegate->getDelegate()->zhenying>0){
-			gardTower="AkatsukiCenter";
+			gardTower=CharacterId::AkatsukiCenter;
 		}else{
-			gardTower="KonohaCenter";
+			gardTower=CharacterId::KonohaCenter;
 		}
 		
-		if(strcmp(this->_delegate->getCharacter()->getCString(),gardTower)==0){
+		if(this->_delegate->isCharacter(gardTower)){
 			if( !_delegate->getDelegate()->_isGuardian && percent<=0.8){
 				_delegate->getDelegate()->initGard();
 			}
@@ -78,7 +78,7 @@ void HPBar::loseHP(float percent){
 		if(_delegate->getDelegate()->_isGuardian){
 			ActionManager* _slayer=(ActionManager*) _delegate->_slayer;
 			if(_slayer){
-				if(strcmp(this->_delegate->getCharacter()->getCString(),gardTower)==0){
+				if(this->_delegate->isCharacter(gardTower)){
 					_slayer->isHurtingTower=true;
 				}else{
 					_slayer->isHurtingTower=false;
@@ -100,8 +100,8 @@ void HPBar::loseHP(float percent){
 		//杀死青蛙
 		if(_delegate->role()==Role::Flog){
 
-			if(_slayer->getSecMaster()  && !_slayer->isCharacter("KageHand")
-				 && !_slayer->isCharacter("KageHands")
+			if(_slayer->getSecMaster()  && !_slayer->isCharacter(CharacterId::KageHand)
+				 && !_slayer->isCharacter(CharacterId::KageHands)
 				){
 				if(_slayer->getSecMaster()->getControler()){
 					currentSlayer=_slayer->getSecMaster()->getControler();
@@ -171,9 +171,9 @@ void HPBar::loseHP(float percent){
 
 
 			if(_slayer->getSecMaster()  
-				&& !_slayer->isCharacter("KageHand")
-				 && !_slayer->isCharacter("KageHands")
-				&& !_slayer->isCharacter("SmallSlug")){
+				&& !_slayer->isCharacter(CharacterId::KageHand)
+				 && !_slayer->isCharacter(CharacterId::KageHands)
+				&& !_slayer->isCharacter(CharacterId::SmallSlug)){
 					if(_slayer->getSecMaster()->getControler()){
 						currentSlayer=_slayer->getSecMaster()->getControler();
 					}else{
@@ -242,7 +242,7 @@ void HPBar::loseHP(float percent){
 			CCARRAY_FOREACH(_delegate->getDelegate()->_CharacterArray,pObject){
 				Hero* otherSlayer=(Hero*) pObject;
 				if(currentSlayer->group()==otherSlayer->group() &&
-					strcmp(currentSlayer->getCharacter()->getCString(),otherSlayer->getCharacter()->getCString())!=0
+					currentSlayer->characterId()!=otherSlayer->characterId()
 					){
 
 						
@@ -299,7 +299,7 @@ void HPBar::loseHP(float percent){
 				
 
 
-			if(_delegate->isCharacter("Kakuzu") && _delegate->getDelegate()->_isOugis2Game){
+			if(_delegate->isCharacter(CharacterId::Kakuzu) && _delegate->getDelegate()->_isOugis2Game){
 				
 				bool reieveAble=false;
 				if(_delegate->getCKR2()>=CKR2_OUGIS && _delegate->hearts>0){
@@ -372,10 +372,10 @@ void HPBar::loseHP(float percent){
 					_delegate->_isSuicide=true;
 					currentSlayer=_delegate->getControler();
 				}else if(_slayer->getSecMaster() 
-					&& !_slayer->isCharacter("KageHand")
-					 && !_slayer->isCharacter("KageHands")
-					&& !_slayer->isCharacter("SmallSlug")
-					&& !_slayer->isCharacter("FakeItachi")
+					&& !_slayer->isCharacter(CharacterId::KageHand)
+					 && !_slayer->isCharacter(CharacterId::KageHands)
+					&& !_slayer->isCharacter(CharacterId::SmallSlug)
+					&& !_slayer->isCharacter(CharacterId::FakeItachi)
 					){
 					if(_slayer->getSecMaster()->getControler()){
 						currentSlayer=_slayer->getSecMaster()->getControler();
@@ -396,7 +396,7 @@ void HPBar::loseHP(float percent){
 					}
 				}
 
-				if(currentSlayer->isCharacter("Kakuzu") ){
+				if(currentSlayer->isCharacter(CharacterId::Kakuzu) ){
 					if(currentSlayer->hearts<=4){
 						currentSlayer->hearts+=1;	
 
@@ -436,8 +436,8 @@ void HPBar::loseHP(float percent){
 						_delegate->getDelegate()->getHudLayer()->AkaLabel->setString(CCString::createWithFormat("%d",teamKills)->getCString());
 					}
 					//
-					if(!currentSlayer->isCharacter("Han") &&
-						!currentSlayer->isCharacter("Roshi")
+					if(!currentSlayer->isCharacter(CharacterId::Han) &&
+						!currentSlayer->isCharacter(CharacterId::Roshi)
 						){
 							int newValue=atoi(_delegate->getDelegate()->getTotalKills()->getCString())+1;
 							_delegate->getDelegate()->setTotalKills(CCString::createWithFormat("%d",newValue));
@@ -458,8 +458,8 @@ void HPBar::loseHP(float percent){
 				
 					if (currentSlayer->role()==Role::Player){
 						
-						if(_delegate->isCharacter("Han")||
-							_delegate->isCharacter("Roshi")
+						if(_delegate->isCharacter(CharacterId::Han)||
+							_delegate->isCharacter(CharacterId::Roshi)
 							){
 								_delegate->getDelegate()->setCoin("1000");
 								_delegate->setCoinDisplay(1000);
@@ -483,8 +483,8 @@ void HPBar::loseHP(float percent){
 
 
 
-					if(_delegate->isCharacter("Han")||
-					_delegate->isCharacter("Roshi")
+					if(_delegate->isCharacter(CharacterId::Han)||
+					_delegate->isCharacter(CharacterId::Roshi)
 					){
 					currentSlayer->addCoin(1000);
 					}else{
@@ -507,7 +507,7 @@ void HPBar::loseHP(float percent){
 				CCARRAY_FOREACH(_delegate->getDelegate()->_CharacterArray,pObject){
 					Hero* otherSlayer=(Hero*) pObject;
 					if(currentSlayer->group()==otherSlayer->group() &&
-						strcmp(currentSlayer->getCharacter()->getCString(),otherSlayer->getCharacter()->getCString())!=0
+						currentSlayer->characterId()!=otherSlayer->characterId()
 						){
 
 						
@@ -519,8 +519,8 @@ void HPBar::loseHP(float percent){
 						
 						if (otherSlayer->role()==Role::Player){
 							if(_delegate->getDelegate()->_isHardCoreGame){
-								if(_delegate->isCharacter("Han")||
-									_delegate->isCharacter("Roshi")
+								if(_delegate->isCharacter(CharacterId::Han)||
+									_delegate->isCharacter(CharacterId::Roshi)
 									){
 										_delegate->getDelegate()->setCoin(CCString::createWithFormat("%d",850)->getCString());
 										_delegate->setCoinDisplay(850);
@@ -536,8 +536,8 @@ void HPBar::loseHP(float percent){
 							_delegate->getDelegate()->getHudLayer()->setEXPLose(0);
 						}
 						if(_delegate->getDelegate()->_isHardCoreGame){		
-							if(_delegate->isCharacter("Han")||
-								_delegate->isCharacter("Roshi")
+							if(_delegate->isCharacter(CharacterId::Han)||
+								_delegate->isCharacter(CharacterId::Roshi)
 								){
 									otherSlayer->addCoin(850);
 							}else{

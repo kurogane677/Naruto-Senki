@@ -7,11 +7,11 @@ bool Naruto::isForm(const std::string& character)
 
 Naruto::Form Naruto::form() const
 {
-    if (isCharacter("Naruto"))
+    if (isCharacter(CharacterId::Naruto))
         return Form::Base;
-    if (isCharacter("SageNaruto"))
+    if (isCharacter(CharacterId::SageNaruto))
         return Form::Sage;
-    if (isCharacter("RikudoNaruto"))
+    if (isCharacter(CharacterId::RikudoNaruto))
         return Form::Rikudo;
     return Form::None;
 }

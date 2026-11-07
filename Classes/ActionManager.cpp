@@ -106,6 +106,7 @@ ActionManager::ActionManager(void)
 	_character=NULL;
 	_roleId=Role::None;
 	_groupId=Group::None;
+	_characterId=CharacterId::None;
 	_killNum=0;
 	_coin=0;
 
@@ -290,8 +291,8 @@ void ActionManager::update(float dt){
 	if(!_isControled && _actionState!=ACTION_STATE_DEAD){
 		if(this->role()==Role::Player || this->role()==Role::Com){
 
-			if(!this->isCharacter("Roshi") &&
-				!this->isCharacter("Han")){
+			if(!this->isCharacter(CharacterId::Roshi) &&
+				!this->isCharacter(CharacterId::Han)){
 
 
 					if(this->group()==Group::Konoha && this->getPositionX()<=BASE_X_KONOHA){
@@ -369,7 +370,7 @@ void ActionManager::update(float dt){
 
 void ActionManager::acceptAttack(CCObject* object){
 
-	if(this->isCharacter("Tobi")){
+	if(this->isCharacter(CharacterId::Tobi)){
 
 		ActionManager* currentSlayer=NULL;
 		if(this->_slayer){
@@ -389,7 +390,7 @@ void ActionManager::acceptAttack(CCObject* object){
 	}
 	ActionManager* Attacker=(ActionManager *) object;
 	bool isBizhong=false;
-	if(Attacker->isCharacter("Hiruzen") && Attacker->getActionState()==ACTION_STATE_O2ATTACK){
+	if(Attacker->isCharacter(CharacterId::Hiruzen) && Attacker->getActionState()==ACTION_STATE_O2ATTACK){
 		isBizhong=true;
 	}
 
@@ -472,7 +473,7 @@ void ActionManager::acceptAttack(CCObject* object){
 
 			if(this->setHitBox().intersectsRect(Attacker->setHitBox())) {
 
-				if(this->isCharacter("Hidan") && this->_skillChangeBuffValue){
+				if(this->isCharacter(CharacterId::Hidan) && this->_skillChangeBuffValue){
 
 					bool _isCounter=false;
 					if(_monsterArray && _monsterArray->count()>0){
@@ -527,19 +528,19 @@ void ActionManager::acceptAttack(CCObject* object){
 				}
 
 				//飞雷神销毁
-				if(Attacker->isCharacter("HiraishinKunai") ||
-					Attacker->isCharacter("Shintenshin")
+				if(Attacker->isCharacter(CharacterId::HiraishinKunai) ||
+					Attacker->isCharacter(CharacterId::Shintenshin)
 					){
 						if((this->role()==Role::Player || this->role()==Role::Com)
-							&& !this->isCharacter("Roshi")
-							&& !this->isCharacter("Han")
+							&& !this->isCharacter(CharacterId::Roshi)
+							&& !this->isCharacter(CharacterId::Han)
 							&& this->_actionState!=ACTION_STATE_DEAD
 							){
 							
 							Attacker->stopAllActions();
 							Attacker->dealloc();
 
-							if(Attacker->isCharacter("Shintenshin") && !Attacker->_isCatchOne){
+							if(Attacker->isCharacter(CharacterId::Shintenshin) && !Attacker->_isCatchOne){
 								Attacker->_isCatchOne=true;
 								if(Attacker->_master){
 									this->_isControled=true;
@@ -698,9 +699,9 @@ void ActionManager::acceptAttack(CCObject* object){
 							this->setKnockLength(1);	
 							}
 
-							if(Attacker->isCharacter("Kakuzu") && this->_sticker){
+							if(Attacker->isCharacter(CharacterId::Kakuzu) && this->_sticker){
 								ActionManager* stHero=(ActionManager *) _sticker;
-								if(stHero->isCharacter("Kakuzu") && stHero->hearts<=4){
+								if(stHero->isCharacter(CharacterId::Kakuzu) && stHero->hearts<=4){
 									
 									Attacker->hearts+=1;	
 
@@ -716,7 +717,7 @@ void ActionManager::acceptAttack(CCObject* object){
 									int countMON=0;
 									CCARRAY_FOREACH(Attacker->getMonsterArray(),pObject){
 										Monster* mo=(Monster*) pObject;
-										if(!mo->isCharacter("Traps")){
+										if(!mo->isCharacter(CharacterId::Traps)){
 											countMON++;
 										}
 
@@ -728,7 +729,7 @@ void ActionManager::acceptAttack(CCObject* object){
 
 							}
 							// a Mouse (Sai's ride) holds a hero once, then not again for a moment
-							if(Attacker->isCharacter("Mouse")){
+							if(Attacker->isCharacter(CharacterId::Mouse)){
 								if(_mouseHoldImmunity<=0){
 									_mouseHoldImmunity=kMouseHoldImmunity;
 									this->hurt();
@@ -741,11 +742,11 @@ void ActionManager::acceptAttack(CCObject* object){
 								this->setKnockLength(1);
 							}	
 							if(this->hurt() && 
-								(!Attacker->_isCatchOne  || Attacker->isCharacter("FakeMinato"))
+								(!Attacker->_isCatchOne  || Attacker->isCharacter(CharacterId::FakeMinato))
 								){
 							  Attacker->_isCatchOne=true;
 							  if(Attacker->getMaster()){
-								  if( Attacker->isCharacter("FakeMinato")){
+								  if( Attacker->isCharacter(CharacterId::FakeMinato)){
 									  this->setPosition(ccp(Attacker->getMaster()->_isFlipped?Attacker->getMaster()->getPositionX()-64:Attacker->getMaster()->getPositionX()+64,
 										  Attacker->getMaster()->getPositionY()+2));
 								  }else{
@@ -824,29 +825,29 @@ void ActionManager::acceptAttack(CCObject* object){
 								Attacker->_actionState==ACTION_STATE_OATTACK))
 								){
 									if (Attacker->_isCatchOne == false || 
-										Attacker->isCharacter("Shenwei") 
+										Attacker->isCharacter(CharacterId::Shenwei) 
 									){
 
 										
 											if(Attacker->getMaster()){
 
-												if(Attacker->isCharacter("Kuroari")||
-													Attacker->isCharacter("Shenwei") ||
-													Attacker->isCharacter("Sabaku") ||
-													Attacker->isCharacter("Shenwei2")){
+												if(Attacker->isCharacter(CharacterId::Kuroari)||
+													Attacker->isCharacter(CharacterId::Shenwei) ||
+													Attacker->isCharacter(CharacterId::Sabaku) ||
+													Attacker->isCharacter(CharacterId::Shenwei2)){
 														if(this->hardHurt(3000,false,true,false,false)){
 																Attacker->_isCatchOne=true;
 															this->scheduleOnce(schedule_selector(ActionManager::reCatched),2.9f);
 														}
 
-												}else if(Attacker->isCharacter("SandBall")){
+												}else if(Attacker->isCharacter(CharacterId::SandBall)){
 													if(this->hardHurt(1000,false,true,false,false)){
 																Attacker->_isCatchOne=true;
 															this->scheduleOnce(schedule_selector(ActionManager::reCatched),0.9f);
 														}
-												}else if(Attacker->getMaster()->isCharacter("Shikamaru")){
+												}else if(Attacker->getMaster()->isCharacter(CharacterId::Shikamaru)){
 													bool pianyi=false;
-													if(Attacker->isCharacter("KageHand")){
+													if(Attacker->isCharacter(CharacterId::KageHand)){
 														if(pianyi=this->hardHurt(6000,false,false,true,false)){
 															
 															Attacker->stopAllActions();
@@ -856,8 +857,8 @@ void ActionManager::acceptAttack(CCObject* object){
 															this->scheduleOnce(schedule_selector(ActionManager::removeLostBlood),6.0f);
 														}
 													
-													}else if(Attacker->isCharacter("QuanRen")||
-														Attacker->isCharacter("KageBom") ){
+													}else if(Attacker->isCharacter(CharacterId::QuanRen)||
+														Attacker->isCharacter(CharacterId::KageBom) ){
 														pianyi=this->hardHurt(3000,false,false,true,false);
 													}
 
@@ -872,14 +873,14 @@ void ActionManager::acceptAttack(CCObject* object){
 													}
 													
 													
-												}else if(Attacker->getMaster()->isCharacter("Itachi")  ||
-													Attacker->getMaster()->isCharacter("Chiyo") 
+												}else if(Attacker->getMaster()->isCharacter(CharacterId::Itachi)  ||
+													Attacker->getMaster()->isCharacter(CharacterId::Chiyo) 
 													) {
 			
 														
 														bool pianyi=false;
 
-														if(Attacker->getMaster()->isCharacter("Chiyo") ){
+														if(Attacker->getMaster()->isCharacter(CharacterId::Chiyo) ){
 															pianyi=this->hardHurt(2000,false,false,true,false);
 														}else{
 															pianyi=this->hardHurt(3000,false,false,true,false);
@@ -895,8 +896,8 @@ void ActionManager::acceptAttack(CCObject* object){
 												}
 											}else {
 
-												if(Attacker->isCharacter("Lee") ||
-													Attacker->isCharacter("RockLee")
+												if(Attacker->isCharacter(CharacterId::Lee) ||
+													Attacker->isCharacter(CharacterId::RockLee)
 													){
 													
 												
@@ -906,7 +907,7 @@ void ActionManager::acceptAttack(CCObject* object){
 													}
 													
 													
-												}else if(Attacker->isCharacter("Kakuzu")){
+												}else if(Attacker->isCharacter(CharacterId::Kakuzu)){
 													bool pianyi=false;
 													
 													if(!this->_isBati){
@@ -922,7 +923,7 @@ void ActionManager::acceptAttack(CCObject* object){
 														_delegate->reorderChild(this,-this->getPositionY());
 
 													}
-												}else if(Attacker->isCharacter("Tobi")){
+												}else if(Attacker->isCharacter(CharacterId::Tobi)){
 													if(!this->_isBati){
 														this->setKnockLength(1);
 													}
@@ -1000,7 +1001,7 @@ void ActionManager::acceptAttack(CCObject* object){
 
 					}
 					
-					if(this->isCharacter("Hidan") && this->_skillChangeBuffValue){
+					if(this->isCharacter(CharacterId::Hidan) && this->_skillChangeBuffValue){
 						
 						bool _isCounter=false;
 						if(_monsterArray && _monsterArray->count()>0){
@@ -1016,8 +1017,8 @@ void ActionManager::acceptAttack(CCObject* object){
 						}
 
 						if(_isCounter &&  
-							!Attacker->isCharacter("Roshi") &&
-							!Attacker->isCharacter("Han") ){
+							!Attacker->isCharacter(CharacterId::Roshi) &&
+							!Attacker->isCharacter(CharacterId::Han) ){
 							if(Attacker->_master && Attacker->_master->_actionState!=ACTION_STATE_DEAD){
 								
 								Attacker->_master->_slayer=this;
@@ -1063,7 +1064,7 @@ void ActionManager::acceptAttack(CCObject* object){
 					
 					}
 
-					if(this->isCharacter("Kakuzu") && this->_skillChangeBuffValue){
+					if(this->isCharacter(CharacterId::Kakuzu) && this->_skillChangeBuffValue){
 						
 						if(!Attacker->_master){
 
@@ -1391,12 +1392,12 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 	}
 
 	//飞段自残
-	if(attacker->isCharacter("Hidan") && attacker->_skillChangeBuffValue){
+	if(attacker->isCharacter(CharacterId::Hidan) && attacker->_skillChangeBuffValue){
 		realValue=attackValue+criticalValue;
 	}else{
 
 		bool isBizhong=false;
-		if(attacker->isCharacter("Hiruzen") && attacker->getActionState()==ACTION_STATE_O2ATTACK){
+		if(attacker->isCharacter(CharacterId::Hiruzen) && attacker->getActionState()==ACTION_STATE_O2ATTACK){
 			isBizhong=true;
 		}
 
@@ -1415,15 +1416,15 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 				float jianshang=0;
 				jianshang+=gearArmor/100.0f;
 
-				if(this->isCharacter("Kakuzu") && _skillChangeBuffValue){
+				if(this->isCharacter(CharacterId::Kakuzu) && _skillChangeBuffValue){
 					jianshang+=0.25; 
 				}
 
-				if(this->isCharacter("Chiyo")){
+				if(this->isCharacter(CharacterId::Chiyo)){
 					CCObject* pObject;
 					CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 						Monster* mo=(Monster*) pObject;
-						if(mo->isCharacter("Parents") && !mo->_skillChangeBuffValue && mo->getActionState()!=ACTION_STATE_SATTACK){
+						if(mo->isCharacter(CharacterId::Parents) && !mo->_skillChangeBuffValue && mo->getActionState()!=ACTION_STATE_SATTACK){
 							CCPoint	sp=ccpSub(mo->getPosition(),this->getPosition());
 							if(abs(sp.x)<=48){
 								jianshang+=0.25;
@@ -1567,10 +1568,10 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 		}
 		
 		bool isGainable=true;
-		if(this->isCharacter("Tsunade") && this->_skillChangeBuffValue ){
+		if(this->isCharacter(CharacterId::Tsunade) && this->_skillChangeBuffValue ){
 			isGainable=false;
 		}
-		if(attacker->isCharacter("Hinata") &&  attacker->_skillUPBuffValue){
+		if(attacker->isCharacter(CharacterId::Hinata) &&  attacker->_skillUPBuffValue){
 			isGainable=false;
 		}
 
@@ -1629,7 +1630,7 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 	if(role()==Role::Player || role()==Role::Com){
 			float gainValue=0;
 
-			if(attacker->isCharacter("Kisame") && attacker->_skillChangeBuffValue){
+			if(attacker->isCharacter(CharacterId::Kisame) && attacker->_skillChangeBuffValue){
 				if(currentAttacker->isAttackGainCKR){
 					gainValue=realValue*80/100;
 				}else{
@@ -1902,15 +1903,15 @@ void ActionManager::setItem(abType type){
 		return;
 	}
 
-	if((this->isCharacter("Kankuro") || 
-		this->isCharacter("Chiyo") || 
-		this->isCharacter("Kiba") || 
-		this->isCharacter("Kakuzu")
+	if((this->isCharacter(CharacterId::Kankuro) || 
+		this->isCharacter(CharacterId::Chiyo) || 
+		this->isCharacter(CharacterId::Kiba) || 
+		this->isCharacter(CharacterId::Kakuzu)
 		) && this->getMonsterArray() && getMonsterArray()->count()>0){
 		CCObject* pObject;
 		CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 			Monster* mo=(Monster*) pObject;
-			if(!mo->isCharacter("Traps")){
+			if(!mo->isCharacter(CharacterId::Traps)){
 				mo->setItem(Item1);
 			}
 			
@@ -2628,9 +2629,9 @@ void ActionManager::setAttackBox(CCNode* sender,void* date){
 
 	if(_actionState==ACTION_STATE_HURT){
 
-		if(this->isCharacter("Sasuke") || 
-			this->isCharacter("ImmortalSasuke") || 
-			this->isCharacter("DevaPath") ){
+		if(this->isCharacter(CharacterId::Sasuke) || 
+			this->isCharacter(CharacterId::ImmortalSasuke) || 
+			this->isCharacter(CharacterId::DevaPath) ){
 
 				if(_maxHP-_hp<=260){
 					this->setHP(this->getMaxHP());
@@ -2684,7 +2685,7 @@ void ActionManager::getSticker(float dt){
 		if(tempHero->_sticker){
 			tempSticker=(ActionManager*) tempHero->_sticker;
 		}
-		if( tempSticker && strcmp(tempSticker->getCharacter()->getCString(),this->getCharacter()->getCString())==0
+		if( tempSticker && tempSticker->characterId()==this->characterId()
 			&& tempHero->_isSticking
 			){
 				return;
@@ -2883,7 +2884,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 
 				Monster* mo=(Monster*) pObject;
-				if(mo->isCharacter("HiraishinMark")){
+				if(mo->isCharacter(CharacterId::HiraishinMark)){
 					tsPosX=mo->getPositionX();
 					tsPosY=mo->getPositionY();
 					mo->attack(NAttack);
@@ -2915,7 +2916,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 		}
 		
 
-		if(this->isCharacter("Sakura")){
+		if(this->isCharacter(CharacterId::Sakura)){
 			float posY=this->getPositionY();
 			if(!_originY){
 				if(posY==0){
@@ -2941,7 +2942,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 		this->setPosition(ccp(tsPosX,tsPosY));
 		CCNotificationCenter::sharedNotificationCenter()->postNotification("updateMap", this);
 
-		if(!this->isCharacter("Yominuma")){
+		if(!this->isCharacter(CharacterId::Yominuma)){
 			_delegate->reorderChild(this,-tsPosY);
 		}
 		
@@ -2962,18 +2963,18 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 		
 
 		if(_mainTarget){
-			if(this->isCharacter("Dogs") ||
-				this->isCharacter("Yominuma") ||
-				this->isCharacter("SandBall") ||	
-				this->isCharacter("Sabaku") ||
-				this->isCharacter("Yataikuzu") ||
-					this->isCharacter("Lee") ||
-					this->isCharacter("RockLee")
+			if(this->isCharacter(CharacterId::Dogs) ||
+				this->isCharacter(CharacterId::Yominuma) ||
+				this->isCharacter(CharacterId::SandBall) ||	
+				this->isCharacter(CharacterId::Sabaku) ||
+				this->isCharacter(CharacterId::Yataikuzu) ||
+					this->isCharacter(CharacterId::Lee) ||
+					this->isCharacter(CharacterId::RockLee)
 				){
 				_markPoint=ccp(_mainTarget->getPositionX(),_mainTarget->_originY?_mainTarget->_originY:_mainTarget->getPositionY());
-			}else if(this->isCharacter("Tsukuyomi") ){
+			}else if(this->isCharacter(CharacterId::Tsukuyomi) ){
 				_markPoint=ccp(_mainTarget->getPositionX(),_mainTarget->_originY?_mainTarget->_originY:_mainTarget->getPositionY()+2);
-			}else if(this->isCharacter("KageFeng")){
+			}else if(this->isCharacter(CharacterId::KageFeng)){
 				
 				_markPoint=ccp(_mainTarget->getPositionX(),_mainTarget->_originY?_mainTarget->_originY-6:_mainTarget->getPositionY()-6);
 
@@ -3009,7 +3010,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 				&& tempHero->_actionState==ACTION_STATE_DEAD
 				&&  tempHero->rebornSprite
 				&& tempHero->hearts>0
-				&& !tempHero->isCharacter("Kakuzu") 
+				&& !tempHero->isCharacter(CharacterId::Kakuzu) 
 				){
 				
 					CCPoint sp=ccpSub(tempHero->getPosition(),this->getPosition());
@@ -3052,7 +3053,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 		CCArray* tempArray= CCArray::create();
 
 		int i=1;
-		if(this->isCharacter("Tenten")){
+		if(this->isCharacter(CharacterId::Tenten)){
 			while (i<11)
 			{
 				CCString* path=CCString::createWithFormat("Tenten_Extern_0%d.png",i);
@@ -3196,7 +3197,7 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 
 				}
 			};
-			if(this->isCharacter("Neji")){
+			if(this->isCharacter(CharacterId::Neji)){
 				_isBati=true;
 
 			}
@@ -3210,9 +3211,9 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 		_skillChangeBuffValue=buffValue;
 		
 
-		if(this->isCharacter("Shino") ||
-			this->isCharacter("Sai") ||
-			this->isCharacter("Deidara")
+		if(this->isCharacter(CharacterId::Shino) ||
+			this->isCharacter(CharacterId::Sai) ||
+			this->isCharacter(CharacterId::Deidara)
 			){
 
 			if(_skillChangeBuffValue==17){
@@ -3223,12 +3224,12 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 				this->scheduleOnce(schedule_selector(ActionManager::resumeAction),buffStayTime);
 			}
 
-		}else if(this->isCharacter("Kiba")){
+		}else if(this->isCharacter(CharacterId::Kiba)){
 			if(_skillChangeBuffValue==18){
 				this->scheduleOnce(schedule_selector(ActionManager::resumeAction),buffStayTime);
 			}
-		}else if( (this->isCharacter("ImmortalSasuke") ||
-			this->isCharacter("Sasuke") )
+		}else if( (this->isCharacter(CharacterId::ImmortalSasuke) ||
+			this->isCharacter(CharacterId::Sasuke) )
 			&& _skillChangeBuffValue==18){
 			this->unschedule(schedule_selector(ActionManager::resumeAction));
 			this->unschedule(schedule_selector(ActionManager::disableBuff));
@@ -3239,22 +3240,22 @@ void ActionManager::setBuff(CCNode* sender,void* date){
 
 			this->scheduleOnce(schedule_selector(ActionManager::resumeAction),buffStayTime);
 			
-		}else if(this->isCharacter("Minato")){
+		}else if(this->isCharacter(CharacterId::Minato)){
 			if(_skillChangeBuffValue==18){
 				this->scheduleOnce(schedule_selector(ActionManager::resumeAction),buffStayTime);
 			}
 		}else{
-			if(!this->isCharacter("Kankuro") &&
-				!this->isCharacter("Chiyo") &&
-				!this->isCharacter("Roshi") &&
-				!this->isCharacter("Han") &&
-				!this->isCharacter("Hiruzen") &&
-				!this->isCharacter("Suigetsu") &&
-				!this->isCharacter("Jugo") && 	
-				!this->isCharacter("Kisame") &&
-					!this->isCharacter("Parents") &&
-				!this->isCharacter("Lee") && 
-				!this->isCharacter("RockLee")
+			if(!this->isCharacter(CharacterId::Kankuro) &&
+				!this->isCharacter(CharacterId::Chiyo) &&
+				!this->isCharacter(CharacterId::Roshi) &&
+				!this->isCharacter(CharacterId::Han) &&
+				!this->isCharacter(CharacterId::Hiruzen) &&
+				!this->isCharacter(CharacterId::Suigetsu) &&
+				!this->isCharacter(CharacterId::Jugo) && 	
+				!this->isCharacter(CharacterId::Kisame) &&
+					!this->isCharacter(CharacterId::Parents) &&
+				!this->isCharacter(CharacterId::Lee) && 
+				!this->isCharacter(CharacterId::RockLee)
 				){
 				this->scheduleOnce(schedule_selector(ActionManager::resumeAction),buffStayTime);
 			}
@@ -3414,7 +3415,7 @@ void ActionManager::disableBuff(float dt){
 		this->setsAttackValue3(this->_sattackValue3-_skillUPBuffValue);
 		_skillUPBuffValue=0;
 
-		if(this->isCharacter("Neji")){
+		if(this->isCharacter(CharacterId::Neji)){
 			_isBati=false;
 		}
 		this->removeBuffEffect("sBuff");
@@ -3423,15 +3424,15 @@ void ActionManager::disableBuff(float dt){
 	}else if(!_isVisable && this->_actionState!=ACTION_STATE_HURT){ 
 		//防止被困住的时候进行还原
 		this->endStealth();
-	}else if(_skillChangeBuffValue && this->isCharacter("Tobi") ){
+	}else if(_skillChangeBuffValue && this->isCharacter(CharacterId::Tobi) ){
 		this->setOpacity(255);
 	}
 }
 
 void ActionManager::disableDebuff(float dt){
 
-	if((this->isCharacter("ImmortalSasuke") ||
-		this->isCharacter("Itachi") ) 
+	if((this->isCharacter(CharacterId::ImmortalSasuke) ||
+		this->isCharacter(CharacterId::Itachi) ) 
 		&& _isBati
 	){
 		return;
@@ -3450,7 +3451,7 @@ void ActionManager::healBuff(float dt){
 		_buffStartTime=curTime;	
 	}
 	int limitTime=10000;
-	if(isCharacter("Tsunade")){
+	if(isCharacter(CharacterId::Tsunade)){
 		 limitTime=15000;
 	}
 
@@ -3462,7 +3463,7 @@ void ActionManager::healBuff(float dt){
 		return;
 	};
 	//香磷群补
-	if(isCharacter("Karin")){
+	if(isCharacter(CharacterId::Karin)){
 
 		CCObject* pObject;
 		CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
@@ -3514,14 +3515,14 @@ void ActionManager::healBuff(float dt){
 		};
 
 
-	}else if(isCharacter("Chiyo")){
+	}else if(isCharacter(CharacterId::Chiyo)){
 
 		CCObject* pObject;
 		CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 			Hero* tempHero=(Hero*) pObject;
 			if(this->group()==tempHero->group()
 				&& (tempHero->role()==Role::Player || tempHero->role()==Role::Com)
-				&& !tempHero->isCharacter("Chiyo")
+				&& !tempHero->isCharacter(CharacterId::Chiyo)
 				){
 					CCPoint	toHero=ccpSub(tempHero->getPosition(),this->getPosition());
 					if(abs(toHero.x)<=kGameWidth/2){
@@ -3587,7 +3588,7 @@ void ActionManager::healBuff(float dt){
 			}
 		};
 
-	}else if(isCharacter("Slug")){
+	}else if(isCharacter(CharacterId::Slug)){
 
 		CCObject* pObject;
 		CCArray* list;
@@ -3630,8 +3631,8 @@ void ActionManager::healBuff(float dt){
 
 		}
 
-	}else if(isCharacter("Sakura") ||
-		isCharacter("Tsunade") 
+	}else if(isCharacter(CharacterId::Sakura) ||
+		isCharacter(CharacterId::Tsunade) 
 		){
 
 		//小樱单补
@@ -3680,7 +3681,7 @@ void ActionManager::dehealBuff(float dt){
 	CCObject* pObject;
 	CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 		Hero* tempHero=(Hero*) pObject;
-		if(tempHero->isCharacter("Asuma")){
+		if(tempHero->isCharacter(CharacterId::Asuma)){
 			_slayer=tempHero;
 		}
 	};
@@ -3706,7 +3707,7 @@ void ActionManager::lostBlood(float dt){
 	CCObject* pObject;
 	CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 		Hero* tempHero=(Hero*) pObject;
-		if(tempHero->isCharacter("Shikamaru")){
+		if(tempHero->isCharacter(CharacterId::Shikamaru)){
 			_slayer=tempHero;
 		}
 	}
@@ -3738,12 +3739,12 @@ void ActionManager::changeAction(){
 		return;
 	}
 
-	if(this->isCharacter("Tenten") ||
-		 this->isCharacter("Shino")
+	if(this->isCharacter(CharacterId::Tenten) ||
+		 this->isCharacter(CharacterId::Shino)
 		){
 			this->setNAttackAction(createAnimation(skillSPC1Array,10.0f,false,true));
 		
-	}else if(this->isCharacter("Choji") ){
+	}else if(this->isCharacter(CharacterId::Choji) ){
 	
 			_isBati=true;
 			this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
@@ -3765,17 +3766,17 @@ void ActionManager::changeAction(){
 				_hpBar->setPositionY(108);
 			}
 		
-	}else if(this->isCharacter("Sakura") ){
+	}else if(this->isCharacter(CharacterId::Sakura) ){
 
 		this->setNAttackAction(createAnimation(skillSPC1Array,10.0f,false,true));
 		this->setnAttackValue(this->_nattackValue+400);
 
-	}else if(this->isCharacter("Kakuzu") ){	
+	}else if(this->isCharacter(CharacterId::Kakuzu) ){	
 
 		this->setBuffEffect("jdBuff");		
 
-	}else if(this->isCharacter("Sai") ||
-		this->isCharacter("Deidara")
+	}else if(this->isCharacter(CharacterId::Sai) ||
+		this->isCharacter(CharacterId::Deidara)
 		){
 
 		if(_skillChangeBuffValue==17){
@@ -3801,7 +3802,7 @@ void ActionManager::changeAction(){
 			
 		}
 
-	}else if(this->isCharacter("Konan")){
+	}else if(this->isCharacter(CharacterId::Konan)){
 
 		this->_isAllAttackLocked=true;
 		this->_isBati=true;
@@ -3823,7 +3824,7 @@ void ActionManager::changeAction(){
 		this->lockOugis();
 
 
-	}else if(this->isCharacter("Kiba")){
+	}else if(this->isCharacter(CharacterId::Kiba)){
 		if(_skillChangeBuffValue==17){
 			_isBati=false;
 
@@ -3845,7 +3846,7 @@ void ActionManager::changeAction(){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 				Monster* monster=(Monster*) pObject;
-				if(monster->isCharacter("Akamaru")){
+				if(monster->isCharacter(CharacterId::Akamaru)){
 					monster->attack(SKILL2);
 				}
 				
@@ -3857,7 +3858,7 @@ void ActionManager::changeAction(){
 
 		}
 
-	}else if(this->isCharacter("Akamaru")){
+	}else if(this->isCharacter(CharacterId::Akamaru)){
 		this->_powerUPBuffValue=360;
 		this->setnAttackValue(this->_nattackValue+_powerUPBuffValue);
 		this->setIdleAction(createAnimation(skillSPC1Array,5.0f,true,false));
@@ -3869,7 +3870,7 @@ void ActionManager::changeAction(){
 			this->idle();
 		}
 		
-	}else if(this->isCharacter("Sasuke")){
+	}else if(this->isCharacter(CharacterId::Sasuke)){
 
 		if(_skillChangeBuffValue==17){
 			this->_isTaunt=true;
@@ -3923,7 +3924,7 @@ void ActionManager::changeAction(){
 
 		}
 	
-	}else if(this->isCharacter("ImmortalSasuke")){
+	}else if(this->isCharacter(CharacterId::ImmortalSasuke)){
 
 		if(_skillChangeBuffValue==17){
 			this->_isTaunt=true;
@@ -3969,7 +3970,7 @@ void ActionManager::changeAction(){
 
 
 
-	}else if(this->isCharacter("Tobi")){
+	}else if(this->isCharacter(CharacterId::Tobi)){
 		
 		this->setWalkAction(createAnimation(skillSPC1Array,10.0f,true,false));
 		
@@ -3996,7 +3997,7 @@ void ActionManager::changeAction(){
 		};
 
 
-	}else if(this->isCharacter("Gaara")){
+	}else if(this->isCharacter(CharacterId::Gaara)){
 		this->setIdleAction(createAnimation(skillSPC1Array,5.0f,true,false));
 		this->setWalkAction(createAnimation(skillSPC2Array,10.0f,true,false));
 		this->setNAttackAction(createAnimation(skillSPC3Array,10.0f,false,true));
@@ -4012,7 +4013,7 @@ void ActionManager::changeAction(){
 			_hpBar->setPositionY(134);
 		}
 
-	}else if(this->isCharacter("Itachi")){
+	}else if(this->isCharacter(CharacterId::Itachi)){
 
 		this->setIdleAction(createAnimation(skillSPC1Array,5.0f,true,false));
 		this->setWalkAction(createAnimation(skillSPC2Array,10.0f,true,false));
@@ -4035,7 +4036,7 @@ void ActionManager::changeAction(){
 		this->lockOugis();
 
 	
-	}else if(this->isCharacter("Kakashi")){
+	}else if(this->isCharacter(CharacterId::Kakashi)){
 		
 		this->setSkill1Action(createAnimation(skillSPC1Array,10.0f,false,true));
 		this->setSkill2Action(createAnimation(skillSPC2Array,10.0f,false,true));
@@ -4070,7 +4071,7 @@ void ActionManager::changeAction(){
 
 		}
 		
-	}else if(this->isCharacter("Hiruzen") ){
+	}else if(this->isCharacter(CharacterId::Hiruzen) ){
 			_isBati=true;
 			_nattackRangeX=16;
 			_nattackRangeY=48;
@@ -4087,7 +4088,7 @@ void ActionManager::changeAction(){
 			this->lockOugis();
 
 
-	}else if(this->isCharacter("Suigetsu") ){
+	}else if(this->isCharacter(CharacterId::Suigetsu) ){
 
 		this->settempAttackValue1(_nattackValue);	
 		this->setnAttackValue(1960);
@@ -4106,7 +4107,7 @@ void ActionManager::changeAction(){
 		this->lockOugis();
 
 
-	}else if(this->isCharacter("Kisame")){
+	}else if(this->isCharacter(CharacterId::Kisame)){
 
 		this->settempAttackValue1(_nattackValue);	
 		this->setnAttackValue(660);
@@ -4129,7 +4130,7 @@ void ActionManager::changeAction(){
 
 
 
-	}else if(this->isCharacter("Jugo")){
+	}else if(this->isCharacter(CharacterId::Jugo)){
 
 		this->settempAttackValue1(_nattackValue);	
 		this->setnAttackValue(1960);
@@ -4152,7 +4153,7 @@ void ActionManager::changeAction(){
 
 
 
-	}else if(this->isCharacter("Parents")){
+	}else if(this->isCharacter(CharacterId::Parents)){
 
 		this->settempAttackValue1(_nattackValue);	
 		this->setnAttackValue(2460);
@@ -4176,20 +4177,20 @@ void ActionManager::changeAction(){
 		
 
 
-	}else if(this->isCharacter("Kankuro")){
+	}else if(this->isCharacter(CharacterId::Kankuro)){
 
 		if(this->role()==Role::Player){	
 			_delegate->getHudLayer()->skill1Button->setLock();
 			_delegate->getHudLayer()->skill2Button->unLock();
 		}
-	}else if(this->isCharacter("Chiyo")){
+	}else if(this->isCharacter(CharacterId::Chiyo)){
 
 		if(this->role()==Role::Player){	
 			_delegate->getHudLayer()->skill1Button->setLock();
 			_delegate->getHudLayer()->skill2Button->unLock();
 			_delegate->getHudLayer()->skill3Button->unLock();
 		}
-	}else if(this->isCharacter("Minato")){
+	}else if(this->isCharacter(CharacterId::Minato)){
 
 		if(_skillChangeBuffValue==17){
 
@@ -4217,8 +4218,8 @@ void ActionManager::changeAction(){
 
 		}
 
-	}else if(this->isCharacter("Lee")||
-		this->isCharacter("RockLee")
+	}else if(this->isCharacter(CharacterId::Lee)||
+		this->isCharacter(CharacterId::RockLee)
 		){
 		if(bamen==0 && !this->_heartEffect){
 			_heartEffect=CCSprite::createWithSpriteFrameName("Bamen_Effect_00.png");
@@ -4263,7 +4264,7 @@ void ActionManager::changeAction(){
 		}
 
 
-	}else if(this->isCharacter("Tsunade")){
+	}else if(this->isCharacter(CharacterId::Tsunade)){
 		this->setnAttackValue(this->_nattackValue+250);
 		this->_isOnlySkillLocked=true;
 		_nattackRangeX=32;
@@ -4281,8 +4282,8 @@ void ActionManager::changeAction(){
 
 		this->lockOugis();
 
-	}else if(this->isCharacter("Roshi") ||
-		this->isCharacter("Han") 
+	}else if(this->isCharacter(CharacterId::Roshi) ||
+		this->isCharacter(CharacterId::Han) 
 		){
 		this->setnAttackValue(this->_nattackValue+700);
 		_nattackRangeX=0;
@@ -4299,7 +4300,7 @@ void ActionManager::changeAction(){
 		this->setNAttackAction(createAnimation(skillSPC2Array,10.0f,false,true));
 		this->setIdleAction(createAnimation(skillSPC3Array,5.0f,true,false));
 
-	}else if(this->isCharacter("Hidan")){
+	}else if(this->isCharacter(CharacterId::Hidan)){
 		
 		_isBati=true;
 		_isTaunt=true;
@@ -4315,7 +4316,7 @@ void ActionManager::changeAction(){
 }
 void ActionManager::changeAction2(){
 
-	if(this->isCharacter("Minato")){
+	if(this->isCharacter(CharacterId::Minato)){
 
 		_attackValue=_spcattackValue2;
 		this->setAttackType(this->getspcAttack2Type());
@@ -4343,12 +4344,12 @@ void ActionManager::resumeAction(float dt){
 		return;
 	}
 
-	if(this->isCharacter("Tenten") ||
-		this->isCharacter("Shino") ){
+	if(this->isCharacter(CharacterId::Tenten) ||
+		this->isCharacter(CharacterId::Shino) ){
 		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
-	}else if(this->isCharacter("Kakuzu") ){	
+	}else if(this->isCharacter(CharacterId::Kakuzu) ){	
 		this->removeBuffEffect("sBuff");		
-	}else if(this->isCharacter("Choji") ){
+	}else if(this->isCharacter(CharacterId::Choji) ){
 
 	
 			this->setnAttackValue(this->_nattackValue-460);
@@ -4378,12 +4379,12 @@ void ActionManager::resumeAction(float dt){
 
 		
 
-	}else if(this->isCharacter("Sakura")){
+	}else if(this->isCharacter(CharacterId::Sakura)){
 		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
 		this->setnAttackValue(this->_nattackValue-400);
 
-	}else if(this->isCharacter("Sai") ||
-		this->isCharacter("Deidara")
+	}else if(this->isCharacter(CharacterId::Sai) ||
+		this->isCharacter(CharacterId::Deidara)
 		){
 
 
@@ -4415,7 +4416,7 @@ void ActionManager::resumeAction(float dt){
 
 		}
 
-	}else if(this->isCharacter("Gaara")){
+	}else if(this->isCharacter(CharacterId::Gaara)){
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
 		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
@@ -4435,7 +4436,7 @@ void ActionManager::resumeAction(float dt){
 			_hpBar->setPositionY(this->getHeight());
 		}
 
-	}else if(this->isCharacter("Konan")){
+	}else if(this->isCharacter(CharacterId::Konan)){
 		
 	
 		_isAllAttackLocked=false;
@@ -4459,7 +4460,7 @@ void ActionManager::resumeAction(float dt){
 		_hpBar->setPositionY(this->getHeight());
 		}
 	
-	}else if(this->isCharacter("Kakashi")){
+	}else if(this->isCharacter(CharacterId::Kakashi)){
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setSkill1Action(createAnimation(skill1Array,10.0f,false,true));
 		this->setSkill2Action(createAnimation(skill2Array,10.0f,false,true));
@@ -4477,7 +4478,7 @@ void ActionManager::resumeAction(float dt){
 		}
 
 
-	}else if(this->isCharacter("Itachi")){
+	}else if(this->isCharacter(CharacterId::Itachi)){
 
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
@@ -4518,7 +4519,7 @@ void ActionManager::resumeAction(float dt){
 		}
 
 
-	}else if(this->isCharacter("Kiba")){
+	}else if(this->isCharacter(CharacterId::Kiba)){
 
 			if(_powerUPBuffValue){
 				this->setnAttackValue(this->_nattackValue-_powerUPBuffValue);
@@ -4534,7 +4535,7 @@ void ActionManager::resumeAction(float dt){
 					this->idle();
 			}
 			
-	}else if(this->isCharacter("Akamaru")){
+	}else if(this->isCharacter(CharacterId::Akamaru)){
 	
 		if(_powerUPBuffValue){
 			this->setnAttackValue(this->_nattackValue-_powerUPBuffValue);
@@ -4552,7 +4553,7 @@ void ActionManager::resumeAction(float dt){
 			}
 		}
 
-	}else if(this->isCharacter("Minato")){
+	}else if(this->isCharacter(CharacterId::Minato)){
 
 	
 		this->setnAttackValue(this->_nattackValue-200);
@@ -4563,12 +4564,12 @@ void ActionManager::resumeAction(float dt){
 		_markPoint=ccp(0,0);
 		_startPoint=ccp(0,0);
 
-	}else if((this->isCharacter("Sasuke")||
-		this->isCharacter("ImmortalSasuke")) && this->_isTaunt){
+	}else if((this->isCharacter(CharacterId::Sasuke)||
+		this->isCharacter(CharacterId::ImmortalSasuke)) && this->_isTaunt){
 
 			this->_isTaunt=false;
 			this->setHurtAction(createAnimation(hurtArray,10.0f,false,true));		
-	}else if(this->isCharacter("Sasuke") && _skillChangeBuffValue==18){
+	}else if(this->isCharacter(CharacterId::Sasuke) && _skillChangeBuffValue==18){
 
 
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
@@ -4600,7 +4601,7 @@ void ActionManager::resumeAction(float dt){
 
 		this->setKnockDownAction(createAnimation(knockDownArray,10.0f,false,true));
 
-	}else if(this->isCharacter("ImmortalSasuke") && _skillChangeBuffValue==18){
+	}else if(this->isCharacter(CharacterId::ImmortalSasuke) && _skillChangeBuffValue==18){
 
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
@@ -4643,7 +4644,7 @@ void ActionManager::resumeAction(float dt){
 		
 		
 		
-	}else if(this->isCharacter("Tobi")){
+	}else if(this->isCharacter(CharacterId::Tobi)){
 
 			this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
 			
@@ -4661,7 +4662,7 @@ void ActionManager::resumeAction(float dt){
 				this->idle();
 			}
 
-	}else if(this->isCharacter("Tsunade")){
+	}else if(this->isCharacter(CharacterId::Tsunade)){
 		this->setnAttackValue(this->_nattackValue-250);
 		_nattackRangeX=16;
 		_nattackRangeY=48;
@@ -4681,7 +4682,7 @@ void ActionManager::resumeAction(float dt){
 			_actionState=ACTION_STATE_WALK;
 			this->idle();
 		}
-	}else if(this->isCharacter("Ino") && _isBati){
+	}else if(this->isCharacter(CharacterId::Ino) && _isBati){
 		CCObject* pObject;
 		CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 			Hero* tempHero=(Hero*) pObject;
@@ -4705,7 +4706,7 @@ void ActionManager::resumeAction(float dt){
 
 		_isBati=false;
 
-	}else if(this->isCharacter("Hidan")){
+	}else if(this->isCharacter(CharacterId::Hidan)){
 
 		_isBati=false;
 		_isTaunt=false;
@@ -4752,7 +4753,7 @@ void ActionManager::resumeAction(float dt){
 }
 void ActionManager::setActionResume(){
 
-	if(this->isCharacter("Suigetsu")){
+	if(this->isCharacter(CharacterId::Suigetsu)){
 	
 		if(_skillChangeBuffValue){
 
@@ -4778,7 +4779,7 @@ void ActionManager::setActionResume(){
 
 
 
-	}else if(this->isCharacter("Jugo")){
+	}else if(this->isCharacter(CharacterId::Jugo)){
 
 		if(_skillChangeBuffValue){
 
@@ -4809,7 +4810,7 @@ void ActionManager::setActionResume(){
 		}
 
 
-	}else if(this->isCharacter("Kisame")){
+	}else if(this->isCharacter(CharacterId::Kisame)){
 
 		if(_skillChangeBuffValue){
 
@@ -4840,7 +4841,7 @@ void ActionManager::setActionResume(){
 		}
 
 
-	}else if(this->isCharacter("Parents")){
+	}else if(this->isCharacter(CharacterId::Parents)){
 
 		if(_skillChangeBuffValue){
 
@@ -4875,13 +4876,13 @@ void ActionManager::setActionResume(){
 		}
 
 
-	}else if(this->isCharacter("Kakuzu") &&  _skillChangeBuffValue){	
+	}else if(this->isCharacter(CharacterId::Kakuzu) &&  _skillChangeBuffValue){	
 		this->unschedule(schedule_selector(ActionManager::resumeAction));
 		this->removeBuffEffect("sBuff");	
 
 		_skillChangeBuffValue=0;
 
-	}else if(this->isCharacter("Tobi") && _skillChangeBuffValue){
+	}else if(this->isCharacter(CharacterId::Tobi) && _skillChangeBuffValue){
 
 		this->unschedule(schedule_selector(ActionManager::resumeAction));
 		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
@@ -4897,7 +4898,7 @@ void ActionManager::setActionResume(){
 
 		_skillChangeBuffValue=0;
 
-	}else if(this->isCharacter("Kiba") ){
+	}else if(this->isCharacter(CharacterId::Kiba) ){
 
 		if(_powerUPBuffValue){
 			this->unschedule(schedule_selector(ActionManager::resumeAction));
@@ -4929,7 +4930,7 @@ void ActionManager::setActionResume(){
 
 		_skillChangeBuffValue=0;
 
-	}else if(this->isCharacter("Hiruzen") && _skillChangeBuffValue){
+	}else if(this->isCharacter(CharacterId::Hiruzen) && _skillChangeBuffValue){
 
 		_isBati=false;
 		_isOnlySkillLocked=false;
@@ -4946,7 +4947,7 @@ void ActionManager::setActionResume(){
 		_skillChangeBuffValue=0;
 		
 
-	}else if(this->isCharacter("Kankuro")){
+	}else if(this->isCharacter(CharacterId::Kankuro)){
 			
 			if(this->role()==Role::Player){				
 				_delegate->getHudLayer()->skill1Button->unLock();
@@ -4954,7 +4955,7 @@ void ActionManager::setActionResume(){
 			}
 			_skillChangeBuffValue=0;
 
-	}else if(this->isCharacter("Chiyo")){
+	}else if(this->isCharacter(CharacterId::Chiyo)){
 
 		if(this->role()==Role::Player){	
 			_delegate->getHudLayer()->skill1Button->unLock();
@@ -4962,18 +4963,18 @@ void ActionManager::setActionResume(){
 			_delegate->getHudLayer()->skill3Button->setLock();
 		}
 		_skillChangeBuffValue=0;
-	}else if(this->isCharacter("Minato")){
+	}else if(this->isCharacter(CharacterId::Minato)){
 		this->setSkill1Action(createAnimation(skill1Array,10.0f,false,true));
 		_skillChangeBuffValue=0;
-	}else if((this->isCharacter("Sasuke")||
-		this->isCharacter("ImmortalSasuke")) && this->_isTaunt){
+	}else if((this->isCharacter(CharacterId::Sasuke)||
+		this->isCharacter(CharacterId::ImmortalSasuke)) && this->_isTaunt){
 
 			this->unschedule(schedule_selector(ActionManager::resumeAction));
 			this->_isTaunt=false;
 			this->setHurtAction(createAnimation(hurtArray,10.0f,false,true));
 			_skillChangeBuffValue=0;
 
-	}else if(this->isCharacter("ImmortalSasuke")  &&  _skillChangeBuffValue ){
+	}else if(this->isCharacter(CharacterId::ImmortalSasuke)  &&  _skillChangeBuffValue ){
 		if(_skillChangeBuffValue==18){
 
 			this->unschedule(schedule_selector(ActionManager::resumeAction));
@@ -5004,7 +5005,7 @@ void ActionManager::setActionResume(){
 		}
 		
 
-	}else if(this->isCharacter("Itachi") && _skillChangeBuffValue){
+	}else if(this->isCharacter(CharacterId::Itachi) && _skillChangeBuffValue){
 
 		if(_skillChangeBuffValue==17){
 
@@ -5035,7 +5036,7 @@ void ActionManager::setActionResume(){
 		}
 		
 
-	}else if(this->isCharacter("Choji") && _skillChangeBuffValue){
+	}else if(this->isCharacter(CharacterId::Choji) && _skillChangeBuffValue){
 
 		this->unschedule(schedule_selector(ActionManager::resumeAction));
 
@@ -5062,7 +5063,7 @@ void ActionManager::setActionResume(){
 		_skillChangeBuffValue=0;
 
 
-	}else if(this->isCharacter("Gaara") && _skillChangeBuffValue){
+	}else if(this->isCharacter(CharacterId::Gaara) && _skillChangeBuffValue){
 		this->unschedule(schedule_selector(ActionManager::resumeAction));
 		this->setIdleAction(createAnimation(idleArray,5.0f,true,false));
 		this->setWalkAction(createAnimation(walkArray,10.0f,true,false));
@@ -5079,7 +5080,7 @@ void ActionManager::setActionResume(){
 			_hpBar->setPositionY(this->getHeight());
 		}
 
-	}else if(this->isCharacter("Ino")){
+	}else if(this->isCharacter(CharacterId::Ino)){
 
 		this->unschedule(schedule_selector(ActionManager::resumeAction));
 		CCObject* pObject;
@@ -5102,7 +5103,7 @@ void ActionManager::setActionResume(){
 
 		_isBati=false;
 
-	}else if(this->isCharacter("Hidan") && _skillChangeBuffValue){
+	}else if(this->isCharacter(CharacterId::Hidan) && _skillChangeBuffValue){
 
 		this->unschedule(schedule_selector(ActionManager::resumeAction));
 		_isBati=false;
@@ -5143,8 +5144,8 @@ void ActionManager::setActionResume(){
 
 		_skillChangeBuffValue=0;
 
-	}else if(this->isCharacter("Deidara") ||
-		this->isCharacter("Sai")
+	}else if(this->isCharacter(CharacterId::Deidara) ||
+		this->isCharacter(CharacterId::Sai)
 		){
 
 		if(_skillChangeBuffValue){
@@ -5183,7 +5184,7 @@ void ActionManager::setActionResume(){
 
 void ActionManager::setActionResume2(){
 
-	if(this->isCharacter("Minato")){
+	if(this->isCharacter(CharacterId::Minato)){
 		this->setSkill2Action(createAnimation(skill2Array,10.0f,false,true));
 	}
 }
@@ -5386,7 +5387,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	clone->setPosition(ccp(this->getPositionX()+(this->_isFlipped?-32:32),this->getPositionY()-1));
 	if(this->setUpClone(clone,cloneTime)){
 		// the hero class gave the clone its identity
-	}else if(this->isCharacter("Nagato")){
+	}else if(this->isCharacter(CharacterId::Nagato)){
 
 		clone->setID(CCString::create("DevaPath"),CCString::create("Clone"),this->_group);
 		clone->_isBati=true;		
@@ -5394,7 +5395,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 
 		_skillChangeBuffValue=100;
 
-	}else if(this->isCharacter("Kakuzu")){
+	}else if(this->isCharacter(CharacterId::Kakuzu)){
 		if(!_monsterArray){
 			_monsterArray=CCArray::create();
 			_monsterArray->retain();
@@ -5407,15 +5408,15 @@ void ActionManager::setClone(CCNode* sender,void* date){
 			CCObject* pObject;
 			CCARRAY_FOREACH(getMonsterArray(),pObject){
 				Monster* mo=(Monster*) pObject;
-				if (mo->isCharacter("MaskRaidon")){
+				if (mo->isCharacter(CharacterId::MaskRaidon)){
 					countMon++;
 					isRaidon=true;
 				}
-				if (mo->isCharacter("MaskFudon")){
+				if (mo->isCharacter(CharacterId::MaskFudon)){
 					countMon++;
 					isFudon=true;
 				}
-				if (mo->isCharacter("MaskKadon")){
+				if (mo->isCharacter(CharacterId::MaskKadon)){
 					countMon++;
 					isKadon=true;
 				}
@@ -5452,7 +5453,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 			return;
 		}
 
-	 }else if(this->isCharacter("Kankuro")){
+	 }else if(this->isCharacter(CharacterId::Kankuro)){
 
 		if(!_monsterArray){
 			_monsterArray=CCArray::create();
@@ -5470,7 +5471,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 		clone->_isBati=true;
 		_monsterArray->addObject(clone);
 
-	}else if(this->isCharacter("Chiyo")){
+	}else if(this->isCharacter(CharacterId::Chiyo)){
 
 		if(!_monsterArray){
 			_monsterArray=CCArray::create();
@@ -5482,7 +5483,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 		clone->_isBati=true;
 		_monsterArray->addObject(clone);
 
-	 }else if(this->isCharacter("Kiba")){
+	 }else if(this->isCharacter(CharacterId::Kiba)){
 
 		if(!_monsterArray){
 			_monsterArray=CCArray::create();
@@ -5493,7 +5494,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 		clone->_isBati=true;
 		_monsterArray->addObject(clone);
 	
-	}else if(this->isCharacter("DevaPath")){
+	}else if(this->isCharacter(CharacterId::DevaPath)){
 		if(!_monsterArray){
 			_monsterArray=CCArray::create();
 			_monsterArray->retain();
@@ -5505,15 +5506,15 @@ void ActionManager::setClone(CCNode* sender,void* date){
 		}
 		_monsterArray->addObject(clone);
 		clone->_isBati=true;
-	}else if(this->isCharacter("Tsunade")){
+	}else if(this->isCharacter(CharacterId::Tsunade)){
 		clone->setID(CCString::create("Slug"),CCString::create("Summon"),this->_group);
 		clone->_isBati=true;
-	}else if(this->isCharacter("Kakashi")){
+	}else if(this->isCharacter(CharacterId::Kakashi)){
 		clone->setID(CCString::create("DogWall"),CCString::create("Summon"),this->_group);
 			clone->setPosition(ccp(this->getPositionX()+(this->_isFlipped?-56:56),this->getPositionY()));
 		clone->setAnchorPoint(ccp(0.5f,0.1f));
 		clone->_isBati=true;
-	}else if(this->isCharacter("Deidara")){
+	}else if(this->isCharacter(CharacterId::Deidara)){
 		clone->setID(CCString::create("Centipede"),CCString::create("Summon"),this->_group);
 		clone->_isBati=true;
 	}
@@ -5535,7 +5536,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	clone->_hpBar->getHPBAR()->setScaleX(clone->getHpPercent());
 	
 	this->finishClone(clone,cloneTime);
-	if(this->isCharacter("Kakashi")){
+	if(this->isCharacter(CharacterId::Kakashi)){
 		clone->setnAttackValue(1060);
 	}
 
@@ -5570,9 +5571,9 @@ void ActionManager::setClone(CCNode* sender,void* date){
 
 
 	if(this->clonesExpire() ||
-		this->isCharacter("Kakashi") ||
-		this->isCharacter("Tsunade") ||
-		this->isCharacter("Deidara")
+		this->isCharacter(CharacterId::Kakashi) ||
+		this->isCharacter(CharacterId::Tsunade) ||
+		this->isCharacter(CharacterId::Deidara)
 		){
 		clone->scheduleOnce(schedule_selector(Hero::removeClone),float(cloneTime));	
 	}
@@ -5950,7 +5951,7 @@ void ActionManager::setMonPer(float dt){
 	CCObject* pObject;
 	CCARRAY_FOREACH(_monsterArray,pObject){
 		Monster* rideMonster=(Monster*) pObject;
-		if((rideMonster->isCharacter("Spider") || rideMonster->isCharacter("Mouse")) &&
+		if((rideMonster->isCharacter(CharacterId::Spider) || rideMonster->isCharacter(CharacterId::Mouse)) &&
 			rideMonster->getActionState()!=ACTION_STATE_DEAD){
 			aliveRideMonsters++;
 		}
@@ -5963,9 +5964,9 @@ void ActionManager::setMonPer(float dt){
 	Monster* monster=Monster::create();
 	monster->setDelegate(_delegate);
 
-	if(this->isCharacter("Deidara")){
+	if(this->isCharacter(CharacterId::Deidara)){
 		monster->setID(CCString::create("Spider"),CCString::create("Mon"),this->_group);
-	}else if(this->isCharacter("Sai")){
+	}else if(this->isCharacter(CharacterId::Sai)){
 		monster->setID(CCString::create("Mouse"),CCString::create("Mon"),this->_group);
 		CCDictionary* callValue2 = CCDictionary::create(); 
 		callValue2->setObject(CCString::create("Audio/Sai/ink_mouse.mp3"),1);
@@ -6021,7 +6022,7 @@ void ActionManager::setTrap(CCNode* sender,void* date){
 		};
 
 
-		if(this->isCharacter("ImmortalSasuke")){
+		if(this->isCharacter(CharacterId::ImmortalSasuke)){
 			CCPoint targetPoint;
 			if(_mainTarget){
 				targetPoint=_mainTarget->getPosition();
@@ -6189,13 +6190,13 @@ void ActionManager::setMonAttack(CCNode* sender,void* date){
 		CCObject* pObject;
 		CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 			Monster* mo=(Monster*) pObject;
-			if(!mo->isCharacter("Traps")){
+			if(!mo->isCharacter(CharacterId::Traps)){
 
-					if(this->isCharacter("Kiba")){
+					if(this->isCharacter(CharacterId::Kiba)){
 					mo->attack(SKILL1);
-					}else if (this->isCharacter("Kankuro")){
+					}else if (this->isCharacter(CharacterId::Kankuro)){
 
-						if (mo->isCharacter("Karasu")){
+						if (mo->isCharacter(CharacterId::Karasu)){
 							if (skillNum==1){
 							}else if(skillNum==2){				
 								mo->attack(SKILL2);
@@ -6203,9 +6204,9 @@ void ActionManager::setMonAttack(CCNode* sender,void* date){
 
 						}
 
-					}else if (this->isCharacter("Chiyo")){
+					}else if (this->isCharacter(CharacterId::Chiyo)){
 
-						if (mo->isCharacter("Parents")){
+						if (mo->isCharacter(CharacterId::Parents)){
 							if (skillNum==1 && !mo->_skillChangeBuffValue){
 								mo->attack(SKILL1);
 							}else if(skillNum==2){				
@@ -6214,8 +6215,8 @@ void ActionManager::setMonAttack(CCNode* sender,void* date){
 
 						}
 
-					}else if(this->isCharacter("Itachi")||
-						this->isCharacter("ImmortalSasuke")
+					}else if(this->isCharacter(CharacterId::Itachi)||
+						this->isCharacter(CharacterId::ImmortalSasuke)
 						){
 							if(this->_actionState==ACTION_STATE_ATTACK){
 									mo->attack(NAttack);
@@ -6237,8 +6238,8 @@ void ActionManager::setTransform(){
 	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this,"acceptAttack");
 	this->unschedule(schedule_selector(ActionManager::dehealBuff));
 
-	if(this->isCharacter("Lee") ||
-		this->isCharacter("RockLee")
+	if(this->isCharacter(CharacterId::Lee) ||
+		this->isCharacter(CharacterId::RockLee)
 		){
 
 			this->removeBuffEffect("dhBuff");
@@ -6287,8 +6288,8 @@ void ActionManager::setTransform(){
 
 
 	if(this->role()==Role::Player && 
-		!this->isCharacter("RockLee") &&
-		!this->isCharacter("Lee")
+		!this->isCharacter(CharacterId::RockLee) &&
+		!this->isCharacter(CharacterId::Lee)
 		){
 		_delegate->getHudLayer()->skill1Button->setCD(CCString::createWithFormat("%d",_sattackcoldDown1*1000));
 		_delegate->getHudLayer()->skill2Button->setCD(CCString::createWithFormat("%d",_sattackcoldDown2*1000));
@@ -6585,10 +6586,10 @@ void ActionManager::walk(CCPoint direction){
 		isHurtingTower=false;
 
 		if(_actionState==ACTION_STATE_ATTACK && 
-			(this->isCharacter("Suigetsu") ||
-			this->isCharacter("Jugo") ||
-			this->isCharacter("Hiruzen")  ||
-			this->isCharacter("Kisame")
+			(this->isCharacter(CharacterId::Suigetsu) ||
+			this->isCharacter(CharacterId::Jugo) ||
+			this->isCharacter(CharacterId::Hiruzen)  ||
+			this->isCharacter(CharacterId::Kisame)
 			) && _isOnlySkillLocked){
 				if(this->role()!=Role::Player){
 					return;
@@ -6609,18 +6610,18 @@ void ActionManager::walk(CCPoint direction){
 
 		
 		
-		if(this->isCharacter("Itachi") ||
-			this->isCharacter("ImmortalSasuke") ||
-			this->isCharacter("Chiyo")
+		if(this->isCharacter(CharacterId::Itachi) ||
+			this->isCharacter(CharacterId::ImmortalSasuke) ||
+			this->isCharacter(CharacterId::Chiyo)
 			){
 			if(this->getMonsterArray() && getMonsterArray()->count()>0){
 				CCObject* pObject;
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 					Monster* mo=(Monster*) pObject;
-					if(mo->isCharacter("ItachiSusano")||
-						mo->isCharacter("SasukeSusano")){
+					if(mo->isCharacter(CharacterId::ItachiSusano)||
+						mo->isCharacter(CharacterId::SasukeSusano)){
 						mo->setFlippedX(_isFlipped);
-					}else if(mo->isCharacter("Parents")){
+					}else if(mo->isCharacter(CharacterId::Parents)){
 						if (mo->_actionState==ACTION_STATE_IDLE){
 							mo->setFlippedX(_isFlipped);
 							mo->_isFlipped=_isFlipped;
@@ -6658,7 +6659,7 @@ bool ActionManager::hurt(){
 		CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 			Hero* tempHero=(Hero*) pObject;
 			if(this->group()==tempHero->group() &&
-				tempHero->isCharacter("Chiyo") &&
+				tempHero->isCharacter(CharacterId::Chiyo) &&
 				tempHero->_actionState!=ACTION_STATE_DEAD &&
 				tempHero->_buffStartTime
 				){
@@ -6669,11 +6670,11 @@ bool ActionManager::hurt(){
 				}		
 			}
 		}
-		if(this->isCharacter("Chiyo")){
+		if(this->isCharacter(CharacterId::Chiyo)){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 				Monster* monster=(Monster*) pObject;
-				if(monster->isCharacter("Parents") && !monster->_skillChangeBuffValue && monster->getActionState()!=ACTION_STATE_SATTACK  && monster->getActionState()!=ACTION_STATE_DEAD){
+				if(monster->isCharacter(CharacterId::Parents) && !monster->_skillChangeBuffValue && monster->getActionState()!=ACTION_STATE_SATTACK  && monster->getActionState()!=ACTION_STATE_DEAD){
 					CCPoint	toHero=ccpSub(monster->getPosition(),this->getPosition());
 					if(abs(toHero.x)<=48){
 					
@@ -6731,7 +6732,7 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 			CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 				Hero* tempHero=(Hero*) pObject;
 				if(this->group()==tempHero->group()&&
-					tempHero->isCharacter("Chiyo") &&
+					tempHero->isCharacter(CharacterId::Chiyo) &&
 					tempHero->_actionState!=ACTION_STATE_DEAD &&
 					tempHero->_buffStartTime
 					){
@@ -6743,11 +6744,11 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 				}
 			}
 
-			if(this->isCharacter("Chiyo")){
+			if(this->isCharacter(CharacterId::Chiyo)){
 				CCObject* pObject;
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 					Monster* monster=(Monster*) pObject;
-					if(monster->isCharacter("Parents") && !monster->_skillChangeBuffValue && monster->getActionState()!=ACTION_STATE_SATTACK  && monster->getActionState()!=ACTION_STATE_DEAD){
+					if(monster->isCharacter(CharacterId::Parents) && !monster->_skillChangeBuffValue && monster->getActionState()!=ACTION_STATE_SATTACK  && monster->getActionState()!=ACTION_STATE_DEAD){
 						CCPoint	toHero=ccpSub(monster->getPosition(),this->getPosition());
 						if(abs(toHero.x)<=48){
 							if(monster->_isCanSkill3){						
@@ -6787,7 +6788,7 @@ bool ActionManager::hardHurt(int delayTime,bool isHurtAction,bool isCatch,bool i
 				_isSticking=true;
 				ActionManager* attacker=(ActionManager *) _slayer;
 					CCString* path;
-				if(attacker->isCharacter("Kakuzu")){
+				if(attacker->isCharacter(CharacterId::Kakuzu)){
 					path=CCString::createWithFormat("%s_AirHurt_02.png",this->getCharacter()->getCString());
 				}else{
 					path=CCString::createWithFormat("%s_Hurt_02.png",this->getCharacter()->getCString());
@@ -6916,7 +6917,7 @@ void ActionManager::floatUP(float floatHeight, bool isCancelSkill){
 			CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 				Hero* tempHero=(Hero*) pObject;
 				if(this->group()==tempHero->group()&&
-					tempHero->isCharacter("Chiyo") &&
+					tempHero->isCharacter(CharacterId::Chiyo) &&
 					tempHero->_actionState!=ACTION_STATE_DEAD &&
 					tempHero->_buffStartTime
 					){
@@ -6928,11 +6929,11 @@ void ActionManager::floatUP(float floatHeight, bool isCancelSkill){
 				}
 			}
 
-			if(this->isCharacter("Chiyo")){
+			if(this->isCharacter(CharacterId::Chiyo)){
 				CCObject* pObject;
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 					Monster* monster=(Monster*) pObject;
-					if(monster->isCharacter("Parents") && !monster->_skillChangeBuffValue && monster->getActionState()!=ACTION_STATE_SATTACK  && monster->getActionState()!=ACTION_STATE_DEAD){
+					if(monster->isCharacter(CharacterId::Parents) && !monster->_skillChangeBuffValue && monster->getActionState()!=ACTION_STATE_SATTACK  && monster->getActionState()!=ACTION_STATE_DEAD){
 						CCPoint	toHero=ccpSub(monster->getPosition(),this->getPosition());
 						if(abs(toHero.x)<=48){
 							if(monster->_isCanSkill3){						
@@ -7027,7 +7028,7 @@ void ActionManager::dead(){
 		this->_controler=NULL;
 	}
 
-	if(!this->isCharacter("Minato")){
+	if(!this->isCharacter(CharacterId::Minato)){
 		this->setActionResume();
 	}else{
 		this->setActionResume2();
@@ -7055,8 +7056,8 @@ void ActionManager::dead(){
 		this->unschedule(schedule_selector(ActionManager::healBuff));
 		this->_buffStartTime=0;
 		this->unschedule(schedule_selector(ActionManager::dehealBuff));	
-		if(!this->isCharacter("RockLee") &&
-			!this->isCharacter("Lee")
+		if(!this->isCharacter(CharacterId::RockLee) &&
+			!this->isCharacter(CharacterId::Lee)
 			){
 			this->removeBuffEffect("all");
 		}else{
@@ -7096,7 +7097,7 @@ void ActionManager::dead(){
 		hearts+=1;
 	};
 
-	if(this->isCharacter("Kakuzu")){
+	if(this->isCharacter(CharacterId::Kakuzu)){
 		if(_heartEffect){
 			CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(CCString::createWithFormat("Heart_Effect_%02d.png",this->hearts)->getCString()); 
 			this->_heartEffect->setSpriteFrame(frame);
@@ -7109,8 +7110,8 @@ void ActionManager::dead(){
 
 	if(bamen>0){
 
-		if(this->isCharacter("Lee") ||
-		this->isCharacter("RockLee")
+		if(this->isCharacter(CharacterId::Lee) ||
+		this->isCharacter(CharacterId::RockLee)
 		){
 
 			if(bamen==5){
@@ -7389,8 +7390,8 @@ bool ActionManager::findEnemy2(const char* type){
 					if(this->group()==target->group()){
 						if(abs(toTarget.x)<_delegate->currentMap->getTileSize().width*3){
 
-							if(!target->isCharacter("Roshi")
-								&& !target->isCharacter("Han")){
+							if(!target->isCharacter(CharacterId::Roshi)
+								&& !target->isCharacter(CharacterId::Han)){
 
 									friendCombatPoint+=baseSkillCombatPoint+ target->getHP()+
 										(target->getCKR()/CKR_OUGIS)*target->_sattackCombatPoint4+ (target->getCKR2()/CKR2_OUGIS)*target->_sattackCombatPoint5;
@@ -7402,8 +7403,8 @@ bool ActionManager::findEnemy2(const char* type){
 					}else{
 
 
-						if(!target->isCharacter("Roshi")
-							&& !target->isCharacter("Han")){
+						if(!target->isCharacter(CharacterId::Roshi)
+							&& !target->isCharacter(CharacterId::Han)){
 						enemyCombatPoint+=baseSkillCombatPoint+target->getHP()
 							+(target->getCKR()/CKR_OUGIS)*target->_sattackCombatPoint4+ (target->getCKR2()/CKR2_OUGIS)*target->_sattackCombatPoint5;				
 						}
@@ -7530,8 +7531,8 @@ bool ActionManager::findTargetEnemy(const char* type,bool isTowerDected){
 						findSome=true;
 
 						if(target->isHurtingTower){
-							if(target->isCharacter("Choji")||
-								target->isCharacter("Sakura")){
+							if(target->isCharacter(CharacterId::Choji)||
+								target->isCharacter(CharacterId::Sakura)){
 									_mainTarget=target;
 									return true;
 							}
@@ -7548,8 +7549,8 @@ bool ActionManager::findTargetEnemy(const char* type,bool isTowerDected){
 						findSome=true;
 
 						if(target->isHurtingTower){
-							if(target->isCharacter("Choji")||
-								target->isCharacter("Sakura")){
+							if(target->isCharacter(CharacterId::Choji)||
+								target->isCharacter(CharacterId::Sakura)){
 									_mainTarget=target;
 									return true;
 							}
@@ -7755,6 +7756,11 @@ void ActionManager::setCharacter(CCString* character){
 	CC_SAFE_RETAIN(character);
 	CC_SAFE_RELEASE(_character);
 	_character=character;
+	_characterId=characterIdFromString(character?character->getCString():nullptr);
+	if(character && _characterId==CharacterId::None){
+		CCLOG("unknown character '%s': add it to CHARACTER_IDS (Heroes/CharacterId.h)",character->getCString());
+		AXASSERT(false,"unknown character");
+	}
 }
 
 void ActionManager::changeSide(CCPoint sp){
@@ -7766,15 +7772,15 @@ void ActionManager::changeSide(CCPoint sp){
 		this->_isFlipped=true;
 	}
 
-	if(this->isCharacter("Itachi") ||
-		this->isCharacter("ImmortalSasuke")
+	if(this->isCharacter(CharacterId::Itachi) ||
+		this->isCharacter(CharacterId::ImmortalSasuke)
 		){
 			if(this->getMonsterArray() && getMonsterArray()->count()>0){
 				CCObject* pObject;
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 					Monster* mo=(Monster*) pObject;
-					if(mo->isCharacter("ItachiSusano") ||
-						mo->isCharacter("SasukeSusano") 
+					if(mo->isCharacter(CharacterId::ItachiSusano) ||
+						mo->isCharacter(CharacterId::SasukeSusano) 
 						) 
 						
 						mo->_isFlipped=_isFlipped;

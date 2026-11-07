@@ -24,14 +24,14 @@ bool isDown(ActionManager* unit)
     return state == ACTION_STATE_KOCKDOWN || state == ACTION_STATE_FLOAT || state == ACTION_STATE_AIRHURT;
 }
 
-bool hasMonster(ActionManager* unit, const std::string& name)
+bool hasMonster(ActionManager* unit, CharacterId id)
 {
     if (!unit->getMonsterArray())
         return false;
     CCObject* object;
     CCARRAY_FOREACH(unit->getMonsterArray(), object)
     {
-        if (((ActionManager*)object)->isCharacter(name.c_str()))
+        if (((ActionManager*)object)->isCharacter(id))
             return true;
     }
     return false;
@@ -436,8 +436,8 @@ bool AIController::condsHold(const SkillRule& rule, ActionManager* target)
         else if (name == "lv") ok = (int)hero->getLV() >= (int)cond.value;
         else if (name == "bamenBelow") ok = (int)hero->bamen < (int)cond.value;
         else if (name == "bamenAtLeast") ok = (int)hero->bamen >= (int)cond.value;
-        else if (name == "noMonster") ok = !hasMonster(hero, cond.arg);
-        else if (name == "hasMonster") ok = hasMonster(hero, cond.arg);
+        else if (name == "noMonster") ok = !hasMonster(hero, characterIdFromString(cond.arg.c_str()));
+        else if (name == "hasMonster") ok = hasMonster(hero, characterIdFromString(cond.arg.c_str()));
         else if (name == "notHealing") ok = !hero->_isHealling;
         else if (name == "noBuffTime") ok = !hero->_buffStartTime;
         else if (name == "invisible") ok = !hero->_isVisable;
