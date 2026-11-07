@@ -1,17 +1,14 @@
 #pragma once
-#include "Heroes/CharacterId.h"
-#include <map>
+#include "Units/UnitFactory.h"
 
 class Hero;
 
-// Creates the unit object for a character: its own hero class when it has one,
+// Creates the unit object for a hero or a summon: its own class when it has one,
 // otherwise a plain Hero. The caller still sets it up with setID.
 namespace HeroFactory
 {
-using Creator = Hero* (*)();
-
-// characters with their own hero class; a hero's forms share their hero's class
-const std::map<CharacterId, Creator>& heroClasses();
+// a hero's forms share their hero's class
+const UnitClasses<Hero>& heroClasses();
 
 Hero* create(CharacterId character);
 }  // namespace HeroFactory
