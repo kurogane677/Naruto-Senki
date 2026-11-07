@@ -33,7 +33,6 @@ public:
 	
 
 
-	void prepareFileOGG(const char* listName,int type=0);
 
 	
 

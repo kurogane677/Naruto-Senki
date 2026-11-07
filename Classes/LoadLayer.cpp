@@ -96,7 +96,6 @@ void LoadLayer::preloadIMG(){
 
 	CCObject* pObject=NULL;
 	int i=0;
-	KTools* tool=KTools::create();
 
 	CCARRAY_FOREACH(tempHeros,pObject){
 
@@ -163,8 +162,6 @@ void LoadLayer::preloadIMG(){
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Flog/PainFlog.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Flog/ObitoFlog.plist");
 	
-	tool->prepareFileOGG("Effect");
-	tool->prepareFileOGG("Ougis");
 
 	
 	try{

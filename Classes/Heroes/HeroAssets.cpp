@@ -1,6 +1,6 @@
 #include "Heroes/HeroAssets.h"
 #include "Heroes/HeroRegistry.h"
-#include "MyUtils/KTools.h"
+#include "Compat/Compat2x.h"
 
 #include <map>
 
@@ -46,28 +46,17 @@ std::vector<std::string> sheets(const std::string& hero)
     return paths;
 }
 
-std::vector<std::string> soundSets(const std::string& hero)
-{
-    return HeroRegistry::forms(hero);
-}
-
 void load(const std::string& hero)
 {
     for (const std::string& path : sheets(hero))
         if (CCFileUtils::sharedFileUtils()->isFileExist(path))
             CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(path.c_str());
-    KTools* tool = KTools::create();
-    for (const std::string& soundSet : soundSets(hero))
-        tool->prepareFileOGG(soundSet.c_str());
 }
 
 void unload(const std::string& hero)
 {
     for (const std::string& path : sheets(hero))
         CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile(path.c_str());
-    KTools* tool = KTools::create();
-    for (const std::string& soundSet : soundSets(hero))
-        tool->prepareFileOGG(soundSet.c_str(), 1);
 }
 
 }  // namespace HeroAssets
