@@ -33,6 +33,8 @@ const char* nextForm(const std::string& name);
 const char* nextAwakening(const std::string& name);
 // the form wins are recorded under (SageNaruto -> Naruto); other names unchanged
 std::string baseForm(const std::string& name);
+// every form of the hero `name` belongs to, base form first; just `name` when it has no other form
+std::vector<std::string> forms(const std::string& name);
 
 // heroes with a CharRecord row: the HardCore COM pool
 std::vector<std::string> recordHeroes();

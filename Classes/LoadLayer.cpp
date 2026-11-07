@@ -1,4 +1,5 @@
 #include "LoadLayer.h"
+#include "Heroes/HeroAssets.h"
 #include "MyUtils/KTools.h"
 
 
@@ -95,7 +96,6 @@ void LoadLayer::preloadIMG(){
 
 	CCObject* pObject=NULL;
 	int i=0;
-	const char* path;
 	KTools* tool=KTools::create();
 
 	CCARRAY_FOREACH(tempHeros,pObject){
@@ -105,64 +105,7 @@ void LoadLayer::preloadIMG(){
 		CCString* player=CCString::create(tempdict->valueForKey("character")->getCString());
 
 		
-		//加载技能图包
-		// PVRImagesHavePremultipliedAlpha(true): not needed on Axmol (premultiplied alpha is read from the PVR header) 
-
-		if (strcmp(player->getCString(),"Kiba")!=0 &&
-			strcmp(player->getCString(),"Kakuzu")!=0 
-			){
-
-				path=CCString::createWithFormat("Element/Skills/%s_Skill.plist",player->getCString())->getCString();
-				CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(path);
-		}
-
-		//预加载音效
-		tool->prepareFileOGG(player->getCString());
-
-	
-
-
-		path=CCString::createWithFormat("Element/%s/%s.plist",player->getCString(),player->getCString())->getCString();
-		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(path);
-
-
-
-		//加载额外角色
-		if(strcmp(player->getCString(),"Jiraiya")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/SageJiraiya/SageJiraiya.plist");
-			tool->prepareFileOGG("SageJiraiya");
-		}else if(strcmp(player->getCString(),"Kankuro")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Karasu/Karasu.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Sanshouuo/Sanshouuo.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Saso/Saso.plist");
-		}else if(strcmp(player->getCString(),"Chiyo")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Parents/Parents.plist");	
-		}else if(strcmp(player->getCString(),"Kakuzu")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/MaskRaidon/MaskRaidon.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/MaskFudon/MaskFudon.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/MaskKadon/MaskKadon.plist");
-		}else if(strcmp(player->getCString(),"Naruto")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/RikudoNaruto/RikudoNaruto.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/SageNaruto/SageNaruto.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Kurama/Kurama.plist");
-			tool->prepareFileOGG("SageNaruto");
-			tool->prepareFileOGG("RikudoNaruto");
-		}else if(strcmp(player->getCString(),"Lee")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/RockLee/RockLee.plist");
-		}else if(strcmp(player->getCString(),"Tsunade")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Slug/Slug.plist");
-		}else if(strcmp(player->getCString(),"Kakashi")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/DogWall/DogWall.plist");
-		}else if(strcmp(player->getCString(),"Deidara")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Centipede/Centipede.plist");
-		}else if(strcmp(player->getCString(),"Pain")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Effects/FontEffect.plist");
-		}else if(strcmp(player->getCString(),"Sasuke")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/ImmortalSasuke/ImmortalSasuke.plist");
-			tool->prepareFileOGG("ImmortalSasuke");
-		}else if(strcmp(player->getCString(),"Kiba")==0){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Akamaru/Akamaru.plist");
-		}
+		HeroAssets::load(player->getCString());
 
 		
 		if(i==0 ||( (i==1 || i==2 ) && _isHardCoreMode) ){
@@ -176,16 +119,12 @@ void LoadLayer::preloadIMG(){
 			CCString* str;
 			
 			const char* file=CCString::createWithFormat("%s_Walk_",player->getCString())->getCString();
-			int frameCount;
-			if(strcmp(player->getCString(),"Konan")==0){
-				frameCount=1;
-			}else {
-				frameCount=7;
-			}
-
-			for(int i = 1; i < frameCount; i++){	
+			for(int i = 1; i < 7; i++){
 				str=CCString::createWithFormat("%s%02d.png",file,i);
 				CCSpriteFrame *frame =  CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(str->getCString());
+				if(!frame){
+					break;
+				}
 				animeFrames->addObject(frame);
 			}
 
@@ -211,10 +150,8 @@ void LoadLayer::preloadIMG(){
 
 	//加载守护忍
 	if(_isHardCoreMode){
-		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Roshi/Roshi.plist");
-		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Han/Han.plist");
-		tool->prepareFileOGG("Roshi");
-		tool->prepareFileOGG("Han");
+		HeroAssets::load("Roshi");
+		HeroAssets::load("Han");
 	}
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Flog/KotetsuFlog.plist");
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Element/Flog/FemalePainFlog.plist");
