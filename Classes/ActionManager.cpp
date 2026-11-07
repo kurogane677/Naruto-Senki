@@ -5355,7 +5355,7 @@ void ActionManager::setBulletGroup(float dt){
 
 void ActionManager::setClone(CCNode* sender,void* date){
 	int cloneTime=(int)(intptr_t) date;
-	Hero* clone=HeroFactory::create(this->getCharacter()->getCString());
+	Hero* clone=HeroFactory::create(this->characterId());
 	
 	if(this->_master){
 		clone->setMaster((Hero*)this);
