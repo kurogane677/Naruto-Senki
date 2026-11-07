@@ -364,11 +364,12 @@ Naruto Senki/
 │  │  ├─ HeroRegistry.*      #   daftar hero: slot select, record, COM, bentuk (forms)
 │  │  ├─ HeroAssets.*        #   sprite sheet yang dimuat/dibersihkan per hero
 │  │  ├─ HeroFactory.*       #   CharacterId → kelas hero/summon
-│  │  └─ Characters/         #   kelas hero: Naruto, Sakura, ...
+│  │  ├─ Characters/         #   kelas hero: Naruto, Sakura, Sai, Kakashi, RidingHero (Sai & Deidara), ...
+│  │  └─ Summons/            #   kelas summon (objek Hero): DogWall, ...
 │  ├─ Units/                 # ★ unit yang dibuat skill
 │  │  ├─ UnitFactory.h       #   template tabel kelas (dipakai HeroFactory & MonsterFactory)
 │  │  ├─ MonsterFactory.*    #   CharacterId → kelas monster
-│  │  └─ Monsters/           #   kelas monster: FudonSRK, Bikyu, ...
+│  │  └─ Monsters/           #   kelas monster: FudonSRK, Bikyu, InkDragon, RideMonster, ...
 │  ├─ ActionManager.*        # base class semua unit (state machine, damage, buff, hook virtual)
 │  ├─ Characters.*           # Hero + AI clone/guardian
 │  ├─ Element.*              # HeroElement, Flog (creep), Tower, Monster, Bullet
@@ -406,17 +407,21 @@ v1.0.0-beta merapikan kode asli tanpa mengubah gameplay ([#21](https://github.co
 | `Heroes/HeroAssets` | sprite sheet yang dibawa hero ke match: skill, setiap bentuk, summon/efek. `load()` di layar loading, `unload()` saat keluar match, simetris |
 | `Units/UnitFactory.h` | `UnitClasses<Base>`: tabel `CharacterId` → kelas. Karakter tanpa kelas sendiri dibuat sebagai `Base` biasa |
 | `Heroes/HeroFactory`, `Units/MonsterFactory` | tabel kelas hero/summon dan kelas monster. Menambah kelas = satu baris tabel |
-| `Heroes/Characters/`, `Units/Monsters/` | kelas per karakter. Kelas meng-override **hook virtual** (lihat di bawah); cabang yang dipakai bersama beberapa hero tetap di tempatnya sampai semua pemiliknya punya kelas |
+| `Heroes/Characters/`, `Heroes/Summons/`, `Units/Monsters/` | kelas per karakter. Hero yang berbagi mekanik memakai base bersama (misalnya `RidingHero` untuk tunggangan Sai dan Deidara). Kelas meng-override **hook virtual** (lihat di bawah); cabang yang dipakai bersama beberapa hero tetap di tempatnya sampai semua pemiliknya punya kelas |
 
 **Hook virtual** (dideklarasikan di `ActionManager.h` dan `Element.h`; ditambahkan hanya saat sebuah kelas membutuhkannya):
 
 | Hook | Dipanggil dari | Dipakai oleh |
 |---|---|---|
-| `onTransformSkillStart()` / `onTransformSkillEnd()` | `changeAction` / `resumeAction` | Naruto, Sakura |
+| `onTransformSkillStart()` / `onTransformSkillEnd()` | `changeAction` / `resumeAction` | Naruto, Sakura, Kakashi, RidingHero |
+| `onTransformSkillCancel()` | `setActionResume` (buff berakhir lebih awal) | RidingHero |
+| `swapsSkillAnimations()` | `HeroElement::setID` | Kakashi |
 | `onTransportCommand()` | event `setTransport` | Sakura (melompat, bukan teleport) |
-| `cloneCharacter()`, `setUpClone()`, `cloneStartsWithOwnerHP()`, `finishClone()`, `cloneLifetime()`, `clonesExpire()` | `setClone` | Naruto (klon bayangan, Kurama) |
-| `cloneDamageSharePercent()`, `targetsHeroesOnly()`, `expGainPercent()`, `cloneAI()` | damage, pencarian target, EXP, AI klon | Naruto |
-| `Monster::onSpawn(owner)`, `Monster::attackEndsInIdle()` | `setMon`, `Monster::initAction` | FudonSRK, Bikyu |
+| `cloneCharacter()`, `setUpClone()`, `cloneStartsWithOwnerHP()`, `finishClone()`, `cloneLifetime()`, `clonesExpire()` | `setClone` | Naruto (klon bayangan, Kurama), Kakashi (DogWall) |
+| `cloneDamageSharePercent()`, `expGainPercent()` | damage klon, EXP | Naruto |
+| `targetsHeroesOnly()` | command `findTarget`, `Monster::setAI` | Naruto, RideMonster |
+| `ownAI()` | `Hero::setAI` (klon/summon tanpa AI controller) | Naruto (klon bayangan), DogWall |
+| `Monster::onSpawn(owner)`, `Monster::attackEndsInIdle()` | `setMon`, `Monster::initAction` | FudonSRK, Bikyu, InkDragon |
 
 **Event `setClone`**: jenis klon ditentukan oleh skill yang sedang dipakai (`_actionState`: skill01–03, ougi 1, ougi 2), bukan oleh angka di XML. Angka itu hanya durasi; beberapa durasi dikunci di kode (misalnya Kurama 9 detik).
 

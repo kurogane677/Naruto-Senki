@@ -42,7 +42,7 @@ Ringkasan lengkap ada di README, bagian *Arsitektur kode (v1.0.0-beta)*. Yang pe
 1. Kumpulkan semua cabang `isCharacter(CharacterId::<Hero>)` dan `strcmp` nama hero itu. Pisahkan cabang **khusus hero itu** dari cabang **bersama** (misalnya `Sakura || Tsunade`). Cabang bersama tetap di tempatnya.
 2. Buat `Classes/Heroes/Characters/<Hero>.h/.cpp` (`class <Hero> : public Hero`, `CREATE_FUNC`), lalu pindahkan cabang khusus ke override hook. Kalau hook yang dibutuhkan belum ada, tambahkan di `ActionManager.h` dengan default "tidak ditangani".
 3. Daftarkan di tabel `HeroFactory::heroClasses()`; semua bentuk hero memakai kelas yang sama.
-4. Summon dan monster milik hero itu ikut dipindah di PR yang sama bila punya perilaku khusus (#54, #98): summon lewat `HeroFactory` + `cloneCharacter()`, monster lewat `MonsterFactory` + `Monster::onSpawn()`.
+4. Summon dan monster milik hero itu ikut dipindah di PR yang sama bila punya perilaku khusus (#54, #98): summon lewat `HeroFactory` + `cloneCharacter()` (kelasnya di `Classes/Heroes/Summons/`, AI-nya lewat `ownAI()`), monster lewat `MonsterFactory` + `Monster::onSpawn()`. Mekanik yang identik di beberapa hero dipindah ke base bersama (contoh: `RidingHero` untuk Sai dan Deidara).
 5. Pastikan perilaku identik. Baca kode sebelum dan sesudah baris yang dipindah: urutan pemanggilan, nilai yang ditimpa kemudian, dan `return` lebih awal.
 
 ### Akses member protected
@@ -89,7 +89,8 @@ Kelas hero tidak bisa mengakses member `protected` lewat pointer `Hero*` milik o
 | #93 | Kelas Sakura; tabel `HeroFactory` |
 | #95, #96 | Fondasi `UnitClasses`/`MonsterFactory`; monster Naruto |
 | #97, #98 | `setClone`: identitas klon dari skill; durasi Kurama strict |
+| #100 | Kelas Sai; base `RidingHero` bersama Deidara; `RideMonster`, `InkDragon` |
 | #54 | Sisa summon dan monster, dipindah bersama hero pemiliknya |
 | #85 | Perubahan roster COM (sudah di-merge, soak belum) |
 
-Urutan pengerjaan kelas hero mengikuti layar select HardCore: Naruto, Sakura, **Sai** (berikutnya), Kakashi, Shikamaru, Ino, Choji, Asuma, dan seterusnya.
+Urutan pengerjaan kelas hero mengikuti layar select HardCore: Naruto, Sakura, Sai, Kakashi, **Shikamaru** (berikutnya), Ino, Choji, Asuma, dan seterusnya. Daftar lengkapnya: `HeroRegistry::heroes()` (diurutkan menurut slot HardCore).
