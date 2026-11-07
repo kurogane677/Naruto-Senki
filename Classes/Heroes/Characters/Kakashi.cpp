@@ -4,7 +4,7 @@
 namespace
 {
 constexpr float kDogWallDistance = 56;
-constexpr int kDogWallAttack = 1060;
+constexpr int kDogWallAttack = 800;
 }  // namespace
 
 bool Kakashi::onTransformSkillStart()
