@@ -45,6 +45,19 @@ TEST_CASE("monsters that behave the same share a monster class")
     CHECK(classes.count(CharacterId::Kage) == 0);
 }
 
+TEST_CASE("Sai and Deidara ride the same way: their own classes, one ride monster class")
+{
+    const auto& heroes = HeroFactory::heroClasses().classes();
+    REQUIRE(heroes.count(CharacterId::Sai));
+    REQUIRE(heroes.count(CharacterId::Deidara));
+    CHECK(heroes.at(CharacterId::Sai) != heroes.at(CharacterId::Deidara));
+
+    const auto& monsters = MonsterFactory::monsterClasses().classes();
+    REQUIRE(monsters.count(CharacterId::Mouse));
+    CHECK(monsters.at(CharacterId::Spider) == monsters.at(CharacterId::Mouse));
+    CHECK(monsters.count(CharacterId::InkDragon) == 1);
+}
+
 TEST_CASE("no hero has a monster class")
 {
     const std::set<CharacterId> heroes = heroesAndForms();
