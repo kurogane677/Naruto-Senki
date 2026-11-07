@@ -5356,7 +5356,7 @@ void ActionManager::setBulletGroup(float dt){
 
 void ActionManager::setClone(CCNode* sender,void* date){
 	int cloneTime=(int)(intptr_t) date;
-	Hero* clone=HeroFactory::create(this->characterId());
+	Hero* clone=HeroFactory::create(this->cloneCharacter());
 	
 	if(this->_master){
 		clone->setMaster((Hero*)this);
@@ -5368,7 +5368,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 			
 	clone->setDelegate(_delegate) ;
 	clone->setPosition(ccp(this->getPositionX()+(this->_isFlipped?-32:32),this->getPositionY()-1));
-	if(this->setUpClone(clone,cloneTime)){
+	if(this->setUpClone(clone)){
 		// the hero class gave the clone its identity
 	}else if(this->isCharacter(CharacterId::Kakuzu)){
 		if(!_monsterArray){
@@ -5434,12 +5434,12 @@ void ActionManager::setClone(CCNode* sender,void* date){
 			_monsterArray=CCArray::create();
 			_monsterArray->retain();
 		}
-		if(cloneTime==0){
+		if(_actionState==ACTION_STATE_SATTACK){
 			clone->setID(CCString::create("Karasu"),CCString::create("Kuilei"),this->_group);
-		}else if(cloneTime==1){
+		}else if(_actionState==ACTION_STATE_OATTACK){
 			clone->setID(CCString::create("Sanshouuo"),CCString::create("Kuilei"),this->_group);
 			this->lockOugis(OugisButton::Ougis1);
-		}else if(cloneTime==2){
+		}else if(_actionState==ACTION_STATE_O2ATTACK){
 			clone->setID(CCString::create("Saso"),CCString::create("Kuilei"),this->_group);
 			this->lockOugis(OugisButton::Ougis2);
 		}
@@ -5483,7 +5483,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	}
 
 
-	if(this->cloneStartsWithOwnerHP(cloneTime)){
+	if(this->cloneStartsWithOwnerHP()){
 		clone->setHP(this->getHP());
 		
 	}else{	
@@ -5498,7 +5498,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	clone->setHPbar();
 	clone->_hpBar->getHPBAR()->setScaleX(clone->getHpPercent());
 	
-	this->finishClone(clone,cloneTime);
+	this->finishClone(clone);
 	if(this->isCharacter(CharacterId::Kakashi)){
 		clone->setnAttackValue(1060);
 	}
@@ -5538,7 +5538,7 @@ void ActionManager::setClone(CCNode* sender,void* date){
 		this->isCharacter(CharacterId::Tsunade) ||
 		this->isCharacter(CharacterId::Deidara)
 		){
-		clone->scheduleOnce(schedule_selector(Hero::removeClone),float(cloneTime));	
+		clone->scheduleOnce(schedule_selector(Hero::removeClone),this->cloneLifetime(cloneTime));	
 	}
 	
 }

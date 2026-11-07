@@ -7,6 +7,7 @@ using Names = std::vector<std::string>;
 // The lists below are the arrays the registry replaced, copied as they were in
 // v0.0.7-beta. Select screens must keep the same heroes in the same places; the
 // COM pools must keep the same heroes (each is drawn with the same chance in any order).
+// Roster changes since then: #85 (Orochimaru and Pain records, Shikamaru as a Training COM).
 
 static std::set<std::string> asSet(const Names& names)
 {
@@ -19,7 +20,8 @@ TEST_CASE("CharRecord heroes and HardCore COM opponents (KTools, NetworkLayer)")
                             "Tenten", "Jiraiya", "Suigetsu", "Tsunade", "Tobirama", "Neji",    "Ino",
                             "Asuma",  "Gaara",   "Karin",   "Sasuke",  "Hidan",   "Choji",   "Kankuro",
                             "Shino",  "Minato",  "Tobi",    "Kakuzu",  "Hinata",  "Shikamaru", "Chiyo",
-                            "Kisame", "Hiruzen", "Kiba",    "Jugo",    "Lee",     "Kurenai"};
+                            "Kisame", "Hiruzen", "Kiba",    "Jugo",    "Lee",     "Kurenai",
+                            "Orochimaru", "Pain"};  // #85
     CHECK(HeroRegistry::recordHeroes().size() == expected.size());
     CHECK(asSet(HeroRegistry::recordHeroes()) == asSet(expected));
 }
@@ -29,7 +31,8 @@ TEST_CASE("Training COM opponents (SelectLayer)")
     const Names expected = {"Konan",   "Sakura", "Naruto",  "Sai",    "Deidara", "Kakashi",  "Itachi", "Tenten",
                             "Jiraiya", "Suigetsu", "Tsunade", "Tobirama", "Neji", "Ino",     "Asuma",  "Gaara",
                             "Karin",   "Sasuke", "Hidan",   "Choji",  "Kankuro", "Shino",    "Minato", "Tobi",
-                            "Kakuzu",  "Hinata", "Hiruzen", "Kiba",   "Jugo",    "Lee",      "Kurenai"};
+                            "Kakuzu",  "Hinata", "Hiruzen", "Kiba",   "Jugo",    "Lee",      "Kurenai",
+                            "Shikamaru"};  // #85
     CHECK(HeroRegistry::trainingOpponents().size() == expected.size());
     CHECK(asSet(HeroRegistry::trainingOpponents()) == asSet(expected));
 }
