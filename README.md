@@ -12,7 +12,8 @@ Port dari game Naruto Senki (game 2D *lane battle* Konoha vs Akatsuki dengan tow
 | Engine | [Axmol](https://github.com/axmolengine/axmol) **v2.11.5** (LTS) |
 | Platform | Windows 10/11 **x64**. Android arm64: APK debug teruji di Galaxy A55 / Android 16 (lihat [Build APK Android](#build-apk-android)) |
 | Bahasa | C++20 (kode game legacy C++03 melalui lapisan kompatibilitas) |
-| Branch kerja | `axmol-migration` |
+| Versi berikutnya | **v1.0.0-beta**: refactor arsitektur tanpa ubah gameplay ([#21](https://github.com/kurogane677/Naruto-Senki/issues/21)) |
+| Branch kerja | `main`, perubahan lewat PR dari branch `chore/` `feat/` `fix/` `docs/` |
 
 ---
 
@@ -24,13 +25,16 @@ Port dari game Naruto Senki (game 2D *lane battle* Konoha vs Akatsuki dengan tow
 5. [Build APK Android](#build-apk-android)
 6. [Cakupan MVP](#cakupan-mvp)
 7. [Struktur proyek](#struktur-proyek)
-8. [Catatan teknis migrasi](#catatan-teknis-migrasi)
-9. [Pengujian](#pengujian)
-10. [Debugging & crash](#debugging--crash)
-11. [Known issues](#known-issues)
-12. [Aturan kontribusi](#aturan-kontribusi)
-13. [Roadmap](#roadmap)
-14. [Credits](#credits)
+8. [Arsitektur kode (v1.0.0-beta)](#arsitektur-kode-v100-beta)
+9. [Catatan teknis migrasi](#catatan-teknis-migrasi)
+10. [AI bot](#ai-bot)
+11. [Pengujian](#pengujian)
+12. [Debugging & crash](#debugging--crash)
+13. [Known issues](#known-issues)
+14. [Aturan kontribusi](#aturan-kontribusi)
+15. [Kolaborasi dengan AI](#kolaborasi-dengan-ai)
+16. [Roadmap](#roadmap)
+17. [Credits](#credits)
 
 ---
 
@@ -338,7 +342,8 @@ Lalu buka folder `proj.android` di Android Studio, set *Gradle JDK* ke JDK 17, p
 | Coin tersimpan di `sql.db` | ✅ |
 | Mode HardCore: dialog konfirmasi, pilih COM1/COM2/hero, peta 2–5 | ✅ (M6), belum diuji menyeluruh di semua peta |
 | Gear shop, guardian Roshi/Han | 🟡 belum diuji |
-| Ranking, Skill/Record, Credits | 🟡 compile & tampil, belum diuji menyeluruh |
+| Skill/Record, Credits | 🟡 compile & tampil, belum diuji menyeluruh |
+| Ranking | ⛔ dihapus (#86): datanya hanya contoh, belum dipakai |
 | Login / group / upload skor (online) | ⛔ dimatikan (server lama tidak ada; tombol upload disembunyikan) |
 | Bot COM (kawan & lawan) bergerak sejak awal match | ✅ (`9cd562d`) |
 | Resolusi 16:9 | ✅ (`75c1a22`) |
@@ -350,29 +355,72 @@ Lalu buka folder `proj.android` di Android Studio, set *Gradle JDK* ke JDK 17, p
 
 ```
 Naruto Senki/
-├─ CMakeLists.txt            # proyek Axmol: source dari Classes/, resource dari Resources/
+├─ CMakeLists.txt            # proyek Axmol: source dari Classes/, resource dari Resources/; -D_AX_TESTS=ON menambah target test
 ├─ cmake/modules/            # modul CMake template Axmol (+ CrashHandler di AXGameSourceSetup)
 ├─ Classes/                  # kode game (cocos2d-x 2.x style, UTF-8)
 │  ├─ Compat/                # ★ lapisan kompatibilitas 2.x → Axmol (Compat2x.h/.cpp)
-│  ├─ ActionManager.*        # base class semua unit (state machine, damage, buff, AI helper)
-│  ├─ Characters.*           # Hero + AI summon/clone/guardian
-│  ├─ AI/                    # AI bot: AIController, TeamBrain, profil (ProfilesData.cpp), build gear (lihat bagian AI bot)
-│  ├─ AutoPlay.*             # mode uji AI-vs-AI (NS_AUTOPLAY=1)
+│  ├─ Heroes/                # ★ identitas & data hero (lihat Arsitektur kode)
+│  │  ├─ CharacterId.*       #   daftar tertutup semua unit + enum CharacterId
+│  │  ├─ HeroRegistry.*      #   daftar hero: slot select, record, COM, bentuk (forms)
+│  │  ├─ HeroAssets.*        #   sprite sheet yang dimuat/dibersihkan per hero
+│  │  ├─ HeroFactory.*       #   CharacterId → kelas hero/summon
+│  │  └─ Characters/         #   kelas hero: Naruto, Sakura, ...
+│  ├─ Units/                 # ★ unit yang dibuat skill
+│  │  ├─ UnitFactory.h       #   template tabel kelas (dipakai HeroFactory & MonsterFactory)
+│  │  ├─ MonsterFactory.*    #   CharacterId → kelas monster
+│  │  └─ Monsters/           #   kelas monster: FudonSRK, Bikyu, ...
+│  ├─ ActionManager.*        # base class semua unit (state machine, damage, buff, hook virtual)
+│  ├─ Characters.*           # Hero + AI clone/guardian
 │  ├─ Element.*              # HeroElement, Flog (creep), Tower, Monster, Bullet
+│  ├─ Types.h                # enum Role, Group
+│  ├─ AI/                    # AI bot: AIController, TeamBrain, profil (ProfilesData.cpp), SummonController, build gear
+│  ├─ AutoPlay.*             # mode uji AI-vs-AI (NS_AUTOPLAY=1), dipakai tools/soak.ps1
 │  ├─ GameLayer.*            # dunia game, spawn, kamera, kondisi menang
 │  ├─ HudLayer.*, ActionButton.*, JoyStick.*   # HUD & input
 │  ├─ StartMenu.*, SelectLayer.*, NetworkLayer.*, LoadLayer.*   # menu & alur
-│  ├─ GameOver.*, PauseLayer.*, GearLayer.*, SkillLayer.*, RankingLayer.*
-│  └─ MyUtils/               # KTools (SQLite/XML), MD5, sqlite3, tinyxml2, util UI
+│  ├─ GameOver.*, PauseLayer.*, GearLayer.*, SkillLayer.*, CreditsLayer.*
+│  └─ MyUtils/               # KTools (SQLite/XML), sqlite3, tinyxml2, util UI
+├─ Tests/                    # unit test doctest (lihat Pengujian)
+├─ tools/soak.ps1            # soak autoplay: ringkasan JSON + perbandingan baseline
 ├─ Resources/                # aset (sprite plist/pvr, audio mp3/ogg, peta .tmx, data XML)
 ├─ proj.win32/               # entry point Windows + CrashHandler
 ├─ proj.android/             # proyek Gradle Android dari template Axmol (lihat Build APK Android)
 │  └─ app/src/net/zakume/game/DialogUtils.java   # dialog Exit yang dipanggil lewat JNI
 ├─ .github/workflows/        # build.yaml: build Win64 + APK dan GitHub Release saat push tag v*
 ├─ .axproj                   # metadata proyek Axmol: versi engine, package name Android
+├─ AGENTS.md / CLAUDE.md     # panduan teknis untuk asisten AI (lihat Kolaborasi dengan AI)
 ├─ MIGRATION_ROADMAP.md      # urutan kerja migrasi, checklist, log keputusan
 └─ MIGRATION_PLAN_AXMOL.md   # referensi teknis: pemetaan API, risiko
 ```
+
+---
+
+## Arsitektur kode (v1.0.0-beta)
+
+v1.0.0-beta merapikan kode asli tanpa mengubah gameplay ([#21](https://github.com/kurogane677/Naruto-Senki/issues/21)). Targetnya: perilaku khusus karakter pindah dari rantai `if (isCharacter(...))`/`strcmp` ke kelas masing-masing, dan daftar yang tersebar menjadi data di satu tempat. Pekerjaan dilakukan bertahap per hero, mengikuti urutan layar select.
+
+| Modul | Isi |
+|---|---|
+| `Heroes/CharacterId.h` | `CHARACTER_IDS`: **daftar tertutup** semua unit (hero, bentuk, guardian, summon, monster, trap, bullet, flog, tower). Enum dan tabel nama → id dibuat dari daftar ini. `setCharacter` mencari id sekali; nama yang tidak dikenal dicatat di log dan memicu assert di build Debug. Karakter hanya ditambahkan oleh tim, jadi tidak ada fallback untuk karakter mod |
+| `Heroes/HeroRegistry` | satu daftar hero: slot layar Training/HardCore, punya record atau tidak, bisa jadi COM Training, skill stealth, dan rantai bentuk (Naruto → Sage → Rikudo, Lee ↔ RockLee) |
+| `Heroes/HeroAssets` | sprite sheet yang dibawa hero ke match: skill, setiap bentuk, summon/efek. `load()` di layar loading, `unload()` saat keluar match, simetris |
+| `Units/UnitFactory.h` | `UnitClasses<Base>`: tabel `CharacterId` → kelas. Karakter tanpa kelas sendiri dibuat sebagai `Base` biasa |
+| `Heroes/HeroFactory`, `Units/MonsterFactory` | tabel kelas hero/summon dan kelas monster. Menambah kelas = satu baris tabel |
+| `Heroes/Characters/`, `Units/Monsters/` | kelas per karakter. Kelas meng-override **hook virtual** (lihat di bawah); cabang yang dipakai bersama beberapa hero tetap di tempatnya sampai semua pemiliknya punya kelas |
+
+**Hook virtual** (dideklarasikan di `ActionManager.h` dan `Element.h`; ditambahkan hanya saat sebuah kelas membutuhkannya):
+
+| Hook | Dipanggil dari | Dipakai oleh |
+|---|---|---|
+| `onTransformSkillStart()` / `onTransformSkillEnd()` | `changeAction` / `resumeAction` | Naruto, Sakura |
+| `onTransportCommand()` | event `setTransport` | Sakura (melompat, bukan teleport) |
+| `cloneCharacter()`, `setUpClone()`, `cloneStartsWithOwnerHP()`, `finishClone()`, `cloneLifetime()`, `clonesExpire()` | `setClone` | Naruto (klon bayangan, Kurama) |
+| `cloneDamageSharePercent()`, `targetsHeroesOnly()`, `expGainPercent()`, `cloneAI()` | damage, pencarian target, EXP, AI klon | Naruto |
+| `Monster::onSpawn(owner)`, `Monster::attackEndsInIdle()` | `setMon`, `Monster::initAction` | FudonSRK, Bikyu |
+
+**Event `setClone`**: jenis klon ditentukan oleh skill yang sedang dipakai (`_actionState`: skill01–03, ougi 1, ougi 2), bukan oleh angka di XML. Angka itu hanya durasi; beberapa durasi dikunci di kode (misalnya Kurama 9 detik).
+
+**Aturan data**: nilai, frame, suara, teks, dan kombinasi event di `Resources/` bebas diubah. Kosakata jenis (nama karakter, tipe event/aksi, role, group) bersifat strict: harus ada di daftar kode, dan test data (`Tests/CharacterIdTest.cpp`, `Tests/HeroAssetsTest.cpp`) memeriksa semua XML dan peta.
 
 ---
 
@@ -415,7 +463,7 @@ AI hero ditulis ulang menjadi **data-driven** (`Classes/AI/`). Sebelumnya ada se
 
 | Bagian | Isi |
 |---|---|
-| `ProfilesData.cpp` | Profil per hero dalam C++ (gaya builder): **role**, **build gear**, dan **aturan skill**, misalnya `rule(Slot::Skill2).range(128, 32).minRange(64).when("invisible", "gp")`. Format lengkap ada di komentar kepala file. Profil ikut terkompilasi, jadi perilaku bot **tidak** bisa diubah lewat APK. Hero tanpa profil (mis. hero mod) memakai `builtinDefaultProfile()`; Guardian (`usesLegacyAI`) tetap memakai AI lamanya |
+| `ProfilesData.cpp` | Profil per hero dalam C++ (gaya builder): **role**, **build gear**, dan **aturan skill**, misalnya `rule(Slot::Skill2).range(128, 32).minRange(64).when("invisible", "gp")`. Format lengkap ada di komentar kepala file. Profil ikut terkompilasi, jadi perilaku bot **tidak** bisa diubah lewat APK. Hero tanpa profil memakai `builtinDefaultProfile()`; Guardian (`usesLegacyAI`) tetap memakai AI lamanya |
 | `AIController` | Otak tiap bot: memilih target → bertahan (substitution, potion, mundur sampai pulih) → menghindar ougis → membela base/tower → bertarung → farm creep/tower → maju |
 | `TeamBrain` | Info satu tim: target fokus (HP terendah), musuh yang memukul tower kita, momen push saat ≥2 hero musuh mati, kalah jumlah |
 | `AITuning.h` | Satu set parameter untuk semua bot, kawan dan lawan (dulu level "Hard"): jeda reaksi, peluang memakai skill, ambang potion/mundur, peluang menghindar, combo, fokus target |
@@ -494,12 +542,22 @@ Perilaku berikut **bawaan kode asli**, bukan akibat migrasi. Sesuai aturan roadm
 
 ## Aturan kontribusi
 
-- Kerjakan di branch `axmol-migration`. Satu commit untuk satu langkah kecil, dan tag tiap milestone (`m0`…`m4`, `mvp`).
+- **Alur kerja**: branch dari `main` dengan prefix `chore/`, `feat/`, `fix/`, atau `docs/`, lalu PR ke `main`. Tag rilis `v*` memicu CI (build Win64 + APK + GitHub Release); mulai v1.0.0-beta tag ditandatangani (`git tag -s`).
+- **Satu cakupan per commit.** Perbaikan lain yang ditemukan di tengah jalan menjadi commit terpisah. Jalankan build dan unit test **tepat sebelum commit**.
+- **v1.0.0-beta hanya refactor**: tanpa fitur baru, perbaikan bug gameplay, perubahan balance, atau aset baru, kecuali disetujui secara eksplisit dan dicatat di PR.
+- **Prinsip kode**: DRY, SOLID, KISS, YAGNI, dengan nama yang jelas. Kode baru mengikuti gaya file di sekitarnya (kode lama gaya tab cocos2d-x; modul baru di `Heroes/`, `Units/`, `AI/`, `Tests/` gaya 4 spasi). Target akhir: nol `strcmp` di kode game (kecuali sqlite3/tinyxml2).
 - **Jangan mencampur** perubahan format/encoding, migrasi API, dan perbaikan bug dalam satu commit.
 - Repo memakai `.gitattributes` `* -text`: **byte file disimpan apa adanya** (campuran CRLF/LF dari kode asli dipertahankan).
 - ⚠️ **Jangan memakai `sed -i` dari Git Bash** untuk mengedit source, karena diam-diam mengubah CRLF → LF. Gunakan editor biasa atau script Python yang bekerja per byte.
 - Jangan menyalin `.editorconfig` dari template Axmol (memaksa LF + trim whitespace pada kode lama).
+- Jangan commit keystore, password, atau APK.
 - Binary engine cocos2d-x 2.2.2 lama (satu-satunya salinan) disimpan di `C:\dev\naruto-senki-legacy-bin\`, di luar repo.
+
+---
+
+## Kolaborasi dengan AI
+
+Proyek ini dikerjakan bersama asisten AI (Claude Code). Panduan teknis untuk asisten ada di [`AGENTS.md`](AGENTS.md): perintah build/test, peta arsitektur, aturan kosakata strict, cara menambah kelas hero/monster, jebakan line ending, dan aturan alur kerja (kapan boleh commit, push, merge, atau membuat tag). `CLAUDE.md` hanya mengimpor `AGENTS.md`, agar Claude Code dan asisten lain membaca dokumen yang sama.
 
 ---
 
