@@ -314,7 +314,6 @@ void HeroElement::setID(CCString* character,CCString* role,CCString* group){
 
 	if(
 		this->isCharacter(CharacterId::Tenten) ||
-		this->isCharacter(CharacterId::DevaPath) ||
 		this->isCharacter(CharacterId::Ino) ||
 		this->isCharacter(CharacterId::Sakura) ||
 		this->isCharacter(CharacterId::Tobi) ||
@@ -635,13 +634,7 @@ void HeroElement::dealloc(){
 			}
 			
 
-			if(this->isCharacter(CharacterId::DevaPath)){
-							
-				this->getMaster()->_skillChangeBuffValue=0;
-
-				this->getMaster()->unlockOugis(OugisButton::Ougis2);
-
-			}else if(this->isCharacter(CharacterId::Akamaru) ||
+			if(this->isCharacter(CharacterId::Akamaru) ||
 				this->isCharacter(CharacterId::Karasu)||
 				this->isCharacter(CharacterId::Parents)
 				){

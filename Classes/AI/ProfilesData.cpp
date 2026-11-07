@@ -869,22 +869,6 @@ std::map<std::string, Profile> builtinProfiles()
     }
 
     {
-        Profile& profile = addProfile("Nagato");
-        profile.role = HeroRole::Ranged;
-        profile.builds["default"] = {6, 1, 5};
-        profile.hero = {
-            rule(Slot::Ougis2).range(64, 32).when("gp", "tNotBati"),
-            rule(Slot::Ougis1).range(64, 32),
-            rule(Slot::Skill3).range(96, 32).when("gp"),
-            rule(Slot::Skill2).range(96, 32).when("gp"),
-            rule(Slot::Skill1).range(64, 32).gate(128).when("gp"),
-        };
-        profile.farm = {
-            farm(Slot::Skill1),
-        };
-    }
-
-    {
         Profile& profile = addProfile("Pain");
         profile.builds["default"] = {6, 5, 10};
         profile.hero = {

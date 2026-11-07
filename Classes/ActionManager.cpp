@@ -2630,8 +2630,7 @@ void ActionManager::setAttackBox(CCNode* sender,void* date){
 	if(_actionState==ACTION_STATE_HURT){
 
 		if(this->isCharacter(CharacterId::Sasuke) || 
-			this->isCharacter(CharacterId::ImmortalSasuke) || 
-			this->isCharacter(CharacterId::DevaPath) ){
+			this->isCharacter(CharacterId::ImmortalSasuke) ){
 
 				if(_maxHP-_hp<=260){
 					this->setHP(this->getMaxHP());
@@ -5387,14 +5386,6 @@ void ActionManager::setClone(CCNode* sender,void* date){
 	clone->setPosition(ccp(this->getPositionX()+(this->_isFlipped?-32:32),this->getPositionY()-1));
 	if(this->setUpClone(clone,cloneTime)){
 		// the hero class gave the clone its identity
-	}else if(this->isCharacter(CharacterId::Nagato)){
-
-		clone->setID(CCString::create("DevaPath"),CCString::create("Clone"),this->_group);
-		clone->_isBati=true;		
-		this->lockOugis(OugisButton::Ougis2);
-
-		_skillChangeBuffValue=100;
-
 	}else if(this->isCharacter(CharacterId::Kakuzu)){
 		if(!_monsterArray){
 			_monsterArray=CCArray::create();
@@ -5494,18 +5485,6 @@ void ActionManager::setClone(CCNode* sender,void* date){
 		clone->_isBati=true;
 		_monsterArray->addObject(clone);
 	
-	}else if(this->isCharacter(CharacterId::DevaPath)){
-		if(!_monsterArray){
-			_monsterArray=CCArray::create();
-			_monsterArray->retain();
-		}
-		if(cloneTime==0){
-			clone->setID(CCString::create("AnimalPath"),CCString::create("Summon"),this->_group);
-		}else{
-			clone->setID(CCString::create("AsuraPath"),CCString::create("Summon"),this->_group);
-		}
-		_monsterArray->addObject(clone);
-		clone->_isBati=true;
 	}else if(this->isCharacter(CharacterId::Tsunade)){
 		clone->setID(CCString::create("Slug"),CCString::create("Summon"),this->_group);
 		clone->_isBati=true;

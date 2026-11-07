@@ -11,13 +11,11 @@
     X(Orochimaru) X(Pain) X(RikudoNaruto) X(RockLee) X(SageJiraiya) X(SageNaruto) X(Sai)        \
     X(Sakura) X(Sasuke) X(Shikamaru) X(Shino) X(Suigetsu) X(Tenten) X(Tobi) X(Tobirama)         \
     X(Tsunade)                                                                                  \
-    /* no data yet; setClone and its AI already handle it (DevaPath) */                         \
-    X(Nagato)                                                                                   \
     /* guardians */                                                                             \
     X(Han) X(Roshi)                                                                             \
     /* clones, summons and puppets */                                                           \
-    X(Akamaru) X(AnimalPath) X(AsuraPath) X(Centipede) X(DevaPath) X(DogWall) X(Karasu)         \
-    X(Kurama) X(MaskFudon) X(MaskKadon) X(MaskRaidon) X(Parents) X(Sanshouuo) X(Saso) X(Slug)   \
+    X(Akamaru) X(Centipede) X(DogWall) X(Karasu) X(Kurama) X(MaskFudon) X(MaskKadon)            \
+    X(MaskRaidon) X(Parents) X(Sanshouuo) X(Saso) X(Slug)                                       \
     /* monsters */                                                                              \
     X(Bikyu) X(Bug) X(BugPillar) X(BugTomado) X(ChuiDi) X(CircleMark) X(ClayBird) X(Crash)      \
     X(Crash2) X(DeidaraBom) X(Dogs) X(FakeDeidara) X(FakeItachi) X(FakeMinato) X(FakeShino)     \
