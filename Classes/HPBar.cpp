@@ -60,14 +60,14 @@ void HPBar::loseHP(float percent){
 	
 	if(_delegate->getDelegate()->_isHardCoreGame){
 
-		CharacterId gardTower;
+		CharacterId guardedCenter;
 		if(_delegate->getDelegate()->zhenying>0){
-			gardTower=CharacterId::AkatsukiCenter;
+			guardedCenter=CharacterId::AkatsukiCenter;
 		}else{
-			gardTower=CharacterId::KonohaCenter;
+			guardedCenter=CharacterId::KonohaCenter;
 		}
 		
-		if(this->_delegate->isCharacter(gardTower)){
+		if(this->_delegate->isCharacter(guardedCenter)){
 			if( !_delegate->getDelegate()->_isGuardian && percent<=0.8){
 				_delegate->getDelegate()->initGard();
 			}
@@ -78,7 +78,7 @@ void HPBar::loseHP(float percent){
 		if(_delegate->getDelegate()->_isGuardian){
 			ActionManager* _slayer=(ActionManager*) _delegate->_slayer;
 			if(_slayer){
-				if(this->_delegate->isCharacter(gardTower)){
+				if(this->_delegate->isCharacter(guardedCenter)){
 					_slayer->isHurtingTower=true;
 				}else{
 					_slayer->isHurtingTower=false;
@@ -240,21 +240,21 @@ void HPBar::loseHP(float percent){
 			//同队分享
 			CCObject* pObject;
 			CCARRAY_FOREACH(_delegate->getDelegate()->_CharacterArray,pObject){
-				Hero* otherSlayer=(Hero*) pObject;
-				if(currentSlayer->group()==otherSlayer->group() &&
-					currentSlayer->characterId()!=otherSlayer->characterId()
+				Hero* teammate=(Hero*) pObject;
+				if(currentSlayer->group()==teammate->group() &&
+					currentSlayer->characterId()!=teammate->characterId()
 					){
 
 						
-						if(otherSlayer->getLV()!=6){
-							otherSlayer->setEXP(otherSlayer->getEXP()+250);
-							otherSlayer->changeHPbar();
+						if(teammate->getLV()!=6){
+							teammate->setEXP(teammate->getEXP()+250);
+							teammate->changeHPbar();
 						}
 
 						
 
 
-						if (otherSlayer->role()==Role::Player){
+						if (teammate->role()==Role::Player){
 
 							if(_delegate->getDelegate()->_isHardCoreGame){
 								if(this->_delegate->getMaxHP() >40000){
@@ -277,12 +277,12 @@ void HPBar::loseHP(float percent){
 
 						if(_delegate->getDelegate()->_isHardCoreGame){
 							if(this->_delegate->getMaxHP() >40000){
-								  otherSlayer->addCoin(850);
+								  teammate->addCoin(850);
 							}else{
-								  otherSlayer->addCoin(350);
+								  teammate->addCoin(350);
 							}
 						}else{
-							  otherSlayer->addCoin(150);
+							  teammate->addCoin(150);
 						}
 
 					  
@@ -505,19 +505,19 @@ void HPBar::loseHP(float percent){
 				//同队分享
 				CCObject* pObject;
 				CCARRAY_FOREACH(_delegate->getDelegate()->_CharacterArray,pObject){
-					Hero* otherSlayer=(Hero*) pObject;
-					if(currentSlayer->group()==otherSlayer->group() &&
-						currentSlayer->characterId()!=otherSlayer->characterId()
+					Hero* teammate=(Hero*) pObject;
+					if(currentSlayer->group()==teammate->group() &&
+						currentSlayer->characterId()!=teammate->characterId()
 						){
 
 						
-						if(otherSlayer->getLV()!=6){
-							otherSlayer->setEXP(otherSlayer->getEXP()+25);
-							otherSlayer->changeHPbar();
+						if(teammate->getLV()!=6){
+							teammate->setEXP(teammate->getEXP()+25);
+							teammate->changeHPbar();
 						}
 
 						
-						if (otherSlayer->role()==Role::Player){
+						if (teammate->role()==Role::Player){
 							if(_delegate->getDelegate()->_isHardCoreGame){
 								if(_delegate->isCharacter(CharacterId::Han)||
 									_delegate->isCharacter(CharacterId::Roshi)
@@ -539,13 +539,13 @@ void HPBar::loseHP(float percent){
 							if(_delegate->isCharacter(CharacterId::Han)||
 								_delegate->isCharacter(CharacterId::Roshi)
 								){
-									otherSlayer->addCoin(850);
+									teammate->addCoin(850);
 							}else{
-								otherSlayer->addCoin(25+(_delegate->getLV()-1)*10);		
+								teammate->addCoin(25+(_delegate->getLV()-1)*10);		
 							}
 
 						}else{
-							otherSlayer->addCoin(25);
+							teammate->addCoin(25);
 						}
 						
 

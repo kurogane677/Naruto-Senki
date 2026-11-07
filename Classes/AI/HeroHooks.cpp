@@ -17,9 +17,9 @@ ActionManager* findMonster(ActionManager* owner, CharacterId id)
     CCObject* obj;
     CCARRAY_FOREACH(owner->getMonsterArray(), obj)
     {
-        ActionManager* m = (ActionManager*)obj;
-        if (m->isCharacter(id))
-            return m;
+        ActionManager* monster = (ActionManager*)obj;
+        if (monster->isCharacter(id))
+            return monster;
     }
     return nullptr;
 }

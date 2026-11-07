@@ -716,8 +716,8 @@ void ActionManager::acceptAttack(CCObject* object){
 									CCObject* pObject;
 									int countMON=0;
 									CCARRAY_FOREACH(Attacker->getMonsterArray(),pObject){
-										Monster* mo=(Monster*) pObject;
-										if(!mo->isCharacter(CharacterId::Traps)){
+										Monster* monster=(Monster*) pObject;
+										if(!monster->isCharacter(CharacterId::Traps)){
 											countMON++;
 										}
 
@@ -1423,9 +1423,9 @@ void ActionManager::setDamage(CCString* effectType,unsigned int attackValue,bool
 				if(this->isCharacter(CharacterId::Chiyo)){
 					CCObject* pObject;
 					CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-						Monster* mo=(Monster*) pObject;
-						if(mo->isCharacter(CharacterId::Parents) && !mo->_skillChangeBuffValue && mo->getActionState()!=ACTION_STATE_SATTACK){
-							CCPoint	sp=ccpSub(mo->getPosition(),this->getPosition());
+						Monster* monster=(Monster*) pObject;
+						if(monster->isCharacter(CharacterId::Parents) && !monster->_skillChangeBuffValue && monster->getActionState()!=ACTION_STATE_SATTACK){
+							CCPoint	sp=ccpSub(monster->getPosition(),this->getPosition());
 							if(abs(sp.x)<=48){
 								jianshang+=0.25;
 							}
@@ -1910,9 +1910,9 @@ void ActionManager::setItem(abType type){
 		) && this->getMonsterArray() && getMonsterArray()->count()>0){
 		CCObject* pObject;
 		CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-			Monster* mo=(Monster*) pObject;
-			if(!mo->isCharacter(CharacterId::Traps)){
-				mo->setItem(Item1);
+			Monster* monster=(Monster*) pObject;
+			if(!monster->isCharacter(CharacterId::Traps)){
+				monster->setItem(Item1);
 			}
 			
 		};
@@ -2679,13 +2679,13 @@ void ActionManager::getSticker(float dt){
 	CCObject* pObject;
 
 	CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
-		Hero* tempHero=(Hero*) pObject;
-		ActionManager* tempSticker=NULL;
-		if(tempHero->_sticker){
-			tempSticker=(ActionManager*) tempHero->_sticker;
+		Hero* hero=(Hero*) pObject;
+		ActionManager* sticker=NULL;
+		if(hero->_sticker){
+			sticker=(ActionManager*) hero->_sticker;
 		}
-		if( tempSticker && tempSticker->characterId()==this->characterId()
-			&& tempHero->_isSticking
+		if( sticker && sticker->characterId()==this->characterId()
+			&& hero->_isSticking
 			){
 				return;
 		}
@@ -2882,11 +2882,11 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 		if(this->getMonsterArray()  && this->_actionState!=ACTION_STATE_ATTACK){
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
 
-				Monster* mo=(Monster*) pObject;
-				if(mo->isCharacter(CharacterId::HiraishinMark)){
-					tsPosX=mo->getPositionX();
-					tsPosY=mo->getPositionY();
-					mo->attack(NAttack);
+				Monster* monster=(Monster*) pObject;
+				if(monster->isCharacter(CharacterId::HiraishinMark)){
+					tsPosX=monster->getPositionX();
+					tsPosY=monster->getPositionY();
+					monster->attack(NAttack);
 				}
 
 			};
@@ -4510,8 +4510,8 @@ void ActionManager::resumeAction(float dt){
 		if(this->getMonsterArray() && getMonsterArray()->count()>0){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-				Monster* mo=(Monster*) pObject;
-				mo->removeFromParent();
+				Monster* monster=(Monster*) pObject;
+				monster->removeFromParent();
 			};
 			this->getMonsterArray()->removeAllObjects();
 			this->setMonsterArray(NULL);
@@ -4629,8 +4629,8 @@ void ActionManager::resumeAction(float dt){
 		if(this->getMonsterArray() && getMonsterArray()->count()>0){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-				Monster* mo=(Monster*) pObject;
-				mo->removeFromParent();
+				Monster* monster=(Monster*) pObject;
+				monster->removeFromParent();
 			};
 			this->getMonsterArray()->removeAllObjects();
 			this->setMonsterArray(NULL);
@@ -4719,16 +4719,16 @@ void ActionManager::resumeAction(float dt){
 		if(this->getMonsterArray() && getMonsterArray()->count()>0){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-				ActionManager* mo=(ActionManager*) pObject;
+				ActionManager* monster=(ActionManager*) pObject;
 				//清除角色表的monter
-				int index=_delegate->_CharacterArray->indexOfObject(mo);
+				int index=_delegate->_CharacterArray->indexOfObject(monster);
 				if(index>=0){
 					_delegate->_CharacterArray->removeObjectAtIndex(index);
 				}
-				mo->setActionState(ACTION_STATE_DEAD);
-				CCNotificationCenter::sharedNotificationCenter()->removeObserver(mo,"acceptAttack");
-				mo->removeFromParent();	
-				mo=NULL;
+				monster->setActionState(ACTION_STATE_DEAD);
+				CCNotificationCenter::sharedNotificationCenter()->removeObserver(monster,"acceptAttack");
+				monster->removeFromParent();	
+				monster=NULL;
 
 			};
 
@@ -5116,16 +5116,16 @@ void ActionManager::setActionResume(){
 		if(this->getMonsterArray() && getMonsterArray()->count()>0){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-				ActionManager* mo=(ActionManager*) pObject;
+				ActionManager* monster=(ActionManager*) pObject;
 				//清除角色表的monter
-				int index=_delegate->_CharacterArray->indexOfObject(mo);
+				int index=_delegate->_CharacterArray->indexOfObject(monster);
 				if(index>=0){
 					_delegate->_CharacterArray->removeObjectAtIndex(index);
 				}
-				mo->setActionState(ACTION_STATE_DEAD);
-				CCNotificationCenter::sharedNotificationCenter()->removeObserver(mo,"acceptAttack");
-				mo->removeFromParent();	
-				mo=NULL;
+				monster->setActionState(ACTION_STATE_DEAD);
+				CCNotificationCenter::sharedNotificationCenter()->removeObserver(monster,"acceptAttack");
+				monster->removeFromParent();	
+				monster=NULL;
 
 			};
 			this->getMonsterArray()->removeAllObjects();
@@ -5398,16 +5398,16 @@ void ActionManager::setClone(CCNode* sender,void* date){
 		if(getMonsterArray() && getMonsterArray()->count()>0){
 			CCObject* pObject;
 			CCARRAY_FOREACH(getMonsterArray(),pObject){
-				Monster* mo=(Monster*) pObject;
-				if (mo->isCharacter(CharacterId::MaskRaidon)){
+				Monster* monster=(Monster*) pObject;
+				if (monster->isCharacter(CharacterId::MaskRaidon)){
 					countMon++;
 					isRaidon=true;
 				}
-				if (mo->isCharacter(CharacterId::MaskFudon)){
+				if (monster->isCharacter(CharacterId::MaskFudon)){
 					countMon++;
 					isFudon=true;
 				}
-				if (mo->isCharacter(CharacterId::MaskKadon)){
+				if (monster->isCharacter(CharacterId::MaskKadon)){
 					countMon++;
 					isKadon=true;
 				}
@@ -6168,28 +6168,28 @@ void ActionManager::setMonAttack(CCNode* sender,void* date){
 	if(this->getMonsterArray()){
 		CCObject* pObject;
 		CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-			Monster* mo=(Monster*) pObject;
-			if(!mo->isCharacter(CharacterId::Traps)){
+			Monster* monster=(Monster*) pObject;
+			if(!monster->isCharacter(CharacterId::Traps)){
 
 					if(this->isCharacter(CharacterId::Kiba)){
-					mo->attack(SKILL1);
+					monster->attack(SKILL1);
 					}else if (this->isCharacter(CharacterId::Kankuro)){
 
-						if (mo->isCharacter(CharacterId::Karasu)){
+						if (monster->isCharacter(CharacterId::Karasu)){
 							if (skillNum==1){
 							}else if(skillNum==2){				
-								mo->attack(SKILL2);
+								monster->attack(SKILL2);
 							}
 
 						}
 
 					}else if (this->isCharacter(CharacterId::Chiyo)){
 
-						if (mo->isCharacter(CharacterId::Parents)){
-							if (skillNum==1 && !mo->_skillChangeBuffValue){
-								mo->attack(SKILL1);
+						if (monster->isCharacter(CharacterId::Parents)){
+							if (skillNum==1 && !monster->_skillChangeBuffValue){
+								monster->attack(SKILL1);
 							}else if(skillNum==2){				
-								mo->attack(SKILL2);
+								monster->attack(SKILL2);
 							}
 
 						}
@@ -6198,7 +6198,7 @@ void ActionManager::setMonAttack(CCNode* sender,void* date){
 						this->isCharacter(CharacterId::ImmortalSasuke)
 						){
 							if(this->_actionState==ACTION_STATE_ATTACK){
-									mo->attack(NAttack);
+									monster->attack(NAttack);
 							}
 
 					}
@@ -6596,14 +6596,14 @@ void ActionManager::walk(CCPoint direction){
 			if(this->getMonsterArray() && getMonsterArray()->count()>0){
 				CCObject* pObject;
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-					Monster* mo=(Monster*) pObject;
-					if(mo->isCharacter(CharacterId::ItachiSusano)||
-						mo->isCharacter(CharacterId::SasukeSusano)){
-						mo->setFlippedX(_isFlipped);
-					}else if(mo->isCharacter(CharacterId::Parents)){
-						if (mo->_actionState==ACTION_STATE_IDLE){
-							mo->setFlippedX(_isFlipped);
-							mo->_isFlipped=_isFlipped;
+					Monster* monster=(Monster*) pObject;
+					if(monster->isCharacter(CharacterId::ItachiSusano)||
+						monster->isCharacter(CharacterId::SasukeSusano)){
+						monster->setFlippedX(_isFlipped);
+					}else if(monster->isCharacter(CharacterId::Parents)){
+						if (monster->_actionState==ACTION_STATE_IDLE){
+							monster->setFlippedX(_isFlipped);
+							monster->_isFlipped=_isFlipped;
 						}
 
 					}
@@ -7757,13 +7757,13 @@ void ActionManager::changeSide(CCPoint sp){
 			if(this->getMonsterArray() && getMonsterArray()->count()>0){
 				CCObject* pObject;
 				CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-					Monster* mo=(Monster*) pObject;
-					if(mo->isCharacter(CharacterId::ItachiSusano) ||
-						mo->isCharacter(CharacterId::SasukeSusano) 
+					Monster* monster=(Monster*) pObject;
+					if(monster->isCharacter(CharacterId::ItachiSusano) ||
+						monster->isCharacter(CharacterId::SasukeSusano) 
 						) 
 						
-						mo->_isFlipped=_isFlipped;
-						mo->setFlippedX(_isFlipped);
+						monster->_isFlipped=_isFlipped;
+						monster->setFlippedX(_isFlipped);
 				};
 			}
 	}

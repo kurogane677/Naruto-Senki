@@ -591,19 +591,19 @@ void HeroElement::dealloc(){
 		if(this->getMonsterArray() && getMonsterArray()->count()>0){
 			CCObject* pObject;
 			CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-				ActionManager* mo=(ActionManager*) pObject;
+				ActionManager* monster=(ActionManager*) pObject;
 
 				//清除角色表的monter
-				int index=_delegate->_CharacterArray->indexOfObject(mo);
+				int index=_delegate->_CharacterArray->indexOfObject(monster);
 				if(index>=0){
 					_delegate->_CharacterArray->removeObjectAtIndex(index);
 				}
-				CCNotificationCenter::sharedNotificationCenter()->removeObserver(mo,"acceptAttack");
-				mo->stopAllActions();
-				mo->unscheduleAllSelectors();
-				mo->setActionState(ACTION_STATE_DEAD);
-				mo->removeFromParent();
-				mo=NULL;
+				CCNotificationCenter::sharedNotificationCenter()->removeObserver(monster,"acceptAttack");
+				monster->stopAllActions();
+				monster->unscheduleAllSelectors();
+				monster->setActionState(ACTION_STATE_DEAD);
+				monster->removeFromParent();
+				monster=NULL;
 
 			};
 			this->getMonsterArray()->removeAllObjects();
@@ -697,18 +697,18 @@ void HeroElement::dealloc(){
 				if(this->getMonsterArray() && getMonsterArray()->count()>0){
 					CCObject* pObject;
 					CCARRAY_FOREACH(this->getMonsterArray(),pObject){
-						ActionManager* mo=(ActionManager*) pObject;
+						ActionManager* monster=(ActionManager*) pObject;
 
 						//清除角色表的monter
-						int index=_delegate->_CharacterArray->indexOfObject(mo);
+						int index=_delegate->_CharacterArray->indexOfObject(monster);
 						if(index>=0){
 							_delegate->_CharacterArray->removeObjectAtIndex(index);
 						}
-						CCNotificationCenter::sharedNotificationCenter()->removeObserver(mo,"acceptAttack");
-						mo->stopAllActions();
-						mo->unscheduleAllSelectors();
-						mo->setActionState(ACTION_STATE_DEAD);
-						mo->removeFromParent();
+						CCNotificationCenter::sharedNotificationCenter()->removeObserver(monster,"acceptAttack");
+						monster->stopAllActions();
+						monster->unscheduleAllSelectors();
+						monster->setActionState(ACTION_STATE_DEAD);
+						monster->removeFromParent();
 						
 					};
 					this->getMonsterArray()->removeAllObjects();
@@ -1610,12 +1610,12 @@ void Monster::dealloc(){
 
 		CCObject* pObject;
 		CCARRAY_FOREACH(_master->getMonsterArray(),pObject){
-			Monster* mo=(Monster*) pObject;
+			Monster* monster=(Monster*) pObject;
 
-			if(mo->isCharacter(CharacterId::HiraishinMark)){
-				int index=_master->getMonsterArray()->indexOfObject(mo);
+			if(monster->isCharacter(CharacterId::HiraishinMark)){
+				int index=_master->getMonsterArray()->indexOfObject(monster);
 				_master->getMonsterArray()->removeObjectAtIndex(index);
-				mo->removeFromParentAndCleanup(true);
+				monster->removeFromParentAndCleanup(true);
 			}
 			
 		};

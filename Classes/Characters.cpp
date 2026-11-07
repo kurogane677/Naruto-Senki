@@ -98,13 +98,13 @@ void Hero::AI_Guardian(){
 			CCObject* pObject;
 			CCARRAY_FOREACH(_delegate->_TowerArray,pObject){
 				ActionManager* target=(ActionManager*) pObject;
-				CharacterId gardTower;
+				CharacterId guardedCenter;
 				if(this->getDelegate()->zhenying>0){
-					gardTower=CharacterId::AkatsukiCenter;
+					guardedCenter=CharacterId::AkatsukiCenter;
 				}else{
-					gardTower=CharacterId::KonohaCenter;
+					guardedCenter=CharacterId::KonohaCenter;
 				}
-				if(target->isCharacter(gardTower) && target->getHpPercent()<0.5f){
+				if(target->isCharacter(guardedCenter) && target->getHpPercent()<0.5f){
 					isTurn=true;
 
 				}

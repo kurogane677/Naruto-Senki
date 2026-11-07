@@ -21,9 +21,13 @@ static std::string readFile(const fs::path& path)
 static std::vector<std::string> unknownNames(const std::string& text, const std::regex& pattern)
 {
     std::vector<std::string> unknown;
-    for (std::sregex_iterator it(text.begin(), text.end(), pattern), end; it != end; ++it)
-        if (characterIdFromString((*it)[1].str().c_str()) == CharacterId::None)
-            unknown.push_back((*it)[1].str());
+    const std::sregex_iterator noMoreMatches;
+    for (auto match = std::sregex_iterator(text.begin(), text.end(), pattern); match != noMoreMatches; ++match)
+    {
+        const std::string name = (*match)[1].str();
+        if (characterIdFromString(name.c_str()) == CharacterId::None)
+            unknown.push_back(name);
+    }
     return unknown;
 }
 
@@ -54,21 +58,21 @@ TEST_CASE("every hero and form has a CharacterId")
 TEST_CASE("every unit the data spawns has a CharacterId")
 {
     const fs::path resources = NS_RESOURCES_DIR;
-    const std::regex spawn(R"re(type="(?:setMon|setBullet|setTrap)">(\w+)<)re");
+    const std::regex spawnEvent(R"re(type="(?:setMon|setBullet|setTrap)">(\w+)<)re");
     for (const auto& entry : fs::recursive_directory_iterator(resources / "Element"))
     {
         if (entry.path().extension() != ".xml")
             continue;
         CAPTURE(entry.path().string());
-        CHECK(unknownNames(readFile(entry.path()), spawn).empty());
+        CHECK(unknownNames(readFile(entry.path()), spawnEvent).empty());
     }
 
-    const std::regex tower(R"re(<object[^>]*name="((?:Konoha|Akatsuki)\w+)")re");
+    const std::regex towerObject(R"re(<object[^>]*name="((?:Konoha|Akatsuki)\w+)")re");
     for (const auto& entry : fs::directory_iterator(resources / "Tiles"))
     {
         if (entry.path().extension() != ".tmx")
             continue;
         CAPTURE(entry.path().string());
-        CHECK(unknownNames(readFile(entry.path()), tower).empty());
+        CHECK(unknownNames(readFile(entry.path()), towerObject).empty());
     }
 }
