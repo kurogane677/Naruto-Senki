@@ -71,12 +71,6 @@ bool PauseLayer::init(CCRenderTexture* snapshoot){
 		soundMenu->setPosition(ccp(pauseMenu->getPositionX(),pauseMenu->getPositionY()-80));
 		this->addChild(soundMenu,4);
 
-		pre_btn=CCMenuItemSprite::create(CCSprite::createWithSpriteFrameName("preload_on.png"),CCSprite::createWithSpriteFrameName("preload_off.png"),NULL,this,menu_selector(PauseLayer::onPreload));
-		preMenu =CCMenu::create(pre_btn,NULL);
-		preMenu->alignItemsHorizontallyWithPadding(25);
-		preMenu->setPosition(ccp(pauseMenu->getPositionX(),preMenu->getPositionY()-84));
-		this->addChild(preMenu,4);
-
 		if(CCUserDefault::sharedUserDefault()->getBoolForKey("isBGM")==false){
 			bgm_btn->selected();
 			
@@ -85,9 +79,6 @@ bool PauseLayer::init(CCRenderTexture* snapshoot){
 			voice_btn->selected();
 		}
 
-		if(CCUserDefault::sharedUserDefault()->getBoolForKey("isPreload")==false){
-			pre_btn->selected();
-		}
 	
 
 		bRet=true;
@@ -114,16 +105,6 @@ void PauseLayer::onVoice(CCObject* sender){
 	}else{
 		CCUserDefault::sharedUserDefault()->setBoolForKey("isVoice", true);
 		voice_btn->unselected();
-	}
-}
-
-void PauseLayer::onPreload(CCObject* sender){
-	if(CCUserDefault::sharedUserDefault()->getBoolForKey("isPreload")==true){
-		CCUserDefault::sharedUserDefault()->setBoolForKey("isPreload", false);
-		pre_btn->selected();
-	}else{
-		CCUserDefault::sharedUserDefault()->setBoolForKey("isPreload", true);
-		pre_btn->unselected();
 	}
 }
 

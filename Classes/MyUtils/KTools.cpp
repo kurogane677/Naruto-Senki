@@ -295,48 +295,6 @@ void KTools::initColumeInDB(){
 
 
 
-void KTools::prepareFileOGG(const char* listName,int type/* =0 */){
-
-	if(CCUserDefault::sharedUserDefault()->getBoolForKey("isPreload")){
-		
-	}else{
-		return;
-	}
-
-	//MD5 
-
-	std::string md5Path =  "Audio/list.xml";
-
-	bool isExisted=CCFileUtils::sharedFileUtils()->isFileExist(md5Path);
-
-	if(!isExisted){
-	return;
-	}
-
-	tinyxml2::XMLDocument* doc = new tinyxml2::XMLDocument();  
-	unsigned long nSize;
-	const char *pXmlBuffer = (const char*)ccGetFileData(md5Path.c_str(), "r", &nSize);
-	doc->Parse(pXmlBuffer);
-
-	XMLElement *rootEle=doc->RootElement();
-	XMLElement *fileEle=rootEle->FirstChildElement();
-
-	while (fileEle){
-	const char* pathSrc=fileEle->FirstAttribute()->Value();
-	std::string soundPath= fileEle->GetText();	 
-	if(strcmp(pathSrc,listName)==0){
-	if(type==0){
-	SimpleAudioEngine::sharedEngine()->preloadEffect(soundPath.c_str());
-	}else if(type==1){
-	SimpleAudioEngine::sharedEngine()->unloadEffect(soundPath.c_str());
-	}
-	}
-
-	fileEle=fileEle->NextSiblingElement();	
-	}
-	return;
-
-}
 
 
 

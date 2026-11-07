@@ -905,7 +905,6 @@ void GameLayer::onLeft(){
 
 	CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile(maps::towerSheet(randomMap+1));
 
-	KTools* tool=KTools::create();
 	
 
 	CCARRAY_FOREACH(_CharacterArray,pObject){
@@ -931,8 +930,6 @@ void GameLayer::onLeft(){
 		HeroAssets::unload("Han");
 	}
 
-	tool->prepareFileOGG("Effect",1);
-	tool->prepareFileOGG("Ougis",1);
 
 
 	_CharacterArray->removeAllObjects();

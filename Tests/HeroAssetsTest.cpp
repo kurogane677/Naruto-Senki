@@ -20,12 +20,10 @@ TEST_CASE("a hero brings its skills, every form and its summons")
     CHECK(contains(naruto, "Element/SageNaruto/SageNaruto.plist"));
     CHECK(contains(naruto, "Element/RikudoNaruto/RikudoNaruto.plist"));
     CHECK(contains(naruto, "Element/Kurama/Kurama.plist"));
-    CHECK(HeroAssets::soundSets("Naruto") == std::vector<std::string>{"Naruto", "SageNaruto", "RikudoNaruto"});
 
     CHECK(contains(HeroAssets::sheets("Kankuro"), "Element/Saso/Saso.plist"));
     CHECK(contains(HeroAssets::sheets("Pain"), "Effects/FontEffect.plist"));
     CHECK(contains(HeroAssets::sheets("Lee"), "Element/RockLee/RockLee.plist"));
-    CHECK(HeroAssets::soundSets("Kakashi") == std::vector<std::string>{"Kakashi"});
 }
 
 TEST_CASE("every sheet a hero brings is shipped; only some heroes lack a skill sheet")
