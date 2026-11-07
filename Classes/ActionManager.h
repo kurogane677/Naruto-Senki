@@ -454,6 +454,8 @@ protected:
 	// a skill that changes the hero for a while (changeAction / resumeAction); true when handled
 	virtual bool		onTransformSkillStart() { return false; }
 	virtual bool		onTransformSkillEnd() { return false; }
+	// setTransport command: true when the hero moved itself instead of teleporting
+	virtual bool		onTransportCommand() { return false; }
 	// setClone: give the clone its identity (true when handled), its HP, last touches
 	virtual bool		setUpClone(Hero* clone,int cloneTime) { return false; }
 	virtual bool		cloneStartsWithOwnerHP(int cloneTime) const { return false; }

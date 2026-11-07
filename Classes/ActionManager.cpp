@@ -2915,15 +2915,7 @@ void ActionManager::setCommand(CCNode* sender,void* date){
 		}
 		
 
-		if(this->isCharacter(CharacterId::Sakura)){
-			float posY=this->getPositionY();
-			if(!_originY){
-				if(posY==0){
-					posY=0.1f;
-				}
-				_originY=posY;
-			}
-			this->setPosition(ccp(this->getPositionX(),this->getPositionY()+64));
+		if(this->onTransportCommand()){
 			return;
 		}else{
 			if(_markPoint.x!=0){
@@ -3765,11 +3757,6 @@ void ActionManager::changeAction(){
 				_hpBar->setPositionY(108);
 			}
 		
-	}else if(this->isCharacter(CharacterId::Sakura) ){
-
-		this->setNAttackAction(createAnimation(skillSPC1Array,10.0f,false,true));
-		this->setnAttackValue(this->_nattackValue+400);
-
 	}else if(this->isCharacter(CharacterId::Kakuzu) ){	
 
 		this->setBuffEffect("jdBuff");		
@@ -4377,10 +4364,6 @@ void ActionManager::resumeAction(float dt){
 			}
 
 		
-
-	}else if(this->isCharacter(CharacterId::Sakura)){
-		this->setNAttackAction(createAnimation(nattackArray,10.0f,false,true));
-		this->setnAttackValue(this->_nattackValue-400);
 
 	}else if(this->isCharacter(CharacterId::Sai) ||
 		this->isCharacter(CharacterId::Deidara)
