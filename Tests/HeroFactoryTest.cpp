@@ -26,9 +26,13 @@ static std::set<CharacterId> heroesAndForms()
     return ids;
 }
 
-TEST_CASE("only heroes and their forms have a hero class")
+// summons with a class of their own (they are Hero objects too)
+static const std::set<CharacterId> kSummonsWithClass = {CharacterId::DogWall};
+
+TEST_CASE("only heroes, their forms and summons have a hero class")
 {
-    const std::set<CharacterId> heroes = heroesAndForms();
+    std::set<CharacterId> heroes = heroesAndForms();
+    heroes.insert(kSummonsWithClass.begin(), kSummonsWithClass.end());
     for (const auto& entry : HeroFactory::heroClasses().classes())
     {
         CAPTURE(static_cast<int>(entry.first));
@@ -58,9 +62,10 @@ TEST_CASE("Sai and Deidara ride the same way: their own classes, one ride monste
     CHECK(monsters.count(CharacterId::InkDragon) == 1);
 }
 
-TEST_CASE("no hero has a monster class")
+TEST_CASE("no hero or summon has a monster class")
 {
-    const std::set<CharacterId> heroes = heroesAndForms();
+    std::set<CharacterId> heroes = heroesAndForms();
+    heroes.insert(kSummonsWithClass.begin(), kSummonsWithClass.end());
     for (const auto& entry : MonsterFactory::monsterClasses().classes())
     {
         CAPTURE(static_cast<int>(entry.first));

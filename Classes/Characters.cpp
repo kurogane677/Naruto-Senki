@@ -41,25 +41,14 @@ void Hero::setAI(float dt){
 		return;
 	}
 
-	// clones (cloneAI), DogWall and the guardians keep their small routines;
-	// heroes and summons are handled above
-	if(role()==Role::Clone){
-		cloneAI();
+	// the guardians keep their small routine; clones and summons without a
+	// controller run their own (ownAI)
+	if(isCharacter(CharacterId::Roshi) || isCharacter(CharacterId::Han)){
+		AI_Guardian();
 		return;
 	}
-
-	if(isCharacter(CharacterId::DogWall)){
-		AI_DogWall();
-	}else if(isCharacter(CharacterId::Roshi) || isCharacter(CharacterId::Han)){
-		AI_Guardian();
-	}
+	ownAI();
 }
-
-void Hero::AI_DogWall(){
-	
-	this->attack(NAttack);
-
-};
 
 void Hero::AI_Guardian(){
 

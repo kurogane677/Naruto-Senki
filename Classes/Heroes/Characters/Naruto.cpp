@@ -257,7 +257,7 @@ void Naruto::fightHero(const CCPoint& toTarget)
     attack(_isCanSkill1 && _mainTarget->getGP() < 5000 ? SKILL1 : NAttack);
 }
 
-void Naruto::cloneAI()
+void Naruto::ownAI()
 {
     // base clones go for creeps first, Sage and Rikudo clones for heroes
     const char* searchOrder[3] = {"Hero", "Flog", "Tower"};

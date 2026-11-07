@@ -272,7 +272,7 @@ void HeroElement::setID(CCString* character,CCString* role,CCString* group){
 	this->setsAttackValue2(tmpValue);
 	skill2Array=(CCArray *)(tmpAction->objectAtIndex(1));
 
-	if(this->isCharacter(CharacterId::Kakashi) ){
+	if(this->swapsSkillAnimations()){
 		skill1Array->retain();
 		skill2Array->retain();
 	}else if(this->isCharacter(CharacterId::Minato) ){

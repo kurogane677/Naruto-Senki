@@ -22,7 +22,7 @@ protected:
     bool clonesExpire() const override;
     int cloneDamageSharePercent() const override;
     bool targetsHeroesOnly() const override;
-    void cloneAI() override;
+    void ownAI() override;
 
 private:
     enum class Form
