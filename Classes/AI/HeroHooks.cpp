@@ -10,16 +10,16 @@ namespace ai
 namespace
 {
 
-ActionManager* findMonster(ActionManager* owner, const char* name)
+ActionManager* findMonster(ActionManager* owner, CharacterId id)
 {
     if (!owner->getMonsterArray())
         return nullptr;
     CCObject* obj;
     CCARRAY_FOREACH(owner->getMonsterArray(), obj)
     {
-        ActionManager* m = (ActionManager*)obj;
-        if (m->isCharacter(name))
-            return m;
+        ActionManager* monster = (ActionManager*)obj;
+        if (monster->isCharacter(id))
+            return monster;
     }
     return nullptr;
 }
@@ -30,7 +30,7 @@ ActionManager* findMonster(ActionManager* owner, const char* name)
 bool hidan(AIController& ai)
 {
     Hero* h = ai.hero();
-    ActionManager* mark = findMonster(h, "CircleMark");
+    ActionManager* mark = findMonster(h, CharacterId::CircleMark);
     if (!mark || (!h->_isBati && !h->_isCanOugis2))
         return false;  // a circle left without Ougis2 does not tie him down
     h->_mainTarget = mark;
@@ -66,7 +66,7 @@ bool minato(AIController& ai)
     CCARRAY_FOREACH(hero->getMonsterArray(), object)
     {
         ActionManager* mark = (ActionManager*)object;
-        if (!mark->isCharacter("HiraishinMark"))
+        if (!mark->isCharacter(CharacterId::HiraishinMark))
             continue;
         float ahead = (mark->getPositionX() - hero->getPositionX()) * laneDirection;
         if (lowHp && ahead < 0)

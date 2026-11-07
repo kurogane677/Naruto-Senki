@@ -30,7 +30,7 @@ using Act = bool (*)(Hero* self, const Contact& c);
 
 struct SummonSpec
 {
-    const char* name;
+    CharacterId id;
     int reachX, reachY;   // basic attack reach
     int skillX;           // reach of the summon's own skill, 0: none
     int leash;            // max |dx| from the summoner, 0: free, kScreen: half a screen
@@ -59,19 +59,6 @@ bool pulling(ActionManager* m)
 bool isFarm(ActionManager* u)
 {
     return u->role() == Role::Flog || u->role() == Role::Tower;
-}
-
-bool hasMonster(ActionManager* u, const char* name)
-{
-    if (!u->getMonsterArray())
-        return false;
-    CCObject* obj;
-    CCARRAY_FOREACH(u->getMonsterArray(), obj)
-    {
-        if (((ActionManager*)obj)->isCharacter(name))
-            return true;
-    }
-    return false;
 }
 
 void cast(Hero* self, const Contact& c, abType slot, float rearm)
@@ -131,44 +118,6 @@ bool maskSkill(Hero* self, const Contact& c)
     return ownSkill1(self, c, 0);
 }
 
-// DevaPath brings out the other Paths while they are missing
-bool devaPath(Hero* self, const Contact& c)
-{
-    if (!c.inReach || isFarm(c.target))
-        return false;
-    if (self->_isCanSkill1 && !hasMonster(self, "AnimalPath"))
-    {
-        cast(self, c, SKILL1, self->_sattackcoldDown1);
-        return true;
-    }
-    if (self->_isCanSkill2 && !hasMonster(self, "AsuraPath"))
-    {
-        cast(self, c, SKILL2, self->_sattackcoldDown2);
-        return true;
-    }
-    return false;
-}
-
-// AsuraPath fires its missiles from a distance: back off first when close
-bool asuraPath(Hero* self, const Contact& c)
-{
-    if (!c.inSkill || isFarm(c.target) || !self->_isCanSkill1)
-        return false;
-    float x = self->getPositionX();
-    if (fabsf(c.sp.x) < 64 && x > 64 && x < 95 * 32 - 64 && self->stepBack())
-        return true;
-    cast(self, c, SKILL1, self->_sattackcoldDown1);
-    return true;
-}
-
-bool animalPath(Hero* self, const Contact& c)
-{
-    if (!c.inReach || c.target->role() == Role::Tower || !self->_isCanSkill1)
-        return false;
-    cast(self, c, SKILL1, 10.0f);
-    return true;
-}
-
 bool slug(Hero* self, const Contact& c)
 {
     if (!c.inReach || !isFarm(c.target))
@@ -184,20 +133,17 @@ bool slug(Hero* self, const Contact& c)
 
 const SummonSpec kSpecs[] = {
     // name        reach    skill leash    heroes puppet buffed act
-    {"Akamaru",    48, 32,  0,    kScreen, true,  false, false, masterSkill2},
-    {"Kurama",     156, 48, 0,    0,       true,  false, false, nullptr},
-    {"Karasu",     32, 16,  0,    kScreen, true,  true,  false, masterSkill2},
-    {"Saso",       48, 16,  48,   64,      true,  true,  false, sasoSkill},
-    {"Sanshouuo",  32, 32,  96,   kScreen, true,  true,  false, sasoSkill},
-    {"Parents",    48, 32,  0,    9,       true,  false, true,  parents},
-    {"MaskRaidon", 48, 16,  96,   0,       true,  false, false, maskSkill},
-    {"MaskFudon",  48, 16,  96,   0,       true,  false, false, maskSkill},
-    {"MaskKadon",  48, 16,  96,   0,       true,  false, false, maskSkill},
-    {"DevaPath",   32, 32,  0,    0,       true,  false, false, devaPath},
-    {"AsuraPath",  32, 32,  256,  0,       true,  false, false, asuraPath},
-    {"AnimalPath", 32, 32,  0,    0,       true,  false, false, animalPath},
-    {"Slug",       32, 32,  0,    0,       false, false, false, slug},
-    {"Centipede",  32, 32,  0,    0,       false, false, false, nullptr},
+    {CharacterId::Akamaru,    48, 32,  0,    kScreen, true,  false, false, masterSkill2},
+    {CharacterId::Kurama,     156, 48, 0,    0,       true,  false, false, nullptr},
+    {CharacterId::Karasu,     32, 16,  0,    kScreen, true,  true,  false, masterSkill2},
+    {CharacterId::Saso,       48, 16,  48,   64,      true,  true,  false, sasoSkill},
+    {CharacterId::Sanshouuo,  32, 32,  96,   kScreen, true,  true,  false, sasoSkill},
+    {CharacterId::Parents,    48, 32,  0,    9,       true,  false, true,  parents},
+    {CharacterId::MaskRaidon, 48, 16,  96,   0,       true,  false, false, maskSkill},
+    {CharacterId::MaskFudon,  48, 16,  96,   0,       true,  false, false, maskSkill},
+    {CharacterId::MaskKadon,  48, 16,  96,   0,       true,  false, false, maskSkill},
+    {CharacterId::Slug,       32, 32,  0,    0,       false, false, false, slug},
+    {CharacterId::Centipede,  32, 32,  0,    0,       false, false, false, nullptr},
 };
 
 }  // namespace
@@ -209,7 +155,7 @@ SummonController* SummonController::create(Hero* summon)
         return nullptr;
     for (const SummonSpec& spec : kSpecs)
     {
-        if (summon->isCharacter(spec.name))
+        if (summon->isCharacter(spec.id))
             return new SummonController(summon, &spec);
     }
     return nullptr;
@@ -228,7 +174,7 @@ Hero* SummonController::liveMaster() const
     return m;
 }
 
-// the summoner's role; a summon of a summon (AnimalPath) asks the hero behind it
+// the summoner's role; a summon of a summon asks the hero behind it
 HeroRole SummonController::summonerRole(Hero* master) const
 {
     if (!master)

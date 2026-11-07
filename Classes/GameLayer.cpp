@@ -928,26 +928,26 @@ void GameLayer::onLeft(){
 		
 
 		//删除额外角色
-		if(player->isCharacter("Jiraiya")){
+		if(player->isCharacter(CharacterId::Jiraiya)){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/SageJiraiya/SageJiraiya.plist");
 			tool->prepareFileOGG("SageJiraiya",1);
-		}else if(player->isCharacter("Kankuro")){
+		}else if(player->isCharacter(CharacterId::Kankuro)){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Karasu/Karasu.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Sanshouuo/Sanshouuo.plist");
-		}else if(player->isCharacter("Kakuzu")){
+		}else if(player->isCharacter(CharacterId::Kakuzu)){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskFudon/MaskFudon.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskRaidon/MaskRaidon.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskKadon/MaskKadon.plist");
-		}else if(player->isCharacter("Naruto")){
+		}else if(player->isCharacter(CharacterId::Naruto)){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/SageNaruto/SageNaruto.plist");
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/RikudoNaruto/RikudoNaruto.plist");
 			tool->prepareFileOGG("SageNaruto",1);
 			tool->prepareFileOGG("RikudoNaruto",1);
-		}else if(player->isCharacter("RockLee")){
+		}else if(player->isCharacter(CharacterId::RockLee)){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Lee/Lee.plist");
-		}else if(player->isCharacter("Lee")){
+		}else if(player->isCharacter(CharacterId::Lee)){
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/RockLee/RockLee.plist");
-		}else if(player->isCharacter("Sasuke")){
+		}else if(player->isCharacter(CharacterId::Sasuke)){
 			tool->prepareFileOGG("ImmortalSasuke",1);
 			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/ImmortalSasuke/ImmortalSasuke.plist");
 		}

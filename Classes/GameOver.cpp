@@ -94,22 +94,22 @@ void GameOver::listResult(){
 	CCString* path=CCString::createWithFormat("%s_half.png",_delegate->currentPlayer->getCharacter()->getCString());
 	CCSprite* half=CCSprite::createWithSpriteFrameName(path->getCString());
 
-	if(_delegate->currentPlayer->isCharacter("Konan")||
-	_delegate->currentPlayer->isCharacter("Karin") ||
-	_delegate->currentPlayer->isCharacter("Suigetsu") ||
-	_delegate->currentPlayer->isCharacter("Hidan") ||
-	_delegate->currentPlayer->isCharacter("Tobirama") ||
-	_delegate->currentPlayer->isCharacter("Tsunade") ||
-	_delegate->currentPlayer->isCharacter("Kankuro") ||
-	_delegate->currentPlayer->isCharacter("SageJiraiya")||
-	_delegate->currentPlayer->isCharacter("Minato") ||
-	_delegate->currentPlayer->isCharacter("Tobi") ||
-	_delegate->currentPlayer->isCharacter("Lee") ||
-	_delegate->currentPlayer->isCharacter("RockLee") ||
-	_delegate->currentPlayer->isCharacter("Hinata")||
-	_delegate->currentPlayer->isCharacter("Asuma") ||
-	_delegate->currentPlayer->isCharacter("Chiyo")||
-	_delegate->currentPlayer->isCharacter("Kisame")
+	if(_delegate->currentPlayer->isCharacter(CharacterId::Konan)||
+	_delegate->currentPlayer->isCharacter(CharacterId::Karin) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::Suigetsu) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::Hidan) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::Tobirama) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::Tsunade) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::Kankuro) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::SageJiraiya)||
+	_delegate->currentPlayer->isCharacter(CharacterId::Minato) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::Tobi) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::Lee) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::RockLee) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::Hinata)||
+	_delegate->currentPlayer->isCharacter(CharacterId::Asuma) ||
+	_delegate->currentPlayer->isCharacter(CharacterId::Chiyo)||
+	_delegate->currentPlayer->isCharacter(CharacterId::Kisame)
 		){
 		half->setFlippedX(true);
 	}
@@ -189,8 +189,8 @@ void GameOver::listResult(){
 		if(hero->role()==Role::Clone || 
 			hero->role()==Role::Summon|| 
 			hero->role()==Role::Kuilei || 
-			hero->isCharacter("Han") ||
-			hero->isCharacter("Roshi") 
+			hero->isCharacter(CharacterId::Han) ||
+			hero->isCharacter(CharacterId::Roshi) 
 			){
 				continue;
 		}
@@ -447,8 +447,8 @@ void GameOver::listResult(){
 							hero->role()==Role::Player ||
 							hero->role()==Role::Summon|| 
 							hero->role()==Role::Kuilei || 
-							hero->isCharacter("Han") ||
-							hero->isCharacter("Roshi") 
+							hero->isCharacter(CharacterId::Han) ||
+							hero->isCharacter(CharacterId::Roshi) 
 							){
 								continue;
 						}

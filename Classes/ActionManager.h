@@ -5,6 +5,7 @@
 #include "Defines.h"
 #include "Effect.h"
 #include "Types.h"
+#include "Heroes/CharacterId.h"
 
 
 USING_NS_CC;
@@ -120,6 +121,7 @@ protected:
 	CCString*			_character;
 	Role				_roleId;
 	Group				_groupId;
+	CharacterId			_characterId;
 public:
 	CCString*			getRole() const { return _role; }
 	CCString*			getGroup() const { return _group; }
@@ -129,7 +131,8 @@ public:
 	void				setCharacter(CCString* character);
 	Role				role() const { return _roleId; }
 	Group				group() const { return _groupId; }
-	bool				isCharacter(const char* name) const { return _character && strcmp(_character->getCString(),name)==0; }
+	CharacterId			characterId() const { return _characterId; }
+	bool				isCharacter(CharacterId id) const { return _characterId==id; }
 	bool				isEnemy(const ActionManager* other) const { return other && other->_groupId!=_groupId; }
 	CC_SYNTHESIZE_RETAIN(CCArray*,_gearArray,GearArray);
 

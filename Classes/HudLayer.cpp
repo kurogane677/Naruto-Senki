@@ -398,9 +398,9 @@ void HudLayer::initHeroInterface(){
 		skill2Button->setDoubleSkill(true);
 	};
 	skill2Button->setMarkSprite("skill_freeze.png");
-	if(_delegate->currentPlayer->isCharacter("Kankuro") || 
-		_delegate->currentPlayer->isCharacter("Chiyo") ||
-		_delegate->currentPlayer->isCharacter("Kiba") 
+	if(_delegate->currentPlayer->isCharacter(CharacterId::Kankuro) || 
+		_delegate->currentPlayer->isCharacter(CharacterId::Chiyo) ||
+		_delegate->currentPlayer->isCharacter(CharacterId::Kiba) 
 		){
 		skill2Button->setLock();
 	}
@@ -417,9 +417,9 @@ void HudLayer::initHeroInterface(){
 		skill3Button->setDoubleSkill(true);
 
 	};
-	if(_delegate->currentPlayer->isCharacter("Kiba")||
-		_delegate->currentPlayer->isCharacter("Chiyo") ||
-		_delegate->currentPlayer->isCharacter("Lee") 
+	if(_delegate->currentPlayer->isCharacter(CharacterId::Kiba)||
+		_delegate->currentPlayer->isCharacter(CharacterId::Chiyo) ||
+		_delegate->currentPlayer->isCharacter(CharacterId::Lee) 
 		){
 		skill3Button->setLock();
 	}
@@ -551,8 +551,8 @@ void HudLayer::initHeroInterface(){
 				if(player->role()==Role::Player){
 					path="player_icon.png";
 				}else if(player->role()==Role::Com){
-					if(player->isCharacter("Han") ||
-						player->isCharacter("Roshi")){
+					if(player->isCharacter(CharacterId::Han) ||
+						player->isCharacter(CharacterId::Roshi)){
 							path="guardian_icon.png";	
 					}else{
 						if(player->group()==_delegate->currentPlayer->group()){
@@ -586,8 +586,8 @@ void HudLayer::addMapIcon(){
 	CCObject* pObject;
 	CCARRAY_FOREACH(_delegate->_CharacterArray,pObject){
 		ActionManager* player=(ActionManager*) pObject;
-		if(player->isCharacter("Han") ||
-			player->isCharacter("Roshi")){
+		if(player->isCharacter(CharacterId::Han) ||
+			player->isCharacter(CharacterId::Roshi)){
 				MiniIcon* mi;
 				const char* path="guardian_icon.png";	
 				mi=MiniIcon::create(path,true);
