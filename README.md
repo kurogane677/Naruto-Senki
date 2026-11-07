@@ -389,6 +389,7 @@ Naruto Senki/
 │  └─ app/src/net/zakume/game/DialogUtils.java   # dialog Exit yang dipanggil lewat JNI
 ├─ .github/workflows/        # build.yaml: build Win64 + APK dan GitHub Release saat push tag v*
 ├─ .axproj                   # metadata proyek Axmol: versi engine, package name Android
+├─ docs/characters/         # catatan teknis per hero: kelas, skill, hook, summon/monster, sisa cabang bersama
 ├─ AGENTS.md / CLAUDE.md     # panduan teknis untuk asisten AI (lihat Kolaborasi dengan AI)
 ├─ MIGRATION_ROADMAP.md      # urutan kerja migrasi, checklist, log keputusan
 └─ MIGRATION_PLAN_AXMOL.md   # referensi teknis: pemetaan API, risiko
@@ -424,6 +425,8 @@ v1.0.0-beta merapikan kode asli tanpa mengubah gameplay ([#21](https://github.co
 | `Monster::onSpawn(owner)`, `Monster::attackEndsInIdle()` | `setMon`, `Monster::initAction` | FudonSRK, Bikyu, InkDragon |
 
 **Event `setClone`**: jenis klon ditentukan oleh skill yang sedang dipakai (`_actionState`: skill01–03, ougi 1, ougi 2), bukan oleh angka di XML. Angka itu hanya durasi; beberapa durasi dikunci di kode (misalnya Kurama 9 detik).
+
+**Catatan per karakter** ada di [`docs/characters/`](docs/characters/README.md): kelas, data skill dari XML, hook yang dipakai, summon/monster, konstanta, dan cabang yang masih di kode bersama.
 
 **Aturan data**: nilai, frame, suara, teks, dan kombinasi event di `Resources/` bebas diubah. Kosakata jenis (nama karakter, tipe event/aksi, role, group) bersifat strict: harus ada di daftar kode, dan test data (`Tests/CharacterIdTest.cpp`, `Tests/HeroAssetsTest.cpp`) memeriksa semua XML dan peta.
 
