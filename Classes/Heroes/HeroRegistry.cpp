@@ -143,6 +143,13 @@ std::string baseForm(const std::string& name)
     return chain ? chain->forms.front() : name;
 }
 
+std::vector<std::string> forms(const std::string& name)
+{
+    size_t index;
+    const FormChain* chain = findChain(name, index);
+    return chain ? std::vector<std::string>(chain->forms.begin(), chain->forms.end()) : std::vector<std::string>{name};
+}
+
 std::vector<std::string> recordHeroes()
 {
     return namesWhere([](const HeroInfo& hero) { return hero.hasRecord; });

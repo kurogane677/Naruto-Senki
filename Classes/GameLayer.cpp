@@ -1,4 +1,6 @@
 #include "GameLayer.h"
+#include "Heroes/HeroRegistry.h"
+#include "Heroes/HeroAssets.h"
 #include "Heroes/HeroFactory.h"
 #include "Maps.h"
 #include "Characters.h"
@@ -906,7 +908,6 @@ void GameLayer::onLeft(){
 	KTools* tool=KTools::create();
 	
 
-	const char* path;
 	CCARRAY_FOREACH(_CharacterArray,pObject){
 		ActionManager* player=(ActionManager*) pObject;
 
@@ -915,41 +916,10 @@ void GameLayer::onLeft(){
 				continue;
 		}
 
-		//删除人物缓存
-		path=CCString::createWithFormat("Element/%s/%s.plist",player->getCharacter()->getCString(),player->getCharacter()->getCString())->getCString();
-		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile(path);
-
-		//删除预加载音效
 		if(player->role()==Role::Com ||
 			player->role()==Role::Player
 			){
-			tool->prepareFileOGG(player->getCharacter()->getCString(),1);
-		}
-		
-
-		//删除额外角色
-		if(player->isCharacter(CharacterId::Jiraiya)){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/SageJiraiya/SageJiraiya.plist");
-			tool->prepareFileOGG("SageJiraiya",1);
-		}else if(player->isCharacter(CharacterId::Kankuro)){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Karasu/Karasu.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Sanshouuo/Sanshouuo.plist");
-		}else if(player->isCharacter(CharacterId::Kakuzu)){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskFudon/MaskFudon.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskRaidon/MaskRaidon.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/MaskKadon/MaskKadon.plist");
-		}else if(player->isCharacter(CharacterId::Naruto)){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/SageNaruto/SageNaruto.plist");
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/RikudoNaruto/RikudoNaruto.plist");
-			tool->prepareFileOGG("SageNaruto",1);
-			tool->prepareFileOGG("RikudoNaruto",1);
-		}else if(player->isCharacter(CharacterId::RockLee)){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Lee/Lee.plist");
-		}else if(player->isCharacter(CharacterId::Lee)){
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/RockLee/RockLee.plist");
-		}else if(player->isCharacter(CharacterId::Sasuke)){
-			tool->prepareFileOGG("ImmortalSasuke",1);
-			CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/ImmortalSasuke/ImmortalSasuke.plist");
+			HeroAssets::unload(HeroRegistry::baseForm(player->getCharacter()->getCString()));
 		}
 		player->removeFromParentAndCleanup(true);
 
@@ -957,10 +927,8 @@ void GameLayer::onLeft(){
 
 	//加载守护忍
 	if(this->_isHardCoreGame){
-		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Roshi/Roshi.plist");
-		CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromFile("Element/Han/Han.plist");
-		tool->prepareFileOGG("Roshi",1);
-		tool->prepareFileOGG("Han",1);
+		HeroAssets::unload("Roshi");
+		HeroAssets::unload("Han");
 	}
 
 	tool->prepareFileOGG("Effect",1);

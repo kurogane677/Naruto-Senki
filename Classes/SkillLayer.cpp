@@ -408,19 +408,11 @@ void SkillLayer::initInterface(){
 		skillSprite->setPosition(ccp(winSize.width/2,winSize.height/2));
 		this->addChild(skillSprite,2);
 
-		CCString* imgPath=NULL;
-
-		
-		if((strcmp(selectHero,"Hinata")==0 || 
-			strcmp(selectHero,"Sakura")==0 || 
-			strcmp(selectHero,"Ino")==0 ||
-			strcmp(selectHero,"Tsunade")==0 ||
-			strcmp(selectHero,"Tenten")==0 ||
-			strcmp(selectHero,"Konan")==0 ||
-			strcmp(selectHero,"Karin")==0 
-			) && atoi(bondString.c_str())>=100){
-				imgPath=CCString::createWithFormat("%s_full2.png",selectHero);
-		}else{
+		// a full bond shows the hero's second art, where the sheet has one
+		CCString* imgPath=CCString::createWithFormat("%s_full2.png",selectHero);
+		bool hasFullBondArt=atoi(bondString.c_str())>=100 &&
+			CCSpriteFrameCache::sharedSpriteFrameCache()->getSpriteFrameByName(imgPath->getCString());
+		if(!hasFullBondArt){
 			imgPath=CCString::createWithFormat("%s_full.png",selectHero);
 		}
 		_heroFull=CCSprite::createWithSpriteFrameName(imgPath->getCString());
