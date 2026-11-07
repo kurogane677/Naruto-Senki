@@ -3,7 +3,7 @@
 
 // Naruto and his two transformations. Transforming keeps the same object and only
 // changes the character name, so one class covers all three forms; his shadow clones
-// are Naruto objects too.
+// are Naruto objects too; Rikudo's Kurama is a plain Hero.
 class Naruto : public Hero
 {
 public:
@@ -14,6 +14,7 @@ public:
 protected:
     bool onTransformSkillStart() override;
     bool onTransformSkillEnd() override;
+    CharacterId cloneCharacter(int cloneTime) const override;
     bool setUpClone(Hero* clone, int cloneTime) override;
     bool cloneStartsWithOwnerHP(int cloneTime) const override;
     void finishClone(Hero* clone, int cloneTime) override;
@@ -23,15 +24,14 @@ protected:
     void cloneAI() override;
 
 private:
-    // None: an object of this class under another name (Rikudo's Kurama clone)
     enum class Form
     {
-        None,
         Base,
         Sage,
         Rikudo,
     };
     Form form() const;
+    bool isKuramaSummon(int cloneTime) const;
 
     // clone AI
     CCPoint vectorToTarget() const;

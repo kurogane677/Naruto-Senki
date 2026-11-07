@@ -1,14 +1,18 @@
 #include "Heroes/Characters/Naruto.h"
 
+// HeroFactory gives this class to Naruto's three forms only
 Naruto::Form Naruto::form() const
 {
     if (isCharacter(CharacterId::Naruto))
         return Form::Base;
     if (isCharacter(CharacterId::SageNaruto))
         return Form::Sage;
-    if (isCharacter(CharacterId::RikudoNaruto))
-        return Form::Rikudo;
-    return Form::None;
+    return Form::Rikudo;
+}
+
+bool Naruto::isKuramaSummon(int cloneTime) const
+{
+    return form() == Form::Rikudo && cloneTime == 9;
 }
 
 // Base and Sage Naruto get a quarter more EXP from every kill
@@ -19,9 +23,8 @@ int Naruto::expGainPercent() const
 
 bool Naruto::onTransformSkillStart()
 {
-    switch (form())
+    if (form() == Form::Base)
     {
-    case Form::Base:
         setIdleAction(createAnimation(skillSPC1Array, 5.0f, true, false));
         setWalkAction(createAnimation(skillSPC2Array, 10.0f, true, false));
         setNAttackAction(createAnimation(skillSPC3Array, 10.0f, false, true));
@@ -39,34 +42,31 @@ bool Naruto::onTransformSkillStart()
         _isBati = true;
         lockOugis();
         return true;
-    case Form::Sage:
-    case Form::Rikudo:
-        _gardValue += 5000;
-        _isBati = true;
-        isPofang = true;
-        _isOnlySkillLocked = true;
-        setIdleAction(createAnimation(skillSPC4Array, 5.0f, true, false));
-        setWalkAction(createAnimation(skillSPC2Array, 10.0f, true, false));
-        setNAttackAction(createAnimation(skillSPC3Array, 10.0f, false, true));
-        if (form() == Form::Rikudo)
-        {
-            settempAttackValue1(_nattackValue);
-            setnAttackValue(560);
-        }
-        setWalkSpeed(320);
-        _originSpeed = 320;
-        lockOugis();
-        return true;
-    default:
-        return Hero::onTransformSkillStart();
     }
+
+    // Sage and Rikudo
+    _gardValue += 5000;
+    _isBati = true;
+    isPofang = true;
+    _isOnlySkillLocked = true;
+    setIdleAction(createAnimation(skillSPC4Array, 5.0f, true, false));
+    setWalkAction(createAnimation(skillSPC2Array, 10.0f, true, false));
+    setNAttackAction(createAnimation(skillSPC3Array, 10.0f, false, true));
+    if (form() == Form::Rikudo)
+    {
+        settempAttackValue1(_nattackValue);
+        setnAttackValue(560);
+    }
+    setWalkSpeed(320);
+    _originSpeed = 320;
+    lockOugis();
+    return true;
 }
 
 bool Naruto::onTransformSkillEnd()
 {
-    switch (form())
+    if (form() == Form::Base)
     {
-    case Form::Base:
         setIdleAction(createAnimation(idleArray, 5.0f, true, false));
         setWalkAction(createAnimation(walkArray, 10.0f, true, false));
         setNAttackAction(createAnimation(nattackArray, 10.0f, false, true));
@@ -92,102 +92,85 @@ bool Naruto::onTransformSkillEnd()
         }
         setKnockDownAction(createAnimation(knockDownArray, 10.0f, false, true));
         return true;
-    case Form::Sage:
-    case Form::Rikudo:
-        setIdleAction(createAnimation(idleArray, 5.0f, true, false));
-        setWalkAction(createAnimation(walkArray, 10.0f, true, false));
-        setNAttackAction(createAnimation(nattackArray, 10.0f, false, true));
-        _isOnlySkillLocked = false;
-        unlockOugis();
-        setWalkSpeed(224);
-        _originSpeed = 224;
-        _gardValue -= 5000;
-        _isBati = false;
-        isPofang = false;
-        if (_actionState != ACTION_STATE_DEAD)
-        {
-            _actionState = ACTION_STATE_WALK;
-            // at LV6 Sage Naruto falls into his awakening pose
-            if (form() == Form::Sage && getLV() == 6)
-            {
-                setKnockDownAction(createAnimation(skillSPC5Array, 10.0f, false, true));
-                knockDown();
-                setKnockDownAction(createAnimation(knockDownArray, 10.0f, false, true));
-                return true;
-            }
-            idle();
-        }
-        if (_tempAttackValue1)
-        {
-            setnAttackValue(_tempAttackValue1);
-            _tempAttackValue1 = 0;
-        }
-        return true;
-    default:
-        return Hero::onTransformSkillEnd();
     }
-}
 
-// Shadow clones keep Naruto's form; Rikudo's 9th summon is Kurama. Clones are made
-// from their owner's name (HeroFactory), so a Naruto's clone is a Naruto object.
-bool Naruto::setUpClone(Hero* clone, int cloneTime)
-{
-    auto* narutoClone = dynamic_cast<Naruto*>(clone);
-    if (!narutoClone)
-        return Hero::setUpClone(clone, cloneTime);
-    switch (form())
+    // Sage and Rikudo
+    setIdleAction(createAnimation(idleArray, 5.0f, true, false));
+    setWalkAction(createAnimation(walkArray, 10.0f, true, false));
+    setNAttackAction(createAnimation(nattackArray, 10.0f, false, true));
+    _isOnlySkillLocked = false;
+    unlockOugis();
+    setWalkSpeed(224);
+    _originSpeed = 224;
+    _gardValue -= 5000;
+    _isBati = false;
+    isPofang = false;
+    if (_actionState != ACTION_STATE_DEAD)
     {
-    case Form::Base:
-        narutoClone->setID(getCharacter(), CCString::create("Clone"), _group);
-        return true;
-    case Form::Rikudo:
-        if (cloneTime == 9)
+        _actionState = ACTION_STATE_WALK;
+        // at LV6 Sage Naruto falls into his awakening pose
+        if (form() == Form::Sage && getLV() == 6)
         {
-            narutoClone->setID(CCString::create("Kurama"), CCString::create("Clone"), _group);
-            narutoClone->_gardValue += 5000;
-            narutoClone->_isBati = true;
-            narutoClone->setWalkSpeed(320);
-            narutoClone->_originSpeed = 320;
-            narutoClone->isPofang = true;
+            setKnockDownAction(createAnimation(skillSPC5Array, 10.0f, false, true));
+            knockDown();
+            setKnockDownAction(createAnimation(knockDownArray, 10.0f, false, true));
             return true;
         }
-        if (cloneTime != 10)
-            return Hero::setUpClone(clone, cloneTime);
-        [[fallthrough]];
-    case Form::Sage:
-        narutoClone->setID(getCharacter(), CCString::create("Clone"), _group);
-        narutoClone->setSkill1Action(narutoClone->createAnimation(narutoClone->skillSPC1Array, 10.0f, false, true));
-        narutoClone->_sattackValue1 = _spcattackValue1;
-        narutoClone->_sattackType1 = _spcattackType1;
-        narutoClone->_sattackcoldDown1 = _spcattackcoldDown1;
-        return true;
-    default:
-        return Hero::setUpClone(clone, cloneTime);
+        idle();
     }
+    if (_tempAttackValue1)
+    {
+        setnAttackValue(_tempAttackValue1);
+        _tempAttackValue1 = 0;
+    }
+    return true;
+}
+
+// Rikudo's 9th summon is Kurama (a plain Hero); every other clone is a shadow clone,
+// a Naruto object of the same form
+CharacterId Naruto::cloneCharacter(int cloneTime) const
+{
+    return isKuramaSummon(cloneTime) ? CharacterId::Kurama : characterId();
+}
+
+bool Naruto::setUpClone(Hero* clone, int cloneTime)
+{
+    if (isKuramaSummon(cloneTime))
+    {
+        clone->setID(CCString::create("Kurama"), CCString::create("Clone"), _group);
+        clone->_isBati = true;
+        clone->setWalkSpeed(320);
+        clone->_originSpeed = 320;
+        clone->isPofang = true;
+        return true;
+    }
+    auto* shadowClone = dynamic_cast<Naruto*>(clone);
+    if (!shadowClone || (form() == Form::Rikudo && cloneTime != 10))
+        return Hero::setUpClone(clone, cloneTime);
+
+    shadowClone->setID(getCharacter(), CCString::create("Clone"), _group);
+    if (form() != Form::Base)
+    {
+        shadowClone->setSkill1Action(shadowClone->createAnimation(shadowClone->skillSPC1Array, 10.0f, false, true));
+        shadowClone->_sattackValue1 = _spcattackValue1;
+        shadowClone->_sattackType1 = _spcattackType1;
+        shadowClone->_sattackcoldDown1 = _spcattackcoldDown1;
+    }
+    return true;
 }
 
 bool Naruto::cloneStartsWithOwnerHP(int cloneTime) const
 {
-    switch (form())
-    {
-    case Form::Base:
-    case Form::Sage:
-        return true;
-    case Form::Rikudo:
-        return cloneTime == 10;
-    default:
-        return Hero::cloneStartsWithOwnerHP(cloneTime);
-    }
+    return form() != Form::Rikudo || cloneTime == 10;
 }
 
 void Naruto::finishClone(Hero* clone, int cloneTime)
 {
-    auto* kurama = dynamic_cast<Naruto*>(clone);
-    if (kurama && form() == Form::Rikudo && cloneTime == 9)
+    if (isKuramaSummon(cloneTime))
     {
-        if (kurama->_hpBar)
-            kurama->_hpBar->setPositionY(120);
-        kurama->setnAttackValue(1060);
+        if (clone->_hpBar)
+            clone->_hpBar->setPositionY(120);
+        clone->setnAttackValue(1060);
         return;
     }
     Hero::finishClone(clone, cloneTime);
@@ -195,28 +178,22 @@ void Naruto::finishClone(Hero* clone, int cloneTime)
 
 bool Naruto::clonesExpire() const
 {
-    return form() != Form::None || Hero::clonesExpire();
+    return true;
 }
 
 // A shadow clone hit by an enemy hurts the attacker back
 int Naruto::cloneDamageSharePercent() const
 {
-    switch (form())
-    {
-    case Form::Base:
+    if (form() == Form::Base)
         return 15;
-    case Form::Sage:
+    if (form() == Form::Sage)
         return 25;
-    case Form::Rikudo:
-        return 35;
-    default:
-        return Hero::cloneDamageSharePercent();
-    }
+    return 35;
 }
 
 bool Naruto::targetsHeroesOnly() const
 {
-    return form() == Form::Sage || form() == Form::Rikudo || Hero::targetsHeroesOnly();
+    return form() != Form::Base;
 }
 
 CCPoint Naruto::vectorToTarget() const
@@ -272,11 +249,6 @@ void Naruto::fightHero(const CCPoint& toTarget)
 
 void Naruto::cloneAI()
 {
-    if (form() == Form::None)
-    {
-        Hero::cloneAI();
-        return;
-    }
     // base clones go for creeps first, Sage and Rikudo clones for heroes
     const char* searchOrder[3] = {"Hero", "Flog", "Tower"};
     if (form() == Form::Base)

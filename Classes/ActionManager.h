@@ -456,6 +456,8 @@ protected:
 	virtual bool		onTransformSkillEnd() { return false; }
 	// setTransport command: true when the hero moved itself instead of teleporting
 	virtual bool		onTransportCommand() { return false; }
+	// setClone: the character the clone will be, so it is created with that character's class; None: a plain Hero
+	virtual CharacterId	cloneCharacter(int cloneTime) const { return CharacterId::None; }
 	// setClone: give the clone its identity (true when handled), its HP, last touches
 	virtual bool		setUpClone(Hero* clone,int cloneTime) { return false; }
 	virtual bool		cloneStartsWithOwnerHP(int cloneTime) const { return false; }
