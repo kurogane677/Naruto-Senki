@@ -44,6 +44,7 @@ Ringkasan lengkap ada di README, bagian *Arsitektur kode (v1.0.0-beta)*. Yang pe
 3. Daftarkan di tabel `HeroFactory::heroClasses()`; semua bentuk hero memakai kelas yang sama.
 4. Summon dan monster milik hero itu ikut dipindah di PR yang sama bila punya perilaku khusus (#54, #98): summon lewat `HeroFactory` + `cloneCharacter()` (kelasnya di `Classes/Heroes/Summons/`, AI-nya lewat `ownAI()`), monster lewat `MonsterFactory` + `Monster::onSpawn()`. Mekanik yang identik di beberapa hero dipindah ke base bersama (contoh: `RidingHero` untuk Sai dan Deidara).
 5. Pastikan perilaku identik. Baca kode sebelum dan sesudah baris yang dipindah: urutan pemanggilan, nilai yang ditimpa kemudian, dan `return` lebih awal.
+6. Tulis atau perbarui catatan teknis hero itu di `docs/characters/<Hero>.md` (pola: `docs/characters/_TEMPLATE.md`), lalu perbarui tabel status di `docs/characters/README.md`. Catatan juga diperbarui setiap kali PR lain mengubah perilaku hero itu.
 
 ### Akses member protected
 Kelas hero tidak bisa mengakses member `protected` lewat pointer `Hero*` milik objek lain (error C2248). Gunakan `dynamic_cast<KelasSendiri*>` bila objeknya memang kelas yang sama (contoh: klon bayangan Naruto), atau batasi pada member public.
