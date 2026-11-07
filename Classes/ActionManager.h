@@ -456,12 +456,16 @@ protected:
 	virtual bool		onTransformSkillEnd() { return false; }
 	// setTransport command: true when the hero moved itself instead of teleporting
 	virtual bool		onTransportCommand() { return false; }
-	// setClone: the character the clone will be, so it is created with that character's class; None: a plain Hero
-	virtual CharacterId	cloneCharacter(int cloneTime) const { return CharacterId::None; }
-	// setClone: give the clone its identity (true when handled), its HP, last touches
-	virtual bool		setUpClone(Hero* clone,int cloneTime) { return false; }
-	virtual bool		cloneStartsWithOwnerHP(int cloneTime) const { return false; }
-	virtual void		finishClone(Hero* clone,int cloneTime) {}
+	// setClone hooks. The clone skill being cast (_actionState) tells which clone it is;
+	// the setClone value in the XML is only how long it lasts.
+	// the character the clone will be, so it is created with that character's class; None: a plain Hero
+	virtual CharacterId	cloneCharacter() const { return CharacterId::None; }
+	// give the clone its identity (true when handled), its HP, last touches
+	virtual bool		setUpClone(Hero* clone) { return false; }
+	virtual bool		cloneStartsWithOwnerHP() const { return false; }
+	virtual void		finishClone(Hero* clone) {}
+	// seconds before an expiring clone is removed; by default the setClone value
+	virtual float		cloneLifetime(int cloneTime) const { return cloneTime; }
 	virtual bool		clonesExpire() const { return false; }
 	// as a clone: % of the damage it takes that hurts its attacker
 	virtual int			cloneDamageSharePercent() const { return 0; }

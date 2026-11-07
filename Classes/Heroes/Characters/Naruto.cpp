@@ -1,5 +1,10 @@
 #include "Heroes/Characters/Naruto.h"
 
+namespace
+{
+constexpr float kKuramaLifetime = 9;  // seconds, whatever the setClone value says
+}  // namespace
+
 // HeroFactory gives this class to Naruto's three forms only
 Naruto::Form Naruto::form() const
 {
@@ -10,9 +15,10 @@ Naruto::Form Naruto::form() const
     return Form::Rikudo;
 }
 
-bool Naruto::isKuramaSummon(int cloneTime) const
+// Rikudo's skill05 (ougi 2) summons Kurama
+bool Naruto::isKuramaSummon() const
 {
-    return form() == Form::Rikudo && cloneTime == 9;
+    return form() == Form::Rikudo && _actionState == ACTION_STATE_O2ATTACK;
 }
 
 // Base and Sage Naruto get a quarter more EXP from every kill
@@ -126,16 +132,15 @@ bool Naruto::onTransformSkillEnd()
     return true;
 }
 
-// Rikudo's 9th summon is Kurama (a plain Hero); every other clone is a shadow clone,
-// a Naruto object of the same form
-CharacterId Naruto::cloneCharacter(int cloneTime) const
+// Kurama is a plain Hero; every other clone is a shadow clone, a Naruto object of the same form
+CharacterId Naruto::cloneCharacter() const
 {
-    return isKuramaSummon(cloneTime) ? CharacterId::Kurama : characterId();
+    return isKuramaSummon() ? CharacterId::Kurama : characterId();
 }
 
-bool Naruto::setUpClone(Hero* clone, int cloneTime)
+bool Naruto::setUpClone(Hero* clone)
 {
-    if (isKuramaSummon(cloneTime))
+    if (isKuramaSummon())
     {
         clone->setID(CCString::create("Kurama"), CCString::create("Clone"), _group);
         clone->_isBati = true;
@@ -145,8 +150,8 @@ bool Naruto::setUpClone(Hero* clone, int cloneTime)
         return true;
     }
     auto* shadowClone = dynamic_cast<Naruto*>(clone);
-    if (!shadowClone || (form() == Form::Rikudo && cloneTime != 10))
-        return Hero::setUpClone(clone, cloneTime);
+    if (!shadowClone)
+        return Hero::setUpClone(clone);
 
     shadowClone->setID(getCharacter(), CCString::create("Clone"), _group);
     if (form() != Form::Base)
@@ -159,21 +164,26 @@ bool Naruto::setUpClone(Hero* clone, int cloneTime)
     return true;
 }
 
-bool Naruto::cloneStartsWithOwnerHP(int cloneTime) const
+bool Naruto::cloneStartsWithOwnerHP() const
 {
-    return form() != Form::Rikudo || cloneTime == 10;
+    return !isKuramaSummon();
 }
 
-void Naruto::finishClone(Hero* clone, int cloneTime)
+void Naruto::finishClone(Hero* clone)
 {
-    if (isKuramaSummon(cloneTime))
+    if (isKuramaSummon())
     {
         if (clone->_hpBar)
             clone->_hpBar->setPositionY(120);
         clone->setnAttackValue(1060);
         return;
     }
-    Hero::finishClone(clone, cloneTime);
+    Hero::finishClone(clone);
+}
+
+float Naruto::cloneLifetime(int cloneTime) const
+{
+    return isKuramaSummon() ? kKuramaLifetime : Hero::cloneLifetime(cloneTime);
 }
 
 bool Naruto::clonesExpire() const

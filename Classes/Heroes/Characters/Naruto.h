@@ -14,10 +14,11 @@ public:
 protected:
     bool onTransformSkillStart() override;
     bool onTransformSkillEnd() override;
-    CharacterId cloneCharacter(int cloneTime) const override;
-    bool setUpClone(Hero* clone, int cloneTime) override;
-    bool cloneStartsWithOwnerHP(int cloneTime) const override;
-    void finishClone(Hero* clone, int cloneTime) override;
+    CharacterId cloneCharacter() const override;
+    bool setUpClone(Hero* clone) override;
+    bool cloneStartsWithOwnerHP() const override;
+    void finishClone(Hero* clone) override;
+    float cloneLifetime(int cloneTime) const override;
     bool clonesExpire() const override;
     int cloneDamageSharePercent() const override;
     bool targetsHeroesOnly() const override;
@@ -31,7 +32,7 @@ private:
         Rikudo,
     };
     Form form() const;
-    bool isKuramaSummon(int cloneTime) const;
+    bool isKuramaSummon() const;
 
     // clone AI
     CCPoint vectorToTarget() const;
